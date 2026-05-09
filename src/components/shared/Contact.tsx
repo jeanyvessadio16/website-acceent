@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { MapPin, Mail, Phone, User, MessageSquare, Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
@@ -5,9 +6,15 @@ import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
-import { contactSchema, ContactFormData } from "../../zodSchema/contact";
+import { FormErrorBanner, SuccessAlertDialog } from "./alerts";
+import { ContactFormData } from "../../zodSchema/contact";
+import { ContactService } from "../../services/contactService";
 
 export default function Contact() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [formError, setFormError] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -16,24 +23,15 @@ export default function Contact() {
   } = useForm<ContactFormData>();
 
   const onSubmit = async (data: ContactFormData) => {
-    try {
-      // Validation avec Zod
-      const validatedData = contactSchema.parse(data);
+    const result = await ContactService.submitContactForm(data);
 
-      // Ici vous pouvez ajouter la logique d'envoi (API, email, etc.)
-      console.log("Données validées du formulaire :", validatedData);
-      // Simulation d'un envoi
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      alert("Message envoyé avec succès !");
+    if (result.success) {
+      setFormError("");
+      setDialogMessage(result.message);
+      setDialogOpen(true);
       reset();
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error("Erreur de validation :", error.message);
-        alert("Erreur de validation : " + error.message);
-      } else {
-        console.error("Erreur lors de l'envoi :", error);
-        alert("Une erreur est survenue. Veuillez réessayer.");
-      }
+    } else {
+      setFormError(result.message);
     }
   };
 
@@ -112,6 +110,7 @@ export default function Contact() {
             {/* Formulaire de contact */}
             <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden">
               <CardContent className="p-8">
+                <FormErrorBanner message={formError} />
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="space-y-2">
                     <Label
@@ -208,6 +207,12 @@ export default function Contact() {
           </div>
         </div>
       </div>
+
+      <SuccessAlertDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        message={dialogMessage}
+      />
     </section>
   );
 }

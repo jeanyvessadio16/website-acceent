@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
-import { Arrow } from "radix-ui/internal";
+import Partenaire from "@/components/shared/Partenaires";
 import { ArrowRight } from "lucide-react";
 import Contact from "@/components/shared/Contact";
 
@@ -73,7 +73,8 @@ export default function Home() {
               Nos domaines d&apos;intervention
             </h1>
             <p className="text-lg text-gray-600 font-semibold">
-              Nous agissons sur trois axes essentiels pour accompagner les jeunes et les femmes vers l'autonomie
+              Nous agissons sur trois axes essentiels pour accompagner les
+              jeunes et les femmes vers l&apos;autonomie
             </p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 place-items-center place-content-center gap-5">
@@ -105,6 +106,11 @@ export default function Home() {
               </Card>
             ))}
           </div>
+        </section>
+
+        {/* PARTENAIRES SECTION */}
+        <section>
+          <Partenaire />
         </section>
 
         {/* CONTACT SECTION */}

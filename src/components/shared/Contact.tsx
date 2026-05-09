@@ -1,17 +1,42 @@
 import { MapPin, Mail, Phone, User, MessageSquare, Send } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
+import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
+import { contactSchema, ContactFormData } from "../../zodSchema/contact";
 
 export default function Contact() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<ContactFormData>();
+
+  const onSubmit = async (data: ContactFormData) => {
+    try {
+      // Validation avec Zod
+      const validatedData = contactSchema.parse(data);
+
+      // Ici vous pouvez ajouter la logique d'envoi (API, email, etc.)
+      console.log("Données validées du formulaire :", validatedData);
+      // Simulation d'un envoi
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      alert("Message envoyé avec succès !");
+      reset();
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Erreur de validation :", error.message);
+        alert("Erreur de validation : " + error.message);
+      } else {
+        console.error("Erreur lors de l'envoi :", error);
+        alert("Une erreur est survenue. Veuillez réessayer.");
+      }
+    }
+  };
+
   return (
     <section className="relative bg-linear-to-br from-slate-50 via-white to-slate-100 py-20">
       <div className="container mx-auto px-6 lg:px-8">
@@ -87,22 +112,30 @@ export default function Contact() {
             {/* Formulaire de contact */}
             <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden">
               <CardContent className="p-8">
-                <form className="space-y-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="space-y-2">
                     <Label
-                      htmlFor="name"
+                      htmlFor="nomComplet"
                       className="text-sm font-semibold text-gray-700 flex items-center gap-2"
                     >
                       <User size={18} className="text-blue-600" />
-                      Prénom et Nom *
+                      Prénom et Nom <span className="text-red-800">*</span>
                     </Label>
                     <Input
                       type="text"
-                      name="name"
+                      {...register("nomComplet")}
                       placeholder="Votre nom complet"
-                      className="w-full px-4 py-5 border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 text-gray-900 placeholder:text-gray-400"
-                      required
+                      className={`w-full px-4 py-5 border-2 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 text-gray-900 placeholder:text-gray-400 ${
+                        errors.nomComplet
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+                          : "border-gray-200 focus:border-blue-500"
+                      }`}
                     />
+                    {errors.nomComplet && (
+                      <p className="text-sm text-red-600 mt-1">
+                        {errors.nomComplet.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -111,15 +144,23 @@ export default function Contact() {
                       className="text-sm font-semibold text-gray-700 flex items-center gap-2"
                     >
                       <Mail size={18} className="text-blue-600" />
-                      Email *
+                      Email <span className="text-red-800">*</span>
                     </Label>
                     <Input
                       type="email"
-                      name="email"
+                      {...register("email")}
                       placeholder="votre.email@exemple.com"
-                      className="w-full px-4 py-5 border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 text-gray-900 placeholder:text-gray-400"
-                      required
+                      className={`w-full px-4 py-5 border-2 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 text-gray-900 placeholder:text-gray-400 ${
+                        errors.email
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+                          : "border-gray-200 focus:border-blue-500"
+                      }`}
                     />
+                    {errors.email && (
+                      <p className="text-sm text-red-600 mt-1">
+                        {errors.email.message}
+                      </p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -128,23 +169,38 @@ export default function Contact() {
                       className="text-sm font-semibold text-gray-700 flex items-center gap-2"
                     >
                       <MessageSquare size={18} className="text-blue-600" />
-                      Message *
+                      Message <span className="text-red-800">*</span>
                     </Label>
                     <Textarea
-                      name="message"
+                      {...register("message")}
                       placeholder="Décrivez votre demande ou votre question..."
-                      className="w-full min-h-32 px-4 py-4 border-2 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 resize-none text-gray-900 placeholder:text-gray-400"
-                      required
+                      className={`w-full min-h-32 px-4 py-4 border-2 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 resize-none text-gray-900 placeholder:text-gray-400 ${
+                        errors.message
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+                          : "border-gray-200 focus:border-blue-500"
+                      }`}
                     />
+                    {errors.message && (
+                      <p className="text-sm text-red-600 mt-1">
+                        {errors.message.message}
+                      </p>
+                    )}
                   </div>
 
                   <Button
                     type="submit"
                     size={"xl"}
-                    className="w-full bg-black text-white font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    disabled={isSubmitting}
+                    className="w-full bg-black text-white font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Send size={20} className="mr-2" />
-                    Envoyer le message
+                    {isSubmitting ? (
+                      "Envoi en cours..."
+                    ) : (
+                      <>
+                        <Send size={20} className="mr-2" />
+                        Envoyer le message
+                      </>
+                    )}
                   </Button>
                 </form>
               </CardContent>

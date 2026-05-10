@@ -50,7 +50,7 @@ export default function Home() {
               <h1 className="text-3xl mb-5 md:text-5xl font-bold">
                 Qui sommes-nous ?
               </h1>
-              <p className="text-lg font-semibold">
+              <p className="max-sm:text-justify text-lg font-semibold">
                 <strong>ACCEEN</strong>T - Action pour la Contribution
                 Collective pour l&apos;Education, l&apos;Entreprenariat et le
                 Numérique des Territoires, est une association basée à

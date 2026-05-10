@@ -6,7 +6,7 @@
 
   .partner-slider,
   .animate-partner-slide {
-    animation: partner-slide 40s linear infinite;
+    animation: partner-slide 60s linear infinite;
     will-change: transform;
   }
 }

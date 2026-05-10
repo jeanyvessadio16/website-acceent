@@ -11,7 +11,24 @@ export default function About() {
   const stats = [
     { number: "15+", label: "Partenaires engagés" },
     { number: "1000+", label: "Bénéficiaires" },
-    { number: "17", label: "Années d'expérience" },
+    { number: "03+", label: "Années d'expérience" },
+  ];
+  const values = [
+    {
+      title: "Impact local",
+      description:
+        "Chaque initiative est conçue avec les acteurs du territoire pour répondre à des besoins réels.",
+    },
+    {
+      title: "Inclusion",
+      description:
+        "Nos programmes donnent une place centrale aux jeunes et aux femmes pour créer des opportunités durables.",
+    },
+    {
+      title: "Innovation utile",
+      description:
+        "Nous utilisons le numérique comme levier concret d'apprentissage, d'emploi et d'entrepreneuriat.",
+    },
   ];
 
   return (
@@ -20,10 +37,14 @@ export default function About() {
         text="A propos de ACCEENT"
         title={title}
         description={description}
+        highlights={stats.map((item) => ({
+          label: item.label,
+          value: item.number,
+        }))}
       >
         {/* Image + Details Section */}
-        <section className="py-20 px-6 lg:px-12">
-          <div className="max-w-6xl mx-auto">
+        <section className="py-20">
+          <div className="section-container">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-950/20 to-slate-950/5 rounded-2xl" />
@@ -56,8 +77,11 @@ export default function About() {
                       "Entrepreneuriat et emploi",
                       "Transformation numérique",
                     ].map((item, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <span className="text-slate-950 font-bold">✓</span>
+                      <li
+                        key={i}
+                        className="flex items-start gap-3 rounded-lg bg-slate-50 px-3 py-2"
+                      >
+                        <span className="text-primary font-bold">✓</span>
                         <span className="text-slate-600">{item}</span>
                       </li>
                     ))}
@@ -68,9 +92,37 @@ export default function About() {
           </div>
         </section>
 
+        {/* Values Section */}
+        <section className="bg-white py-20">
+          <div className="section-container">
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="section-heading">Nos valeurs</h2>
+              <p className="section-subheading">
+                Une approche humaine et professionnelle pour transformer
+                durablement les territoires.
+              </p>
+            </div>
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              {values.map((value) => (
+                <Card
+                  key={value.title}
+                  className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                >
+                  <h3 className="text-xl font-bold text-slate-950">
+                    {value.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                    {value.description}
+                  </p>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Mission & Vision Section */}
         <section className="relative py-20 bg-gradient-to-b from-slate-50/50 to-white">
-          <div className="max-w-6xl mx-auto px-6 lg:px-12">
+          <div className="section-container">
             <div className="grid md:grid-cols-2 gap-8 items-stretch">
               {/* Mission Card */}
               <Card className="border border-slate-200/80 bg-white/95 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-slate-900/10 transition duration-300 overflow-hidden group">
@@ -115,36 +167,8 @@ export default function About() {
           </div>
         </section>
 
-        {/* Statistics Section */}
-        <section className="py-20 bg-slate-950 text-white">
-          <div className="max-w-6xl mx-auto px-6 lg:px-12">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Notre impact
-              </h2>
-              <p className="text-slate-300 text-lg max-w-2xl mx-auto">
-                Des chiffres qui reflètent notre engagement auprès des
-                territoires
-              </p>
-            </div>
-            <div className="grid md:grid-cols-3 gap-6">
-              {stats.map((stat, i) => (
-                <div
-                  key={i}
-                  className="text-center p-6 rounded-xl bg-white/10 backdrop-blur border border-white/20 hover:bg-white/15 transition"
-                >
-                  <div className="text-4xl md:text-5xl font-bold text-white mb-2">
-                    {stat.number}
-                  </div>
-                  <p className="text-slate-300">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* CTA Section */}
-        <section className="py-20 px-6 lg:px-12 bg-gradient-to-r from-slate-950 to-slate-900 text-white">
+        <section className="py-20 bg-gradient-to-r from-slate-950 to-slate-900 text-white">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Rejoignez notre mission
@@ -159,6 +183,12 @@ export default function About() {
                 className="px-8 py-3 bg-white text-slate-950 font-semibold rounded-full hover:bg-slate-100 transition inline-block"
               >
                 Nous contacter
+              </Link>
+              <Link
+                href="/"
+                className="px-8 py-3 border border-white/40 text-white font-semibold rounded-full hover:bg-white/10 transition inline-block"
+              >
+                Retour a l&apos;accueil
               </Link>
             </div>
           </div>

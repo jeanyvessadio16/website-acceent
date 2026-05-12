@@ -5,6 +5,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "../ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
 const PROGRAMMES = [
@@ -60,37 +66,36 @@ export default function Header() {
                 </li>
               ))}
               <li className="relative">
-                <details className="relative">
-                  <summary
-                    className={cn(
-                      "flex cursor-pointer list-none items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors outline-none select-none",
-                      "hover:bg-muted/80 hover:text-foreground",
-                      "focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring/50",
-                      "[&::-webkit-details-marker]:hidden",
-                    )}
-                  >
-                    Nos programmes
-                    <ChevronDown
-                      className="size-4 shrink-0 opacity-70"
-                      aria-hidden
-                    />
-                  </summary>
-                  <ul
-                    className="absolute top-full left-0 z-50 mt-1.5 min-w-[11rem] rounded-lg border border-border bg-popover py-1 shadow-md"
-                    role="list"
-                  >
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      type="button"
+                      className={cn(
+                        "flex cursor-pointer items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors outline-none select-none",
+                        "hover:bg-muted/80 hover:text-foreground",
+                        "focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring/50",
+                      )}
+                    >
+                      Nos programmes
+                      <ChevronDown
+                        className="size-4 shrink-0 opacity-70"
+                        aria-hidden
+                      />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="mt-1.5 min-w-[11rem] rounded-lg border border-border bg-popover py-1 shadow-md">
                     {PROGRAMMES.map((p) => (
-                      <li key={p.href} className="px-2 py-0.5">
+                      <DropdownMenuItem asChild key={p.href}>
                         <Link
                           href={p.href}
-                          className="block px-3 py-2 text-sm font-medium capitalize text-popover-foreground hover:bg-primary hover:text-primary-foreground rounded-sm"
+                          className="block rounded-sm px-3 py-2 text-sm font-medium capitalize text-popover-foreground hover:bg-primary hover:text-primary-foreground"
                         >
                           {p.nom}
                         </Link>
-                      </li>
+                      </DropdownMenuItem>
                     ))}
-                  </ul>
-                </details>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </li>
               {links.slice(2).map((lien) => (
                 <li key={lien.id}>
@@ -155,13 +160,19 @@ export default function Header() {
                 </li>
               ))}
               <li>
-                <details className="rounded-xl border border-border/80 bg-muted/30 [&_summary::-webkit-details-marker]:hidden">
-                  <summary className="cursor-pointer list-none px-4 py-3.5 text-base font-medium text-foreground">
-                    Nos programmes
-                  </summary>
-                  <ul className="border-t border-border/60 px-2 pb-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-between rounded-xl border border-border/80 bg-muted/30 px-4 py-3.5 text-base font-medium text-foreground transition-colors hover:bg-muted/60"
+                    >
+                      Nos programmes
+                      <ChevronDown className="size-4 shrink-0 opacity-70" aria-hidden />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="border-t border-border/60 px-2 pb-2 pt-1">
                     {PROGRAMMES.map((p) => (
-                      <li key={p.href}>
+                      <DropdownMenuItem asChild key={p.href}>
                         <Link
                           href={p.href}
                           onClick={() => setIsMenuOpen(false)}
@@ -169,10 +180,10 @@ export default function Header() {
                         >
                           {p.nom}
                         </Link>
-                      </li>
+                      </DropdownMenuItem>
                     ))}
-                  </ul>
-                </details>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </li>
               {links.slice(2).map((lien) => (
                 <li key={lien.id}>

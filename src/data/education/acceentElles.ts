@@ -13,38 +13,29 @@ export type AcceentEllesItemIcon =
 export const acceentEllesData = [
   {
     id: 1,
-    icon: "bookOpen" as const,
-    libelle: "Renforcement scolaire",
-    detail:
-      "Renforcement scolaire à travers des séances régulières adaptées au niveau de chaque participante.",
+
+    libelle:
+      "Renforcement scolaire à travers des séances régulières adaptées au niveau de chaque participante ;",
   },
   {
     id: 2,
-    icon: "heart" as const,
-    libelle: "Développement personnel",
-    detail:
-      "Développement personnel pour favoriser l'estime de soi et encourager des choix de vie positifs.",
+    libelle:
+      "Développement personnel pour favoriser l'estime de soi et encourager des choix de vie positifs ;",
   },
   {
     id: 3,
-    icon: "laptop" as const,
-    libelle: "Initiation informatique & numérique",
-    detail:
-      "Initiation à l'informatique et au numérique, afin de réduire la fracture digitale et leur ouvrir de nouvelles perspectives.",
+    libelle:
+      "Initiation à l'informatique et au numérique, afin de réduire la fracture digitale et leur ouvrir de nouvelles perspectives ;",
   },
   {
     id: 4,
-    icon: "briefcase" as const,
-    libelle: "Découverte de métiers",
-    detail:
-      "Découverte de métiers pour élargir leur horizon et susciter des vocations.",
+    libelle:
+      "Découverte de métiers pour élargir leur horizon et susciter des vocations ;",
   },
   {
     id: 5,
-    icon: "messages" as const,
-    libelle: "Dialogue & écoute",
-    detail:
-      "Un espace de dialogue et d'écoute pour échanger, se soutenir et grandir ensemble.",
+    libelle:
+      "Et un espace de dialogue et d'écoute pour échanger, se soutenir et grandir ensemble.",
   },
 ];
 

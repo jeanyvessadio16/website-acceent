@@ -1,5 +1,12 @@
 import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
 import { tuttankProgrammes } from "@/data/education/tut-tank";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "TUT-TANK",
+  description:
+    "Un accompagnement scolaire et social pour les jeunes filles vulnérables",
+};
 
 export default function TutTankPage() {
   const programme = {
@@ -19,11 +26,11 @@ export default function TutTankPage() {
               A propos du programme
             </h2>
             <p className="mx-auto max-w-3xl text-neutral-700 dark:text-neutral-300">
-              TUT TANK est un programme mis en place par ACCEENT pour
-              accompagner les enfants et leurs familles dans un cadre éducatif
-              et bienveillant. Il vise à renforcer la pensée critique des
-              enfants, améliorer les relations familiales et soutenir les
-              parents dans leur rôle éducatif.
+              <strong>TUT-TANK</strong> est un programme mis en place par
+              ACCEENT pour accompagner les enfants et leurs familles dans un
+              cadre éducatif et bienveillant. Il vise à renforcer la pensée
+              critique des enfants, améliorer les relations familiales et
+              soutenir les parents dans leur rôle éducatif.
             </p>
           </div>
         </section>

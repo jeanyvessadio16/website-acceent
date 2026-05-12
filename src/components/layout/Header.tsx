@@ -167,7 +167,10 @@ export default function Header() {
                       className="flex w-full items-center justify-between rounded-xl border border-border/80 bg-muted/30 px-4 py-3.5 text-base font-medium text-foreground transition-colors hover:bg-muted/60"
                     >
                       Nos programmes
-                      <ChevronDown className="size-4 shrink-0 opacity-70" aria-hidden />
+                      <ChevronDown
+                        className="size-4 shrink-0 opacity-70"
+                        aria-hidden
+                      />
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="border-t border-border/60 px-2 pb-2 pt-1">

@@ -12,8 +12,8 @@ export const list_domaines = [
     nom: "Entrepreneuriat",
     description:
       "Nous accompagnons les porteurs de projets dans la création et le développement de leur activité, en leur offrant les outils, les méthodes et le soutien nécessaires pour réussir.",
-    image: "/images/entreprenariat.jpeg",
-    page: "/entrepreneriat",
+    image: "/images/entreprenariat-eco.jpeg",
+    page: "/entreprenariat",
   },
   {
     id: 3,

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { MapPin, Mail, Phone, User, MessageSquare, Send } from "lucide-react";
 import { useForm } from "react-hook-form";

@@ -2,9 +2,14 @@ import HeaderLayout from "@/components/shared/HeaderLayout";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "A propos",
+  description: "ACCEENT page à propos",
+};
 export default function About() {
-  const title = "Une association engagée pour transformer les territoires";
+  const title = "A propos de ACCEENT";
   const description =
     "Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires. Une association engagée pour transformer les territoires par l'éducation, l'entrepreneuriat et le numérique.";
 
@@ -34,7 +39,7 @@ export default function About() {
   return (
     <>
       <HeaderLayout
-        text="A propos de ACCEENT"
+        text="Découvrez ACCEENT"
         title={title}
         description={description}
         highlights={stats.map((item) => ({
@@ -62,9 +67,10 @@ export default function About() {
                     Qui sommes-nous
                   </h3>
                   <p className="text-lg text-slate-700 leading-relaxed">
-                    ACCEENT est une association basée à Ziguinchor, au Sénégal,
-                    dont la mission est de transformer les territoires par
-                    l&apos;éducation, l&apos;entrepreneuriat et le numérique.
+                    ACCEENT est une association basée à Ziguinchor dans le
+                    quartier de Santhiaba. ACCEENT oeuvre dans les domaines de
+                    l&apos;éducation, l&apos;entrepreneuriat et le numérique
+                    pour accompagner les jeunes et les femmes
                   </p>
                 </div>
                 <div>

@@ -4,7 +4,7 @@ export const programesEducation = [
     nom: "ACCEENT4ELLES",
     description:
       "Accompagnement des jeunes filles vulnérables avec des formations adaptées et des activités de confiance en soi.",
-    image: "/images/acceent-incub.jpeg",
+    image: "/images/educ.jpg",
     page: "/acceent-elles",
   },
   {
@@ -12,7 +12,7 @@ export const programesEducation = [
     nom: "TUT'TANK",
     description:
       "Développement de la pensée critique et soutien familial pour une meilleure éducation des enfants.",
-    image: "/images/educaton.jpg",
+    image: "/images/tuttank.jpeg",
     page: "/tut-tank",
   },
 ];

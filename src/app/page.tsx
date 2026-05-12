@@ -19,59 +19,29 @@ export default function Home() {
     <>
       <div>
         {/* HERO SECTION */}
-        <section className="relative w-full overflow-hidden bg-[url('/images/acceentImage.jpg')] bg-cover bg-fixed bg-center lg:bg-top">
-          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/65 to-black/75" />
-          <div className="section-container relative z-10 flex min-h-[calc(100svh-5rem)] flex-col items-center justify-center py-12 text-center text-white md:py-16">
+        <section className="relative w-full min-h-screen flex flex-col justify-center items-center overflow-hidden bg-[url('/images/acceentImage.jpg')] bg-cover bg-fixed bg-center lg:bg-top">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/75 via-black/65 to-black/75" />
+          <div className="relative max-md:px-10 z-10 flex flex-col items-center justify-center gap-4 text-center text-white">
             <span className="inline-block rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-semibold uppercase tracking-wider text-primary-foreground backdrop-blur">
-              Bienvenue a ACCEENT
+              Bienvenue à
             </span>
-            <h1 className="max-w-4xl text-4xl font-extrabold leading-tight md:text-6xl lg:text-7xl">
-              ACCEENT — au coeur de la transformation sociale à Ziguinchor
+            <h1 className="max-w-4xl text-5xl font-black  md:text-6xl lg:text-8xl">
+              ACCEENT
             </h1>
-            <p className="mt-6 max-w-2xl text-base text-slate-200 md:text-lg">
-              Nous accompagnons les jeunes et les femmes vers l&apos;autonomie
-              avec des programmes concrets, accessibles et ancrés dans la
-              realite locale.
+            <p className="max-w-2xl text-slate-200 text-lg lg:text-xl">
+              Action pour la Contribution Collective pour l&apos;Education,
+              l&apos;Entreprenariat et le Numérique des Territoires
             </p>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <div className="flex flex-col gap-4 sm:flex-row">
               <Button
                 asChild
                 size={"xl"}
                 className="rounded-full px-8 shadow-lg shadow-black/30"
               >
                 <Link href={"/about"}>
-                  Decouvrir nos programmes
+                  En sovoir plus
                   <ArrowRight className="ml-2" size={20} />
                 </Link>
-              </Button>
-              <Button
-                asChild
-                size={"xl"}
-                variant="outline"
-                className="rounded-full border-white/30 bg-white/10 px-8 text-white hover:bg-white/20"
-              >
-                <Link href={"/#contact"}>Nous contacter</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        {/* ABOUT SECTION */}
-        <section className="bg-white py-20">
-          <div className="section-container">
-            <div className="mx-auto max-w-3xl text-center">
-              <h1 className="section-heading mb-5">Qui sommes-nous ?</h1>
-              <p className="text-base leading-relaxed text-slate-700 md:text-lg">
-                <strong>ACCEENT</strong> - Action pour la Contribution
-                Collective pour l&apos;Education, l&apos;Entreprenariat et le
-                Numérique des Territoires, est une association basée à
-                Ziguinchor dans le quartier de Santhiaba. ACCEENT oeuvre dans
-                les domaines de l&apos;éducation, l&apos;entreprenariat et du
-                numérique.
-              </p>
-
-              <Button asChild size={"xl"} className="mt-8 rounded-full px-8">
-                <Link href={"/about"}>En savoir plus</Link>
               </Button>
             </div>
           </div>
@@ -105,11 +75,11 @@ export default function Home() {
                       />
                     </div>
                     <div className="p-6">
-                      <CardTitle className="mb-3 text-2xl font-bold text-slate-950">
-                        {domaine.nom}
+                      <CardTitle className="mb-3 text-2xl font-bold text-primary">
+                        <h3>{domaine.nom}</h3>
                       </CardTitle>
                       <CardDescription className="text-sm leading-relaxed text-slate-600">
-                        {domaine.description}
+                        <p>{domaine.description}</p>
                       </CardDescription>
 
                       <Button
@@ -130,12 +100,12 @@ export default function Home() {
         <section className="py-16">
           <Partenaire />
         </section>
-
-        {/* CONTACT SECTION */}
-        <section className="bg-white">
-          <Contact />
-        </section>
       </div>
+
+      {/* SECTION CONTACT */}
+      <section className="py-16" id="contact">
+        <Contact />
+      </section>
     </>
   );
 }

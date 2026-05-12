@@ -5,6 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpenCheck, GraduationCap } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Education",
+  description: "ACCEENT page éducation",
+};
 
 export default function Eduction() {
   return (
@@ -14,7 +20,10 @@ export default function Eduction() {
         title="Former, inspirer et ouvrir de nouvelles opportunites"
         description="Nos programmes d'education developpent les competences, la confiance et l'autonomie des jeunes et des femmes a travers des parcours concrets."
         highlights={[
-          { label: "Programmes actifs", value: `${programesEducation.length}+` },
+          {
+            label: "Programmes actifs",
+            value: `${programesEducation.length}+`,
+          },
           { label: "Public cible", value: "Jeunes & Femmes" },
           { label: "Approche", value: "Pratique & Inclusive" },
         ]}
@@ -23,7 +32,7 @@ export default function Eduction() {
           <div className="section-container">
             <div className="mx-auto max-w-3xl text-center">
               <h1 className="section-heading mb-2">
-              Nos programmes d&apos;éducation
+                Nos programmes d&apos;éducation
               </h1>
               <p className="section-subheading">
                 Nous accompagnons les jeunes et les femmes vers l&apos;autonomie

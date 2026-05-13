@@ -60,19 +60,19 @@ export default function Footer() {
             </h3>
             <ul className="mt-6 space-y-4">
               <li className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 shrink-0 text-blue-500" />
+                <MapPin className="h-5 w-5 shrink-0 text-white" />
                 <span className="text-sm text-slate-400">
                   Quartier Santhiaba, <br /> Ziguinchor, Sénégal
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <Phone className="h-5 w-5 shrink-0 text-blue-500" />
+                <Phone className="h-5 w-5 shrink-0 text-white" />
                 <span className="text-sm text-slate-400">
                   +221 76 141 70 70
                 </span>
               </li>
               <li className="flex items-center gap-3">
-                <Mail className="h-5 w-5 shrink-0 text-blue-500" />
+                <Mail className="h-5 w-5 shrink-0 text-white" />
                 <a
                   href="mailto:info@acceent.org"
                   className="text-sm text-slate-400 transition-colors hover:text-blue-400"
@@ -95,7 +95,7 @@ export default function Footer() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5 ring-1 ring-white/10 transition-all hover:bg-blue-600 hover:ring-blue-600"
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/5 ring-1 ring-white/10 transition-all hover:bg-white hover:ring-blue-600"
                   aria-label={link.name}
                 >
                   <Image

@@ -8,7 +8,7 @@ export default function AtelierEntreprenariat() {
   return (
     <>
       <ProgrammeLayout
-        className="bg-[url('/images/acceentImage.jpg')] bg-cover bg-fixed bg-center lg:bg-top"
+        className="bg-[url('/images/entreprenariat.jpeg')] bg-cover bg-fixed bg-center lg:bg-top"
         {...programme}
       >
         <section></section>

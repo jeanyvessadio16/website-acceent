@@ -1,7 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { MapPin, Mail, Phone, User, MessageSquare, Send } from "lucide-react";
+import {
+  ArrowRight,
+  Mail,
+  MapPin,
+  MessageSquare,
+  Phone,
+  Send,
+  User,
+} from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
@@ -38,39 +46,42 @@ export default function Contact() {
   };
 
   return (
-    <section className="relative bg-linear-to-br from-slate-50 via-white to-slate-100 py-20">
+    <section className="relative overflow-hidden bg-linear-to-br from-slate-50 via-white to-slate-100 py-20 md:py-24">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-20 top-12 h-72 w-72 rounded-full bg-blue-300/15 blur-3xl" />
+        <div className="absolute -right-16 bottom-8 h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />
+      </div>
       <div className="container mx-auto px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          {/* Titre principal */}
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <div className="mb-14 text-center">
+            <p className="mb-4 inline-flex items-center rounded-full border border-blue-200/70 bg-white px-4 py-1.5 text-sm font-semibold text-blue-700 shadow-xs">
+              Restons en contact
+            </p>
+            <h2 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 md:text-5xl">
               Contactez-nous
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="mx-auto max-w-2xl text-lg text-gray-600 md:text-xl">
               Nous sommes là pour vous accompagner. N&apos;hésitez pas à nous
               contacter pour toute question ou collaboration.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            {/* Informations de contact */}
-            <div className="space-y-8">
-              <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow duration-300">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <div className="grid items-start gap-10 lg:grid-cols-2">
+            <div className="space-y-6">
+              <div className="rounded-2xl border border-white/70 bg-white/90 p-8 shadow-xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl">
+                <h3 className="mb-6 flex items-center gap-3 text-2xl font-semibold text-gray-900">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
                     <MapPin className="text-white" size={20} />
                   </div>
                   Nos coordonnées
                 </h3>
                 <div className="space-y-6">
-                  <div className="flex items-start gap-4 group">
-                    <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                  <div className="group flex items-start gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 transition-colors group-hover:bg-blue-100">
                       <MapPin className="text-blue-600" size={24} />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">
-                        Adresse
-                      </h4>
+                      <h4 className="mb-1 font-semibold text-gray-900">Adresse</h4>
                       <p className="text-gray-600 leading-relaxed">
                         Quartier Santhiaba
                         <br />
@@ -79,39 +90,56 @@ export default function Contact() {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4 group">
-                    <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center group-hover:bg-green-100 transition-colors">
+                  <div className="group flex items-start gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 transition-colors group-hover:bg-green-100">
                       <Mail className="text-green-600" size={24} />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">
-                        Email
-                      </h4>
-                      <p className="text-gray-600">info@acceent.org</p>
+                      <h4 className="mb-1 font-semibold text-gray-900">Email</h4>
+                      <a
+                        href="mailto:info@acceent.org"
+                        className="text-gray-600 transition-colors hover:text-green-700"
+                      >
+                        info@acceent.org
+                      </a>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4 group">
-                    <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center group-hover:bg-purple-100 transition-colors">
+                  <div className="group flex items-start gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-50 transition-colors group-hover:bg-purple-100">
                       <Phone className="text-purple-600" size={24} />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">
+                      <h4 className="mb-1 font-semibold text-gray-900">
                         Téléphone
                       </h4>
-                      <p className="text-gray-600">+221 76 141 70 70</p>
+                      <a
+                        href="tel:+221761417070"
+                        className="text-gray-600 transition-colors hover:text-purple-700"
+                      >
+                        +221 76 141 70 70
+                      </a>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Élément décoratif */}
-              <div className="hidden lg:block absolute left-8 top-1/2 transform -translate-y-1/2 w-px h-32 bg-linear-to-b from-blue-200 to-transparent"></div>
+              <p className="rounded-xl border border-gray-200/80 bg-white/80 px-5 py-4 text-sm text-gray-600 shadow-sm">
+                Temps de réponse moyen: moins de 24h les jours ouvrés.
+              </p>
             </div>
 
-            {/* Formulaire de contact */}
-            <Card className="shadow-2xl border-0 bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden">
+            <Card className="overflow-hidden rounded-2xl border border-white/80 bg-white/90 shadow-2xl backdrop-blur-sm">
               <CardContent className="p-8">
+                <div className="mb-6">
+                  <h3 className="text-2xl font-semibold text-gray-900">
+                    Parlez-nous de votre besoin
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-600">
+                    Remplissez le formulaire, nous revenons vers vous avec une
+                    réponse claire et personnalisée.
+                  </p>
+                </div>
                 <FormErrorBanner message={formError} />
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="space-y-2">
@@ -123,13 +151,16 @@ export default function Contact() {
                       Prénom et Nom <span className="text-red-800">*</span>
                     </Label>
                     <Input
+                      id="nomComplet"
                       type="text"
                       {...register("nomComplet")}
+                      autoComplete="name"
+                      aria-invalid={Boolean(errors.nomComplet)}
                       placeholder="Votre nom complet"
-                      className={`w-full px-4 py-5 border-2 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 text-gray-900 placeholder:text-gray-400 ${
+                      className={`w-full border-2 px-4 py-5 text-gray-900 transition-all duration-200 placeholder:text-gray-400 focus:ring-4 focus:ring-blue-500/20 ${
                         errors.nomComplet
                           ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-                          : "border-gray-200 focus:border-blue-500"
+                          : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
                       }`}
                     />
                     {errors.nomComplet && (
@@ -148,13 +179,16 @@ export default function Contact() {
                       Email <span className="text-red-800">*</span>
                     </Label>
                     <Input
+                      id="email"
                       type="email"
                       {...register("email")}
+                      autoComplete="email"
+                      aria-invalid={Boolean(errors.email)}
                       placeholder="votre.email@exemple.com"
-                      className={`w-full px-4 py-5 border-2 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 text-gray-900 placeholder:text-gray-400 ${
+                      className={`w-full border-2 px-4 py-5 text-gray-900 transition-all duration-200 placeholder:text-gray-400 focus:ring-4 focus:ring-blue-500/20 ${
                         errors.email
                           ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-                          : "border-gray-200 focus:border-blue-500"
+                          : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
                       }`}
                     />
                     {errors.email && (
@@ -173,12 +207,14 @@ export default function Contact() {
                       Message <span className="text-red-800">*</span>
                     </Label>
                     <Textarea
+                      id="message"
                       {...register("message")}
+                      aria-invalid={Boolean(errors.message)}
                       placeholder="Décrivez votre demande ou votre question..."
-                      className={`w-full min-h-32 px-4 py-4 border-2 focus:ring-4 focus:ring-blue-500/20 transition-all duration-200 resize-none text-gray-900 placeholder:text-gray-400 ${
+                      className={`min-h-32 w-full resize-none border-2 px-4 py-4 text-gray-900 transition-all duration-200 placeholder:text-gray-400 focus:ring-4 focus:ring-blue-500/20 ${
                         errors.message
                           ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-                          : "border-gray-200 focus:border-blue-500"
+                          : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
                       }`}
                     />
                     {errors.message && (
@@ -192,7 +228,7 @@ export default function Contact() {
                     type="submit"
                     size={"xl"}
                     disabled={isSubmitting}
-                    className="w-full bg-black text-white font-semibold cursor-pointer transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="group w-full cursor-pointer bg-gray-950 font-semibold text-white shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:bg-gray-900 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isSubmitting ? (
                       "Envoi en cours..."
@@ -200,6 +236,10 @@ export default function Contact() {
                       <>
                         <Send size={20} className="mr-2" />
                         Envoyer le message
+                        <ArrowRight
+                          size={18}
+                          className="ml-2 transition-transform duration-200 group-hover:translate-x-0.5"
+                        />
                       </>
                     )}
                   </Button>

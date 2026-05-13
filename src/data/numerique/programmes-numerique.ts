@@ -5,6 +5,6 @@ export const programesNumerique = [
     description:
       "Compétition internationale de robotique éducative pour stimuler la créativité et l'innovation technologique chez les jeunes.",
     image: "/images/acceent-incub.jpeg",
-    page: "/acceent-elles",
+    page: "/wro",
   },
 ];

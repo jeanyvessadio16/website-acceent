@@ -20,9 +20,12 @@ export default function TutTankPage() {
         {...programme}
         className="bg-[url('/images/tuttank.jpeg')] bg-cover bg-fixed bg-center lg:bg-top"
       >
-        <section>
-          <div className="space-y-6 text-center">
-            <h2 className="text-4xl font-bold md:text-5xl">
+        <section className="mx-auto max-w-5xl">
+          <div className="space-y-6 rounded-2xl border border-neutral-200 bg-white p-8 text-center shadow-xl md:p-10 dark:border-neutral-800 dark:bg-neutral-900">
+            <p className="mx-auto inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-semibold text-primary">
+              Inclusion, education et autonomie
+            </p>
+            <h2 className="text-3xl font-bold md:text-5xl">
               A propos du programme
             </h2>
             <p className="mx-auto max-w-3xl text-neutral-700 dark:text-neutral-300">

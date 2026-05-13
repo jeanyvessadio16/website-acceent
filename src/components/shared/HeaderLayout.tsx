@@ -1,10 +1,12 @@
 export default function HeaderLayout({
+  className,
   text,
   title,
   description,
   highlights = [],
   children,
 }: {
+  className?: string;
   text?: string;
   title: string;
   description: string;
@@ -13,7 +15,9 @@ export default function HeaderLayout({
 }) {
   return (
     <>
-      <section className="relative min-h-[calc(100svh-5rem)] overflow-hidden bg-[linear-gradient(120deg,rgba(131,97,130,0.14),rgba(185,147,158,0.1),rgba(255,255,255,1))]">
+      <section
+        className={`relative min-h-[calc(100svh-5rem)] overflow-hidden bg-[linear-gradient(120deg,rgba(131,97,130,0.14),rgba(185,147,158,0.1),rgba(255,255,255,1))] ${className || ""}`}
+      >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(131,97,130,0.23),transparent_45%)]" />
         <div className="absolute -left-28 top-20 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
         <div className="absolute -right-24 bottom-10 h-72 w-72 rounded-full bg-secondary/30 blur-3xl" />
@@ -36,7 +40,9 @@ export default function HeaderLayout({
                   key={item.label}
                   className="rounded-2xl border border-white/60 bg-white/70 p-4 shadow-sm backdrop-blur"
                 >
-                  <p className="text-2xl font-bold text-slate-950">{item.value}</p>
+                  <p className="text-2xl font-bold text-slate-950">
+                    {item.value}
+                  </p>
                   <p className="mt-1 text-sm text-slate-600">{item.label}</p>
                 </div>
               ))}

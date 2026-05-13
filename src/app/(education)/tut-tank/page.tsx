@@ -35,14 +35,17 @@ export default function TutTankPage() {
           </div>
         </section>
       </ProgrammeLayout>
-      <section className="px-14 py-16 bg-accent">
-        <ul className="list-disc mx-auto max-w-3xl space-y-3">
-          <h2 className="text-2xl font-bold">
+      <section className="px-14 py-16 max-md:px-7 bg-accent">
+        <ul className="mx-auto max-w-3xl space-y-3">
+          <h2 className="text-2xl font-bold text-primary">
             Le programme propose plusieurs types d&apos;activités
           </h2>
           {tuttankProgrammes.map((item) => (
-            <li key={item.id} className="mt-3">
-              <h3 className="text-base">{item.libelle} </h3>
+            <li
+              key={item.id}
+              className="mt-3 px-5 py-2 bg-neutral-100 rounded-lg dark:bg-neutral-800"
+            >
+              <h3 className="text-base font-semibold">{item.libelle} </h3>
               <p className="text-sm text-neutral-600 dark:text-neutral-400">
                 {item.detail}
               </p>

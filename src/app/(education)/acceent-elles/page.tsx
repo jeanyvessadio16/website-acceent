@@ -3,7 +3,6 @@ import {
   acceentEllesApproche,
   acceentEllesData,
 } from "@/data/education/acceentElles";
-import { LayoutList } from "lucide-react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

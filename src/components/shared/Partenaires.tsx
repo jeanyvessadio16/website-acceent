@@ -12,10 +12,10 @@ export default function Partenaire() {
         <p className="mb-3 text-sm uppercase tracking-[0.35em] text-slate-500">
           Nos partenaires
         </p>
-        <h2 className="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
+        <h2 className="text-fluid-h2 text-slate-950 mb-4">
           Ils accompagnent nos projets.
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-600">
+        <p className="mx-auto max-w-2xl text-fluid-p text-slate-600">
           Une sélection de partenaires engagés et complémentaires qui
           participent à l&apos;impact de nos programmes.
         </p>

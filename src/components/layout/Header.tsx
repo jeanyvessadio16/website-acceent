@@ -29,15 +29,15 @@ export default function Header() {
   ] as const;
 
   const navLinkClass = cn(
-    "rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors outline-none",
-    "hover:bg-muted/80 hover:text-foreground",
-    "focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring/50",
+    "relative rounded-full px-4 py-2 text-sm font-medium text-slate-600 transition-all duration-300 outline-none",
+    "hover:bg-primary/10 hover:text-primary",
+    "focus-visible:bg-primary/10 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:text-primary",
   );
 
   return (
     <>
-      <header className="fixed top-0 right-0 left-0 z-50 w-full border-b border-border/60 bg-background backdrop-blur-md">
-        <div className="section-container flex h-16 items-center justify-between gap-4 sm:h-[4.25rem]">
+      <header className="fixed top-0 right-0 left-0 z-50 w-full border-b border-slate-200/50 bg-white/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.03)] transition-all duration-300">
+        <div className="px-10 flex h-16 items-center justify-between gap-4 sm:h-[4.25rem]">
           <Link
             href="/"
             className="relative flex h-10 w-[7.25rem] shrink-0 items-center justify-center overflow-hidden rounded-lg bg-blue-950 px-2 outline-none ring-1 ring-white/15 ring-offset-2 ring-offset-background transition-[opacity,box-shadow] hover:opacity-95 focus-visible:ring-2 focus-visible:ring-ring sm:h-11 sm:w-[8.25rem]"
@@ -66,14 +66,15 @@ export default function Header() {
                 </li>
               ))}
               <li className="relative">
-                <DropdownMenu>
+                <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild>
                     <button
                       type="button"
                       className={cn(
-                        "flex cursor-pointer items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors outline-none select-none",
-                        "hover:bg-muted/80 hover:text-foreground",
-                        "focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring/50",
+                        "flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-slate-600 transition-all duration-300 outline-none select-none",
+                        "hover:bg-primary/10 hover:text-primary",
+                        "focus-visible:bg-primary/10 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:text-primary",
+                        "data-[state=open]:bg-primary/10 data-[state=open]:text-primary"
                       )}
                     >
                       Nos programmes
@@ -83,12 +84,12 @@ export default function Header() {
                       />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="mt-1.5 min-w-[11rem] rounded-lg border border-border bg-popover py-1 shadow-md">
+                  <DropdownMenuContent className="mt-2 min-w-[12rem] rounded-xl border border-slate-200/80 bg-white/95 backdrop-blur-xl p-2 shadow-xl shadow-slate-200/50">
                     {PROGRAMMES.map((p) => (
-                      <DropdownMenuItem asChild key={p.href}>
+                      <DropdownMenuItem asChild key={p.href} className="cursor-pointer p-0 m-1">
                         <Link
                           href={p.href}
-                          className="block rounded-sm px-3 py-2 text-sm font-medium capitalize text-popover-foreground hover:bg-primary hover:text-primary-foreground"
+                          className="flex w-full items-center rounded-lg px-3 py-2 text-sm font-medium text-slate-700 outline-none transition-colors hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary data-[highlighted]:bg-primary/10 data-[highlighted]:text-primary"
                         >
                           {p.nom}
                         </Link>
@@ -145,7 +146,7 @@ export default function Header() {
           />
           <nav
             id="mobile-navigation"
-            className="animate-in fade-in-0 slide-in-from-top-2 absolute top-16 right-0 left-0 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-border bg-background shadow-lg duration-200 sm:top-[4.25rem] sm:max-h-[calc(100dvh-4.25rem)]"
+            className="animate-in fade-in-0 slide-in-from-top-2 absolute top-16 right-0 left-0 max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-slate-200/50 bg-white/95 backdrop-blur-xl shadow-xl duration-300 sm:top-[4.25rem] sm:max-h-[calc(100dvh-4.25rem)]"
           >
             <ul className="section-container flex flex-col gap-1 py-4 pb-8">
               {links.slice(0, 2).map((lien) => (
@@ -153,18 +154,18 @@ export default function Header() {
                   <Link
                     href={lien.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className="flex rounded-lg px-3 py-3.5 text-base font-medium text-foreground transition-colors hover:bg-muted/80 active:bg-muted"
+                    className="flex rounded-xl px-4 py-3.5 text-base font-medium text-slate-700 transition-colors hover:bg-primary/10 hover:text-primary active:bg-primary/20"
                   >
                     {lien.label}
                   </Link>
                 </li>
               ))}
               <li>
-                <DropdownMenu>
+                <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild>
                     <button
                       type="button"
-                      className="flex w-full items-center justify-between rounded-xl border border-border/80 bg-muted/30 px-4 py-3.5 text-base font-medium text-foreground transition-colors hover:bg-muted/60"
+                      className="flex w-full items-center justify-between rounded-xl border border-slate-200/60 bg-slate-50 px-5 py-4 text-base font-medium text-slate-800 transition-colors hover:bg-primary/5 hover:border-primary/20 hover:text-primary"
                     >
                       Nos programmes
                       <ChevronDown
@@ -179,7 +180,7 @@ export default function Header() {
                         <Link
                           href={p.href}
                           onClick={() => setIsMenuOpen(false)}
-                          className="flex rounded-lg px-3 py-3 text-base font-medium text-foreground hover:bg-background/80"
+                          className="flex rounded-xl px-4 py-3.5 text-base font-medium text-slate-600 transition-colors hover:bg-primary/10 hover:text-primary"
                         >
                           {p.nom}
                         </Link>
@@ -193,7 +194,7 @@ export default function Header() {
                   <Link
                     href={lien.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className="flex rounded-lg px-3 py-3.5 text-base font-medium text-foreground transition-colors hover:bg-muted/80 active:bg-muted"
+                    className="flex rounded-xl px-4 py-3.5 text-base font-medium text-slate-700 transition-colors hover:bg-primary/10 hover:text-primary active:bg-primary/20"
                   >
                     {lien.label}
                   </Link>

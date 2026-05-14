@@ -27,7 +27,7 @@ export default function Eduction() {
           { label: "Public cible", value: "Jeunes & Femmes" },
           { label: "Approche", value: "Pratique & Inclusive" },
         ]}
-      >
+        className="bg-[url('/images/acceentImage.jpg')]">
         <section className="bg-white py-20">
           <div className="section-container">
             <div className="mx-auto max-w-3xl text-center">

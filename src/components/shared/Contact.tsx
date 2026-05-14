@@ -57,10 +57,10 @@ export default function Contact() {
             <p className="mb-4 inline-flex items-center rounded-full border border-blue-200/70 bg-white px-4 py-1.5 text-sm font-semibold text-blue-700 shadow-xs">
               Restons en contact
             </p>
-            <h2 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 md:text-5xl">
+            <h2 className="mb-4 text-fluid-h2 text-gray-900">
               Contactez-nous
             </h2>
-            <p className="mx-auto max-w-2xl text-lg text-gray-600 md:text-xl">
+            <p className="mx-auto max-w-2xl text-fluid-p-large text-gray-600">
               Nous sommes là pour vous accompagner. N&apos;hésitez pas à nous
               contacter pour toute question ou collaboration.
             </p>
@@ -69,7 +69,7 @@ export default function Contact() {
           <div className="grid items-start gap-10 lg:grid-cols-2">
             <div className="space-y-6">
               <div className="rounded-2xl border border-white/70 bg-white/90 p-8 shadow-xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl">
-                <h3 className="mb-6 flex items-center gap-3 text-2xl font-semibold text-gray-900">
+                <h3 className="mb-6 flex items-center gap-3 text-fluid-h3 text-gray-900">
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
                     <MapPin className="text-white" size={20} />
                   </div>
@@ -132,10 +132,10 @@ export default function Contact() {
             <Card className="overflow-hidden rounded-2xl border border-white/80 bg-white/90 shadow-2xl backdrop-blur-sm">
               <CardContent className="p-8">
                 <div className="mb-6">
-                  <h3 className="text-2xl font-semibold text-gray-900">
+                  <h3 className="text-fluid-h3 text-gray-900">
                     Parlez-nous de votre besoin
                   </h3>
-                  <p className="mt-2 text-sm text-gray-600">
+                  <p className="mt-2 text-fluid-p text-gray-600">
                     Remplissez le formulaire, nous revenons vers vous avec une
                     réponse claire et personnalisée.
                   </p>

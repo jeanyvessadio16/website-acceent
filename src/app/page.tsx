@@ -25,10 +25,10 @@ export default function Home() {
             <span className="inline-block rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-semibold uppercase tracking-wider text-primary-foreground backdrop-blur">
               Bienvenue à
             </span>
-            <h1 className="max-w-4xl text-5xl font-black  md:text-6xl lg:text-8xl">
+            <h1 className="text-fluid-h1 text-white">
               ACCEENT
             </h1>
-            <p className="max-w-2xl text-slate-200 text-lg lg:text-xl">
+            <p className="max-w-2xl text-slate-200 text-fluid-p-large">
               Action pour la Contribution Collective pour l&apos;Education,
               l&apos;Entreprenariat et le Numérique des Territoires
             </p>
@@ -48,7 +48,7 @@ export default function Home() {
         </section>
 
         {/* DOMAINES SECTION */}
-        <section className="bg-gradient-to-b from-slate-50 to-white py-20">
+        <section className="bg-gradient-to-b from-slate-50 to-white section-padding">
           <div className="section-container">
             <div className="mb-12 text-center">
               <h1 className="section-heading mb-3">
@@ -59,7 +59,7 @@ export default function Home() {
                 jeunes et les femmes vers l&apos;autonomie.
               </p>
             </div>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {list_domaines.map((domaine) => (
                 <Card
                   key={domaine.id}
@@ -74,11 +74,11 @@ export default function Home() {
                         className="object-cover transition duration-500 group-hover:scale-105"
                       />
                     </div>
-                    <div className="p-6">
-                      <CardTitle className="mb-3 text-2xl font-bold text-primary">
+                    <div className="p-6 md:p-8">
+                      <CardTitle className="mb-3 text-fluid-h3 text-primary">
                         <h3>{domaine.nom}</h3>
                       </CardTitle>
-                      <CardDescription className="text-sm leading-relaxed text-slate-600">
+                      <CardDescription className="text-fluid-p text-slate-600">
                         <p>{domaine.description}</p>
                       </CardDescription>
 
@@ -97,13 +97,13 @@ export default function Home() {
         </section>
 
         {/* PARTENAIRES SECTION */}
-        <section className="py-16">
+        <section className="section-padding">
           <Partenaire />
         </section>
       </div>
 
       {/* SECTION CONTACT */}
-      <section className="py-16" id="contact">
+      <section className="section-padding bg-slate-50/50" id="contact">
         <Contact />
       </section>
     </>

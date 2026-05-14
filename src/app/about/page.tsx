@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "ACCEENT page à propos",
 };
 export default function About() {
-  const title = "A propos de ACCEENT";
+  const title = "Qui sommes-nous ?";
   const description =
     "Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires. Une association engagée pour transformer les territoires par l'éducation, l'entrepreneuriat et le numérique.";
 

@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpenCheck, GraduationCap } from "lucide-react";
+import { ArrowRight, BookOpenCheck, Rocket } from "lucide-react";
 import { Metadata } from "next";
 import { programesEntreprenariat } from "@/data/entreprenariat/programmes-entreprenariat";
 
@@ -78,15 +78,15 @@ export default function Entreprenariat() {
             <div className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm md:p-12">
               <div className="mx-auto max-w-3xl text-center">
                 <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary">
-                  <GraduationCap className="h-7 w-7" />
+                  <Rocket className="h-7 w-7" />
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight text-slate-950 md:text-4xl">
-                  Construisons ensemble un avenir plus equitable
+                  Transformez vos idées en projets à succès
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 md:text-lg">
-                  Nos actions educatives s&apos;adressent a celles et ceux qui
-                  veulent apprendre, entreprendre et contribuer positivement a
-                  leur territoire.
+                  Nos programmes d'entrepreneuriat s'adressent à celles et ceux qui
+                  veulent innover, créer de la valeur et contribuer positivement au
+                  développement économique de leur territoire.
                 </p>
                 <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
                   <Button asChild size="lg" className="rounded-full px-8">

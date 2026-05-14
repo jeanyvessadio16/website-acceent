@@ -1,10 +1,10 @@
-﻿import HeaderLayout from "@/components/shared/HeaderLayout";
+import HeaderLayout from "@/components/shared/HeaderLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import { programesNumerique } from "@/data/numerique/programmes-numerique";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpenCheck, GraduationCap } from "lucide-react";
+import { ArrowRight, BookOpenCheck, Laptop } from "lucide-react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default function Numerique() {
       <HeaderLayout
         text="Programme Numérique"
         title="Des programmes numériques pour un avenir innovant"
-        description="Nos programmes d'education developpent les competences, la confiance et l'autonomie des jeunes et des femmes a travers des parcours concrets."
+        description="Nos programmes numériques développent les compétences techniques, la confiance et favorisent l'inclusion digitale pour tous les jeunes et les femmes."
       >
         <section className="bg-white py-20">
           <div className="section-container">
@@ -52,7 +52,7 @@ export default function Numerique() {
                   <CardContent className="p-6">
                     <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
                       <BookOpenCheck className="h-3.5 w-3.5" />
-                      Programme education
+                      Programme numérique
                     </div>
                     <CardTitle className="text-2xl font-bold text-slate-950">
                       {programme.nom}
@@ -78,15 +78,15 @@ export default function Numerique() {
             <div className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm md:p-12">
               <div className="mx-auto max-w-3xl text-center">
                 <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary">
-                  <GraduationCap className="h-7 w-7" />
+                  <Laptop className="h-7 w-7" />
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight text-slate-950 md:text-4xl">
-                  Construisons ensemble un avenir plus equitable
+                  Le numérique au service de l'inclusion
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 md:text-lg">
-                  Nos actions educatives s&apos;adressent a celles et ceux qui
-                  veulent apprendre, entreprendre et contribuer positivement a
-                  leur territoire.
+                  Nos actions numériques vous forment aux compétences de demain, 
+                  réduisent la fracture numérique et vous ouvrent de nouvelles 
+                  opportunités professionnelles.
                 </p>
                 <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
                   <Button asChild size="lg" className="rounded-full px-8">

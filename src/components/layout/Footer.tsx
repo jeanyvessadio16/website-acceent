@@ -27,7 +27,7 @@ export default function Footer() {
                 className="h-8 w-auto object-contain"
               />
             </Link>
-            <p className="text-sm leading-relaxed text-slate-400">
+            <p className="text-fluid-p leading-relaxed text-slate-400">
               Accéent accompagne et soutient les projets à fort impact à travers
               nos programmes d&apos;éducation, d&apos;entreprenariat et de
               numérique.

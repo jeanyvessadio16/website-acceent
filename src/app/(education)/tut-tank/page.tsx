@@ -1,5 +1,6 @@
 import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
 import { tuttankProgrammes } from "@/data/education/tut-tank";
+import { Sparkles } from "lucide-react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -38,29 +39,53 @@ export default function TutTankPage() {
           </div>
         </section>
       </ProgrammeLayout>
-      <section className="px-14 py-16 max-md:px-7 bg-accent">
-        <ul className="mx-auto max-w-3xl space-y-3">
-          <h2 className="text-2xl font-bold text-primary">
-            Le programme propose plusieurs types d&apos;activités
-          </h2>
-          {tuttankProgrammes.map((item) => (
-            <li
-              key={item.id}
-              className="mt-3 px-5 py-2 bg-neutral-100 rounded-lg dark:bg-neutral-800"
-            >
-              <h3 className="text-base font-semibold">{item.libelle} </h3>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                {item.detail}
-              </p>
-            </li>
-          ))}
-          <br />
-          <p>
-            TUT&apos;TANK, place la famille au cœur de l&apos;éducation, en
-            créant des espaces d&apos;échange, d&apos;apprentissage et de
-            complicité.
-          </p>
-        </ul>
+      <section className="section-padding bg-slate-50/50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-20 top-12 h-72 w-72 rounded-full bg-primary/5 blur-3xl" />
+          <div className="absolute -right-16 bottom-8 h-64 w-64 rounded-full bg-secondary/5 blur-3xl" />
+        </div>
+
+        <div className="section-container relative z-10">
+          <div className="mb-12 text-center">
+            <h2 className="text-fluid-h2 text-primary mb-4">
+              Activités du programme
+            </h2>
+            <p className="text-fluid-p text-slate-600 max-w-2xl mx-auto">
+              Découvrez les différentes actions que nous menons pour accompagner
+              les jeunes filles et leurs familles.
+            </p>
+          </div>
+
+          <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+            {tuttankProgrammes.map((item) => (
+              <li
+                key={item.id}
+                className="group relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl md:p-8"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 transition-colors duration-300 group-hover:bg-primary/20">
+                  <Sparkles className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-fluid-h3 text-slate-900 mb-2">
+                    {item.libelle}
+                  </h3>
+                  <p className="text-fluid-p text-slate-600">
+                    {item.detail}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-16 rounded-3xl bg-primary/5 p-8 text-center ring-1 ring-primary/10 md:p-12">
+            <p className="text-fluid-p-large text-slate-800 font-medium max-w-3xl mx-auto text-balance">
+              TUT&apos;TANK place la famille au cœur de l&apos;éducation, en
+              créant des espaces d&apos;échange, d&apos;apprentissage et de
+              complicité.
+            </p>
+          </div>
+        </div>
       </section>
     </>
   );

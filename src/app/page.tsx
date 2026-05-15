@@ -51,9 +51,9 @@ export default function Home() {
         <section className="bg-gradient-to-b from-slate-50 to-white section-padding">
           <div className="section-container">
             <div className="mb-12 text-center">
-              <h1 className="section-heading mb-3">
+              <h2 className="section-heading mb-3">
                 Nos domaines d&apos;intervention
-              </h1>
+              </h2>
               <p className="section-subheading">
                 Nous agissons sur trois axes essentiels pour accompagner les
                 jeunes et les femmes vers l&apos;autonomie.

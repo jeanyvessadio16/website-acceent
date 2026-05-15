@@ -1,32 +1,32 @@
 import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
-import { Lightbulb, Target, TrendingUp, Users } from "lucide-react";
+import { Lightbulb, Target, Users } from "lucide-react";
 
 export default function AtelierEntreprenariat() {
   const programme = {
     titre: "Atelier Entrepreneuriat",
-    description: "Encourager l'esprit d'entreprise chez les jeunes de Ziguinchor, moments forts à revivre.",
+    description:
+      "Encourager l'esprit d'entreprise chez les jeunes de Ziguinchor, moments forts à revivre.",
   };
 
   const objectifs = [
     {
       icon: Lightbulb,
       title: "Idéation et Créativité",
-      description: "Aider les jeunes à transformer leurs idées brutes en concepts d'entreprise viables.",
+      description:
+        "Aider les jeunes à transformer leurs idées brutes en concepts d'entreprise viables.",
     },
     {
       icon: Target,
       title: "Structuration de Projet",
-      description: "Apprendre à définir des objectifs clairs, un business model et une stratégie d'action.",
+      description:
+        "Apprendre à définir des objectifs clairs, un business model et une stratégie d'action.",
     },
-    {
-      icon: TrendingUp,
-      title: "Croissance et Pitch",
-      description: "Techniques pour présenter son projet de manière convaincante et trouver des financements.",
-    },
+
     {
       icon: Users,
       title: "Réseautage",
-      description: "Créer des synergies entre les différents acteurs locaux et les jeunes entrepreneurs.",
+      description:
+        "Créer des synergies entre les différents acteurs locaux et les jeunes entrepreneurs.",
     },
   ];
 
@@ -41,19 +41,19 @@ export default function AtelierEntreprenariat() {
             Inspiration et Action
           </p>
           <h2 className="text-fluid-h2 text-slate-900">
-            A propos de l'atelier
+            A propos de l&apos;atelier
           </h2>
           <p className="text-fluid-p-large text-slate-600 max-w-3xl mx-auto text-balance">
-            Cet atelier intensif est conçu pour stimuler la créativité et 
-            l'innovation. Nous mettons à disposition des jeunes les outils 
-            et méthodes nécessaires pour passer de l'idée à l'action concrète, 
-            le tout encadré par des professionnels expérimentés.
+            Cet atelier intensif est conçu pour stimuler la créativité et
+            l&apos;innovation. Nous mettons à disposition des jeunes les outils
+            et méthodes nécessaires pour passer de l&apos;idée à l&apos;action
+            concrète.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {objectifs.map((obj, idx) => (
-            <div 
+            <div
               key={idx}
               className="group flex flex-col items-center text-center rounded-3xl border border-slate-200/60 bg-slate-50/50 p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:bg-white"
             >

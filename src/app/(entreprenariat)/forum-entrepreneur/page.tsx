@@ -1,38 +1,26 @@
 import HeaderLayout from "@/components/shared/HeaderLayout";
-import { Handshake, MessagesSquare, Mic, Network } from "lucide-react";
+import { MessagesSquare, Mic } from "lucide-react";
 
 export default function ForumEntrepreneur() {
   const programme = {
     title: "Forum des acteurs locaux",
-    description: "Rencontres et échanges autour du développement local à Ziguinchor. Un espace unique pour connecter les innovateurs et les décideurs.",
+    description:
+      "Rencontres et échanges autour du développement local à Ziguinchor. Un espace unique pour connecter les innovateurs et les décideurs.",
     text: "Événement Annuel",
-    highlights: [
-      { label: "Participants", value: "300+" },
-      { label: "Experts & Intervenants", value: "20+" },
-      { label: "Panels & Ateliers", value: "8" },
-    ]
   };
 
   const activities = [
     {
       icon: Mic,
       title: "Conférences Inspirantes",
-      description: "Des leaders locaux et nationaux partagent leurs visions et expériences sur les enjeux économiques de la région.",
-    },
-    {
-      icon: Network,
-      title: "Networking B2B",
-      description: "Des sessions dédiées pour rencontrer des partenaires potentiels, des investisseurs et développer votre réseau.",
+      description:
+        "Des leaders locaux partagent leurs visions et expériences sur les enjeux économiques de la région.",
     },
     {
       icon: MessagesSquare,
       title: "Tables Rondes",
-      description: "Débats interactifs sur les thématiques clés : agriculture, numérique, énergie durable et emploi des jeunes.",
-    },
-    {
-      icon: Handshake,
-      title: "Espace d'Exposition",
-      description: "Découvrez les startups et les initiatives locales les plus prometteuses au sein du village de l'innovation.",
+      description:
+        "Débats interactifs sur les thématiques clés : agriculture, numérique, énergie durable et emploi des jeunes.",
     },
   ];
 
@@ -51,14 +39,14 @@ export default function ForumEntrepreneur() {
                 Au programme du forum
               </h2>
               <p className="text-fluid-p text-slate-600 max-w-2xl mx-auto">
-                Le Forum est conçu pour maximiser les opportunités de collaboration 
-                et mettre en lumière les solutions locales.
+                Le Forum est conçu pour maximiser les opportunités de
+                collaboration et mettre en lumière les solutions locales.
               </p>
             </div>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8">
               {activities.map((item, idx) => (
-                <div 
+                <div
                   key={idx}
                   className="group relative flex gap-5 overflow-hidden rounded-2xl border border-slate-200/60 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl md:p-8"
                 >
@@ -79,9 +67,9 @@ export default function ForumEntrepreneur() {
 
             <div className="mt-16 rounded-3xl bg-primary/5 p-8 text-center ring-1 ring-primary/10 md:p-12">
               <p className="text-fluid-p-large text-slate-800 font-medium max-w-3xl mx-auto text-balance">
-                Ensemble, construisons l'avenir économique de Ziguinchor. 
-                Rejoignez-nous lors de la prochaine édition pour faire entendre votre voix 
-                et propulser vos projets.
+                Ensemble, construisons l&apos;avenir économique de Ziguinchor.
+                Rejoignez-nous lors de la prochaine édition pour faire entendre
+                votre voix et propulser vos projets.
               </p>
             </div>
           </div>

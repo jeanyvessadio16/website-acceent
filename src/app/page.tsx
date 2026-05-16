@@ -23,9 +23,10 @@ export const metadata: Metadata = {
     "ACCEENT est une association sénégalaise basée à Ziguinchor dans le quartier de Santhiaba. ACCEENT oeuvre dans les domaines de l'éducation, l'entreprenariat et le numérique",
   keywords: [
     "association Ziguinchor",
-    "programme education",
-    "programme entreprenariat",
-    "programme numerique",
+    "association acceent",
+    "education Ziguinchor",
+    "entreprenariat Ziguinchor",
+    "numerique Ziguinchor",
     "ACCEENT Ziguinchor",
     "ACCEENT",
   ],

@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ACCEENT",
     description: "ACCEENT",
-    url: "https://acceent.vercel.app",
+    url: "https://acceent.org",
     siteName: "ACCEENT",
     images: [
       {

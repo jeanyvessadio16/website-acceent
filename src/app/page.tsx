@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { list_domaines } from "@/data/list-domaines";
@@ -13,6 +11,50 @@ import Image from "next/image";
 import Partenaire from "@/components/shared/Partenaires";
 import { ArrowRight } from "lucide-react";
 import Contact from "@/components/shared/Contact";
+import { Metadata } from "next";
+
+// referencement
+export const metadata: Metadata = {
+  title: {
+    default: "ACCEENT - Education, Entreprenariat et numérique ",
+    template: "%s | ACCEENT",
+  },
+  description:
+    "ACCEENT est une association sénégalaise basée à Ziguinchor dans le quartier de Santhiaba. ACCEENT oeuvre dans les domaines de l'éducation, l'entreprenariat et le numérique",
+  keywords: [
+    "association Ziguinchor",
+    "programme education",
+    "programme entreprenariat",
+    "programme numerique",
+    "ACCEENT Ziguinchor",
+    "ACCEENT",
+  ],
+  authors: [{ name: "ACCEENT", url: "acceent.vercel.app" }],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  openGraph: {
+    title: "ACCEENT",
+    description: "ACCEENT",
+    url: "https://acceent.vercel.app",
+    siteName: "ACCEENT",
+    images: [
+      {
+        url: "https://acceent.vercel.app/images/logo-acceent.png",
+        width: 1200,
+        height: 630,
+        alt: "Logo ACCEENT",
+      },
+    ],
+    locale: "fr_FR",
+    type: "website",
+  },
+};
 
 export default function Home() {
   return (
@@ -25,9 +67,7 @@ export default function Home() {
             <span className="inline-block rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-semibold uppercase tracking-wider text-primary-foreground backdrop-blur">
               Bienvenue à
             </span>
-            <h1 className="text-fluid-h1 text-white">
-              ACCEENT
-            </h1>
+            <h1 className="text-fluid-h1 text-white">ACCEENT</h1>
             <p className="max-w-2xl text-slate-200 text-fluid-p-large">
               Action pour la Contribution Collective pour l&apos;Education,
               l&apos;Entreprenariat et le Numérique des Territoires

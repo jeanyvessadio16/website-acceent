@@ -84,9 +84,10 @@ export default function Entreprenariat() {
                   Transformez vos idées en projets à succès
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 md:text-lg">
-                  Nos programmes d'entrepreneuriat s'adressent à celles et ceux qui
-                  veulent innover, créer de la valeur et contribuer positivement au
-                  développement économique de leur territoire.
+                  Nos programmes d&apos;entrepreneuriat s&apos;adressent à
+                  celles et ceux qui veulent innover, créer de la valeur et
+                  contribuer positivement au développement économique de leur
+                  territoire.
                 </p>
                 <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
                   <Button asChild size="lg" className="rounded-full px-8">
@@ -106,6 +107,39 @@ export default function Entreprenariat() {
           </div>
         </section>
       </HeaderLayout>
+
+      {/* section cultule */}
+      <section className="relative">
+        <div className="relative">
+          <h2 className="text-fluid-h3 text-center">
+            Notre engagement culturel
+          </h2>
+          <div className="w-52 h-2 mx-auto mt-2.5 bg-primary rounded-full"></div>
+        </div>
+        <div className="px-12 py-16 grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <article className="space-y-5">
+            <h2 className="text-fluid-h3">Carnaval de Santhiaba</h2>
+            <p>
+              ACCEENT joue un rôle clé dans la promotion de la culture comme
+              levier de développement durable. Elle est notamment partenaire
+              central du Carnaval de Santhiaba, un événement qui célèbre la
+              diversité culturelle et l&apos;identité locale. À travers ce
+              carnaval, l&apos;organisation réunit divers acteurs culturels et
+              institutionnels pour discuter du rôle de la culture dans le
+              développement des territoires.
+            </p>
+          </article>
+          <div>
+            <Image
+              src="/images/canavalSanthiaba.jpeg"
+              alt="Carnaval Santhiaba"
+              width={300}
+              height={200}
+              className="w-full bg-cover bg-center rounded-2xl shadow-2xl"
+            />
+          </div>
+        </div>
+      </section>
     </>
   );
 }

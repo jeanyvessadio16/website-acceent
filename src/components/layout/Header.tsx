@@ -37,7 +37,7 @@ export default function Header() {
   return (
     <>
       <header className="fixed top-0 right-0 left-0 z-50 w-full border-b border-slate-200/50 bg-white backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.03)] transition-all duration-300">
-        <div className="px-10 flex h-16 items-center justify-between gap-4 sm:h-[4.25rem]">
+        <div className="px-10 max-sm:px-3 flex h-16 items-center justify-between gap-4 sm:h-[4.25rem]">
           <Link
             href="/"
             className="relative flex w-48 h-48 mt-4  shrink-0 items-center justify-center overflow-hidden"

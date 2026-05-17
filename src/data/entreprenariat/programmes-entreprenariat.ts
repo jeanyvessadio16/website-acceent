@@ -20,7 +20,7 @@ export const programesEntreprenariat = [
     nom: "Forum des acteurs locaux",
     description:
       "Rencontres et échanges autour du développement local à Ziguinchor.",
-    image: "/images/educaton.jpg",
+    image: "/images/forum.jpeg",
     page: "/forum-entrepreneur",
   },
   {

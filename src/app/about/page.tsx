@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function About() {
   const title = "Qui sommes-nous ?";
   const description =
-    "Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires. Une association engagée pour transformer les territoires par l'éducation, l'entrepreneuriat et le numérique.";
+    "Une équipe motivée et engagée pour former, inspirer et accompagner les jeunes et les femmes de Ziguinchor vers l'autonomie à travers des programmes.";
 
   const stats = [
     { number: "15+", label: "Partenaires engagés" },

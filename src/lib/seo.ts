@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildSocialSharingMetadata } from "@/lib/social-metadata";
 
 export const SITE_NAME = "ACCEENT";
 export const SITE_URL =
@@ -18,7 +19,7 @@ export const DEFAULT_KEYWORDS = [
   "ONG Ziguinchor",
 ];
 
-const OG_IMAGE_PATH = "/logo/logoACCEENT.png";
+export const OG_IMAGE_PATH = "/logo/logoACCEENT.png";
 
 export const OG_IMAGE = {
   url: OG_IMAGE_PATH,
@@ -69,6 +70,7 @@ type CreatePageMetadataOptions = {
   path: string;
   keywords?: string[];
   noIndex?: boolean;
+  skipCanonical?: boolean;
 };
 
 export function createPageMetadata({
@@ -77,15 +79,21 @@ export function createPageMetadata({
   path,
   keywords,
   noIndex = false,
+  skipCanonical = false,
 }: CreatePageMetadataOptions): Metadata {
-  const canonicalPath = path.startsWith("/") ? path : `/${path}`;
+  const social = buildSocialSharingMetadata({ title, description, path });
+
   return {
     title,
     description,
     keywords: keywords ?? DEFAULT_KEYWORDS,
-    alternates: {
-      canonical: canonicalPath,
-    },
+    ...(skipCanonical
+      ? {}
+      : {
+          alternates: {
+            canonical: path.startsWith("/") ? path : `/${path}`,
+          },
+        }),
     robots: noIndex
       ? { index: false, follow: false }
       : {
@@ -93,23 +101,15 @@ export function createPageMetadata({
           follow: true,
           googleBot: { index: true, follow: true },
         },
-    openGraph: {
-      title: `${title} | ${SITE_NAME}`,
-      description,
-      url: canonicalPath,
-      siteName: SITE_NAME,
-      locale: "fr_SN",
-      type: "website",
-      images: [OG_IMAGE],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${title} | ${SITE_NAME}`,
-      description,
-      images: [OG_IMAGE_PATH],
-    },
+    ...social,
   };
 }
+
+const rootSocial = buildSocialSharingMetadata({
+  title: `${SITE_NAME} — Éducation, entrepreneuriat et numérique`,
+  description: DEFAULT_DESCRIPTION,
+  path: "/",
+});
 
 export const rootMetadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -132,19 +132,7 @@ export const rootMetadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true },
   },
-  openGraph: {
-    type: "website",
-    locale: "fr_SN",
-    url: SITE_URL,
-    siteName: SITE_NAME,
-    title: `${SITE_NAME} — Éducation, entrepreneuriat et numérique`,
-    description: DEFAULT_DESCRIPTION,
-    images: [OG_IMAGE],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${SITE_NAME} — Éducation, entrepreneuriat et numérique`,
-    description: DEFAULT_DESCRIPTION,
-    images: [OG_IMAGE_PATH],
-  },
+  openGraph: rootSocial.openGraph,
+  twitter: rootSocial.twitter,
+  other: rootSocial.other,
 };

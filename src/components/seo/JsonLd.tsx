@@ -1,3 +1,4 @@
+import { SOCIAL_SAME_AS } from "@/data/social-profiles";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 type JsonLdProps = {
@@ -40,6 +41,7 @@ export function OrganizationJsonLd() {
       "Inclusion des femmes",
       "Formation des jeunes",
     ],
+    sameAs: SOCIAL_SAME_AS,
   };
 
   return <JsonLd data={data} />;

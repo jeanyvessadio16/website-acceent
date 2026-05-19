@@ -1,21 +1,19 @@
 import { contactSchema, ContactFormData } from "../zodSchema/contact";
 
-const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
-
 export interface ContactServiceResult {
   success: boolean;
   message: string;
   data?: ContactFormData;
 }
 
-interface Web3FormsResponse {
+interface ApiContactResponse {
   success: boolean;
   message?: string;
 }
 
 export class ContactService {
   /**
-   * Valide et envoie le formulaire de contact via Web3Forms
+   * Valide et envoie le formulaire de contact via l'API /api/contact (Web3Forms)
    */
   static async submitContactForm(
     data: ContactFormData,
@@ -53,36 +51,15 @@ export class ContactService {
   }
 
   private static async sendContactEmail(data: ContactFormData): Promise<void> {
-    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
-
-    if (!accessKey) {
-      throw new Error(
-        "Le formulaire n'est pas configuré. Contactez l'administrateur du site.",
-      );
-    }
-
-    const response = await fetch(WEB3FORMS_ENDPOINT, {
+    const response = await fetch("/api/contact", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        access_key: accessKey,
-        name: data.nomComplet,
-        email: data.email,
-        phone: data.telephone,
-        message: data.message,
-        subject: `Contact site ACCEENT - ${data.nomComplet}`,
-        from_name: "ACCEENT - Site web",
-        replyto: data.email,
-        botcheck: data.botcheck ?? false,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     });
 
-    let result: Web3FormsResponse;
+    let result: ApiContactResponse;
     try {
-      result = (await response.json()) as Web3FormsResponse;
+      result = (await response.json()) as ApiContactResponse;
     } catch {
       throw new Error(
         "Impossible de traiter la réponse du serveur. Veuillez réessayer.",

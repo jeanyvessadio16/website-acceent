@@ -64,13 +64,13 @@ export default function About() {
               <div className="space-y-8">
                 <div>
                   <h3 className="text-sm uppercase tracking-widest font-semibold text-slate-500 mb-3">
-                    Qui sommes-nous
+                    A propos de ACCEENT
                   </h3>
                   <p className="text-lg text-slate-700 leading-relaxed">
                     ACCEENT est une association basée à Ziguinchor dans le
                     quartier de Santhiaba. ACCEENT oeuvre dans les domaines de
                     l&apos;éducation, l&apos;entrepreneuriat et le numérique
-                    pour accompagner les jeunes et les femmes
+                    pour accompagner les jeunes et les femmes.
                   </p>
                 </div>
                 <div>
@@ -78,19 +78,17 @@ export default function About() {
                     Nos domaines d&apos;action
                   </h3>
                   <ul className="space-y-3">
-                    {[
-                      "Éducation et formation",
-                      "Entrepreneuriat et emploi",
-                      "Transformation numérique",
-                    ].map((item, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-3 rounded-lg bg-slate-50 px-3 py-2"
-                      >
-                        <span className="text-primary font-bold">✓</span>
-                        <span className="text-slate-600">{item}</span>
-                      </li>
-                    ))}
+                    {["Éducation", "Entrepreneuriat", "Numérique"].map(
+                      (item, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-3 rounded-lg bg-slate-50 px-3 py-2"
+                        >
+                          <span className="text-primary font-bold">✓</span>
+                          <span className="text-slate-600">{item}</span>
+                        </li>
+                      ),
+                    )}
                   </ul>
                 </div>
               </div>

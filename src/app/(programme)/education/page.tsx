@@ -5,12 +5,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpenCheck, GraduationCap } from "lucide-react";
-import { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Education",
-  description: "ACCEENT page éducation",
-};
+export const metadata = createPageMetadata({
+  title: "Programme Éducation",
+  description:
+    "Programmes d'éducation ACCEENT à Ziguinchor : Tut-Tank, ACCEENT4ELLES et parcours pour développer les compétences, la confiance et l'autonomie des jeunes et des femmes.",
+  path: "/education",
+  keywords: [
+    "éducation Ziguinchor",
+    "programme Tut-Tank",
+    "ACCEENT4ELLES",
+    "formation jeunes filles Casamance",
+  ],
+});
 
 export default function Eduction() {
   return (

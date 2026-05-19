@@ -1,5 +1,18 @@
 import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
+import { createPageMetadata } from "@/lib/seo";
 import { Lightbulb, Target, Users } from "lucide-react";
+
+export const metadata = createPageMetadata({
+  title: "Atelier Entrepreneuriat",
+  description:
+    "Les ateliers entrepreneuriat ACCEENT à Ziguinchor encouragent l'esprit d'entreprise chez les jeunes : idéation, structuration de projet et travail en équipe.",
+  path: "/atelier-entreprenariat",
+  keywords: [
+    "atelier entrepreneuriat jeunes",
+    "créativité startup Ziguinchor",
+    "formation business plan Casamance",
+  ],
+});
 
 export default function AtelierEntreprenariat() {
   const programme = {

@@ -10,14 +10,21 @@ import {
   Handshake,
   UserRound,
 } from "lucide-react";
-import { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "ACCEENT4ELLES",
   description:
-    "Programme de education visant à promouvoir la diversité et l'inclusion dans le secteur de la tech en mettant en avant les parcours inspirants de femmes qui ont réussi dans ce domaine.",
-};
+    "ACCEENT4ELLES met en lumière des parcours de femmes dans la tech à Ziguinchor pour promouvoir la diversité, l'inclusion et inspirer les jeunes filles du numérique.",
+  path: "/acceent-elles",
+  keywords: [
+    "femmes dans la tech Sénégal",
+    "inclusion numérique filles",
+    "ACCEENT4ELLES Ziguinchor",
+    "rôle modèles tech Casamance",
+  ],
+});
 
 export default function AcceentEllesPage() {
   const programme = {

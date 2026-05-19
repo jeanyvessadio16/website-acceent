@@ -1,6 +1,20 @@
 import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
 import { AtelierEntreprenariatProgrammes } from "@/data/entreprenariat/acceentIncub";
+import { createPageMetadata } from "@/lib/seo";
 import { Rocket } from "lucide-react";
+
+export const metadata = createPageMetadata({
+  title: "ACCEENT'INCUB",
+  description:
+    "ACCEENT'INCUB est l'incubateur de jeunes porteurs de projets à Ziguinchor : idéation, structuration, mentorat et accompagnement pour transformer une idée en initiative viable.",
+  path: "/acceent-incub",
+  keywords: [
+    "incubateur Ziguinchor",
+    "ACCEENT INCUB",
+    "jeunes entrepreneurs Casamance",
+    "accompagnement startup Sénégal",
+  ],
+});
 
 export default function AcceentIncub() {
   const programme = {

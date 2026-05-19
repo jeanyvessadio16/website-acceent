@@ -5,12 +5,20 @@ import { programesNumerique } from "@/data/numerique/programmes-numerique";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpenCheck, Laptop } from "lucide-react";
-import { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Numérique",
-  description: "ACCEENT page numérique",
-};
+export const metadata = createPageMetadata({
+  title: "Programme Numérique",
+  description:
+    "Programmes numériques ACCEENT à Ziguinchor : robotique (WRO), intelligence artificielle et initiation au numérique pour les jeunes de la Casamance.",
+  path: "/numerique",
+  keywords: [
+    "numérique Ziguinchor",
+    "robotique jeunes Sénégal",
+    "World Robot Olympiad Casamance",
+    "formation IA jeunes",
+  ],
+});
 
 export default function Numerique() {
   return (

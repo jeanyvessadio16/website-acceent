@@ -7,9 +7,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { wroAction } from "@/data/numerique/wroAction";
+import { createPageMetadata } from "@/lib/seo";
 import { ArrowBigRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata = createPageMetadata({
+  title: "World Robot Olympiad (WRO)",
+  description:
+    "Programme WRO d'ACCEENT à Ziguinchor : compétition internationale de robotique, ateliers d'initiation et défis locaux pour apprendre à programmer, construire et collaborer.",
+  path: "/wro",
+  keywords: [
+    "World Robot Olympiad Sénégal",
+    "robotique jeunes Ziguinchor",
+    "programmation visuelle collège lycée",
+    "compétition robotique Casamance",
+  ],
+});
 
 export default function WROPage() {
   const programme = {

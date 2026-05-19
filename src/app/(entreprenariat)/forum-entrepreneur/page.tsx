@@ -1,5 +1,18 @@
 import HeaderLayout from "@/components/shared/HeaderLayout";
+import { createPageMetadata } from "@/lib/seo";
 import { MessagesSquare, Mic } from "lucide-react";
+
+export const metadata = createPageMetadata({
+  title: "Forum des acteurs locaux",
+  description:
+    "Le forum entrepreneur ACCEENT à Ziguinchor réunit innovateurs et décideurs locaux pour des conférences, échanges et networking autour du développement économique de la Casamance.",
+  path: "/forum-entrepreneur",
+  keywords: [
+    "forum entrepreneur Ziguinchor",
+    "réseau acteurs locaux Casamance",
+    "événement entrepreneuriat Sénégal",
+  ],
+});
 
 export default function ForumEntrepreneur() {
   const programme = {

@@ -2,12 +2,20 @@ import HeaderLayout from "@/components/shared/HeaderLayout";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
-import { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "A propos",
-  description: "ACCEENT page à propos",
-};
+export const metadata = createPageMetadata({
+  title: "À propos",
+  description:
+    "Découvrez ACCEENT : une équipe engagée à Ziguinchor pour former, inspirer et accompagner les jeunes et les femmes vers l'autonomie à travers l'éducation, l'entrepreneuriat et le numérique.",
+  path: "/about",
+  keywords: [
+    "association ACCEENT",
+    "équipe ACCEENT Ziguinchor",
+    "impact local Casamance",
+    "valeurs inclusion jeunes femmes",
+  ],
+});
 export default function About() {
   const title = "Qui sommes-nous ?";
   const description =

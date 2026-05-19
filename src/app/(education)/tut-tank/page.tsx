@@ -1,13 +1,20 @@
 import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
 import { tuttankProgrammes } from "@/data/education/tut-tank";
 import { Sparkles } from "lucide-react";
-import { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "TUT-TANK",
   description:
-    "Un accompagnement scolaire et social pour les jeunes filles vulnérables",
-};
+    "TUT-TANK : accompagnement scolaire et social pour les jeunes filles vulnérables à Ziguinchor, avec un suivi personnalisé pour favoriser la réussite et l'autonomie.",
+  path: "/tut-tank",
+  keywords: [
+    "accompagnement scolaire filles Ziguinchor",
+    "TUT-TANK ACCEENT",
+    "jeunes filles vulnérables Casamance",
+    "réussite scolaire Sénégal",
+  ],
+});
 
 export default function TutTankPage() {
   const programme = {

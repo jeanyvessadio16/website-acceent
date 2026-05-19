@@ -4,13 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpenCheck, Rocket } from "lucide-react";
-import { Metadata } from "next";
 import { programesEntreprenariat } from "@/data/entreprenariat/programmes-entreprenariat";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Entreprenariat",
-  description: "ACCEENT page entreprenariat",
-};
+export const metadata = createPageMetadata({
+  title: "Programme Entrepreneuriat",
+  description:
+    "Programmes d'entrepreneuriat ACCEENT à Ziguinchor : incubation, ateliers et forum des acteurs locaux pour accompagner les jeunes porteurs de projets.",
+  path: "/entreprenariat",
+  keywords: [
+    "entrepreneuriat Ziguinchor",
+    "incubateur jeunes Sénégal",
+    "atelier entrepreneuriat Casamance",
+    "forum entrepreneur local",
+  ],
+});
 
 export default function Entreprenariat() {
   return (

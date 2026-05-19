@@ -1,25 +1,27 @@
 import { contactSchema, ContactFormData } from "../zodSchema/contact";
 
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+
 export interface ContactServiceResult {
   success: boolean;
   message: string;
   data?: ContactFormData;
 }
 
+interface Web3FormsResponse {
+  success: boolean;
+  message?: string;
+}
+
 export class ContactService {
   /**
-   * Valide et envoie le formulaire de contact
-   * @param data Les données du formulaire à valider et envoyer
-   * @returns Un résultat avec le statut de l'opération
+   * Valide et envoie le formulaire de contact via Web3Forms
    */
   static async submitContactForm(
     data: ContactFormData,
   ): Promise<ContactServiceResult> {
     try {
-      // Validation des données avec le schéma Zod
       const validatedData = contactSchema.parse(data);
-
-      // Simulation d'un appel API (remplacez par votre vraie logique)
       await this.sendContactEmail(validatedData);
 
       return {
@@ -29,7 +31,6 @@ export class ContactService {
         data: validatedData,
       };
     } catch (error) {
-      // Gestion des erreurs de validation Zod
       if (error instanceof Error && error.name === "ZodError") {
         const zodError = error as { errors?: { message: string }[] };
         const firstError =
@@ -40,45 +41,59 @@ export class ContactService {
         };
       }
 
-      // Gestion des autres erreurs
       console.error("Erreur lors de l'envoi du formulaire de contact :", error);
       return {
         success: false,
         message:
-          "Une erreur inattendue s'est produite. Veuillez réessayer plus tard.",
+          error instanceof Error
+            ? error.message
+            : "Une erreur inattendue s'est produite. Veuillez réessayer plus tard.",
       };
     }
   }
 
-  /**
-   * Envoie l'email de contact (simulation - remplacez par votre vraie implémentation)
-   * @param data Les données validées du formulaire
-   */
   private static async sendContactEmail(data: ContactFormData): Promise<void> {
-    // Simulation d'un délai réseau
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
-    // Ici, vous pouvez implémenter :
-    // - Envoi via une API REST (fetch, axios)
-    // - Envoi via un service d'email (SendGrid, Mailgun, etc.)
-    // - Sauvegarde en base de données
-    // - Intégration avec un CRM
+    if (!accessKey) {
+      throw new Error(
+        "Le formulaire n'est pas configuré. Contactez l'administrateur du site.",
+      );
+    }
 
-    console.log("Email de contact envoyé :", {
-      to: "info@acceent.org",
-      subject: `Nouveau message de ${data.nomComplet}`,
-      body: `
-        De: ${data.nomComplet}
-        Email: ${data.email}
-
-        Message:
-        ${data.message}
-      `,
+    const response = await fetch(WEB3FORMS_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        access_key: accessKey,
+        name: data.nomComplet,
+        email: data.email,
+        phone: data.telephone,
+        message: data.message,
+        subject: `Contact site ACCEENT - ${data.nomComplet}`,
+        from_name: "ACCEENT - Site web",
+        replyto: data.email,
+        botcheck: data.botcheck ?? false,
+      }),
     });
 
-    // Simulation d'une erreur occasionnelle (1% de chance)
-    if (Math.random() < 0.01) {
-      throw new Error("Erreur de service email");
+    let result: Web3FormsResponse;
+    try {
+      result = (await response.json()) as Web3FormsResponse;
+    } catch {
+      throw new Error(
+        "Impossible de traiter la réponse du serveur. Veuillez réessayer.",
+      );
+    }
+
+    if (!response.ok || !result.success) {
+      throw new Error(
+        result.message ||
+          "L'envoi du message a échoué. Veuillez réessayer plus tard.",
+      );
     }
   }
 }

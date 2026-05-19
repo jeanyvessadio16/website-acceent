@@ -142,6 +142,14 @@ export default function Contact() {
                 </div>
                 <FormErrorBanner message={formError} />
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                  <input
+                    type="checkbox"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                    {...register("botcheck")}
+                  />
                   <div className="space-y-2">
                     <Label
                       htmlFor="nomComplet"
@@ -194,6 +202,34 @@ export default function Contact() {
                     {errors.email && (
                       <p className="text-sm text-red-600 mt-1">
                         {errors.email.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="telephone"
+                      className="text-sm font-semibold text-gray-700 flex items-center gap-2"
+                    >
+                      <Phone size={18} className="text-blue-600" />
+                      Téléphone <span className="text-red-800">*</span>
+                    </Label>
+                    <Input
+                      id="telephone"
+                      type="tel"
+                      {...register("telephone")}
+                      autoComplete="tel"
+                      aria-invalid={Boolean(errors.telephone)}
+                      placeholder="+221 77 123 45 67"
+                      className={`w-full border-2 px-4 py-5 text-gray-900 transition-all duration-200 placeholder:text-gray-400 focus:ring-4 focus:ring-blue-500/20 ${
+                        errors.telephone
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+                          : "border-gray-200 focus:border-blue-500 hover:border-gray-300"
+                      }`}
+                    />
+                    {errors.telephone && (
+                      <p className="text-sm text-red-600 mt-1">
+                        {errors.telephone.message}
                       </p>
                     )}
                   </div>

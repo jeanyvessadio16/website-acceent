@@ -51,10 +51,18 @@ export class ContactService {
   }
 
   private static async sendContactEmail(data: ContactFormData): Promise<void> {
-    const response = await fetch("/api/contact", {
+    const payload = {
+      ...data,
+      access_key: "9f61db8b-108b-4771-b30b-d250af190b1f",
+    };
+
+    const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
     });
 
     let result: ApiContactResponse;
@@ -62,7 +70,7 @@ export class ContactService {
       result = (await response.json()) as ApiContactResponse;
     } catch {
       throw new Error(
-        "Impossible de traiter la réponse du serveur. Veuillez réessayer.",
+        "Impossible de traiter la réponse de Web3Forms. Veuillez réessayer.",
       );
     }
 

@@ -57,9 +57,7 @@ export default function Contact() {
             <p className="mb-4 inline-flex items-center rounded-full border border-blue-200/70 bg-white px-4 py-1.5 text-sm font-semibold text-blue-700 shadow-xs">
               Restons en contact
             </p>
-            <h2 className="mb-4 text-fluid-h2 text-gray-900">
-              Contactez-nous
-            </h2>
+            <h2 className="mb-4 text-fluid-h2 text-gray-900">Contactez-nous</h2>
             <p className="mx-auto max-w-2xl text-fluid-p-large text-gray-600">
               Nous sommes là pour vous accompagner. N&apos;hésitez pas à nous
               contacter pour toute question ou collaboration.
@@ -81,7 +79,9 @@ export default function Contact() {
                       <MapPin className="text-blue-600" size={24} />
                     </div>
                     <div>
-                      <h4 className="mb-1 font-semibold text-gray-900">Adresse</h4>
+                      <h4 className="mb-1 font-semibold text-gray-900">
+                        Adresse
+                      </h4>
                       <p className="text-gray-600 leading-relaxed">
                         Quartier Santhiaba
                         <br />
@@ -95,7 +95,9 @@ export default function Contact() {
                       <Mail className="text-green-600" size={24} />
                     </div>
                     <div>
-                      <h4 className="mb-1 font-semibold text-gray-900">Email</h4>
+                      <h4 className="mb-1 font-semibold text-gray-900">
+                        Email
+                      </h4>
                       <a
                         href="mailto:info@acceent.org"
                         className="text-gray-600 transition-colors hover:text-green-700"

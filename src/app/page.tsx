@@ -11,10 +11,7 @@ import Image from "next/image";
 import Partenaire from "@/components/shared/Partenaires";
 import { ArrowRight } from "lucide-react";
 import Contact from "@/components/shared/Contact";
-import {
-  OrganizationJsonLd,
-  WebSiteJsonLd,
-} from "@/components/seo/JsonLd";
+import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo";
 import {
   FadeIn,
@@ -92,10 +89,13 @@ export default function Home() {
               </h2>
               <p className="section-subheading">
                 Nous agissons sur trois axes essentiels pour accompagner les
-                jeunes et les femmes vers l&apos;autonomie.
+                jeunes et les femmes de Ziguinchor vers l&apos;autonomie.
               </p>
             </FadeIn>
-            <StaggerContainer className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0" delay={0.2}>
+            <StaggerContainer
+              className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 list-none p-0 m-0"
+              delay={0.2}
+            >
               {list_domaines.map((domaine) => (
                 <StaggerItem key={domaine.id}>
                   <div role="listitem" className="h-full">
@@ -121,13 +121,90 @@ export default function Home() {
                             asChild
                             className="mt-6 rounded-full bg-secondary w-fit"
                           >
-                            <Link href={domaine.page}>
-                              En savoir plus
-                            </Link>
+                            <Link href={domaine.page}>En savoir plus</Link>
                           </Button>
                         </div>
                       </CardContent>
                     </Card>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        </section>
+
+        {/* impact */}
+        <section
+          className="bg-slate-50/50 py-16 sm:py-24"
+          aria-labelledby="galerie-heading"
+        >
+          <div className="section-container">
+            <FadeIn delay={0.1} direction="up" className="mb-12 text-center">
+              <h2 id="galerie-heading" className="section-heading mb-3">
+                Notre Impact en Images
+              </h2>
+              <p className="section-subheading">
+                Un aperçu de nos actions et de notre engagement sur le terrain à
+                Ziguinchor.
+              </p>
+            </FadeIn>
+            <StaggerContainer
+              className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3"
+              delay={0.2}
+            >
+              {[
+                {
+                  src: "/images/batik.jpeg",
+                  alt: "Formation batik et teinture",
+                  title: "Batik et Teinture",
+                  description: "Initiation aux techniques artisanales de création textile.",
+                },
+                {
+                  src: "/images/femmes.jpeg",
+                  alt: "Renforcement de capacité des femmes",
+                  title: "Renforcement de Capacité",
+                  description: "Accompagnement des femmes vers l'autonomie et l'entrepreneuriat.",
+                },
+                {
+                  src: "/images/designthinkig.jpeg",
+                  alt: "Formation en design thinking",
+                  title: "Design Thinking",
+                  description: "Ateliers d'innovation et de résolution créative de problèmes.",
+                },
+                {
+                  src: "/images/leadership.jpeg",
+                  alt: "Formation leadership",
+                  title: "Leadership",
+                  description: "Développement des compétences de gestion et de prise d'initiative.",
+                },
+                {
+                  src: "/images/sensibilisation.jpeg",
+                  alt: "Sensibilisation",
+                  title: "Sensibilisation",
+                  description: "Campagnes d'information et d'action citoyenne sur le terrain.",
+                },
+                {
+                  src: "/images/formation-outil-digital.jpeg",
+                  alt: "Outils digitaux",
+                  title: "Outils Digitaux",
+                  description: "Formation pratique à l'utilisation des nouvelles technologies.",
+                },
+              ].map((img, idx) => (
+                <StaggerItem key={idx}>
+                  <div className="group relative h-64 md:h-80 w-full overflow-hidden rounded-2xl shadow-sm">
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex flex-col justify-end p-6">
+                      <div className="translate-y-4 transform transition-transform duration-300 group-hover:translate-y-0">
+                        <h3 className="text-xl font-bold text-white mb-2">{img.title}</h3>
+                        <p className="text-sm text-slate-200">{img.description}</p>
+                      </div>
+                    </div>
                   </div>
                 </StaggerItem>
               ))}

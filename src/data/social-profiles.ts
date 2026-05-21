@@ -32,15 +32,14 @@ export const SOCIAL_PROFILES = {
   x: {
     id: "x",
     name: "X",
-    url:
-      process.env.NEXT_PUBLIC_X_URL ?? `https://x.com/${X_HANDLE}`,
+    url: "",
     handle: X_HANDLE,
     icon: "/logo/media-social/x.svg",
   },
   whatsapp: {
     id: "whatsapp",
     name: "WhatsApp",
-    url: "https://wa.me/221761417070",
+    url: "",
     phone: "+221761417070",
     icon: "/logo/media-social/whatsapp.svg",
   },

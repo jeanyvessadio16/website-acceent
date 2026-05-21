@@ -5,6 +5,7 @@ import { programesNumerique } from "@/data/numerique/programmes-numerique";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpenCheck, Laptop } from "lucide-react";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
@@ -30,7 +31,7 @@ export default function Numerique() {
       >
         <section className="bg-white py-20">
           <div className="section-container">
-            <div className="mx-auto max-w-3xl text-center">
+            <FadeIn className="mx-auto max-w-3xl text-center">
               <h1 className="section-heading mb-2">
                 Nos programmes du numérique
               </h1>
@@ -39,51 +40,52 @@ export default function Numerique() {
                 avec des parcours pedagogiques modernes et adaptes a leur
                 realite.
               </p>
-            </div>
+            </FadeIn>
 
-            <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <StaggerContainer className="mt-12 grid gap-6 md:grid-cols-2">
               {programesNumerique.map((programme) => (
-                <Card
-                  key={programme.id}
-                  className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white pt-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                >
-                  <CardHeader className="p-0">
-                    <div className="relative h-56 w-full overflow-hidden">
-                      <Image
-                        src={programme.image}
-                        alt={programme.nom}
-                        fill
-                        className="object-cover transition duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-6">
-                    <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                      <BookOpenCheck className="h-3.5 w-3.5" />
-                      Programme numérique
-                    </div>
-                    <CardTitle className="text-2xl font-bold text-slate-950">
-                      {programme.nom}
-                    </CardTitle>
-                    <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                      {programme.description}
-                    </p>
-                    <Button asChild className="mt-6 rounded-full">
-                      <Link href={programme.page}>
-                        En savoir plus
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
+                <StaggerItem key={programme.id}>
+                  <Card
+                    className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white pt-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-full"
+                  >
+                    <CardHeader className="p-0">
+                      <div className="relative h-56 w-full overflow-hidden">
+                        <Image
+                          src={programme.image}
+                          alt={programme.nom}
+                          fill
+                          className="object-cover transition duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-6 flex flex-col flex-grow">
+                      <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                        <BookOpenCheck className="h-3.5 w-3.5" />
+                        Programme numérique
+                      </div>
+                      <CardTitle className="text-2xl font-bold text-slate-950">
+                        {programme.nom}
+                      </CardTitle>
+                      <p className="mt-3 text-sm leading-relaxed text-slate-600 flex-grow">
+                        {programme.description}
+                      </p>
+                      <Button asChild className="mt-6 rounded-full w-fit">
+                        <Link href={programme.page}>
+                          En savoir plus
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
         </section>
 
         <section className="bg-gradient-to-b from-slate-50 to-white py-20">
           <div className="section-container">
-            <div className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm md:p-12">
+            <FadeIn delay={0.2} direction="up" className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm md:p-12">
               <div className="mx-auto max-w-3xl text-center">
                 <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary">
                   <Laptop className="h-7 w-7" />
@@ -110,7 +112,7 @@ export default function Numerique() {
                   </Button>
                 </div>
               </div>
-            </div>
+            </FadeIn>
           </div>
         </section>
       </HeaderLayout>

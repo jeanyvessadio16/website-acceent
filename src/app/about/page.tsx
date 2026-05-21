@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
   title: "À propos",
@@ -59,7 +60,7 @@ export default function About() {
         <section className="py-20">
           <div className="section-container">
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="relative">
+              <FadeIn delay={0.1} direction="right" className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-slate-950/20 to-slate-950/5 rounded-2xl" />
                 <Image
                   src="/images/aboutImage.jpg"
@@ -68,8 +69,8 @@ export default function About() {
                   height={500}
                   className="rounded-2xl shadow-2xl shadow-slate-900/20 w-full h-auto object-cover"
                 />
-              </div>
-              <div className="space-y-8">
+              </FadeIn>
+              <FadeIn delay={0.2} direction="left" className="space-y-8">
                 <div>
                   <h3 className="text-sm uppercase tracking-widest font-semibold text-slate-500 mb-3">
                     A propos de ACCEENT
@@ -99,7 +100,7 @@ export default function About() {
                     )}
                   </ul>
                 </div>
-              </div>
+              </FadeIn>
             </div>
           </div>
         </section>
@@ -107,81 +108,84 @@ export default function About() {
         {/* Values Section */}
         <section className="bg-white py-20">
           <div className="section-container">
-            <div className="mx-auto max-w-3xl text-center">
+            <FadeIn className="mx-auto max-w-3xl text-center">
               <h2 className="section-heading">Nos valeurs</h2>
               <p className="section-subheading">
                 Une approche humaine et professionnelle pour transformer
                 durablement les territoires.
               </p>
-            </div>
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
+            </FadeIn>
+            <StaggerContainer className="mt-12 grid gap-6 md:grid-cols-3">
               {values.map((value) => (
-                <Card
-                  key={value.title}
-                  className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                >
-                  <h3 className="text-xl font-bold text-slate-950">
-                    {value.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-600">
-                    {value.description}
-                  </p>
-                </Card>
+                <StaggerItem key={value.title}>
+                  <Card
+                    className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg h-full"
+                  >
+                    <h3 className="text-xl font-bold text-slate-950">
+                      {value.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                      {value.description}
+                    </p>
+                  </Card>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
         </section>
 
         {/* Mission & Vision Section */}
         <section className="relative py-20 bg-gradient-to-b from-slate-50/50 to-white">
-          <div className="section-container">
+          <StaggerContainer className="section-container">
             <div className="grid md:grid-cols-2 gap-8 items-stretch">
-              {/* Mission Card */}
-              <Card className="border border-slate-200/80 bg-white/95 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-slate-900/10 transition duration-300 overflow-hidden group">
-                <div className="p-8 h-full flex flex-col">
-                  <div className="mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-slate-950/10 flex items-center justify-center mb-4">
-                      <span className="text-2xl">🎯</span>
+              <StaggerItem>
+                <Card className="border border-slate-200/80 bg-white/95 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-slate-900/10 transition duration-300 overflow-hidden group h-full">
+                  <div className="p-8 h-full flex flex-col">
+                    <div className="mb-4">
+                      <div className="w-12 h-12 rounded-lg bg-slate-950/10 flex items-center justify-center mb-4">
+                        <span className="text-2xl">🎯</span>
+                      </div>
+                      <h2 className="text-2xl md:text-3xl font-bold text-slate-950 mb-2">
+                        Notre mission
+                      </h2>
                     </div>
-                    <h2 className="text-2xl md:text-3xl font-bold text-slate-950 mb-2">
-                      Notre mission
-                    </h2>
+                    <p className="text-slate-600 leading-relaxed flex-1">
+                      Mettre en mouvement les énergies locales pour que chaque
+                      territoire dispose des moyens d&apos;apprendre,
+                      d&apos;entreprendre et d&apos;innover. Nous concevons et
+                      déployons des programmes concrets, ancrés dans le réel et
+                      co-construits avec les acteurs de terrain.
+                    </p>
                   </div>
-                  <p className="text-slate-600 leading-relaxed flex-1">
-                    Mettre en mouvement les énergies locales pour que chaque
-                    territoire dispose des moyens d&apos;apprendre,
-                    d&apos;entreprendre et d&apos;innover. Nous concevons et
-                    déployons des programmes concrets, ancrés dans le réel et
-                    co-construits avec les acteurs de terrain.
-                  </p>
-                </div>
-              </Card>
+                </Card>
+              </StaggerItem>
 
-              {/* Vision Card */}
-              <Card className="border border-slate-200/80 bg-white/95 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-slate-900/10 transition duration-300 overflow-hidden group">
-                <div className="p-8 h-full flex flex-col">
-                  <div className="mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-slate-950/10 flex items-center justify-center mb-4">
-                      <span className="text-2xl">🌟</span>
+              <StaggerItem>
+                <Card className="border border-slate-200/80 bg-white/95 shadow-xl shadow-slate-900/5 hover:shadow-2xl hover:shadow-slate-900/10 transition duration-300 overflow-hidden group h-full">
+                  <div className="p-8 h-full flex flex-col">
+                    <div className="mb-4">
+                      <div className="w-12 h-12 rounded-lg bg-slate-950/10 flex items-center justify-center mb-4">
+                        <span className="text-2xl">🌟</span>
+                      </div>
+                      <h2 className="text-2xl md:text-3xl font-bold text-slate-950 mb-2">
+                        Notre vision
+                      </h2>
                     </div>
-                    <h2 className="text-2xl md:text-3xl font-bold text-slate-950 mb-2">
-                      Notre vision
-                    </h2>
+                    <p className="text-slate-600 leading-relaxed flex-1">
+                      Des territoires vivants, équitables et créatifs où chacun
+                      peut trouver sa place et révéler son potentiel grâce à
+                      l&apos;éducation, à l&apos;entrepreneuriat et au numérique.
+                    </p>
                   </div>
-                  <p className="text-slate-600 leading-relaxed flex-1">
-                    Des territoires vivants, équitables et créatifs où chacun
-                    peut trouver sa place et révéler son potentiel grâce à
-                    l&apos;éducation, à l&apos;entrepreneuriat et au numérique.
-                  </p>
-                </div>
-              </Card>
+                </Card>
+              </StaggerItem>
             </div>
-          </div>
+          </StaggerContainer>
         </section>
 
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-slate-950 to-slate-900 text-white">
-          <div className="max-w-4xl mx-auto text-center">
+          <FadeIn delay={0.2} direction="up" className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Rejoignez notre mission
             </h2>
@@ -203,7 +207,7 @@ export default function About() {
                 Retour a l&apos;accueil
               </Link>
             </div>
-          </div>
+          </FadeIn>
         </section>
       </HeaderLayout>
     </>

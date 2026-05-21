@@ -17,6 +17,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { FormErrorBanner, SuccessAlertDialog } from "./alerts";
+import { FadeIn, StaggerContainer, StaggerItem } from "./Animations";
 import { ContactFormData } from "../../zodSchema/contact";
 import { ContactService } from "../../services/contactService";
 
@@ -53,7 +54,7 @@ export default function Contact() {
       </div>
       <div className="container mx-auto px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <div className="mb-14 text-center">
+          <FadeIn delay={0.1} direction="down" className="mb-14 text-center">
             <p className="mb-4 inline-flex items-center rounded-full border border-blue-200/70 bg-white px-4 py-1.5 text-sm font-semibold text-blue-700 shadow-xs">
               Restons en contact
             </p>
@@ -62,10 +63,10 @@ export default function Contact() {
               Nous sommes là pour vous accompagner. N&apos;hésitez pas à nous
               contacter pour toute question ou collaboration.
             </p>
-          </div>
+          </FadeIn>
 
           <div className="grid items-start gap-10 lg:grid-cols-2">
-            <div className="space-y-6">
+            <FadeIn delay={0.2} direction="right" className="space-y-6">
               <div className="rounded-2xl border border-white/70 bg-white/90 p-8 shadow-xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl">
                 <h3 className="mb-6 flex items-center gap-3 text-fluid-h3 text-gray-900">
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
@@ -129,9 +130,10 @@ export default function Contact() {
               <p className="rounded-xl border border-gray-200/80 bg-white/80 px-5 py-4 text-sm text-gray-600 shadow-sm">
                 Temps de réponse moyen: moins de 24h les jours ouvrés.
               </p>
-            </div>
+            </FadeIn>
 
-            <Card className="overflow-hidden rounded-2xl border border-white/80 bg-white/90 shadow-2xl backdrop-blur-sm">
+            <FadeIn delay={0.3} direction="left" className="h-full">
+              <Card className="overflow-hidden rounded-2xl border border-white/80 bg-white/90 shadow-2xl backdrop-blur-sm h-full">
               <CardContent className="p-8">
                 <div className="mb-6">
                   <h3 className="text-fluid-h3 text-gray-900">
@@ -284,6 +286,7 @@ export default function Contact() {
                 </form>
               </CardContent>
             </Card>
+            </FadeIn>
           </div>
         </div>
       </div>

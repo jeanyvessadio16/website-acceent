@@ -5,7 +5,11 @@ import { programesNumerique } from "@/data/numerique/programmes-numerique";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpenCheck, Laptop } from "lucide-react";
-import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
+import {
+  FadeIn,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/shared/Animations";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
@@ -45,9 +49,7 @@ export default function Numerique() {
             <StaggerContainer className="mt-12 grid gap-6 md:grid-cols-2">
               {programesNumerique.map((programme) => (
                 <StaggerItem key={programme.id}>
-                  <Card
-                    className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white pt-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-full"
-                  >
+                  <Card className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white pt-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-full">
                     <CardHeader className="p-0">
                       <div className="relative h-56 w-full overflow-hidden">
                         <Image
@@ -85,17 +87,21 @@ export default function Numerique() {
 
         <section className="bg-gradient-to-b from-slate-50 to-white py-20">
           <div className="section-container">
-            <FadeIn delay={0.2} direction="up" className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm md:p-12">
+            <FadeIn
+              delay={0.2}
+              direction="up"
+              className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm md:p-12"
+            >
               <div className="mx-auto max-w-3xl text-center">
                 <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary">
                   <Laptop className="h-7 w-7" />
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight text-slate-950 md:text-4xl">
-                  Le numérique au service de l'inclusion
+                  Le numérique au service de l&apos;inclusion
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 md:text-lg">
-                  Nos actions numériques vous forment aux compétences de demain, 
-                  réduisent la fracture numérique et vous ouvrent de nouvelles 
+                  Nos actions numériques vous forment aux compétences de demain,
+                  réduisent la fracture numérique et vous ouvrent de nouvelles
                   opportunités professionnelles.
                 </p>
                 <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">

@@ -4,7 +4,7 @@ export const programesNumerique = [
     nom: "World Robot Olympiad (WRO)",
     description:
       "Compétition internationale de robotique éducative pour stimuler la créativité et l'innovation technologique chez les jeunes.",
-    image: "/images/wro.webp",
+    image: "/images/WRO.webp",
     page: "/wro",
   },
 ];

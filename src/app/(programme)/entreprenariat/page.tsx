@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpenCheck, Rocket } from "lucide-react";
 import { programesEntreprenariat } from "@/data/entreprenariat/programmes-entreprenariat";
 import { createPageMetadata } from "@/lib/seo";
-import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
+import {
+  FadeIn,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
   title: "Programme Entrepreneuriat",
@@ -25,15 +29,15 @@ export default function Entreprenariat() {
   return (
     <>
       <HeaderLayout
-        text="Programme Entreprenariat"
-        title="Créatvité et innovtion pour un avenir meilleur"
+        text="Programme Entrepreneuriat"
+        title="Créativité et innovation pour un avenir meilleur"
         description="ACCEENT accompagne les porteurs de projets, les jeunes et les femmes dans la construction de leurs initiatives entrepreneuriales, de l'idée à la réalisation."
       >
         <section className="bg-white py-20">
           <div className="section-container">
             <FadeIn className="mx-auto max-w-3xl text-center">
               <h1 className="section-heading mb-2">
-                Nos programmes d&apos;entreprenariat
+                Nos programmes d&apos;entrepreneuriat
               </h1>
               <p className="section-subheading">
                 Nous accompagnons les jeunes et les femmes vers l&apos;autonomie
@@ -45,9 +49,7 @@ export default function Entreprenariat() {
             <StaggerContainer className="mt-12 grid gap-6 md:grid-cols-2">
               {programesEntreprenariat.map((programme) => (
                 <StaggerItem key={programme.id}>
-                  <Card
-                    className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white pt-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-full flex flex-col"
-                  >
+                  <Card className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white pt-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-full flex flex-col">
                     <CardHeader className="p-0">
                       <div className="relative h-56 w-full overflow-hidden">
                         <Image
@@ -85,7 +87,11 @@ export default function Entreprenariat() {
 
         <section className="bg-gradient-to-b from-slate-50 to-white py-20">
           <div className="section-container">
-            <FadeIn delay={0.2} direction="up" className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm md:p-12">
+            <FadeIn
+              delay={0.2}
+              direction="up"
+              className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm md:p-12"
+            >
               <div className="mx-auto max-w-3xl text-center">
                 <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary">
                   <Rocket className="h-7 w-7" />
@@ -120,12 +126,12 @@ export default function Entreprenariat() {
 
       {/* section cultule */}
       <section className="relative">
-          <FadeIn delay={0.1} direction="down" className="relative">
-            <h2 className="text-fluid-h3 text-center">
-              Notre engagement culturel
-            </h2>
-            <div className="w-52 h-2 mx-auto mt-2.5 bg-primary rounded-full"></div>
-          </FadeIn>
+        <FadeIn delay={0.1} direction="down" className="relative">
+          <h2 className="text-fluid-h3 text-center">
+            Notre engagement culturel
+          </h2>
+          <div className="w-52 h-2 mx-auto mt-2.5 bg-primary rounded-full"></div>
+        </FadeIn>
         <div className="px-12 py-16 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <FadeIn delay={0.2} direction="right" className="space-y-5">
             <h2 className="text-fluid-h3">Carnaval de Santhiaba</h2>

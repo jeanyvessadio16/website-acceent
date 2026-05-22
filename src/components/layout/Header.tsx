@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 
 const PROGRAMMES = [
   { nom: "Éducation", href: "/education" },
-  { nom: "Entreprenariat", href: "/entreprenariat" },
+  { nom: "Entrepreneuriat", href: "/entreprenariat" },
   { nom: "Numérique", href: "/numerique" },
 ] as const;
 

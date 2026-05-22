@@ -3,7 +3,12 @@ import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
-import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
+import {
+  FadeIn,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/shared/Animations";
+import { equipeAcceent } from "@/data/list-equipe-acceent";
 
 export const metadata = createPageMetadata({
   title: "À propos",
@@ -118,9 +123,7 @@ export default function About() {
             <StaggerContainer className="mt-12 grid gap-6 md:grid-cols-3">
               {values.map((value) => (
                 <StaggerItem key={value.title}>
-                  <Card
-                    className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg h-full"
-                  >
+                  <Card className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg h-full">
                     <h3 className="text-xl font-bold text-slate-950">
                       {value.title}
                     </h3>
@@ -174,7 +177,8 @@ export default function About() {
                     <p className="text-slate-600 leading-relaxed flex-1">
                       Des territoires vivants, équitables et créatifs où chacun
                       peut trouver sa place et révéler son potentiel grâce à
-                      l&apos;éducation, à l&apos;entrepreneuriat et au numérique.
+                      l&apos;éducation, à l&apos;entrepreneuriat et au
+                      numérique.
                     </p>
                   </div>
                 </Card>
@@ -183,9 +187,54 @@ export default function About() {
           </StaggerContainer>
         </section>
 
+        {/* section equipe */}
+        <section className="py-20 bg-white">
+          <div className="section-container">
+            <FadeIn className="mx-auto max-w-3xl text-center mb-16">
+              <h2 className="section-heading">Notre Équipe</h2>
+              <p className="section-subheading">
+                Des professionnels passionnés et engagés pour vous accompagner
+                dans la réussite de vos projets.
+              </p>
+            </FadeIn>
+
+            <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
+              {equipeAcceent.map((member) => (
+                <StaggerItem key={member.id}>
+                  <Card className="group flex flex-col items-center text-center rounded-3xl border border-slate-100 bg-primary/10 p-6 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500">
+                    <div className="relative w-32 h-32 mb-4 overflow-hidden rounded-full ring-4 ring-slate-50 shadow-lg group-hover:ring-primary/20 transition-all duration-500">
+                      <Image
+                        src={`${member.photoProphile}.jpeg`}
+                        alt={member.nomComplet}
+                        fill
+                        className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+
+                    {/* Info Content */}
+                    <div>
+                      <h3 className="text-lg md:text-xl font-bold text-slate-950 mb-1 transition-colors group-hover:text-primary">
+                        {member.nomComplet}
+                      </h3>
+                      <p className="text-slate-500 font-medium text-sm tracking-wide">
+                        {member.role}
+                      </p>
+                    </div>
+                  </Card>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-slate-950 to-slate-900 text-white">
-          <FadeIn delay={0.2} direction="up" className="max-w-4xl mx-auto text-center">
+          <FadeIn
+            delay={0.2}
+            direction="up"
+            className="max-w-4xl mx-auto text-center"
+          >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Rejoignez notre mission
             </h2>

@@ -157,41 +157,47 @@ export default function Home() {
                   src: "/images/batik.jpeg",
                   alt: "Formation batik et teinture",
                   title: "Batik et Teinture",
-                  description: "Initiation aux techniques artisanales de création textile.",
+                  description:
+                    "Initiation aux techniques artisanales de création textile.",
                 },
                 {
                   src: "/images/femmes.jpeg",
                   alt: "Renforcement de capacité des femmes",
                   title: "Renforcement de Capacité",
-                  description: "Accompagnement des femmes vers l'autonomie et l'entrepreneuriat.",
+                  description:
+                    "Accompagnement des femmes vers l'autonomie et l'entrepreneuriat.",
                 },
                 {
                   src: "/images/designthinkig.jpeg",
                   alt: "Formation en design thinking",
                   title: "Design Thinking",
-                  description: "Ateliers d'innovation et de résolution créative de problèmes.",
+                  description:
+                    "Ateliers d'innovation et de résolution créative de problèmes.",
                 },
                 {
                   src: "/images/leadership.jpeg",
                   alt: "Formation leadership",
                   title: "Leadership",
-                  description: "Développement des compétences de gestion et de prise d'initiative.",
+                  description:
+                    "Développement des compétences de gestion et de prise d'initiative.",
                 },
                 {
                   src: "/images/sensibilisation.jpeg",
                   alt: "Sensibilisation",
                   title: "Sensibilisation",
-                  description: "Campagnes d'information et d'action citoyenne sur le terrain.",
+                  description:
+                    "Campagnes d'information et d'action citoyenne sur le terrain.",
                 },
                 {
                   src: "/images/formation-outil-digital.jpeg",
                   alt: "Outils digitaux",
                   title: "Outils Digitaux",
-                  description: "Formation pratique à l'utilisation des nouvelles technologies.",
+                  description:
+                    "Formation pratique à l'utilisation des nouvelles technologies.",
                 },
               ].map((img, idx) => (
                 <StaggerItem key={idx}>
-                  <div className="group relative h-64 md:h-80 w-full overflow-hidden rounded-2xl shadow-sm">
+                  <div className="group relative h-64 md:h-80 w-full overflow-hidden rounded-sm shadow-sm">
                     <Image
                       src={img.src}
                       alt={img.alt}
@@ -201,8 +207,12 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex flex-col justify-end p-6">
                       <div className="translate-y-4 transform transition-transform duration-300 group-hover:translate-y-0">
-                        <h3 className="text-xl font-bold text-white mb-2">{img.title}</h3>
-                        <p className="text-sm text-slate-200">{img.description}</p>
+                        <h3 className="text-xl font-bold text-white mb-2">
+                          {img.title}
+                        </h3>
+                        <p className="text-sm text-slate-200">
+                          {img.description}
+                        </p>
                       </div>
                     </div>
                   </div>

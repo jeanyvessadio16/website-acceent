@@ -204,7 +204,7 @@ export default function About() {
                   <Card className="group flex flex-col items-center text-center rounded-3xl border border-slate-100 bg-primary/10 p-6 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500">
                     <div className="relative w-32 h-32 mb-4 overflow-hidden rounded-full ring-4 ring-slate-50 shadow-lg group-hover:ring-primary/20 transition-all duration-500">
                       <Image
-                        src={`${member.photoProphile}.jpeg`}
+                        src={member.photoProphile}
                         alt={member.nomComplet}
                         fill
                         className="object-cover object-top transition-transform duration-700 group-hover:scale-110"

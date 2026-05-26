@@ -41,8 +41,8 @@ export default function Numerique() {
               </h1>
               <p className="section-subheading">
                 Nous accompagnons les jeunes et les femmes vers l&apos;autonomie
-                avec des parcours pedagogiques modernes et adaptes a leur
-                realite.
+                avec des parcours pédagogiques modernes et adaptes à leur
+                réalité.
               </p>
             </FadeIn>
 
@@ -114,7 +114,7 @@ export default function Numerique() {
                     variant="outline"
                     className="rounded-full px-8"
                   >
-                    <Link href="/about">Decouvrir ACCEENT</Link>
+                    <Link href="/about">Découvrir ACCEENT</Link>
                   </Button>
                 </div>
               </div>

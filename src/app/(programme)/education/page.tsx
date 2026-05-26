@@ -6,7 +6,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BookOpenCheck, GraduationCap } from "lucide-react";
 import { createPageMetadata } from "@/lib/seo";
-import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
+import {
+  FadeIn,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
   title: "Programme Éducation",
@@ -26,8 +30,8 @@ export default function Eduction() {
     <>
       <HeaderLayout
         text="Programme Education"
-        title="Former, inspirer et ouvrir de nouvelles opportunites"
-        description="Nos programmes d'education developpent les competences, la confiance et l'autonomie des jeunes et des femmes a travers des parcours concrets."
+        title="Former, inspirer et ouvrir de nouvelles opportunités"
+        description="Nos programmes d'éducation développent les compétences, la confiance et l'autonomie des jeunes et des femmes à travers des parcours concrets."
         highlights={[
           {
             label: "Programmes actifs",
@@ -45,17 +49,15 @@ export default function Eduction() {
               </h1>
               <p className="section-subheading">
                 Nous accompagnons les jeunes et les femmes vers l&apos;autonomie
-                avec des parcours pedagogiques modernes et adaptes a leur
-                realite.
+                avec des parcours pedagogiques modernes et adaptes à leur
+                réalité.
               </p>
             </FadeIn>
 
             <StaggerContainer className="mt-12 grid gap-6 md:grid-cols-2">
               {programesEducation.map((programme) => (
                 <StaggerItem key={programme.id}>
-                  <Card
-                    className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white pt-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-full flex flex-col"
-                  >
+                  <Card className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white pt-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-full flex flex-col">
                     <CardHeader className="p-0">
                       <div className="relative h-56 w-full overflow-hidden">
                         <Image
@@ -93,16 +95,20 @@ export default function Eduction() {
 
         <section className="bg-gradient-to-b from-slate-50 to-white py-20">
           <div className="section-container">
-            <FadeIn delay={0.2} direction="up" className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm md:p-12">
+            <FadeIn
+              delay={0.2}
+              direction="up"
+              className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm md:p-12"
+            >
               <div className="mx-auto max-w-3xl text-center">
                 <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary">
                   <GraduationCap className="h-7 w-7" />
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight text-slate-950 md:text-4xl">
-                  Construisons ensemble un avenir plus equitable
+                  Construisons ensemble un avenir plus équitable
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 md:text-lg">
-                  Nos actions educatives s&apos;adressent a celles et ceux qui
+                  Nos actions éducatives s&apos;adressent à celles et ceux qui
                   veulent apprendre, entreprendre et contribuer positivement a
                   leur territoire.
                 </p>
@@ -116,7 +122,7 @@ export default function Eduction() {
                     variant="outline"
                     className="rounded-full px-8"
                   >
-                    <Link href="/about">Decouvrir ACCEENT</Link>
+                    <Link href="/about">Découvrir ACCEENT</Link>
                   </Button>
                 </div>
               </div>

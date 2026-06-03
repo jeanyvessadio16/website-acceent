@@ -58,7 +58,7 @@ export default function Home() {
             <FadeIn delay={0.3} direction="up">
               <p className="max-w-2xl text-slate-200 text-fluid-p-large">
                 Action pour la Contribution Collective pour l&apos;Education,
-                l&apos;Entreprenariat et le Numérique des Territoires
+                l&apos;Entrepreneuriat et le Numérique des Territoires.
               </p>
             </FadeIn>
             <FadeIn delay={0.4} direction="up">

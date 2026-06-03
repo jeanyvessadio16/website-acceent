@@ -7,4 +7,12 @@ export const programesNumerique = [
     image: "/images/WRO.webp",
     page: "/wro",
   },
+  {
+    id: 2,
+    nom: "AI4GOOD Festival",
+    description:
+      "Inspirer la nouvelle génération à utiliser l'intelligence artificielle pour résoudre les défis mondiaux et créer un avenir meilleur.",
+    image: "/images/WRO.webp",
+    page: "/ai4good",
+  },
 ];

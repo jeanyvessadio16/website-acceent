@@ -11,13 +11,13 @@ export const ai4good = [
     description: "Relier des jeunes aux quatre coins du monde",
   },
   {
-    id: 1,
+    id: 3,
     title: "Expression créative",
     description:
       "Stimuler l’innovation à travers la création vidéo et la narration numérique",
   },
   {
-    id: 1,
+    id: 4,
     title: "Impact réel",
     description:
       "Développer les compétences essentielles pour un futur positif façonné par l’IA",

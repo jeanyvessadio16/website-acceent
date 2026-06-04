@@ -4,15 +4,15 @@ import { createPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { ai4good } from "@/data/numerique/AI4GOOD";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  BrainCircuit, 
-  Globe2, 
-  Lightbulb, 
-  Rocket, 
-  HeartHandshake, 
-  Target, 
+import {
+  BrainCircuit,
+  Globe2,
+  Lightbulb,
+  Rocket,
+  HeartHandshake,
+  Target,
   ArrowRight,
-  Sparkles
+  Sparkles,
 } from "lucide-react";
 
 export const metadata = createPageMetadata({
@@ -36,13 +36,14 @@ export default function AI4GoodPage() {
       <ProgrammeLayout
         titre="AI4GOOD Festival"
         description="Ensemble, créons un futur numérique où la technologie élève, protège et émancipe."
+        image="/images/ai4good.png"
       >
         <div className="mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full bg-primary/10 text-primary font-medium text-sm">
             <Sparkles className="w-4 h-4" />
             <span>À propos de AI4GOOD</span>
           </div>
-          
+
           <div className="grid gap-8 md:grid-cols-2 lg:gap-12 items-stretch">
             {/* Engagement Card */}
             <div className="relative overflow-hidden group rounded-3xl bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:to-neutral-950 p-8 md:p-10 border border-neutral-200/60 dark:border-neutral-800/60 transition-all duration-300 hover:shadow-xl hover:border-primary/30">
@@ -57,13 +58,14 @@ export default function AI4GoodPage() {
                   Notre engagement
                 </h3>
                 <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed text-lg flex-grow">
-                  Le AI4GOOD Festival est une initiative mondiale à but non lucratif
-                  qui mobilise et accompagne les jeunes dans la maîtrise de
-                  l’intelligence artificielle, de la créativité et de l’innovation
-                  numérique. En réunissant art, design et technologie, nous
-                  éveillons leur curiosité, stimulons leur potentiel et les
-                  encourageons à imaginer un futur où l’IA est mise au service d’une
-                  société plus inclusive et durable stimulante.
+                  Le AI4GOOD Festival est une initiative mondiale à but non
+                  lucratif qui mobilise et accompagne les jeunes dans la
+                  maîtrise de l’intelligence artificielle, de la créativité et
+                  de l’innovation numérique. En réunissant art, design et
+                  technologie, nous éveillons leur curiosité, stimulons leur
+                  potentiel et les encourageons à imaginer un futur où l’IA est
+                  mise au service d’une société plus inclusive et durable
+                  stimulante.
                 </p>
               </div>
             </div>
@@ -81,12 +83,12 @@ export default function AI4GoodPage() {
                 <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-lg flex-grow">
                   Nous nous engageons à rendre l’éducation à l’IA accessible à
                   toutes et à tous, en particulier dans les régions où les
-                  opportunités restent limitées. Nous donnons aux jeunes les moyens
-                  d’apprendre, d’expérimenter et de collaborer grâce à des outils
-                  numériques pour résoudre des enjeux concrets. Nous croyons
-                  fermement qu’une technologie guidée par l’éthique, l’empathie et
-                  un sens aigu des responsabilités peut devenir un véritable moteur
-                  de progrès pour le bien commun.
+                  opportunités restent limitées. Nous donnons aux jeunes les
+                  moyens d’apprendre, d’expérimenter et de collaborer grâce à
+                  des outils numériques pour résoudre des enjeux concrets. Nous
+                  croyons fermement qu’une technologie guidée par l’éthique,
+                  l’empathie et un sens aigu des responsabilités peut devenir un
+                  véritable moteur de progrès pour le bien commun.
                 </p>
               </div>
             </div>
@@ -96,18 +98,21 @@ export default function AI4GoodPage() {
         {/* Features Section */}
         <section className="mt-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Nos piliers d'action</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Nos piliers d&apos;action
+            </h2>
             <p className="text-neutral-500 max-w-2xl mx-auto text-lg">
-              Découvrez comment nous structurons notre approche pour maximiser notre impact positif.
+              Découvrez comment nous structurons notre approche pour maximiser
+              notre impact positif.
             </p>
           </div>
-          
+
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {ai4good.map((item, index) => {
               const Icon = featureIcons[index % featureIcons.length];
               return (
-                <Card 
-                  key={item.id + index.toString()} 
+                <Card
+                  key={item.id + index.toString()}
                   className="group relative overflow-hidden border-neutral-200/60 dark:border-neutral-800/60 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-primary/30"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

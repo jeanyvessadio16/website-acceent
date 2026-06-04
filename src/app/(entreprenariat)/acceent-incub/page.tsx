@@ -26,7 +26,7 @@ export default function AcceentIncub() {
   return (
     <>
       <ProgrammeLayout
-        className="bg-[url('/images/acceent-incub.jpeg')] bg-cover bg-fixed bg-center lg:bg-top"
+        image="/images/acceent-incub.jpeg"
         {...programme}
       >
         <section>

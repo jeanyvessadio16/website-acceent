@@ -26,7 +26,7 @@ export default function TutTankPage() {
     <>
       <ProgrammeLayout
         {...programme}
-        className="bg-[url('/images/tuttank.jpeg')] bg-cover bg-fixed bg-center lg:bg-top"
+        image="/images/tuttank.jpeg"
       >
         <section className="mx-auto max-w-5xl">
           <div className="space-y-6 rounded-2xl border border-neutral-200 bg-white p-8 text-center shadow-xl md:p-10 dark:border-neutral-800 dark:bg-neutral-900">

@@ -34,7 +34,7 @@ export default function WROPage() {
   return (
     <>
       <ProgrammeLayout
-        className="bg-[url('/images/WRO.webp')] bg-cover bg-fixed bg-center lg:bg-top"
+        image="/images/WRO.webp"
         {...programme}
       >
         <section className="mx-auto max-w-5xl">

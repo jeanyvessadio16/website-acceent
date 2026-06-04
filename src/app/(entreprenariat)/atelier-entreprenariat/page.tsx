@@ -46,7 +46,7 @@ export default function AtelierEntreprenariat() {
   return (
     <>
       <ProgrammeLayout
-        className="bg-[url('/images/entreprenariat.jpeg')] bg-cover bg-fixed bg-center lg:bg-top"
+        image="/images/entreprenariat.jpeg"
         {...programme}
       >
         <div className="space-y-6 text-center mb-16">

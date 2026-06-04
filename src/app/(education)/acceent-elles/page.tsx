@@ -43,7 +43,7 @@ export default function AcceentEllesPage() {
   return (
     <>
       <ProgrammeLayout
-        className="bg-[url('/images/acceentImage.jpg')] bg-cover bg-fixed bg-center lg:bg-top"
+        image="/images/acceentImage.jpg"
         {...programme}
       >
         <section className="mx-auto max-w-5xl">

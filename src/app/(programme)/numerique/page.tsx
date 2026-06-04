@@ -30,7 +30,7 @@ export default function Numerique() {
     <>
       <HeaderLayout
         text="Programme Numérique"
-        title="Des programmes numériques pour un avenir innovant"
+        title="Le numérique pour un avenir innovant"
         description="Nos programmes numériques développent les compétences techniques, la confiance et favorisent l'inclusion digitale pour tous les jeunes et les femmes."
       >
         <section className="bg-white py-20">

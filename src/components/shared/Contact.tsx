@@ -64,11 +64,12 @@ export default function Contact() {
               Restons en contact
             </span>
             <h2 className="mb-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900">
-              Discutons de votre <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">projet</span>
+              Discutons de votre <span>projet</span>
             </h2>
             <p className="mx-auto max-w-2xl text-lg md:text-xl text-slate-600 leading-relaxed">
               Nous sommes là pour vous accompagner. N&apos;hésitez pas à nous
-              contacter pour toute question ou collaboration, nous vous répondrons rapidement.
+              contacter pour toute question ou collaboration, nous vous
+              répondrons rapidement.
             </p>
           </FadeIn>
 
@@ -77,19 +78,25 @@ export default function Contact() {
               <FadeIn delay={0.2} direction="right">
                 <div className="rounded-3xl border border-white/60 bg-white/60 p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-xl relative overflow-hidden group">
                   <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                  
+
                   <h3 className="mb-8 flex items-center gap-4 text-2xl font-bold text-slate-900 relative z-10">
                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 shadow-lg shadow-blue-600/20">
                       <MapPin className="text-white" size={24} />
                     </div>
                     Nos coordonnées
                   </h3>
-                  
-                  <StaggerContainer delay={0.3} className="space-y-8 relative z-10">
+
+                  <StaggerContainer
+                    delay={0.3}
+                    className="space-y-8 relative z-10"
+                  >
                     <StaggerItem>
                       <div className="group/item flex items-start gap-5">
                         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-100/80 transition-all duration-300 group-hover/item:bg-blue-50 group-hover/item:scale-110 group-hover/item:shadow-sm border border-slate-200/50">
-                          <MapPin className="text-slate-600 transition-colors duration-300 group-hover/item:text-blue-600" size={24} />
+                          <MapPin
+                            className="text-slate-600 transition-colors duration-300 group-hover/item:text-blue-600"
+                            size={24}
+                          />
                         </div>
                         <div>
                           <h4 className="mb-1 text-sm font-bold uppercase tracking-wider text-slate-500">
@@ -107,7 +114,10 @@ export default function Contact() {
                     <StaggerItem>
                       <div className="group/item flex items-start gap-5">
                         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-100/80 transition-all duration-300 group-hover/item:bg-blue-50 group-hover/item:scale-110 group-hover/item:shadow-sm border border-slate-200/50">
-                          <Mail className="text-slate-600 transition-colors duration-300 group-hover/item:text-blue-600" size={24} />
+                          <Mail
+                            className="text-slate-600 transition-colors duration-300 group-hover/item:text-blue-600"
+                            size={24}
+                          />
                         </div>
                         <div>
                           <h4 className="mb-1 text-sm font-bold uppercase tracking-wider text-slate-500">
@@ -126,7 +136,10 @@ export default function Contact() {
                     <StaggerItem>
                       <div className="group/item flex items-start gap-5">
                         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-slate-100/80 transition-all duration-300 group-hover/item:bg-blue-50 group-hover/item:scale-110 group-hover/item:shadow-sm border border-slate-200/50">
-                          <Phone className="text-slate-600 transition-colors duration-300 group-hover/item:text-blue-600" size={24} />
+                          <Phone
+                            className="text-slate-600 transition-colors duration-300 group-hover/item:text-blue-600"
+                            size={24}
+                          />
                         </div>
                         <div>
                           <h4 className="mb-1 text-sm font-bold uppercase tracking-wider text-slate-500">
@@ -151,7 +164,11 @@ export default function Contact() {
               </FadeIn>
             </div>
 
-            <FadeIn delay={0.4} direction="left" className="lg:col-span-7 h-full">
+            <FadeIn
+              delay={0.4}
+              direction="left"
+              className="lg:col-span-7 h-full"
+            >
               <Card className="overflow-hidden rounded-3xl border border-white/80 bg-white/80 shadow-[0_8px_40px_rgb(0,0,0,0.08)] backdrop-blur-2xl h-full">
                 <CardContent className="p-8 md:p-12">
                   <div className="mb-8">
@@ -159,13 +176,13 @@ export default function Contact() {
                       Envoyez-nous un message
                     </h3>
                     <p className="text-slate-500 text-lg">
-                      Remplissez le formulaire, nous reviendrons vers vous avec une
-                      réponse claire et personnalisée.
+                      Remplissez le formulaire, nous reviendrons vers vous avec
+                      une réponse claire et personnalisée.
                     </p>
                   </div>
-                  
+
                   <FormErrorBanner message={formError} />
-                  
+
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                     <input
                       type="checkbox"
@@ -175,17 +192,26 @@ export default function Contact() {
                       className="absolute -left-[9999px] h-0 w-0 opacity-0"
                       {...register("botcheck")}
                     />
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2 relative group">
                         <Label
                           htmlFor="nomComplet"
                           className={cn(
                             "text-sm font-bold flex items-center gap-2 transition-colors",
-                            focusedField === "nomComplet" ? "text-blue-600" : "text-slate-700"
+                            focusedField === "nomComplet"
+                              ? "text-blue-600"
+                              : "text-slate-700",
                           )}
                         >
-                          <User size={16} className={focusedField === "nomComplet" ? "text-blue-600" : "text-slate-400"} />
+                          <User
+                            size={16}
+                            className={
+                              focusedField === "nomComplet"
+                                ? "text-blue-600"
+                                : "text-slate-400"
+                            }
+                          />
                           Prénom et Nom <span className="text-red-500">*</span>
                         </Label>
                         <Input
@@ -201,7 +227,7 @@ export default function Contact() {
                             "w-full rounded-xl border-2 px-4 py-6 text-slate-900 transition-all duration-300 placeholder:text-slate-400 bg-white/50",
                             errors.nomComplet
                               ? "border-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 bg-red-50/30"
-                              : "border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 hover:border-slate-300"
+                              : "border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 hover:border-slate-300",
                           )}
                         />
                         {errors.nomComplet && (
@@ -216,10 +242,19 @@ export default function Contact() {
                           htmlFor="email"
                           className={cn(
                             "text-sm font-bold flex items-center gap-2 transition-colors",
-                            focusedField === "email" ? "text-blue-600" : "text-slate-700"
+                            focusedField === "email"
+                              ? "text-blue-600"
+                              : "text-slate-700",
                           )}
                         >
-                          <Mail size={16} className={focusedField === "email" ? "text-blue-600" : "text-slate-400"} />
+                          <Mail
+                            size={16}
+                            className={
+                              focusedField === "email"
+                                ? "text-blue-600"
+                                : "text-slate-400"
+                            }
+                          />
                           Email <span className="text-red-500">*</span>
                         </Label>
                         <Input
@@ -235,7 +270,7 @@ export default function Contact() {
                             "w-full rounded-xl border-2 px-4 py-6 text-slate-900 transition-all duration-300 placeholder:text-slate-400 bg-white/50",
                             errors.email
                               ? "border-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 bg-red-50/30"
-                              : "border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 hover:border-slate-300"
+                              : "border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 hover:border-slate-300",
                           )}
                         />
                         {errors.email && (
@@ -251,10 +286,19 @@ export default function Contact() {
                         htmlFor="telephone"
                         className={cn(
                           "text-sm font-bold flex items-center gap-2 transition-colors",
-                          focusedField === "telephone" ? "text-blue-600" : "text-slate-700"
+                          focusedField === "telephone"
+                            ? "text-blue-600"
+                            : "text-slate-700",
                         )}
                       >
-                        <Phone size={16} className={focusedField === "telephone" ? "text-blue-600" : "text-slate-400"} />
+                        <Phone
+                          size={16}
+                          className={
+                            focusedField === "telephone"
+                              ? "text-blue-600"
+                              : "text-slate-400"
+                          }
+                        />
                         Téléphone <span className="text-red-500">*</span>
                       </Label>
                       <Input
@@ -270,7 +314,7 @@ export default function Contact() {
                           "w-full rounded-xl border-2 px-4 py-6 text-slate-900 transition-all duration-300 placeholder:text-slate-400 bg-white/50",
                           errors.telephone
                             ? "border-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 bg-red-50/30"
-                            : "border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 hover:border-slate-300"
+                            : "border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 hover:border-slate-300",
                         )}
                       />
                       {errors.telephone && (
@@ -285,10 +329,19 @@ export default function Contact() {
                         htmlFor="message"
                         className={cn(
                           "text-sm font-bold flex items-center gap-2 transition-colors",
-                          focusedField === "message" ? "text-blue-600" : "text-slate-700"
+                          focusedField === "message"
+                            ? "text-blue-600"
+                            : "text-slate-700",
                         )}
                       >
-                        <MessageSquare size={16} className={focusedField === "message" ? "text-blue-600" : "text-slate-400"} />
+                        <MessageSquare
+                          size={16}
+                          className={
+                            focusedField === "message"
+                              ? "text-blue-600"
+                              : "text-slate-400"
+                          }
+                        />
                         Message <span className="text-red-500">*</span>
                       </Label>
                       <Textarea
@@ -302,7 +355,7 @@ export default function Contact() {
                           "min-h-[160px] w-full rounded-xl resize-none border-2 px-4 py-4 text-slate-900 transition-all duration-300 placeholder:text-slate-400 bg-white/50",
                           errors.message
                             ? "border-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-500/20 bg-red-50/30"
-                            : "border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 hover:border-slate-300"
+                            : "border-slate-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 hover:border-slate-300",
                         )}
                       />
                       {errors.message && (
@@ -330,7 +383,10 @@ export default function Contact() {
                             </span>
                           ) : (
                             <>
-                              <Send size={20} className="mr-3 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
+                              <Send
+                                size={20}
+                                className="mr-3 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1"
+                              />
                               Envoyer le message
                               <ArrowRight
                                 size={20}

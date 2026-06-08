@@ -33,8 +33,8 @@ export const metadata = createPageMetadata({
 
 export default function About() {
   const stats = [
-    { number: "15+", label: "Partenaires engagés" },
-    { number: "1000+", label: "Bénéficiaires" },
+    { number: "17+", label: "Partenaires engagés" },
+    { number: "3000+", label: "Bénéficiaires" },
     { number: "03+", label: "Années d'expérience" },
   ];
 
@@ -85,9 +85,7 @@ export default function About() {
           <FadeIn delay={0.2} direction="up">
             <h1 className="max-w-5xl text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
               Qui sommes-
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                nous ?
-              </span>
+              <span>nous ?</span>
             </h1>
           </FadeIn>
 

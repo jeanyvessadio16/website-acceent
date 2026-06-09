@@ -14,7 +14,7 @@ export const equipeAcceent = [
   {
     id: 3,
     nomComplet: "Jean François Ndiaye",
-    role: "Chargé de la programmation et évaluation",
+    role: "Responsable des programmes et des formations",
     photoProphile: "/team/jean.jpeg",
   },
   {
@@ -56,13 +56,19 @@ export const equipeAcceent = [
   {
     id: 10,
     nomComplet: "Victor Gullaume Diatta",
-    role: "Chargé de la communication",
+    role: "Responsable Numérique",
     photoProphile: "/team/victor-g.jpeg",
   },
   {
     id: 11,
+    nomComplet: "Abdoul Niang",
+    role: "Responsable administrative et financier",
+    photoProphile: "/team/abdoul.jpeg",
+  },
+  {
+    id: 12,
     nomComplet: "Jean Yves Sadio",
-    role: "Stagiaire à ACCEENT",
+    role: "Stagiaire développement web front-end",
     photoProphile: "/team/yves.jpg",
   },
 ];

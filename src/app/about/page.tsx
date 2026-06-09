@@ -77,7 +77,7 @@ export default function About() {
 
         <div className="container relative z-10 mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
           <FadeIn delay={0.1} direction="down">
-            <span className="mb-6 inline-flex items-center rounded-full border border-blue-200/50 bg-white/60 backdrop-blur-md px-5 py-2 text-sm font-bold text-blue-700 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+            <span className="mb-6 inline-flex items-center rounded-full border border-blue-200/50 bg-white/60 backdrop-blur-md px-5 py-2 text-sm font-bold text-primary shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
               Découvrez ACCEENT
             </span>
           </FadeIn>
@@ -155,14 +155,11 @@ export default function About() {
             {/* Right: Content */}
             <FadeIn delay={0.3} direction="left" className="space-y-10">
               <div>
-                <span className="text-blue-600 font-bold uppercase tracking-widest text-sm mb-4 block">
-                  Notre histoire
+                <span className="text-primary font-bold uppercase tracking-widest text-sm mb-4 block">
+                  A propos de ACCEENT
                 </span>
                 <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
-                  Au cœur de{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
-                    Santhiaba
-                  </span>
+                  Au cœur de <span className="text-primary">Santhiaba</span>
                 </h2>
                 <p className="text-xl text-slate-600 leading-relaxed">
                   ACCEENT est une association profondément ancrée dans son
@@ -261,12 +258,14 @@ export default function About() {
                     Notre mission
                   </h2>
                 </div>
-                <p className="text-xl md:text-2xl text-slate-300 leading-relaxed font-light">
-                  Mettre en mouvement les énergies locales pour que chaque
-                  territoire dispose des moyens d&apos;apprendre,
-                  d&apos;entreprendre et d&apos;innover. Nous concevons et
-                  déployons des programmes concrets, ancrés dans le réel et
-                  co-construits avec les acteurs de terrain.
+                <p className="text-xl md:text-xl text-slate-300 leading-relaxed font-light">
+                  Acceent s&apos;engage à autonomiser les populations locales,
+                  en particulier les jeunes et les femmes, en leur fournissant
+                  des outils, des ressources et des compétences adaptés pour
+                  relever les défis socio-économiques. L&apos;organisation
+                  conçoit et met en œuvre des solutions innovantes et
+                  contextualisées visant à améliorer durablement les conditions
+                  de vie des communautés locales.
                 </p>
               </div>
             </StaggerItem>
@@ -282,10 +281,15 @@ export default function About() {
                     Notre vision
                   </h2>
                 </div>
-                <p className="text-xl md:text-2xl text-slate-300 leading-relaxed font-light">
-                  Des territoires vivants, équitables et créatifs où chacun peut
-                  trouver sa place et révéler son potentiel grâce à
-                  l&apos;éducation, à l&apos;entrepreneuriat et au numérique.
+                <p className="text-xl md:text-xl text-slate-300 leading-relaxed font-light">
+                  Acceent aspire à bâtir des communautés où les bénéficiaires
+                  deviennent de véritables acteurs du changement, capables de
+                  participer activement au développement de leur territoire.
+                  L&apos;organisation imagine un avenir dans lequel les
+                  populations locales disposent des compétences, de
+                  l&apos;autonomie et du pouvoir d&apos;agir nécessaires pour
+                  conduire leur propre développement et contribuer à un progrès
+                  social durable.
                 </p>
               </div>
             </StaggerItem>
@@ -301,7 +305,7 @@ export default function About() {
 
         <div className="container relative z-10 mx-auto px-6 lg:px-8">
           <FadeIn className="mx-auto max-w-3xl text-center mb-20">
-            <span className="mb-4 inline-flex items-center rounded-full border border-blue-200/50 bg-white/50 backdrop-blur-md px-5 py-2 text-sm font-bold text-blue-700 shadow-sm">
+            <span className="mb-4 inline-flex items-center rounded-full border border-blue-200/50 bg-white/50 backdrop-blur-md px-5 py-2 text-sm font-bold text-primary shadow-sm">
               L&apos;humain au cœur
             </span>
             <h2 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6">
@@ -328,7 +332,7 @@ export default function About() {
                     />
                     <div className="absolute bottom-0 left-0 right-0 p-8 z-20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                       <div className="w-12 h-1.5 bg-blue-500 rounded-full mb-5 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                      <h3 className="text-3xl font-bold text-white mb-2">
+                      <h3 className="text-2xl font-bold text-white mb-2">
                         {member.nomComplet}
                       </h3>
                       <p className="text-blue-200 font-medium text-base tracking-wide">

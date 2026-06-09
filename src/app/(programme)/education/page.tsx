@@ -29,8 +29,8 @@ export default function Eduction() {
   return (
     <>
       <HeaderLayout
-        text="Programme Education"
-        title="Former, inspirer et ouvrir de nouvelles opportunités"
+        text="Domaine éducation"
+        title="Education"
         description="Nos programmes d'éducation développent les compétences, la confiance et l'autonomie des jeunes et des femmes à travers des parcours concrets."
         highlights={[
           {

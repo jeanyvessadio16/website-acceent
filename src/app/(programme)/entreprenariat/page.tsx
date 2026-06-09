@@ -13,7 +13,7 @@ import {
 } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
-  title: "Programme Entrepreneuriat",
+  title: "Domaine Entrepreneuriat",
   description:
     "Programmes d'entrepreneuriat ACCEENT à Ziguinchor : incubation, ateliers et forum des acteurs locaux pour accompagner les jeunes porteurs de projets.",
   path: "/entreprenariat",
@@ -30,7 +30,7 @@ export default function Entreprenariat() {
     <>
       <HeaderLayout
         text="Programme Entrepreneuriat"
-        title="Créativité et innovation pour un avenir meilleur"
+        title="Entrepreneuriat"
         description="ACCEENT accompagne les porteurs de projets, les jeunes et les femmes dans la construction de leurs initiatives entrepreneuriales, de l'idée à la réalisation."
       >
         <section className="bg-white py-20">

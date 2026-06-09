@@ -13,7 +13,7 @@ import {
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "Programme Numérique",
+  title: "Domaine Numérique",
   description:
     "Programmes numériques ACCEENT à Ziguinchor : robotique (WRO), intelligence artificielle et initiation au numérique pour les jeunes de la Casamance.",
   path: "/numerique",
@@ -30,7 +30,7 @@ export default function Numerique() {
     <>
       <HeaderLayout
         text="Programme Numérique"
-        title="Le numérique pour un avenir innovant"
+        title="Numérique"
         description="Nos programmes numériques développent les compétences techniques, la confiance et favorisent l'inclusion digitale pour tous les jeunes et les femmes."
       >
         <section className="bg-white py-20">

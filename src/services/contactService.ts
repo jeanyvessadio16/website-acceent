@@ -53,7 +53,7 @@ export class ContactService {
   private static async sendContactEmail(data: ContactFormData): Promise<void> {
     const payload = {
       ...data,
-      access_key: "9f61db8b-108b-4771-b30b-d250af190b1f",
+      access_key: "941aa959-ba42-41ad-be9c-3cada9118e77",
     };
 
     const response = await fetch("https://api.web3forms.com/submit", {

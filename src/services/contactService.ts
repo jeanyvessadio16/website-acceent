@@ -12,6 +12,11 @@ interface ApiContactResponse {
 }
 
 export class ContactService {
+  private static readonly ACCESS_KEY =
+    process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ||
+    process.env.WEB3FORMS_ACCESS_KEY ||
+    "ce7872d0-81e0-466d-a05b-2be4cbb2236f";
+
   /**
    * Valide et envoie le formulaire de contact via l'API /api/contact (Web3Forms)
    */
@@ -53,7 +58,7 @@ export class ContactService {
   private static async sendContactEmail(data: ContactFormData): Promise<void> {
     const payload = {
       ...data,
-      access_key: "941aa959-ba42-41ad-be9c-3cada9118e77",
+      access_key: this.ACCESS_KEY,
     };
 
     const response = await fetch("https://api.web3forms.com/submit", {

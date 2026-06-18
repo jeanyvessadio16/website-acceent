@@ -1,4 +1,4 @@
-import Contact from "@/components/shared/Contact";
+import Contact from "@/components/shared/contact/Contact";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({

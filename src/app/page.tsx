@@ -10,7 +10,7 @@ import {
 import Image from "next/image";
 import Partenaire from "@/components/shared/Partenaires";
 import { ArrowRight } from "lucide-react";
-import Contact from "@/components/shared/Contact";
+import Contact from "@/components/shared/contact/Contact";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo";
 import {

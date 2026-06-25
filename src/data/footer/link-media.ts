@@ -4,7 +4,6 @@ export const mediaLinks = [
   SOCIAL_PROFILES.facebook,
   SOCIAL_PROFILES.instagram,
   SOCIAL_PROFILES.tiktok,
-  SOCIAL_PROFILES.x,
   SOCIAL_PROFILES.whatsapp,
 ].map((profile) => ({
   name: profile.name,

@@ -29,13 +29,6 @@ export const SOCIAL_PROFILES = {
     handle: "campusacceent",
     icon: "/logo/media-social/tik-tok.svg",
   },
-  x: {
-    id: "x",
-    name: "X",
-    url: "",
-    handle: X_HANDLE,
-    icon: "/logo/media-social/x.svg",
-  },
   whatsapp: {
     id: "whatsapp",
     name: "WhatsApp",

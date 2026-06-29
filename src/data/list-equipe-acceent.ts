@@ -68,7 +68,7 @@ export const equipeAcceent = [
   {
     id: 12,
     nomComplet: "Jean Yves Sadio",
-    role: "Stagiaire développement web front-end",
+    role: "Développeur web front-end",
     photoProphile: "/team/yves.jpg",
   },
 ];

@@ -27,9 +27,14 @@ export const metadata = createPageMetadata({
   path: "/",
   keywords: [
     "ACCEENT Ziguinchor",
-    "association éducation Casamance",
-    "formation entrepreneuriat jeunes",
-    "programmes numériques Sénégal",
+    "association Ziguinchor",
+    "association éducation Ziguinchor",
+    "formation entrepreneuriat Ziguinchor",
+    "programmes numériques Ziguinchor",
+    "inclusion numérique filles Ziguinchor",
+    "autonomie des jeunes filles Ziguinchor",
+    "mentorat jeunes filles Ziguinchor",
+    "égalité filles-garçons Ziguinchor",
   ],
 });
 

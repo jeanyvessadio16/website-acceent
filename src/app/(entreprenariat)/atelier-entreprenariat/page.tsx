@@ -8,9 +8,17 @@ export const metadata = createPageMetadata({
     "Les ateliers entrepreneuriat ACCEENT à Ziguinchor encouragent l'esprit d'entreprise chez les jeunes : idéation, structuration de projet et travail en équipe.",
   path: "/atelier-entreprenariat",
   keywords: [
+    "entrepreneuriat",
+    "ACCEENT'Atelier Entrepreneuriat",
+    "atelier entrepreneuriat",
     "atelier entrepreneuriat jeunes",
-    "créativité startup Ziguinchor",
-    "formation business plan Casamance",
+    "entrepreneuriat jeunes Ziguinchor",
+    "formation business plan Ziguinchor",
+    "ACCEENT",
+    "entrepreneuriat Ziguinchor",
+    "ACCEENT entrepreneuriat",
+    "ACCEENT entrepreneuriat jeunes",
+    "ACCEENT entrepreneuriat jeunes Ziguinchor",
   ],
 });
 

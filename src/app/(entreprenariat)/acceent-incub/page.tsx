@@ -11,8 +11,13 @@ export const metadata = createPageMetadata({
   keywords: [
     "incubateur Ziguinchor",
     "ACCEENT INCUB",
-    "jeunes entrepreneurs Casamance",
-    "accompagnement startup Sénégal",
+    "ACCEENT'INCUB",
+    "jeunes entrepreneurs Ziguinchor",
+    "accompagnement startup Ziguinchor",
+    "accompagnement startup Casamance",
+    "entrepreneuriat Ziguinchor",
+    "entrepreneuriat jeunes Ziguinchor",
+    "entrepreneuriat jeunes Casamance",
   ],
 });
 

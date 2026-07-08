@@ -9,10 +9,12 @@ export const metadata = createPageMetadata({
     "TUT-TANK : accompagnement scolaire et social pour les jeunes filles vulnérables à Ziguinchor, avec un suivi personnalisé pour favoriser la réussite et l'autonomie.",
   path: "/tut-tank",
   keywords: [
+    "TUT-TANK Ziguinchor",
     "accompagnement scolaire filles Ziguinchor",
+    "soutien familial Ziguinchor",
     "TUT-TANK ACCEENT",
-    "jeunes filles vulnérables Casamance",
-    "réussite scolaire Sénégal",
+    "jeunes filles vulnérables Ziguinchor",
+    "réussite scolaire Ziguinchor",
   ],
 });
 

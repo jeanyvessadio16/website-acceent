@@ -19,13 +19,14 @@ export const metadata = createPageMetadata({
     "ACCEENT4ELLES met en lumière des parcours de femmes dans la tech à Ziguinchor pour promouvoir la diversité, l'inclusion et inspirer les jeunes filles du numérique.",
   path: "/acceent-elles",
   keywords: [
-    "filles éduquées",
+    "éducation filles Ziguinchor",
+    "autonomisation des jeunes filles",
     "inclusion des filles",
     "ACCEENT4ELLES Ziguinchor",
     "jeunes filles vulnérables",
     "autonomie des jeunes filles",
     "mentorat jeunes filles",
-    "égalité filles-garçons",
+    "renforcement capaciter jeunes filles",
   ],
 });
 
@@ -33,7 +34,7 @@ export default function AcceentEllesPage() {
   const programme = {
     titre: "ACCEENT4ELLES",
     description:
-      "ACCEENT4ELLES est un programme d'éducation pour filles à Ziguinchor, axé sur l'autonomisation, le mentorat et la promotion de l'égalité filles-garçons. Découvrez nos actions pour soutenir les jeunes filles vulnérables et leur offrir un avenir meilleur.",
+      "Autonomiser les jeunes filles pour un avenir meilleur à Ziguinchor",
   };
 
   const iconMap = {

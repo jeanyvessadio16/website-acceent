@@ -29,7 +29,7 @@ export default function Entreprenariat() {
   return (
     <>
       <HeaderLayout
-        text="Programme Entrepreneuriat"
+        text="Domaine"
         title="Entrepreneuriat"
         description="ACCEENT accompagne les porteurs de projets, les jeunes et les femmes dans la construction de leurs initiatives entrepreneuriales, de l'idée à la réalisation."
       >

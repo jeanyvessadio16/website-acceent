@@ -29,9 +29,9 @@ export default function Numerique() {
   return (
     <>
       <HeaderLayout
-        text="Programme Numérique"
+        text="Domaine"
         title="Numérique"
-        description="Nos programmes numériques développent les compétences techniques, la confiance et favorisent l'inclusion digitale pour tous les jeunes et les femmes."
+        description="Nos programmes numériques développent ou améliorent les compétences, la confiance et favorisent l'inclusion digitale pour tous les jeunes et les femmes."
       >
         <section className="bg-white py-20">
           <div className="section-container">
@@ -85,6 +85,18 @@ export default function Numerique() {
           </div>
         </section>
 
+        <section>
+          <div className="section-container">
+            <p className="text-lg leading-relaxed text-slate-600 mb-20">
+              ACCEENT organise des formations au numérique destinées aux jeunes
+              et aux Groupements d’Intérêt Économique (GIE) de la région de
+              Ziguinchor. Ces sessions permettent d&apos;initier les jeunes aux
+              outils numériques tout en renforçant les compétences en gestion
+              financière des GIE.
+            </p>
+          </div>
+        </section>
+
         <section className="bg-gradient-to-b from-slate-50 to-white py-20">
           <div className="section-container">
             <FadeIn
@@ -101,8 +113,7 @@ export default function Numerique() {
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 md:text-lg">
                   Nos actions numériques vous forment aux compétences de demain,
-                  réduisent la fracture numérique et vous ouvrent de nouvelles
-                  opportunités professionnelles.
+                  et vous ouvrent de nouvelles opportunités professionnelles.
                 </p>
                 <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
                   <Button asChild size="lg" className="rounded-full px-8">

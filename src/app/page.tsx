@@ -95,7 +95,7 @@ export default function Home() {
               <p className="section-subheading">
                 Nous agissons sur trois domaines essentiels pour accompagner les
                 jeunes et les femmes de Ziguinchor dans le développement de
-                leurs compétences.
+                leurs compétences et la réalisation de leurs projets.
               </p>
             </FadeIn>
             <StaggerContainer

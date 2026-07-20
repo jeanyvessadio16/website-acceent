@@ -62,6 +62,12 @@ export default function About() {
     },
   ];
 
+  const pillars = [
+    { title: "Éducation", href: "/education" },
+    { title: "Entrepreneuriat", href: "/entreprenariat" },
+    { title: "Numérique", href: "/numerique" },
+  ];
+
   return (
     <main className="min-h-screen bg-slate-50 selection:bg-blue-200">
       {/* 1. HERO SECTION */}
@@ -91,8 +97,7 @@ export default function About() {
 
           <FadeIn delay={0.3} direction="up">
             <p className="max-w-2xl mx-auto text-xl md:text-2xl text-slate-600 leading-relaxed mb-16">
-              Une équipe motivée et engagée pour former, inspirer et accompagner
-              les jeunes et les femmes de Ziguinchor vers l&apos;autonomie.
+              Nous sommes une association engagée à Ziguinchor, en Casamance.
             </p>
           </FadeIn>
 
@@ -159,36 +164,37 @@ export default function About() {
                   A propos de ACCEENT
                 </span>
                 <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
-                  Au cœur de <span className="text-primary">Santhiaba</span>
+                  Au cœur de <span className="text-primary">Ziguinchor</span>
                 </h2>
                 <p className="text-xl text-slate-600 leading-relaxed">
-                  ACCEENT est une association profondément ancrée dans son
-                  territoire. Nous œuvrons chaque jour pour créer des ponts
-                  entre les talents locaux et les opportunités de demain, en
-                  mettant l&apos;humain au centre de notre démarche.
+                  Basée à Ziguinchor (quartier Santhiaba), l&apos;association
+                  ACCEENT s&apos;investit dans l&apos;éducation,
+                  l&apos;entrepreneuriat, le numérique et le développement
+                  durable à travers ses programmes. Son action repose sur un
+                  ancrage territorial fort pour impulser un changement social
+                  inclusif et pérenne.
                 </p>
               </div>
 
               <div className="pt-8 border-t border-slate-100">
-                <span className="text-slate-900 font-bold text-xl mb-6 block">
-                  Nos 3 piliers d&apos;action :
+                <span className="text-primary font-bold text-xl mb-6 block">
+                  Découvrez nos 3 piliers d&apos;action :
                 </span>
                 <div className="flex flex-wrap gap-4">
-                  {["Éducation", "Entrepreneuriat", "Numérique"].map(
-                    (item, i) => (
-                      <div
-                        key={i}
-                        className="group flex items-center gap-3 rounded-2xl border border-slate-200/60 bg-slate-50 px-6 py-4 transition-all duration-300 hover:bg-white hover:shadow-lg hover:shadow-slate-200/50 hover:border-blue-200"
-                      >
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                          <Zap className="w-4 h-4" />
-                        </div>
-                        <span className="text-slate-800 font-bold text-lg">
-                          {item}
-                        </span>
+                  {pillars.map((pillar) => (
+                    <Link
+                      key={pillar.title}
+                      href={pillar.href}
+                      className="group flex items-center gap-3 rounded-2xl border border-slate-200/60 bg-slate-50 px-6 py-4 transition-all duration-300 hover:bg-white hover:shadow-lg hover:shadow-slate-200/50 hover:border-blue-200"
+                    >
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-blue-600 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                        <Zap className="w-4 h-4" />
                       </div>
-                    ),
-                  )}
+                      <span className="text-slate-800 font-bold text-lg">
+                        {pillar.title}
+                      </span>
+                    </Link>
+                  ))}
                 </div>
               </div>
             </FadeIn>
@@ -199,13 +205,13 @@ export default function About() {
       {/* 3. NOS VALEURS */}
       <section className="py-32 relative bg-slate-50 overflow-hidden">
         <div className="container mx-auto px-6 lg:px-8 relative z-10">
-          <FadeIn className="max-w-3xl mb-20">
-            <h2 className="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6">
+          <FadeIn className="mb-20">
+            <h2 className="text-4xl md:text-6xl text-center font-extrabold text-slate-900 mb-6">
               Nos valeurs
             </h2>
-            <p className="text-xl text-slate-600 leading-relaxed">
-              Une approche humaine et professionnelle pour transformer
-              durablement les territoires.
+            <p className="text-xl text-center text-slate-600 leading-relaxed">
+              Une inclusion des jeunes et des femmes, un impact local et une
+              innovation utile sont au cœur de notre action.
             </p>
           </FadeIn>
 

@@ -71,19 +71,23 @@ export default function Contact() {
               Restons en contact
             </span>
             <h2 className="mb-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-none">
-              Discutons de votre <span className="text-primary">projet</span>
+              Contactez-nous
             </h2>
             <p className="mx-auto max-w-2xl text-lg md:text-xl text-slate-600 leading-relaxed">
-              Nous sommes là pour vous accompagner. N&apos;hésitez pas à nous
-              contacter pour toute question ou collaboration, nous vous
-              répondrons rapidement.
+              Pour toute question, suggestion ou demande de partenariat,
+              n&apos;hésitez pas à nous contacter. Nous sommes là pour vous
+              aider et répondre à vos besoins.
             </p>
           </FadeIn>
 
           <div className="grid items-stretch gap-10 lg:grid-cols-12">
             {/* Left Column: Info */}
             <div className="lg:col-span-5 flex flex-col justify-between space-y-8">
-              <FadeIn delay={0.2} direction="right" className="h-full flex flex-col justify-between gap-6">
+              <FadeIn
+                delay={0.2}
+                direction="right"
+                className="h-full flex flex-col justify-between gap-6"
+              >
                 <div className="rounded-3xl border border-white/60 bg-white/60 p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-xl relative overflow-hidden group flex-grow">
                   <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
@@ -94,7 +98,10 @@ export default function Contact() {
                     Nos coordonnées
                   </h3>
 
-                  <StaggerContainer delay={0.3} className="space-y-8 relative z-10">
+                  <StaggerContainer
+                    delay={0.3}
+                    className="space-y-8 relative z-10"
+                  >
                     <StaggerItem>
                       <div className="group/item flex items-start gap-5">
                         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white transition-all duration-300 group-hover/item:bg-primary/5 group-hover/item:scale-110 group-hover/item:shadow-md border border-slate-200/50">
@@ -169,7 +176,7 @@ export default function Contact() {
                   </div>
                   <span className="text-slate-700 flex items-center gap-1.5">
                     <Clock size={14} className="text-slate-400" />
-                    Temps de réponse : moins de 24h les jours ouvrés
+                    Nous vous répondrons dans les 72 heures ouvrables.
                   </span>
                 </div>
               </FadeIn>

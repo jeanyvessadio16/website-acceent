@@ -62,7 +62,7 @@ export default function Home() {
             </FadeIn>
             <FadeIn delay={0.3} direction="up">
               <p className="max-w-2xl text-slate-200 text-fluid-p-large">
-                Action pour la Contribution Collective pour l&apos;Education,
+                Action pour la Contribution Collective pour l&apos;Éducation,
                 l&apos;Entrepreneuriat et le Numérique des Territoires.
               </p>
             </FadeIn>
@@ -93,8 +93,9 @@ export default function Home() {
                 Nos domaines d&apos;intervention
               </h2>
               <p className="section-subheading">
-                Nous agissons sur trois axes essentiels pour accompagner les
-                jeunes et les femmes de Ziguinchor vers l&apos;autonomie.
+                Nous agissons sur trois domaines essentiels pour accompagner les
+                jeunes et les femmes de Ziguinchor dans le développement de
+                leurs compétences.
               </p>
             </FadeIn>
             <StaggerContainer
@@ -115,8 +116,10 @@ export default function Home() {
                           />
                         </div>
                         <div className="p-6 md:p-8 flex flex-col flex-grow">
-                          <CardTitle className="mb-3 text-fluid-h3 text-primary">
-                            <h3>{domaine.nom}</h3>
+                          <CardTitle className="mb-3 text-2xl text-primary">
+                            <h3>
+                              <strong>{domaine.nom}</strong>
+                            </h3>
                           </CardTitle>
                           <CardDescription className="text-fluid-p text-slate-600 flex-grow">
                             <p>{domaine.description}</p>
@@ -149,8 +152,9 @@ export default function Home() {
                 Notre Impact en Images
               </h2>
               <p className="section-subheading">
-                Un aperçu de nos actions et de notre engagement sur le terrain à
-                Ziguinchor.
+                Nos réalisations et activités à travers des images qui
+                illustrent notre engagement envers l&apos;éducation,
+                l&apos;entrepreneuriat et le numérique à Ziguinchor.
               </p>
             </FadeIn>
             <StaggerContainer

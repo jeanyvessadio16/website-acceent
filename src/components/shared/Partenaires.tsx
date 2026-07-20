@@ -9,15 +9,12 @@ export default function Partenaire() {
   return (
     <section className="space-y-8 rounded-4xl border border-slate-200/60 bg-white/90 p-6 shadow-xl shadow-slate-900/5 backdrop-blur-xl md:p-10">
       <div className="mx-auto max-w-3xl text-center">
-        <p className="mb-3 text-sm uppercase tracking-[0.35em] text-slate-500">
+        <p className="mb-3 text-sm uppercase tracking-[0.35em] text-slate-500 hidden">
           Nos partenaires
         </p>
-        <h2 className="text-fluid-h2 text-slate-950 mb-4">
-          Ils accompagnent nos projets.
-        </h2>
+        <h2 className="text-fluid-h2 text-slate-950 mb-4">Nos partenaires</h2>
         <p className="mx-auto max-w-2xl text-fluid-p text-slate-600">
-          Une sélection de partenaires engagés et complémentaires qui
-          participent à l&apos;impact de nos programmes.
+          Nos partenaires sont des acteurs clés dans notre mission.
         </p>
       </div>
 
@@ -27,7 +24,11 @@ export default function Partenaire() {
 
         <div className="partner-track">
           {[0, 1].map((groupIndex) => (
-            <div className="partner-group" key={groupIndex} aria-hidden={groupIndex === 1}>
+            <div
+              className="partner-group"
+              key={groupIndex}
+              aria-hidden={groupIndex === 1}
+            >
               {partenaires.map((partenaire: Partenaire) => (
                 <Card
                   key={`${groupIndex}-${partenaire.id}`}

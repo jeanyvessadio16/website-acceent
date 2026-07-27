@@ -22,6 +22,11 @@ export const metadata = createPageMetadata({
     "programme Tut-Tank",
     "ACCEENT4ELLES",
     "formation jeunes filles Casamance",
+    "Education feminine Ziguinchor",
+    "accompagnment scolaire Ziguinchor",
+    "accompagnment scolaire Casamance",
+    "Education inclusive Ziguinchor",
+    "Education inclusive Casamance"
   ],
 });
 

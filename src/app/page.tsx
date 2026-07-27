@@ -66,7 +66,7 @@ export default function Home() {
                   l&apos;Entrepreneuriat et le Numérique des Territoires.</strong>
               </p> */}
               <p className="max-w-2xl text-slate-200 text-fluid-p-large">
-                Nous offrons des programmes pour accompagner les jeunes filles en situation de vulnérabilté et renforcer les capacités des jeunes sur les outils informatique à Ziguinchor.
+                Pour un changement durable : l&apos;éducation des jeunes filles en situation de vulnérabilité, l&apos;entrepreneuriat et le numérique des jeunes sont nos priorités dans la région de Ziguinchor.
               </p>
             </FadeIn>
             <FadeIn delay={0.4} direction="up">
@@ -77,7 +77,7 @@ export default function Home() {
                   className="rounded-full px-8 shadow-lg shadow-black/30"
                 >
                   <Link href={"/about"}>
-                    En savoir plus
+                    À propos de nous
                     <ArrowRight className="ml-2" aria-hidden="true" size={20} />
                   </Link>
                 </Button>

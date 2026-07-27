@@ -45,7 +45,7 @@ export default function Home() {
       <WebSiteJsonLd />
       <div>
         <section
-          className="relative w-full min-h-screen flex flex-col justify-center items-center overflow-hidden bg-[url('/images/acceentImage.jpg')] bg-cover bg-fixed bg-center lg:bg-top"
+          className="relative w-full min-h-screen flex flex-col justify-center items-center overflow-hidden bg-[url('/team/team.jpeg')] bg-cover bg-fixed bg-center lg:bg-center"
           aria-labelledby="hero-heading"
         >
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/75 via-black/65 to-black/75" />
@@ -61,9 +61,12 @@ export default function Home() {
               </h1>
             </FadeIn>
             <FadeIn delay={0.3} direction="up">
+              {/* <p className="max-w-2xl text-slate-200 text-fluid-p-large">
+                <strong>Action pour la Contribution Collective pour l&apos;Éducation,
+                  l&apos;Entrepreneuriat et le Numérique des Territoires.</strong>
+              </p> */}
               <p className="max-w-2xl text-slate-200 text-fluid-p-large">
-                Action pour la Contribution Collective pour l&apos;Éducation,
-                l&apos;Entrepreneuriat et le Numérique des Territoires.
+                Nous offrons des programmes pour accompagner les jeunes filles en situation de vulnérabilté et renforcer les capacités des jeunes sur les outils informatique à Ziguinchor.
               </p>
             </FadeIn>
             <FadeIn delay={0.4} direction="up">

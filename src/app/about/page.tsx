@@ -16,6 +16,7 @@ import {
   Compass,
   HeartHandshake,
   Sparkles,
+  ArrowDown,
 } from "lucide-react";
 
 export const metadata = createPageMetadata({
@@ -84,20 +85,19 @@ export default function About() {
         <div className="container relative z-10 mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
           <FadeIn delay={0.1} direction="down">
             <span className="mb-6 inline-flex items-center rounded-full border border-blue-200/50 bg-white/60 backdrop-blur-md px-5 py-2 text-sm font-bold text-primary shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
-              Découvrez ACCEENT
+              Découvrez <ArrowDown className="ml-3" />
             </span>
           </FadeIn>
 
           <FadeIn delay={0.2} direction="up">
-            <h1 className="max-w-5xl text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
-              Qui sommes-
-              <span>nous ?</span>
+            <h1 className="max-w-5xl text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-primary mb-8 leading-[1.1]">
+              ACCEENT
             </h1>
           </FadeIn>
 
           <FadeIn delay={0.3} direction="up">
             <p className="max-w-2xl mx-auto text-xl md:text-2xl text-slate-600 leading-relaxed mb-16">
-              Nous sommes une association engagée à Ziguinchor, en Casamance.
+              <strong><span className="text-primary">A</span>ction pour <span className="text-primary">C</span>ontribution <span className="text-primary">C</span>ollective pour l'<span className="text-primary">E</span>ducation, l'<span className="text-primary">E</span>ntrepreneuriat et le <span className="text-primary">N</span>umérique des <span className="text-primary">T</span>erritoires</strong>
             </p>
           </FadeIn>
 
@@ -109,7 +109,7 @@ export default function About() {
               <StaggerItem key={i}>
                 <div className="group relative rounded-3xl border border-white/60 bg-white/40 p-8 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:bg-white/60 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] transition-all duration-500 overflow-hidden text-center">
                   <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <p className="relative text-4xl md:text-5xl font-black text-slate-900 mb-2">
+                  <p className="relative text-3xl md:text-4xl font-black text-slate-900 mb-2">
                     {stat.number}
                   </p>
                   <p className="relative text-sm uppercase tracking-widest font-bold text-slate-500">
@@ -172,7 +172,7 @@ export default function About() {
                   l&apos;entrepreneuriat, le numérique et le développement
                   durable à travers ses programmes. Son action repose sur un
                   ancrage territorial fort pour impulser un changement social
-                  inclusif et pérenne.
+                  inclusif et pérenne. ACCEENT forme et accompagne les jeunes sur l'entrepreneuriat, le numérique et renforce les capacités des GIE en gestion administrative et finacière grâce au projet <strong>YEAH</strong>.
                 </p>
               </div>
 
@@ -209,7 +209,7 @@ export default function About() {
             <h2 className="text-4xl md:text-6xl text-center font-extrabold text-slate-900 mb-6">
               Nos valeurs
             </h2>
-            <p className="text-xl text-center text-slate-600 leading-relaxed">
+            <p className="lg:max-w-2xl lg:mx-auto text-xl text-center text-slate-600 leading-relaxed">
               Une inclusion des jeunes et des femmes, un impact local et une
               innovation utile sont au cœur de notre action.
             </p>

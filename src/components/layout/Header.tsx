@@ -35,7 +35,8 @@ export default function Header() {
   const links = [
     { id: 1, label: "Accueil", href: "/" },
     { id: 2, label: "À propos", href: "/about" },
-    { id: 3, label: "Contact", href: "/contact" },
+    { id: 3, label: "Actualités", href: "/actualites" },
+    { id: 4, label: "Contact", href: "/contact" },
   ] as const;
 
   const navLinkClass = cn(
@@ -51,7 +52,7 @@ export default function Header() {
           "fixed left-0 right-0 z-50 transition-all duration-500 ease-in-out",
           scrolled
             ? "top-0 w-full sm:top-4 sm:w-[calc(100%-2rem)] sm:max-w-6xl sm:left-1/2 sm:-translate-x-1/2 sm:rounded-full bg-white/80 backdrop-blur-xl border-b sm:border border-slate-200/50 shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
-            : "top-0 w-full bg-white/50 backdrop-blur-md border-b border-transparent shadow-none"
+            : "top-0 w-full bg-white/50 backdrop-blur-md border-b border-transparent shadow-none",
         )}
       >
         <div className="px-6 sm:px-8 flex h-20 sm:h-20 items-center justify-between gap-4">
@@ -101,7 +102,7 @@ export default function Header() {
                       />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent 
+                  <DropdownMenuContent
                     align="center"
                     sideOffset={12}
                     className="min-w-[14rem] rounded-2xl border border-white/40 bg-white/95 backdrop-blur-2xl p-2 shadow-2xl shadow-slate-200/50"
@@ -123,7 +124,7 @@ export default function Header() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </li>
-              {links.slice(2).map((lien) => (
+              {links.slice(3, 6).map((lien) => (
                 <li key={lien.id}>
                   <Link href={lien.href} className={navLinkClass}>
                     {lien.label}
@@ -193,7 +194,7 @@ export default function Header() {
               aria-label="Fermer le menu"
               onClick={() => setIsMenuOpen(false)}
             />
-            
+
             <motion.nav
               id="mobile-navigation"
               initial={{ x: "100%" }}
@@ -204,7 +205,7 @@ export default function Header() {
             >
               <ul className="flex flex-col gap-3">
                 {links.slice(0, 2).map((lien, index) => (
-                  <motion.li 
+                  <motion.li
                     key={lien.id}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -219,7 +220,7 @@ export default function Header() {
                     </Link>
                   </motion.li>
                 ))}
-                
+
                 <motion.li
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -246,7 +247,7 @@ export default function Header() {
                 </motion.li>
 
                 {links.slice(2).map((lien, index) => (
-                  <motion.li 
+                  <motion.li
                     key={lien.id}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}

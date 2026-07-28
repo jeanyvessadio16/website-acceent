@@ -1,7 +1,7 @@
 export const equipeAcceent = [
   {
     id: 1,
-    nomComplet: "Fatim Niang Niox",
+    nomComplet: "Fatoumata Niang Niox",
     role: "Directrice ACCEENT",
     photoProphile: "/team/fatim.jpeg",
   },

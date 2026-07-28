@@ -73,31 +73,45 @@ export default function About() {
     <main className="min-h-screen bg-slate-50 selection:bg-blue-200">
       {/* 1. HERO SECTION */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
-        {/* Animated Mesh Gradient Background */}
+        {/* Background Image with Premium Brand Overlays */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-[-20%] left-[-10%] h-[70vw] w-[70vw] rounded-full bg-blue-300/30 blur-[120px] mix-blend-multiply" />
-          <div className="absolute bottom-[-10%] right-[-10%] h-[60vw] w-[60vw] rounded-full bg-purple-300/30 blur-[120px] mix-blend-multiply" />
-          <div className="absolute top-[30%] left-[30%] h-[40vw] w-[40vw] rounded-full bg-cyan-200/40 blur-[100px] mix-blend-overlay" />
-          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] mix-blend-overlay" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-50/50 to-slate-50" />
+          <Image
+            src="/images/acceentImage.jpg"
+            alt="L'équipe ACCEENT et les bénéficiaires à Ziguinchor"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          {/* Deep dark blue-slate overlay to keep text fully readable */}
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-900/80 to-white" />
+
+          {/* Interactive glow / brand mesh gradients */}
+          <div className="absolute top-[-20%] left-[-10%] h-[70vw] w-[70vw] rounded-full bg-blue-500/10 blur-[120px] mix-blend-screen pointer-events-none" />
+          <div className="absolute bottom-[-10%] right-[-10%] h-[60vw] w-[60vw] rounded-full bg-purple-500/10 blur-[120px] mix-blend-screen pointer-events-none" />
+
+          {/* Subtle noise texture */}
+          <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] mix-blend-overlay pointer-events-none" />
         </div>
 
         <div className="container relative z-10 mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
           <FadeIn delay={0.1} direction="down">
-            <span className="mb-6 inline-flex items-center rounded-full border border-blue-200/50 bg-white/60 backdrop-blur-md px-5 py-2 text-sm font-bold text-primary shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
-              Découvrez <ArrowDown className="ml-3" />
+            <span className="mb-6 inline-flex items-center rounded-full border border-white/10 bg-white/10 backdrop-blur-md px-5 py-2 text-sm font-bold text-white shadow-lg">
+              Découvrez <ArrowDown className="ml-3 text-primary animate-bounce" />
             </span>
           </FadeIn>
 
           <FadeIn delay={0.2} direction="up">
-            <h1 className="max-w-5xl text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-primary mb-8 leading-[1.1]">
+            <h1 className="max-w-5xl text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-blue-200 mb-8 leading-[1.1] drop-shadow-sm">
               ACCEENT
             </h1>
           </FadeIn>
 
           <FadeIn delay={0.3} direction="up">
-            <p className="max-w-2xl mx-auto text-xl md:text-2xl text-slate-600 leading-relaxed mb-16">
-              <strong><span className="text-primary">A</span>ction pour <span className="text-primary">C</span>ontribution <span className="text-primary">C</span>ollective pour l'<span className="text-primary">E</span>ducation, l'<span className="text-primary">E</span>ntrepreneuriat et le <span className="text-primary">N</span>umérique des <span className="text-primary">T</span>erritoires</strong>
+            <p className="max-w-3xl mx-auto text-xl md:text-2xl text-slate-200 leading-relaxed mb-16 drop-shadow-sm">
+              <strong>
+                <span className="font-extrabold">A</span>ction pour <span className="font-extrabold">C</span>ontribution <span className="font-extrabold">C</span>ollective pour l&apos;<span className="font-extrabold">É</span>ducation, l&apos;<span className="font-extrabold">E</span>ntrepreneuriat et le <span className="font-extrabold">N</span>umérique des <span className="font-extrabold">T</span>erritoires
+              </strong>
             </p>
           </FadeIn>
 
@@ -107,12 +121,12 @@ export default function About() {
           >
             {stats.map((stat, i) => (
               <StaggerItem key={i}>
-                <div className="group relative rounded-3xl border border-white/60 bg-white/40 p-8 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:bg-white/60 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] transition-all duration-500 overflow-hidden text-center">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <p className="relative text-3xl md:text-4xl font-black text-slate-900 mb-2">
+                <div className="group relative rounded-3xl border border-slate-200/50 bg-white/90 p-8 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:bg-white hover:scale-[1.02] hover:shadow-[0_15px_40px_rgba(0,0,0,0.12)] transition-all duration-500 overflow-hidden text-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <p className="relative text-3xl md:text-4xl font-black text-primary mb-2">
                     {stat.number}
                   </p>
-                  <p className="relative text-sm uppercase tracking-widest font-bold text-slate-500">
+                  <p className="relative text-sm uppercase tracking-widest font-bold text-slate-600">
                     {stat.label}
                   </p>
                 </div>

@@ -337,27 +337,29 @@ export default function About() {
             </p>
           </FadeIn>
 
-          <StaggerContainer className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+          <StaggerContainer className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-6xl mx-auto">
             {equipeAcceent.map((member) => (
               <StaggerItem key={member.id}>
-                <Card className="group relative p-0 overflow-hidden rounded-[2.5rem] border-0 bg-white shadow-lg hover:shadow-2xl transition-all duration-500">
-                  <div className="aspect-[4/5] w-full relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/20 to-transparent z-10 opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
+                <Card className="group relative flex flex-col h-full overflow-hidden rounded-3xl border border-slate-100 bg-white p-4 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_28px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 transition-all duration-500">
+                  {/* Image container inside card padding */}
+                  <div className="aspect-square w-full relative overflow-hidden rounded-2xl bg-slate-50">
                     <Image
                       src={member.photoProphile}
                       alt={member.nomComplet}
                       fill
-                      className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     />
-                    <div className="absolute bottom-0 left-0 right-0 p-8 z-20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                      <div className="w-12 h-1.5 bg-blue-500 rounded-full mb-5 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                      <h3 className="text-2xl font-bold text-white mb-2">
-                        {member.nomComplet}
-                      </h3>
-                      <p className="text-blue-200 font-medium text-base tracking-wide">
+                  </div>
+                  {/* Name and role info */}
+                  <div className="pt-4 flex flex-col flex-grow text-center items-center justify-between">
+                    <h3 className="text-base font-extrabold text-slate-900 group-hover:text-primary transition-colors duration-300 leading-snug line-clamp-1 mb-2">
+                      {member.nomComplet}
+                    </h3>
+                    <div className="w-full mt-auto flex items-center justify-center min-h-[3rem]">
+                      <span className="inline-flex items-center justify-center px-3 py-1.5 text-[11px] font-extrabold text-primary bg-slate-50 border border-slate-100 rounded-2xl leading-normal text-center w-full">
                         {member.role}
-                      </p>
+                      </span>
                     </div>
                   </div>
                 </Card>

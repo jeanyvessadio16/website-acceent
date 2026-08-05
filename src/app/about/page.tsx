@@ -57,7 +57,7 @@ export default function About() {
     {
       title: "Innovation utile",
       description:
-        "Nous utilisons le numérique comme levier concret d'apprentissage, d'emploi et d'entrepreneuriat.",
+        "Nous utilisons le numérique comme levier concret d'apprentissage, d'insertion professionnelle et d'entrepreneuriat.",
       icon: <Lightbulb className="w-6 h-6 text-amber-600" />,
       color: "bg-amber-500",
     },
@@ -383,7 +383,7 @@ export default function About() {
 
             <div className="relative z-10 flex flex-col items-center">
               <h2 className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tight">
-                Rejoignez notre mission
+                Rejoignez-nous
               </h2>
               <p className="text-xl md:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto font-light leading-relaxed">
                 Ensemble, transformons les territoires par l&apos;éducation,

@@ -11,7 +11,6 @@ export const metadata = createPageMetadata({
   keywords: [
     "incubateur Ziguinchor",
     "ACCEENT INCUB",
-    "ACCEENT'INCUB",
     "jeunes entrepreneurs Ziguinchor",
     "accompagnement startup Ziguinchor",
     "accompagnement startup Casamance",
@@ -30,10 +29,7 @@ export default function AcceentIncub() {
 
   return (
     <>
-      <ProgrammeLayout
-        image="/images/acceent-incub.jpeg"
-        {...programme}
-      >
+      <ProgrammeLayout image="/images/acceent-incub.jpeg" {...programme}>
         <section>
           <div className="space-y-6 text-center">
             <h2 className="text-4xl font-bold md:text-5xl">

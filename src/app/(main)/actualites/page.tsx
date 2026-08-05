@@ -4,6 +4,9 @@ import { ActualitesList } from "@/components/actualites/ActualitesList";
 import { FadeIn } from "@/components/shared/Animations";
 import { Sparkles } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata = createPageMetadata({
   title: "Actualités",
   description:

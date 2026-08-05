@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, User, ArrowRight, BookOpen, Search, X, Sparkles, Clock, Share2, Tag } from "lucide-react";
@@ -21,8 +22,41 @@ interface ActualitesListProps {
 }
 
 export function ActualitesList({ posts }: ActualitesListProps) {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPost, setSelectedPost] = useState<PublishedPost | null>(null);
+
+  // ── Rafraîchissement automatique en temps réel ─────────────────────────────
+  useEffect(() => {
+    // Polling toutes les 10 secondes pour charger les modifications en temps réel
+    const interval = setInterval(() => {
+      router.refresh();
+    }, 10000);
+
+    // Rafraîchit les données lorsque l'utilisateur revient sur la page / l'onglet
+    const handleFocus = () => {
+      router.refresh();
+    };
+
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("focus", handleFocus);
+    };
+  }, [router]);
+
+  // ── Synchroniser la modale de lecture en temps réel si l'article est modifié ─
+  useEffect(() => {
+    if (selectedPost) {
+      const updated = posts.find((p) => p.id === selectedPost.id);
+      if (updated) {
+        setSelectedPost(updated);
+      } else {
+        setSelectedPost(null);
+      }
+    }
+  }, [posts]);
 
   const filteredPosts = posts.filter(
     (post) =>

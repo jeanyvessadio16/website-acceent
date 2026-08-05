@@ -6,6 +6,9 @@ import { createPageMetadata } from "@/lib/seo";
 import { Calendar, User, ArrowLeft, Share2, Sparkles, BookOpen } from "lucide-react";
 import { FadeIn } from "@/components/shared/Animations";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 interface PostPageProps {
   params: Promise<{ slug: string }>;
 }

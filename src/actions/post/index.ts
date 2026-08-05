@@ -46,6 +46,8 @@ export async function togglePublishPostAction(postId: string) {
       data: { published: !post.published },
     });
 
+    revalidatePath("/actualites");
+    revalidatePath("/actualites/[slug]", "page");
     revalidatePath("/admin/articles");
     revalidatePath("/admin");
     revalidatePath("/");
@@ -114,6 +116,8 @@ export async function createPostAction(data: CreatePostInput) {
       },
     });
 
+    revalidatePath("/actualites");
+    revalidatePath("/actualites/[slug]", "page");
     revalidatePath("/admin/articles");
     revalidatePath("/admin");
     revalidatePath("/");
@@ -176,6 +180,8 @@ export async function updatePostAction(id: string, data: UpdatePostInput) {
       data: updatePayload,
     });
 
+    revalidatePath("/actualites");
+    revalidatePath("/actualites/[slug]", "page");
     revalidatePath("/admin/articles");
     revalidatePath("/admin");
     revalidatePath("/");
@@ -207,6 +213,8 @@ export async function deletePostAction(postId: string) {
       where: { id: postId },
     });
 
+    revalidatePath("/actualites");
+    revalidatePath("/actualites/[slug]", "page");
     revalidatePath("/admin/articles");
     revalidatePath("/admin");
     revalidatePath("/");

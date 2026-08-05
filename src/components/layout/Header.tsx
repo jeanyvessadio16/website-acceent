@@ -124,7 +124,7 @@ export default function Header() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </li>
-              {links.slice(3, 6).map((lien) => (
+              {links.slice(2).map((lien) => (
                 <li key={lien.id}>
                   <Link href={lien.href} className={navLinkClass}>
                     {lien.label}

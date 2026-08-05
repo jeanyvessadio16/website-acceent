@@ -25,9 +25,10 @@ model User {
   lastname  String
   email     String   @unique
   password  String
-  role      Role     @default(ADMIN)
+  role      Role     @default(USER)
   posts     Post[]
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Renomme la table en "users" dans la base de données PostgreSQL
   @@map("users")

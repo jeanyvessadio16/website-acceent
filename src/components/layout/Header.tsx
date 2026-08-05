@@ -35,7 +35,7 @@ export default function Header() {
   const links = [
     { id: 1, label: "Accueil", href: "/" },
     { id: 2, label: "À propos", href: "/about" },
-    { id: 3, label: "Actualités", href: "/actualites" },
+    { id: 3, label: "Nouvelles", href: "/actualites" },
     { id: 4, label: "Contact", href: "/contact" },
   ] as const;
 

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
 import { createPageMetadata } from "@/lib/seo";
-import { Calendar, User, ArrowLeft, Share2, Sparkles, BookOpen } from "lucide-react";
+import { Calendar, ArrowLeft, Share2, Sparkles, BookOpen } from "lucide-react";
 import { FadeIn } from "@/components/shared/Animations";
 
 export const dynamic = "force-dynamic";
@@ -81,10 +81,6 @@ export default async function PostDetailPage({ params }: PostPageProps) {
         <FadeIn direction="up" delay={0.1}>
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500">
-              <span className="flex items-center gap-1.5 text-[#836182] bg-[#836182]/10 px-3 py-1 rounded-full border border-[#836182]/20">
-                <User className="size-3.5" />
-                Par {authorName}
-              </span>
               <span className="flex items-center gap-1.5 bg-white px-3 py-1 rounded-full border border-slate-200">
                 <Calendar className="size-3.5" />
                 {formattedDate}

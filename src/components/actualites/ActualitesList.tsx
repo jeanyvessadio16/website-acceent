@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, User, ArrowRight, BookOpen, Search, X, Sparkles } from "lucide-react";
+import { Calendar, ArrowRight, BookOpen, Search, X, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
 export interface PublishedPost {
@@ -49,8 +49,7 @@ export function ActualitesList({ posts }: ActualitesListProps) {
   const filteredPosts = posts.filter(
     (post) =>
       post.title.toLowerCase().includes(searchTerm.toLowerCase().trim()) ||
-      post.content.toLowerCase().includes(searchTerm.toLowerCase().trim()) ||
-      post.authorName.toLowerCase().includes(searchTerm.toLowerCase().trim())
+      post.content.toLowerCase().includes(searchTerm.toLowerCase().trim())
   );
 
   const featuredPost = filteredPosts.length > 0 ? filteredPosts[0] : null;
@@ -137,11 +136,6 @@ export function ActualitesList({ posts }: ActualitesListProps) {
                 <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6">
                   <div className="space-y-4">
                     <div className="flex items-center gap-4 text-xs font-semibold text-slate-500">
-                      <span className="flex items-center gap-1.5 text-[#836182]">
-                        <User className="size-3.5" />
-                        {featuredPost.authorName}
-                      </span>
-                      <span>•</span>
                       <span className="flex items-center gap-1.5">
                         <Calendar className="size-3.5" />
                         {featuredPost.createdAt}
@@ -209,11 +203,6 @@ export function ActualitesList({ posts }: ActualitesListProps) {
                     <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                       <div className="space-y-2.5">
                         <div className="flex items-center gap-3 text-xs font-medium text-slate-500">
-                          <span className="flex items-center gap-1 text-[#836182]">
-                            <User className="size-3" />
-                            {post.authorName}
-                          </span>
-                          <span>•</span>
                           <span className="flex items-center gap-1">
                             <Calendar className="size-3" />
                             {post.createdAt}

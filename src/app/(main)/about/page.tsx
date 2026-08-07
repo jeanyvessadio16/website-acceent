@@ -71,8 +71,8 @@ export default function About() {
   return (
     <main className="min-h-screen bg-slate-50 selection:bg-blue-200">
       {/* 1. HERO SECTION */}
-      <section className="relative min-h-[75vh] py-20 md:py-28 flex items-center justify-center overflow-hidden bg-slate-950 text-white">
-        {/* Background Image with High-Contrast Dark Overlays */}
+      <section className="relative min-h-[75vh] py-20 md:py-28 flex items-center justify-center overflow-hidden bg-black text-white">
+        {/* Background Image with Pure Black Overlays */}
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/campus.jpeg"
@@ -80,14 +80,11 @@ export default function About() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-center opacity-35"
+            className="object-cover object-center opacity-40"
           />
-          {/* Rich dark blue gradient overlay to guarantee perfect text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/80 to-slate-950" />
-
-          {/* Glowing brand accents */}
-          <div className="absolute top-[-10%] left-[-10%] h-[50vw] w-[50vw] rounded-full bg-blue-600/20 blur-[130px] mix-blend-screen pointer-events-none" />
-          <div className="absolute bottom-[-10%] right-[-10%] h-[40vw] w-[40vw] rounded-full bg-purple-600/20 blur-[130px] mix-blend-screen pointer-events-none" />
+          {/* Pure black overlay layers to darken background image */}
+          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/30 to-black" />
         </div>
 
         <div className="container relative z-10 mx-auto px-6 lg:px-8 flex flex-col items-center text-center">

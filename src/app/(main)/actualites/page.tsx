@@ -21,34 +21,48 @@ export const metadata = createPageMetadata({
 });
 
 export default async function ActualitesPage() {
-  const dbPosts = await prisma.post.findMany({
-    where: { published: true },
-    orderBy: { createdAt: "desc" },
-    include: {
-      author: {
-        select: {
-          firstname: true,
-          lastname: true,
+  let posts: Array<{
+    id: string;
+    title: string;
+    slug: string;
+    content: string;
+    imageUrl: string | null;
+    authorName: string;
+    createdAt: string;
+  }> = [];
+
+  try {
+    const dbPosts = await prisma.post.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+      include: {
+        author: {
+          select: {
+            firstname: true,
+            lastname: true,
+          },
         },
       },
-    },
-  });
+    });
 
-  const posts = dbPosts.map((p) => ({
-    id: p.id,
-    title: p.title,
-    slug: p.slug,
-    content: p.content,
-    imageUrl: p.imageUrl,
-    authorName: p.author
-      ? `${p.author.firstname} ${p.author.lastname}`
-      : "ACCEENT",
-    createdAt: p.createdAt.toLocaleDateString("fr-FR", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }),
-  }));
+    posts = dbPosts.map((p) => ({
+      id: p.id,
+      title: p.title,
+      slug: p.slug,
+      content: p.content,
+      imageUrl: p.imageUrl,
+      authorName: p.author
+        ? `${p.author.firstname} ${p.author.lastname}`
+        : "ACCEENT",
+      createdAt: p.createdAt.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    }));
+  } catch (error) {
+    console.error("Erreur de connexion à la base de données dans ActualitesPage:", error);
+  }
 
   return (
     <main className="min-h-screen bg-slate-50/50 py-12 sm:py-16">

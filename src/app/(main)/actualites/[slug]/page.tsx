@@ -15,39 +15,53 @@ interface PostPageProps {
 
 export async function generateMetadata({ params }: PostPageProps) {
   const { slug } = await params;
-  const post = await prisma.post.findUnique({
-    where: { slug },
-  });
+  try {
+    const post = await prisma.post.findUnique({
+      where: { slug },
+    });
 
-  if (!post) {
+    if (!post) {
+      return createPageMetadata({
+        title: "Article introuvable",
+        description: "L'article demandé n'existe pas ou n'est plus disponible.",
+        path: `/actualites/${slug}`,
+      });
+    }
+
     return createPageMetadata({
-      title: "Article introuvable",
-      description: "L'article demandé n'existe pas ou n'est plus disponible.",
+      title: post.title,
+      description: post.content.slice(0, 160),
+      path: `/actualites/${post.slug}`,
+    });
+  } catch {
+    return createPageMetadata({
+      title: "Actualités ACCEENT",
+      description: "Découvrez les actualités d'ACCEENT.",
       path: `/actualites/${slug}`,
     });
   }
-
-  return createPageMetadata({
-    title: post.title,
-    description: post.content.slice(0, 160),
-    path: `/actualites/${post.slug}`,
-  });
 }
 
 export default async function PostDetailPage({ params }: PostPageProps) {
   const { slug } = await params;
 
-  const post = await prisma.post.findUnique({
-    where: { slug },
-    include: {
-      author: {
-        select: {
-          firstname: true,
-          lastname: true,
+  let post = null;
+
+  try {
+    post = await prisma.post.findUnique({
+      where: { slug },
+      include: {
+        author: {
+          select: {
+            firstname: true,
+            lastname: true,
+          },
         },
       },
-    },
-  });
+    });
+  } catch (error) {
+    console.error("Erreur de connexion à la base de données dans PostDetailPage:", error);
+  }
 
   if (!post || !post.published) {
     notFound();

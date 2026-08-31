@@ -12,7 +12,7 @@ export interface PublishedPost {
   title: string;
   slug: string;
   content: string;
-  imageUrl: string;
+  imageUrl: string | null;
   createdAt: string;
   authorName: string;
 }

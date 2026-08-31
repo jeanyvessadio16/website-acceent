@@ -93,13 +93,13 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
 
   return (
     <Sidebar
-      className="border-r border-white/[0.08] bg-[#0c0d12]"
+      className="border-r border-white/10 bg-[#0e0f17] text-white"
       style={
         {
-          "--sidebar-background": "#0c0d12",
-          "--sidebar-foreground": "#f4f4f5",
-          "--sidebar-border": "rgba(255,255,255,0.08)",
-          "--sidebar-accent": "rgba(255,255,255,0.04)",
+          "--sidebar-background": "#0e0f17",
+          "--sidebar-foreground": "#ffffff",
+          "--sidebar-border": "rgba(255,255,255,0.12)",
+          "--sidebar-accent": "rgba(131,97,130,0.25)",
           "--sidebar-accent-foreground": "#ffffff",
           "--sidebar-primary": "#836182",
           "--sidebar-primary-foreground": "#ffffff",
@@ -108,35 +108,35 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
       }
     >
       {/* ── En-tête : Logo ACCEENT ──────────────────────────────── */}
-      <SidebarHeader className="px-4 py-4">
+      <SidebarHeader className="px-4 py-5">
         <Link
           href="/"
-          className="flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-white/[0.15] hover:bg-white/[0.06] transition-all group"
+          className="flex items-center gap-3.5 p-3 rounded-2xl bg-white/5 border border-white/10 hover:border-[#836182]/50 hover:bg-white/10 transition-all group"
         >
-          <div className="size-9 rounded-lg bg-gradient-to-br from-[#836182] to-[#b9939e] flex items-center justify-center shadow-sm shrink-0 transition-transform duration-200 group-hover:scale-105">
-            <span className="text-white font-black text-sm tracking-wider">A</span>
+          <div className="size-10 rounded-xl bg-gradient-to-br from-[#836182] to-[#b9939e] flex items-center justify-center shadow-md shrink-0 transition-transform duration-200 group-hover:scale-105">
+            <span className="font-black text-base tracking-wider">A</span>
           </div>
           <div className="flex flex-col leading-tight min-w-0">
-            <span className="text-zinc-100 font-bold text-sm tracking-wide">
+            <span className="text-primary font-black text-base tracking-wide">
               ACCEENT
             </span>
-            <span className="text-zinc-400 text-xs font-medium mt-0.5">
+            <span className="text-[#b9939e] text-xs font-bold mt-0.5">
               Administration
             </span>
           </div>
         </Link>
       </SidebarHeader>
 
-      <SidebarSeparator className="bg-white/[0.06] mx-3 my-1" />
+      <SidebarSeparator className="bg-white/10 mx-4 my-1" />
 
       {/* ── Navigation Principale ─────────────────────────── */}
-      <SidebarContent className="px-3 py-2">
+      <SidebarContent className="px-4 py-3">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-zinc-500 text-[11px] font-semibold uppercase tracking-wider px-2 mb-2">
-            Menu
+          <SidebarGroupLabel className="text-[#b9939e] text-xs font-black uppercase tracking-wider px-2 mb-3">
+            Navigation
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="gap-1">
+            <SidebarMenu className="gap-2">
               {navMain.map((item) => {
                 const active = isActive(item.href, item.exact);
                 return (
@@ -145,24 +145,24 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
                       asChild
                       isActive={active}
                       className={cn(
-                        "group/item h-10 rounded-xl px-3 gap-3 transition-all duration-150",
-                        "text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]",
+                        "group/item h-11 rounded-xl px-3.5 gap-3.5 transition-all duration-150",
+                        "text-primary/70 hover:text-primary hover:bg-white/10",
                         active &&
-                          "bg-[#836182]/20 text-white font-semibold border border-[#836182]/40 shadow-xs"
+                        "bg-gradient-to-r from-[#836182] to-[#6d4c6c] text-white font-bold border border-[#b9939e]/40 shadow-lg shadow-[#836182]/25"
                       )}
                     >
-                      <Link href={item.href} className="flex items-center gap-3 w-full">
+                      <Link href={item.href} className="flex items-center gap-3.5 w-full">
                         <item.icon
                           className={cn(
-                            "size-4 shrink-0 transition-colors",
+                            "size-5 shrink-0 transition-colors",
                             active
-                              ? "text-[#b9939e]"
-                              : "text-zinc-500 group-hover/item:text-zinc-300"
+                              ? "text-white"
+                              : "text-[#b9939e] group-hover/item:text-white"
                           )}
                         />
-                        <span className="text-sm font-medium">{item.label}</span>
+                        <span className="text-sm font-bold tracking-wide">{item.label}</span>
                         {active && (
-                          <ChevronRight className="size-3.5 ml-auto text-[#b9939e]" />
+                          <ChevronRight className="size-4 ml-auto text-white" />
                         )}
                       </Link>
                     </SidebarMenuButton>
@@ -174,12 +174,12 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
         </SidebarGroup>
 
         {/* ── Navigation Secondaire ──────────────────────── */}
-        <SidebarGroup className="mt-4">
-          <SidebarGroupLabel className="text-zinc-500 text-[11px] font-semibold uppercase tracking-wider px-2 mb-2">
+        <SidebarGroup className="mt-6">
+          <SidebarGroupLabel className="text-[#b9939e] text-xs font-black uppercase tracking-wider px-2 mb-3">
             Général
           </SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="gap-1">
+            <SidebarMenu className="gap-2">
               {navSecondary.map((item) => {
                 const active = isActive(item.href);
                 return (
@@ -188,27 +188,27 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
                       asChild
                       isActive={active}
                       className={cn(
-                        "group/item h-10 rounded-xl px-3 gap-3 transition-all duration-150",
-                        "text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]",
+                        "group/item h-11 rounded-xl px-3.5 gap-3.5 transition-all duration-150",
+                        "text-primary/70 hover:text-primary hover:bg-white/10",
                         active &&
-                          "bg-[#836182]/20 text-white font-semibold border border-[#836182]/40 shadow-xs"
+                        "bg-gradient-to-r from-[#836182] to-[#6d4c6c] text-white font-bold border border-[#b9939e]/40 shadow-lg shadow-[#836182]/25"
                       )}
                     >
                       <Link
                         href={item.href}
                         target={item.external ? "_blank" : undefined}
                         rel={item.external ? "noopener noreferrer" : undefined}
-                        className="flex items-center gap-3 w-full"
+                        className="flex items-center gap-3.5 w-full"
                       >
                         <item.icon
                           className={cn(
-                            "size-4 shrink-0 transition-colors",
+                            "size-5 shrink-0 transition-colors",
                             active
-                              ? "text-[#b9939e]"
-                              : "text-zinc-500 group-hover/item:text-zinc-300"
+                              ? "text-white"
+                              : "text-[#b9939e] group-hover/item:text-white"
                           )}
                         />
-                        <span className="text-sm font-medium">{item.label}</span>
+                        <span className="text-sm font-bold tracking-wide">{item.label}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -220,32 +220,32 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
       </SidebarContent>
 
       {/* ── Pied de page : Profil utilisateur + Déconnexion ────── */}
-      <SidebarFooter className="px-3 py-4">
-        <SidebarSeparator className="bg-white/[0.06] mb-3 mx-0" />
+      <SidebarFooter className="px-4 py-5">
+        <SidebarSeparator className="bg-white/10 mb-4 mx-0" />
 
-        {/* Carte de Profil Minimaliste */}
-        <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-colors group/profile">
-          <div className="size-8 rounded-full bg-gradient-to-br from-[#836182] to-[#b9939e] flex items-center justify-center text-white font-semibold text-xs shrink-0 shadow-xs">
+        {/* Carte de Profil Haute Lisibilité */}
+        <div className="flex items-center gap-3 p-3 rounded-2xl bg-[#171926] border border-white/15 shadow-md group/profile">
+          <div className="size-10 rounded-full bg-gradient-to-br from-[#836182] to-[#b9939e] flex items-center justify-center text-white font-black text-sm shrink-0 shadow-sm">
             {initials}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 justify-between">
-              <p className="text-zinc-200 text-xs font-semibold truncate">{displayName}</p>
-              <span className="px-1.5 py-0.5 rounded-full bg-[#836182]/30 text-[#b9939e] border border-[#836182]/40 text-[9px] font-semibold shrink-0">
+              <p className="text-white text-xs font-extrabold truncate">{displayName}</p>
+              <span className="px-2 py-0.5 rounded-full bg-[#836182] text-white border border-white/20 text-[10px] font-black shrink-0">
                 {displayRole}
               </span>
             </div>
-            <p className="text-zinc-400 text-[11px] truncate mt-0.5">{displayEmail}</p>
+            <p className="text-slate-300 text-[11px] font-medium truncate mt-0.5">{displayEmail}</p>
           </div>
         </div>
 
-        {/* Bouton de déconnexion minimaliste */}
-        <form action={logoutAction} className="mt-1.5">
+        {/* Bouton de déconnexion */}
+        <form action={logoutAction} className="mt-3">
           <button
             type="submit"
-            className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-colors text-xs font-medium group/logout cursor-pointer"
+            className="flex items-center gap-3 w-full px-3.5 py-2.5 rounded-xl bg-red-500/80 text-white hover:text-white hover:bg-red-500/70 border border-red-500/30 transition-all text-xs font-bold group/logout cursor-pointer"
           >
-            <LogOut className="size-3.5 shrink-0 transition-colors group-hover/logout:text-red-400" />
+            <LogOut className="size-4 shrink-0 transition-colors group-hover/logout:text-white" />
             Se déconnecter
           </button>
         </form>

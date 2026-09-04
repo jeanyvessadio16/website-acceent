@@ -74,7 +74,7 @@ export default function Home() {
                 <Button
                   asChild
                   size={"xl"}
-                  className="rounded-full px-8 shadow-lg shadow-black/30"
+                  className="rounded-full px-8 shadow-lg shadow-black/30 bg-secondary"
                 >
                   <Link href={"/about"}>
                     À propos de nous

@@ -67,7 +67,6 @@ export default function Contact() {
           {/* Header */}
           <FadeIn delay={0.1} direction="down" className="mb-16 text-center">
             <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md px-5 py-2 text-sm font-bold text-primary shadow-sm">
-              <Sparkles size={14} className="animate-pulse" />
               Restons en contact
             </span>
             <h2 className="mb-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-none">

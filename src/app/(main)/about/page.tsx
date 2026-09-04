@@ -16,6 +16,7 @@ import {
   Compass,
   HeartHandshake,
   Sparkles,
+  EyeIcon,
 } from "lucide-react";
 
 export const metadata = createPageMetadata({
@@ -97,7 +98,6 @@ export default function About() {
           {/* Badge */}
           <FadeIn delay={0.1} direction="down">
             <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/20 backdrop-blur-md px-5 py-2 text-xs md:text-sm font-semibold tracking-wide text-[#f4e6ea] shadow-lg shadow-primary/10">
-              <Sparkles className="w-4 h-4 text-[#b9939e] animate-pulse" />
               Engagement & Impact à Ziguinchor
             </span>
           </FadeIn>
@@ -112,15 +112,8 @@ export default function About() {
           {/* Acronym Breakdown Glassmorphism Card */}
           <FadeIn delay={0.3} direction="up" className="w-full max-w-3xl mx-auto mb-12">
             <div className="relative rounded-3xl border border-white/15 bg-white/10 backdrop-blur-xl p-6 sm:p-8 shadow-2xl shadow-black/40 overflow-hidden group hover:border-primary/40 transition-all duration-500">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-[#b9939e] to-primary/80" />
               <p className="text-lg sm:text-xl md:text-2xl text-slate-100 font-medium leading-relaxed">
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-white font-black text-xl sm:text-2xl mr-1 shadow-md shadow-primary/30">A</span>ction pour la{" "}
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-white font-black text-xl sm:text-2xl mr-1 shadow-md shadow-primary/30">C</span>ontribution{" "}
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-white font-black text-xl sm:text-2xl mr-1 shadow-md shadow-primary/30">C</span>ollective pour l&apos;
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#b9939e] text-slate-950 font-black text-xl sm:text-2xl mr-1 shadow-md shadow-[#b9939e]/30">É</span>ducation, l&apos;
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#b9939e] text-slate-950 font-black text-xl sm:text-2xl mr-1 shadow-md shadow-[#b9939e]/30">E</span>ntrepreneuriat et le{" "}
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#b9939e] text-slate-950 font-black text-xl sm:text-2xl mr-1 shadow-md shadow-[#b9939e]/30">N</span>umérique des{" "}
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-white font-black text-xl sm:text-2xl mr-1 shadow-md shadow-primary/30">T</span>erritoires
+                Action pour la Contribution Collective pour l&apos;Éducation, l&apos;Entrepreneuriat et le Numérique des Territoires
               </p>
             </div>
           </FadeIn>
@@ -283,7 +276,7 @@ export default function About() {
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-400 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
                 <div className="mb-4">
                   <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-4 border border-white/10 group-hover:scale-110 transition-transform duration-500">
-                    <Target className="w-6 h-6 text-blue-400" />
+                    <Target className="w-6 h-6 text-secondary" />
                   </div>
                   <h2 className="text-2xl md:text-3xl font-black text-white mb-3">
                     Notre mission
@@ -306,7 +299,7 @@ export default function About() {
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-400 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
                 <div className="mb-4">
                   <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mb-4 border border-white/10 group-hover:scale-110 transition-transform duration-500">
-                    <Sparkles className="w-6 h-6 text-purple-400" />
+                    <EyeIcon className="w-6 h-6 text-secondary" />
                   </div>
                   <h2 className="text-2xl md:text-3xl font-black text-white mb-3">
                     Notre vision

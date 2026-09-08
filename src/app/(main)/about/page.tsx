@@ -67,7 +67,7 @@ export default function About() {
         <div className="container relative z-10 mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
           <FadeIn delay={0.1} direction="down">
             <span className="mb-4 inline-block rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-200">
-              Organisation locale à Ziguinchor
+              Association à Ziguinchor
             </span>
           </FadeIn>
 
@@ -273,9 +273,9 @@ export default function About() {
               <Button asChild size="lg" className="rounded-full bg-primary text-white font-medium px-8">
                 <Link href="/contact">Nous contacter</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="rounded-full border-white/30 text-white hover:bg-white/10 font-medium px-8">
+              {/* <Button asChild size="lg" variant="outline" className="rounded-full border-white/30 text-white hover:bg-white/10 font-medium px-8">
                 <Link href="/">Retour à l&apos;accueil</Link>
-              </Button>
+              </Button> */}
             </div>
           </div>
         </FadeIn>

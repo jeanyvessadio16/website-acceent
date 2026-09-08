@@ -90,15 +90,15 @@ export default function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="relative flex w-32 h-14 shrink-0 items-center overflow-hidden transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
+            className="relative flex w-44 sm:w-52 h-16 shrink-0 items-center overflow-hidden transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
             aria-label="ACCEENT — Accueil"
           >
             <Image
               src="/logo/logoACCEENT.png"
               alt="ACCEENT Ziguinchor"
               fill
-              className="object-contain object-left"
-              sizes="128px"
+              className="object-contain object-left scale-110 origin-left"
+              sizes="(max-width: 640px) 176px, 208px"
               priority
             />
           </Link>
@@ -246,15 +246,15 @@ export default function Header() {
               <div className="flex items-center justify-between px-5 h-16 border-b border-slate-100 shrink-0">
                 <Link
                   href="/"
-                  className="relative w-28 h-9 overflow-hidden"
+                  className="relative w-36 h-11 overflow-hidden"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <Image
                     src="/logo/logoACCEENT.png"
                     alt="ACCEENT Ziguinchor"
                     fill
-                    className="object-contain object-left"
-                    sizes="112px"
+                    className="object-contain object-left scale-110 origin-left"
+                    sizes="144px"
                   />
                 </Link>
                 <Button

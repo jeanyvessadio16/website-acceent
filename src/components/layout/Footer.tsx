@@ -22,9 +22,9 @@ export default function Footer() {
               <Image
                 src="/logo/logo-acceent.png"
                 alt="Logo ACCEENT"
-                width={140}
-                height={45}
-                className="h-9 w-auto object-contain"
+                width={180}
+                height={58}
+                className="h-12 w-auto object-contain"
               />
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed">

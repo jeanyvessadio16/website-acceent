@@ -40,6 +40,7 @@ model Post {
   slug      String   @unique
   content   String
   imageUrl  String
+  link      String?
   published Boolean  @default(false)
   authorId  String
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)

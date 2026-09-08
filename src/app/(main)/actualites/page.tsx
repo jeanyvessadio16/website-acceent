@@ -51,6 +51,7 @@ export default async function ActualitesPage() {
       slug: p.slug,
       content: p.content,
       imageUrl: p.imageUrl,
+      link: p.link,
       authorName: p.author
         ? `${p.author.firstname} ${p.author.lastname}`
         : "ACCEENT",

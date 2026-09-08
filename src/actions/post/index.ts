@@ -103,35 +103,54 @@ export async function createPostAction(data: CreatePostInput) {
     }
 
     // Déterminer l'auteur (utilisateur connecté par défaut)
-    const authorId = validatedData.authorId || session.userId;
+    let authorId = validatedData.authorId || session.userId;
+
+    // Vérification de la présence de l'auteur en base pour éviter toute erreur de clé étrangère Prisma
+    let authorUser = await prisma.user.findUnique({ where: { id: authorId } });
+    if (!authorUser) {
+      authorUser = (await prisma.user.findFirst({ where: { role: "ADMIN" } })) || (await prisma.user.findFirst());
+    }
+
+    if (!authorUser) {
+      return {
+        success: false,
+        message: "Impossible de créer l'article : aucun compte utilisateur valide n'a été trouvé dans la base de données.",
+      };
+    }
+
+    authorId = authorUser.id;
 
     const newPost = await prisma.post.create({
       data: {
         title: validatedData.title,
         slug,
         content: validatedData.content,
-        imageUrl: validatedData.imageUrl,
-        published: validatedData.published ?? true, // Publié directement par défaut si formulaire soumis
+        imageUrl: validatedData.imageUrl || "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
+        link: validatedData.link || null,
+        published: validatedData.published ?? true,
         authorId,
       },
     });
 
-    revalidatePath("/actualites");
-    revalidatePath("/actualites/[slug]", "page");
-    revalidatePath("/admin/articles");
-    revalidatePath("/admin");
-    revalidatePath("/");
+    try {
+      revalidatePath("/actualites");
+      revalidatePath("/admin/articles");
+      revalidatePath("/admin");
+      revalidatePath("/");
+    } catch {
+      // Ignorer l'erreur éventuelle de révalidation si hors requêtes HTTP standard
+    }
 
     return {
       success: true,
       post: newPost,
       message: `L'article "${newPost.title}" a été créé et ${newPost.published ? "publié" : "enregistré comme brouillon"} avec succès !`,
     };
-  } catch (error) {
-    console.error("[createPostAction] Erreur:", error);
+  } catch (error: any) {
+    console.error("[createPostAction] Erreur détaillée:", error);
     return {
       success: false,
-      message: "Une erreur est survenue lors de la création de l'article.",
+      message: error?.message || "Une erreur est survenue lors de la création de l'article.",
     };
   }
 }
@@ -163,6 +182,7 @@ export async function updatePostAction(id: string, data: UpdatePostInput) {
     if (validatedData.title !== undefined) updatePayload.title = validatedData.title;
     if (validatedData.content !== undefined) updatePayload.content = validatedData.content;
     if (validatedData.imageUrl !== undefined) updatePayload.imageUrl = validatedData.imageUrl;
+    if (validatedData.link !== undefined) updatePayload.link = validatedData.link || null;
     if (validatedData.published !== undefined) updatePayload.published = validatedData.published;
     if (validatedData.slug !== undefined && validatedData.slug !== existingPost.slug) {
       let slug = slugify(validatedData.slug);
@@ -180,22 +200,25 @@ export async function updatePostAction(id: string, data: UpdatePostInput) {
       data: updatePayload,
     });
 
-    revalidatePath("/actualites");
-    revalidatePath("/actualites/[slug]", "page");
-    revalidatePath("/admin/articles");
-    revalidatePath("/admin");
-    revalidatePath("/");
+    try {
+      revalidatePath("/actualites");
+      revalidatePath("/admin/articles");
+      revalidatePath("/admin");
+      revalidatePath("/");
+    } catch {
+      // Ignorer l'erreur de révalidation hors contexte HTTP
+    }
 
     return {
       success: true,
       post: updatedPost,
       message: `L'article "${updatedPost.title}" a été mis à jour avec succès.`,
     };
-  } catch (error) {
-    console.error("[updatePostAction] Erreur:", error);
+  } catch (error: any) {
+    console.error("[updatePostAction] Erreur détaillée:", error);
     return {
       success: false,
-      message: "Une erreur est survenue lors de la mise à jour de l'article.",
+      message: error?.message || "Une erreur est survenue lors de la mise à jour de l'article.",
     };
   }
 }

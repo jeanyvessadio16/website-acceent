@@ -56,6 +56,8 @@ export const postSchema = z.object({
     .trim()
     .min(1, "L'URL ou le chemin de l'image est obligatoire."),
 
+  link: z.string().url("L'URL du lien externe est invalide.").optional().or(z.literal("")),
+
   published: z.boolean().default(false),
 
   authorId: z.string().uuid("L'identifiant de l'auteur (UUID) est invalide."),
@@ -78,17 +80,7 @@ export const createPostSchema = z.object({
     .min(3, "Le titre doit contenir au moins 3 caractères.")
     .max(150, "Le titre ne peut pas dépasser 150 caractères."),
 
-  slug: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .min(3, "Le slug doit contenir au moins 3 caractères.")
-    .max(150, "Le slug ne peut pas dépasser 150 caractères.")
-    .regex(
-      SLUG_REGEX,
-      "Le slug ne doit contenir que des lettres minuscules, chiffres et tirets."
-    )
-    .optional(),
+  slug: z.string().trim().optional().or(z.literal("")),
 
   content: z
     .string({
@@ -101,21 +93,26 @@ export const createPostSchema = z.object({
     .min(10, "Le contenu doit contenir au moins 10 caractères."),
 
   imageUrl: z
-    .string({
-      error: (issue) =>
-        issue.input === undefined
-          ? "L'URL de l'image est obligatoire."
-          : "L'URL de l'image doit être une chaîne de caractères.",
-    })
+    .string()
     .trim()
-    .min(1, "L'URL ou le chemin de l'image est obligatoire."),
+    .optional()
+    .or(z.literal(""))
+    .transform((val) => val || "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"),
+
+  link: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .transform((val) => {
+      if (!val) return undefined;
+      if (!/^https?:\/\//i.test(val)) return `https://${val}`;
+      return val;
+    }),
 
   published: z.boolean().default(false),
 
-  authorId: z
-    .string()
-    .uuid("L'identifiant de l'auteur (UUID) est invalide.")
-    .optional(),
+  authorId: z.string().optional(),
 });
 
 // ─── Schéma de mise à jour d'un article ─────────────────────────────────────

@@ -18,6 +18,8 @@ import {
   Image as ImageIcon,
   Send,
   PlusCircle,
+  ExternalLink,
+  Link as LinkIcon,
 } from "lucide-react";
 import {
   togglePublishPostAction,
@@ -36,6 +38,7 @@ export interface ArticleItem {
   slug: string;
   content?: string;
   imageUrl?: string;
+  link?: string | null;
   published: boolean;
   authorName: string;
   createdAt: string;
@@ -55,6 +58,7 @@ export function ArticleList({ articles }: ArticleListProps) {
   const [createSlug, setCreateSlug] = useState("");
   const [createContent, setCreateContent] = useState("");
   const [createImageUrl, setCreateImageUrl] = useState("");
+  const [createLink, setCreateLink] = useState("");
   const [createPublished, setCreatePublished] = useState(true);
 
   // ── Modale d'édition d'article ───────────────────────────────────────────
@@ -63,6 +67,7 @@ export function ArticleList({ articles }: ArticleListProps) {
   const [editSlug, setEditSlug] = useState("");
   const [editContent, setEditContent] = useState("");
   const [editImageUrl, setEditImageUrl] = useState("");
+  const [editLink, setEditLink] = useState("");
   const [editPublished, setEditPublished] = useState(false);
 
   // ── Modale de suppression d'article ─────────────────────────────────────
@@ -110,6 +115,7 @@ export function ArticleList({ articles }: ArticleListProps) {
     setCreateSlug("");
     setCreateContent("");
     setCreateImageUrl("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80");
+    setCreateLink("");
     setCreatePublished(true);
     setErrorMsg(null);
     setIsCreateOpen(true);
@@ -126,6 +132,7 @@ export function ArticleList({ articles }: ArticleListProps) {
       slug: createSlug.trim() || undefined,
       content: createContent,
       imageUrl: createImageUrl || "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
+      link: createLink.trim() || undefined,
       published: createPublished,
     });
 
@@ -146,6 +153,7 @@ export function ArticleList({ articles }: ArticleListProps) {
     setEditSlug(article.slug);
     setEditContent(article.content || "");
     setEditImageUrl(article.imageUrl || "");
+    setEditLink(article.link || "");
     setEditPublished(article.published);
     setErrorMsg(null);
   };
@@ -162,6 +170,7 @@ export function ArticleList({ articles }: ArticleListProps) {
       slug: editSlug,
       content: editContent,
       imageUrl: editImageUrl,
+      link: editLink.trim() || undefined,
       published: editPublished,
     });
 
@@ -328,6 +337,19 @@ export function ArticleList({ articles }: ArticleListProps) {
 
                   {/* Actions */}
                   <div className="flex items-center gap-1 shrink-0">
+                    {/* Bouton Lien Externe si présent */}
+                    {a.link && (
+                      <a
+                        href={a.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title="Ouvrir le lien externe"
+                        className="size-8 rounded-lg flex items-center justify-center text-[#b9939e] hover:text-white hover:bg-white/[0.08] transition-colors cursor-pointer"
+                      >
+                        <ExternalLink className="size-3.5" />
+                      </a>
+                    )}
+
                     {/* Bouton Basculer Publication */}
                     <button
                       onClick={() => handleTogglePublish(a)}
@@ -455,6 +477,22 @@ export function ArticleList({ articles }: ArticleListProps) {
                 </div>
               </div>
 
+              {/* Lien externe (optionnel) */}
+              <div className="space-y-1.5">
+                <Label htmlFor="create-link" className="text-xs text-zinc-300 font-medium flex items-center gap-1">
+                  <LinkIcon className="size-3 text-[#b9939e]" />
+                  Lien externe / URL associée (optionnel)
+                </Label>
+                <Input
+                  id="create-link"
+                  type="url"
+                  placeholder="https://exemple.com/ressource-ou-document"
+                  value={createLink}
+                  onChange={(e) => setCreateLink(e.target.value)}
+                  className="bg-white/[0.03] border-white/[0.1] text-zinc-100 placeholder:text-zinc-600 focus:border-[#836182]"
+                />
+              </div>
+
               {/* Contenu */}
               <div className="space-y-1.5">
                 <Label htmlFor="create-content" className="text-xs text-zinc-300 font-medium">
@@ -530,7 +568,7 @@ export function ArticleList({ articles }: ArticleListProps) {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-zinc-100">Modifier l'article</h3>
-                  <p className="text-xs text-zinc-400">Modifiez le contenu ou le statut de publication</p>
+                  <p className="text-xs text-zinc-400">Modifiez le contenu, le lien ou le statut de publication</p>
                 </div>
               </div>
               <button
@@ -591,6 +629,22 @@ export function ArticleList({ articles }: ArticleListProps) {
                     className="bg-white/[0.03] border-white/[0.1] text-zinc-100 placeholder:text-zinc-600 focus:border-[#836182]"
                   />
                 </div>
+              </div>
+
+              {/* Lien externe en Édition */}
+              <div className="space-y-1.5">
+                <Label htmlFor="edit-link" className="text-xs text-zinc-300 font-medium flex items-center gap-1">
+                  <LinkIcon className="size-3 text-[#b9939e]" />
+                  Lien externe / URL associée (optionnel)
+                </Label>
+                <Input
+                  id="edit-link"
+                  type="url"
+                  placeholder="https://exemple.com/..."
+                  value={editLink}
+                  onChange={(e) => setEditLink(e.target.value)}
+                  className="bg-white/[0.03] border-white/[0.1] text-zinc-100 placeholder:text-zinc-600 focus:border-[#836182]"
+                />
               </div>
 
               <div className="space-y-1.5">

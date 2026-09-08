@@ -33,6 +33,7 @@ export default async function ArticlesPage() {
     slug: a.slug,
     content: a.content,
     imageUrl: a.imageUrl,
+    link: a.link,
     published: a.published,
     authorName: a.author
       ? `${a.author.firstname} ${a.author.lastname}`

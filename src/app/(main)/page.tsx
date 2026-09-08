@@ -1,16 +1,23 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { list_domaines } from "@/data/list-domaines";
+import { list_actions } from "@/data/list-actions";
 import Image from "next/image";
 import Partenaire from "@/components/shared/Partenaires";
 import Contact from "@/components/shared/contact/Contact";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo";
+import prisma from "@/lib/prisma";
+import { PublishedPost } from "@/components/actualites/PostCard";
+import { HomeActualitesSection } from "@/components/actualites/HomeActualitesSection";
 import {
   FadeIn,
   StaggerContainer,
   StaggerItem,
 } from "@/components/shared/Animations";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata = createPageMetadata({
   title: "Accueil",
@@ -30,7 +37,77 @@ export const metadata = createPageMetadata({
   ],
 });
 
-export default function Home() {
+export default async function Home() {
+  let posts: PublishedPost[] = [];
+
+  try {
+    const dbPosts = await prisma.post.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+      take: 3,
+      include: {
+        author: {
+          select: {
+            firstname: true,
+            lastname: true,
+          },
+        },
+      },
+    });
+
+    posts = dbPosts.map((p) => ({
+      id: p.id,
+      title: p.title,
+      slug: p.slug,
+      content: p.content,
+      imageUrl: p.imageUrl,
+      link: p.link,
+      authorName: p.author
+        ? `${p.author.firstname} ${p.author.lastname}`
+        : "ACCEENT",
+      createdAt: p.createdAt.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    }));
+  } catch (error) {
+    console.error("Erreur de récupération des articles sur la page d'accueil:", error);
+  }
+
+  // Fallback avec articles réels si aucun post n'est publié dans la base de données
+  if (posts.length === 0) {
+    posts = [
+      {
+        id: "sample-1",
+        title: "Lancement des formations au numérique et à l'entrepreneuriat à Ziguinchor",
+        slug: "lancement-des-formations-au-numerique-et-a-l-entrepreneuriat",
+        content: "L'association ACCEENT ouvre ses nouvelles sessions d'accompagnement destinées aux jeunes et aux femmes de Ziguinchor, axées sur les compétences numériques et l'innovation sociale.",
+        imageUrl: "/images/formation-outil-digital.jpeg",
+        createdAt: "8 septembre 2026",
+        authorName: "Équipe ACCEENT",
+      },
+      {
+        id: "sample-2",
+        title: "Atelier pratique de Design Thinking & Innovation Sociale",
+        slug: "atelier-pratique-de-design-thinking-et-innovation-sociale",
+        content: "Retour sur la journée d'échange et de co-création avec la jeunesse de Santhiaba pour imaginer et développer des projets communautaires durables.",
+        imageUrl: "/images/designthinkig.jpeg",
+        createdAt: "5 septembre 2026",
+        authorName: "Équipe ACCEENT",
+      },
+      {
+        id: "sample-3",
+        title: "Valorisation de l'artisanat : Formation en Batik et Teinture",
+        slug: "valorisation-de-l-artisanat-formation-en-batik-et-teinture",
+        content: "Accompagnement et renforcement des capacités des femmes de la région à travers l'apprentissage des techniques textiles artisanales et de la gestion d'activité.",
+        imageUrl: "/images/batik.jpeg",
+        createdAt: "1 septembre 2026",
+        authorName: "Équipe ACCEENT",
+      },
+    ];
+  }
+
   return (
     <>
       <OrganizationJsonLd />
@@ -209,51 +286,8 @@ export default function Home() {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
               delay={0.2}
             >
-              {[
-                {
-                  src: "/images/batik.jpeg",
-                  alt: "Formation batik et teinture",
-                  title: "Batik et Teinture",
-                  description:
-                    "Initiation aux techniques artisanales de création textile et valorisation des savoir-faire.",
-                },
-                {
-                  src: "/images/femmes.jpeg",
-                  alt: "Renforcement de capacité des femmes",
-                  title: "Renforcement de Capacité",
-                  description:
-                    "Accompagnement structuré des femmes vers l'autonomie et la gestion d'activités.",
-                },
-                {
-                  src: "/images/designthinkig.jpeg",
-                  alt: "Formation en design thinking",
-                  title: "Design Thinking",
-                  description:
-                    "Ateliers pratiques d'innovation et de résolution créative de problèmes du territoire.",
-                },
-                {
-                  src: "/images/leadership.jpeg",
-                  alt: "Formation leadership",
-                  title: "Leadership & Gestion",
-                  description:
-                    "Développement des compétences d'organisation, de prise d'initiative et de projet.",
-                },
-                {
-                  src: "/images/sensibilisation.jpeg",
-                  alt: "Sensibilisation citoyenne",
-                  title: "Sensibilisation Citoyenne",
-                  description:
-                    "Actions d'information et d'échanges de proximité auprès des communautés.",
-                },
-                {
-                  src: "/images/formation-outil-digital.jpeg",
-                  alt: "Outils digitaux",
-                  title: "Compétences Digitales",
-                  description:
-                    "Formations pratiques aux outils numériques essentiels de communication et gestion.",
-                },
-              ].map((act, idx) => (
-                <StaggerItem key={idx}>
+              {list_actions.map((act) => (
+                <StaggerItem key={act.id}>
                   <div className="bg-slate-50 border border-slate-200/70 rounded-xl overflow-hidden h-full flex flex-col">
                     <div className="relative h-48 w-full overflow-hidden bg-slate-200">
                       <Image
@@ -280,6 +314,9 @@ export default function Home() {
             </StaggerContainer>
           </div>
         </section>
+
+        {/* Section Actualités & Posts */}
+        <HomeActualitesSection posts={posts} />
 
         {/* Section 5 — Partenaires */}
         <section

@@ -7,12 +7,12 @@ import {
   Activity,
   Calendar,
   BookOpen,
-  Lightbulb,
+  Briefcase,
   Monitor,
   Plus,
   Globe,
   AlertTriangle,
-  Sparkles,
+  ShieldCheck,
 } from "lucide-react";
 import { AdminShell } from "@/components/admin/AdminShell";
 import prisma from "@/lib/prisma";
@@ -21,7 +21,7 @@ import Link from "next/link";
 
 const programmes = [
   { label: "Éducation", icon: BookOpen, color: "bg-[#836182]/20 text-[#b9939e] border border-[#836182]/30", count: 2, href: "/education" },
-  { label: "Entrepreneuriat", icon: Lightbulb, color: "bg-amber-500/15 text-amber-300 border border-amber-500/20", count: 3, href: "/entreprenariat" },
+  { label: "Entrepreneuriat", icon: Briefcase, color: "bg-amber-500/15 text-amber-300 border border-amber-500/20", count: 3, href: "/entreprenariat" },
   { label: "Numérique", icon: Monitor, color: "bg-cyan-500/15 text-cyan-300 border border-cyan-500/20", count: 2, href: "/numerique" },
 ];
 
@@ -155,7 +155,7 @@ export default async function AdminDashboard() {
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="space-y-2">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#836182]/30 border border-[#836182]/40 text-[#f1e3e7] text-xs font-semibold">
-                <Sparkles className="size-3.5 text-[#b9939e]" />
+                <ShieldCheck className="size-3.5 text-[#b9939e]" />
                 <span>Espace Administrateur</span>
               </div>
               <h2 className="text-white text-2xl sm:text-3xl font-extrabold tracking-tight">

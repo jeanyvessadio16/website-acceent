@@ -17,7 +17,7 @@ import {
   FileText,
   Image as ImageIcon,
   Send,
-  Sparkles,
+  PlusCircle,
 } from "lucide-react";
 import {
   togglePublishPostAction,
@@ -381,7 +381,7 @@ export function ArticleList({ articles }: ArticleListProps) {
             <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
               <div className="flex items-center gap-2.5">
                 <div className="size-9 rounded-xl bg-[#836182]/20 border border-[#836182]/30 flex items-center justify-center text-[#b9939e]">
-                  <Sparkles className="size-4" />
+                  <PlusCircle className="size-4" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-zinc-100">Publier un nouvel article</h3>

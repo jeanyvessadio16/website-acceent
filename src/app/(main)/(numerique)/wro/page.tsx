@@ -8,9 +8,10 @@ import {
 } from "@/components/ui/card";
 import { wroAction } from "@/data/numerique/wroAction";
 import { createPageMetadata } from "@/lib/seo";
-import { ArrowBigRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
   title: "World Robot Olympiad (WRO)",
@@ -31,92 +32,85 @@ export default function WROPage() {
     description:
       "Compétition internationale WRO, ateliers d'initiation et challenges locaux à Ziguinchor. Apprendre à programmer, construire, collaborer… et s'amuser.",
   };
-  return (
-    <>
-      <ProgrammeLayout
-        image="/images/WRO.webp"
-        {...programme}
-      >
-        <section className="mx-auto max-w-5xl">
-          <div className="space-y-6 rounded-2xl border border-neutral-200 bg-white p-8 text-center shadow-md md:p-10 dark:border-neutral-800 dark:bg-neutral-900">
-            <p className="mx-auto inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-semibold text-primary">
-              Inclusion, education et autonomie
-            </p>
-            <h2 className="text-3xl font-bold md:text-5xl">
-              World Robot Olympiad (WRO)
-            </h2>
-            <p className="mx-auto max-w-3xl text-neutral-700 dark:text-neutral-300">
-              Une compétition de robotique véritablement mondiale dédiée à la
-              science, à la technologie et à l&apos;éducation. Notre mission est
-              d&apos;aider les jeunes à développer leur créativité et leur
-              capacité à résoudre des problèmes de manière ludique et
-              stimulante.
-            </p>
-            <p className="mx-auto max-w-3xl text-neutral-700 dark:text-neutral-300">
-              Pour ce faire, nous organisons des concours de robotique dans
-              quatre catégories différentes pour les élèves de 8 à 19 ans.Dans
-              notre catégorie Futurs Ingénieurs, les étudiants peuvent avoir
-              jusqu&apos;à 22 ans. L&apos;Association World Robot Olympiad™ est
-              une organisation indépendante à but non lucratif. Tous les revenus
-              des parrainages et des cotisations sont investis dans notre
-              mission : promouvoir la robotique dans l&apos;enseignement des
-              STEM (sciences, technologie, ingénierie et mathématiques) à
-              travers le monde.
-            </p>
-          </div>
-        </section>
-      </ProgrammeLayout>
 
-      {/* action */}
-      <section className="px-14">
-        <div>
-          <h2 className="text-3xl font-bold md:text-4xl text-center mt-10">
-            Nos actions à ACCEENT
+  return (
+    <ProgrammeLayout
+      image="/images/WRO.webp"
+      text="Programme Numérique"
+      {...programme}
+    >
+      {/* 1. Présentation du programme */}
+      <FadeIn delay={0.1} direction="up">
+        <div className="rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-10 md:p-12 text-center shadow-xs space-y-4">
+          <span className="inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary">
+            STEM & Robotique
+          </span>
+          <h2 className="text-2xl sm:text-4xl font-bold text-slate-900">
+            World Robot Olympiad (WRO)
           </h2>
-          <p className="mx-auto max-w-3xl text-neutral-700 dark:text-neutral-300">
-            Découvrez les actions menées par ACCEENT dans le domaine de la
-            robotique.
+          <p className="mx-auto max-w-3xl text-slate-600 text-base sm:text-lg leading-relaxed">
+            Une compétition de robotique véritablement mondiale dédiée à la science, à la technologie et à l&apos;éducation. Notre mission est d&apos;aider les jeunes à développer leur créativité et leur capacité à résoudre des problèmes de manière ludique et stimulante.
+          </p>
+          <p className="mx-auto max-w-3xl text-slate-600 text-sm sm:text-base leading-relaxed">
+            Nous organisons des concours de robotique dans quatre catégories différentes pour les élèves de 8 à 19 ans. Dans notre catégorie Futurs Ingénieurs, les étudiants peuvent avoir jusqu&apos;à 22 ans. L&apos;Association World Robot Olympiad™ promeut la robotique dans l&apos;enseignement des STEM à travers le monde.
           </p>
         </div>
-        <br />
-        <div className="py-5 grid lg:grid-cols-3 place-content-between place-items-center gap-10">
-          {wroAction.map((item) => (
-            <Card key={item.id} className="p-0">
-              <CardHeader className="px-0">
-                <Image
-                  alt={item.nom}
-                  width={300}
-                  height={200}
-                  src={item.image}
-                  className="w-full bg-cover bg-center"
-                />
-              </CardHeader>
-              <CardContent className="pb-3">
-                <CardTitle className="text-primary text-lg font-bold mb-1.5">
-                  {" "}
-                  {item.nom}{" "}
-                </CardTitle>
-                <CardDescription> {item.description} </CardDescription>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+      </FadeIn>
 
-        <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-6 md:flex-row md:items-center">
-          <p className="max-w-2xl text-sm text-neutral-700 dark:text-neutral-200">
-            Vous souhaitez soutenir le programme ou orienter une bénéficiaire ?
-            Notre équipe peut vous accompagner.
+      {/* 2. Actions WRO */}
+      <div className="space-y-8">
+        <FadeIn delay={0.2} direction="down" className="text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
+            Nos actions à ACCEENT
+          </h2>
+          <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto">
+            Découvrez les actions menées par ACCEENT dans le domaine de la robotique à Ziguinchor.
+          </p>
+        </FadeIn>
+
+        <StaggerContainer delay={0.3} className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {wroAction.map((item) => (
+            <StaggerItem key={item.id}>
+              <Card className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md h-full flex flex-col p-0">
+                <CardHeader className="p-0">
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <Image
+                      alt={item.nom}
+                      fill
+                      src={item.image}
+                      className="object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6 flex flex-col flex-grow">
+                  <CardTitle className="text-primary text-lg font-bold mb-2">
+                    {item.nom}
+                  </CardTitle>
+                  <CardDescription className="text-slate-600 text-sm leading-relaxed flex-grow">
+                    {item.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+      </div>
+
+      {/* 3. Banner CTA */}
+      <FadeIn delay={0.4} direction="up">
+        <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <p className="text-sm sm:text-base font-medium text-slate-800 text-center sm:text-left max-w-xl">
+            Vous souhaitez soutenir les équipes de robotique de Ziguinchor ou devenir mentor ? N&apos;hésitez pas à nous contacter.
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90"
+            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-xs transition-all hover:bg-primary/90 shrink-0"
           >
             Nous contacter
-            <ArrowBigRight size={16} className="ml-2" />
+            <ArrowRight size={16} className="ml-2" />
           </Link>
         </div>
-        <br />
-      </section>
-    </>
+      </FadeIn>
+    </ProgrammeLayout>
   );
 }

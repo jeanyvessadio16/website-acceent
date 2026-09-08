@@ -2,7 +2,7 @@ import { createPageMetadata } from "@/lib/seo";
 import prisma from "@/lib/prisma";
 import { ActualitesList } from "@/components/actualites/ActualitesList";
 import { FadeIn } from "@/components/shared/Animations";
-import { Sparkles } from "lucide-react";
+import { Newspaper } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -71,7 +71,7 @@ export default async function ActualitesPage() {
         <FadeIn direction="up">
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#836182]/10 border border-[#836182]/20 text-[#836182] text-xs font-bold uppercase tracking-wider">
-              <Sparkles className="size-3.5" />
+              <Newspaper className="size-3.5" />
               <span>Actualités & Publications</span>
             </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">

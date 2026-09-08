@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
 import { createPageMetadata } from "@/lib/seo";
-import { Calendar, ArrowLeft, Share2, Sparkles, BookOpen } from "lucide-react";
+import { Calendar, ArrowLeft, Share2, BookOpen } from "lucide-react";
 import { FadeIn } from "@/components/shared/Animations";
 
 export const dynamic = "force-dynamic";

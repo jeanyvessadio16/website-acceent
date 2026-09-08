@@ -9,7 +9,7 @@ import {
   Globe,
   LogOut,
   ChevronRight,
-  Sparkles,
+  ShieldCheck,
 } from "lucide-react";
 import {
   Sidebar,
@@ -109,7 +109,7 @@ export function UserSidebar({ user }: UserSidebarProps) {
           <div className="flex flex-col leading-tight min-w-0">
             <span className="text-zinc-100 font-bold text-sm tracking-wide flex items-center gap-1">
               ACCEENT
-              <Sparkles className="size-3 text-[#b9939e]" />
+              <ShieldCheck className="size-3 text-[#b9939e]" />
             </span>
             <span className="text-zinc-400 text-xs font-medium mt-0.5">
               Espace Membre

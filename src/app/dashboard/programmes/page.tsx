@@ -1,6 +1,6 @@
 import { UserShell } from "@/components/dashboard/UserShell";
 import { getSession } from "@/lib/session";
-import { BookOpen, Lightbulb, Monitor, CheckCircle2 } from "lucide-react";
+import { BookOpen, Briefcase, Monitor, CheckCircle2 } from "lucide-react";
 
 const programmes = [
   {
@@ -18,7 +18,7 @@ const programmes = [
     category: "Pôle Entrepreneuriat",
     description: "Incubation d'idées, formations à la création d'entreprise et ateliers de projets.",
     status: "Actif",
-    icon: Lightbulb,
+    icon: Briefcase,
     color: "bg-amber-500/15 text-amber-400",
   },
   {

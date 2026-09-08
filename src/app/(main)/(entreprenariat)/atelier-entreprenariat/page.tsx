@@ -1,6 +1,8 @@
 import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
 import { createPageMetadata } from "@/lib/seo";
-import { Lightbulb, Target, Users } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
   title: "Atelier Entrepreneuriat",
@@ -9,16 +11,10 @@ export const metadata = createPageMetadata({
   path: "/atelier-entreprenariat",
   keywords: [
     "entrepreneuriat",
-    "ACCEENT'Atelier Entrepreneuriat",
     "atelier entrepreneuriat",
     "atelier entrepreneuriat jeunes",
     "entrepreneuriat jeunes Ziguinchor",
     "formation business plan Ziguinchor",
-    "ACCEENT",
-    "entrepreneuriat Ziguinchor",
-    "ACCEENT entrepreneuriat",
-    "ACCEENT entrepreneuriat jeunes",
-    "ACCEENT entrepreneuriat jeunes Ziguinchor",
   ],
 });
 
@@ -31,20 +27,16 @@ export default function AtelierEntreprenariat() {
 
   const objectifs = [
     {
-      icon: Lightbulb,
       title: "Idéation et Créativité",
       description:
         "Aider les jeunes à transformer leurs idées brutes en concepts d'entreprise viables.",
     },
     {
-      icon: Target,
       title: "Structuration de Projet",
       description:
         "Apprendre à définir des objectifs clairs, un business model et une stratégie d'action.",
     },
-
     {
-      icon: Users,
       title: "Réseautage",
       description:
         "Créer des synergies entre les différents acteurs locaux et les jeunes entrepreneurs.",
@@ -52,45 +44,71 @@ export default function AtelierEntreprenariat() {
   ];
 
   return (
-    <>
-      <ProgrammeLayout
-        image="/images/entreprenariat.jpeg"
-        {...programme}
-      >
-        <div className="space-y-6 text-center mb-16">
-          <p className="mx-auto inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-semibold text-primary">
+    <ProgrammeLayout
+      image="/images/entreprenariat.jpeg"
+      text="Programme Entrepreneuriat"
+      {...programme}
+    >
+      {/* 1. Présentation de l'atelier */}
+      <FadeIn delay={0.1} direction="up">
+        <div className="rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-10 md:p-12 text-center shadow-xs">
+          <span className="mb-4 inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary">
             Inspiration et Action
-          </p>
-          <h2 className="text-fluid-h2 text-slate-900">
-            A propos de l&apos;atelier
+          </span>
+          <h2 className="text-2xl sm:text-4xl font-bold text-slate-900 mb-4">
+            À propos de l&apos;atelier
           </h2>
-          <p className="text-fluid-p-large text-slate-600 max-w-3xl mx-auto text-balance">
-            Cet atelier intensif est conçu pour stimuler la créativité et
-            l&apos;innovation. Nous mettons à disposition des jeunes les outils
-            et méthodes nécessaires pour passer de l&apos;idée à l&apos;action
-            concrète.
+          <p className="mx-auto max-w-3xl text-slate-600 text-base sm:text-lg leading-relaxed">
+            Cet atelier intensif est conçu pour stimuler la créativité et l&apos;innovation. Nous mettons à disposition des jeunes les outils et méthodes nécessaires pour passer de l&apos;idée à l&apos;action concrète.
           </p>
         </div>
+      </FadeIn>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+      {/* 2. Objectifs / Piliers */}
+      <div className="space-y-8">
+        <FadeIn delay={0.2} direction="down" className="text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
+            Objectifs de la formation
+          </h2>
+          <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto">
+            Trois piliers pour passer de l&apos;idée à la réalisation sur le terrain.
+          </p>
+        </FadeIn>
+
+        <StaggerContainer delay={0.3} className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {objectifs.map((obj, idx) => (
-            <div
-              key={idx}
-              className="group flex flex-col items-center text-center rounded-3xl border border-slate-200/60 bg-slate-50/50 p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:bg-white"
-            >
-              <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
-                <obj.icon size={32} />
+            <StaggerItem key={idx}>
+              <div className="group flex flex-col items-center text-center rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-8 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md h-full">
+                <div className="mb-4 inline-flex items-center justify-center rounded-xl bg-primary/10 px-3.5 py-1 text-xs font-bold text-primary">
+                  0{idx + 1}
+                </div>
+                <h3 className="mb-2 text-lg sm:text-xl font-bold text-slate-900">
+                  {obj.title}
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  {obj.description}
+                </p>
               </div>
-              <h3 className="mb-3 text-lg font-bold text-slate-800">
-                {obj.title}
-              </h3>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                {obj.description}
-              </p>
-            </div>
+            </StaggerItem>
           ))}
+        </StaggerContainer>
+      </div>
+
+      {/* 3. Banner CTA */}
+      <FadeIn delay={0.4} direction="up">
+        <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <p className="text-sm sm:text-base font-medium text-slate-800 text-center sm:text-left max-w-xl">
+            Vous souhaitez participer aux prochains ateliers ou devenir mentor ? N&apos;hésitez pas à contacter notre équipe.
+          </p>
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-xs transition-all hover:bg-primary/90 shrink-0"
+          >
+            Nous contacter
+            <ArrowRight size={16} className="ml-2" />
+          </Link>
         </div>
-      </ProgrammeLayout>
-    </>
+      </FadeIn>
+    </ProgrammeLayout>
   );
 }

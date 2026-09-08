@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, ArrowRight, BookOpen, Search, X, Sparkles } from "lucide-react";
+import { Calendar, ArrowRight, BookOpen, Search, X, Newspaper } from "lucide-react";
 import { motion } from "framer-motion";
 
 export interface PublishedPost {
@@ -127,7 +127,7 @@ export function ActualitesList({ posts }: ActualitesListProps) {
                   />
                   <div className="absolute top-4 left-4 flex items-center gap-2">
                     <span className="bg-[#836182] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5">
-                      <Sparkles className="size-3.5" />
+                      <Newspaper className="size-3.5" />
                       À la une
                     </span>
                   </div>

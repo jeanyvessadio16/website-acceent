@@ -8,7 +8,7 @@ import {
   FileText,
   ArrowUpRight,
   BookOpen,
-  Sparkles,
+  ShieldCheck,
   Award,
 } from "lucide-react";
 import Link from "next/link";
@@ -88,7 +88,7 @@ export default async function UserDashboardPage() {
 
               <h2 className="text-zinc-100 text-xl font-bold tracking-tight flex items-center gap-2">
                 Ravi de vous revoir, {session?.firstname || "Membre"} !
-                <Sparkles className="size-4 text-[#b9939e]" />
+                <ShieldCheck className="size-4 text-[#b9939e]" />
               </h2>
               <p className="text-zinc-400 text-sm mt-1">
                 Accédez à vos informations, consultez les dernières publications et découvrez les initiatives d'ACCEENT.

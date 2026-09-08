@@ -14,41 +14,39 @@ export default function ProgrammeLayout({
   description: string;
   children: React.ReactNode;
 }) {
-  // If an image prop is provided, we use next/image for optimization
-  // Otherwise, we fallback to className for existing pages
   return (
     <>
       <section
-        className={`relative w-full min-h-[80svh] flex flex-col items-center justify-center overflow-hidden ${!image ? className || "" : ""}`}
+        className={`relative w-full min-h-[calc(100svh-5rem)] flex flex-col items-center justify-center overflow-hidden bg-slate-950 pt-20 ${!image ? className || "" : ""}`}
       >
         {image && (
-          <div className="absolute inset-0 -z-20">
+          <div className="absolute inset-0 z-0">
             <Image
               src={image}
               alt={titre}
               fill
               priority
-              className="object-cover object-center lg:object-top"
+              className="object-cover object-center opacity-40"
               sizes="100vw"
-              quality={80}
+              quality={85}
             />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/70 to-slate-950" />
           </div>
         )}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80 -z-10"></div>
         
-        <div className="relative z-10 flex flex-col items-center justify-center gap-4 text-center text-white px-6 md:px-10">
+        <div className="relative z-10 flex flex-col items-center justify-center gap-4 text-center text-white px-6 md:px-10 py-16">
           <FadeIn delay={0.1} direction="down">
-            <span className="inline-block rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium uppercase tracking-wider text-slate-100 backdrop-blur-md">
+            <span className="inline-block rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-200 backdrop-blur-md">
               Découvrir le programme
             </span>
           </FadeIn>
           <FadeIn delay={0.2} direction="up">
-            <h1 className="text-fluid-h1 text-white max-w-4xl drop-shadow-lg">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-white max-w-4xl leading-tight">
               {titre}
             </h1>
           </FadeIn>
           <FadeIn delay={0.3} direction="up">
-            <p className="mt-2 text-fluid-p-large text-slate-200 max-w-2xl drop-shadow-md">
+            <p className="mt-2 text-base sm:text-lg md:text-xl text-slate-200 max-w-2xl leading-relaxed">
               {description}
             </p>
           </FadeIn>

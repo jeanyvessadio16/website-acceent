@@ -20,6 +20,7 @@ export default function ForumEntrepreneur() {
     description:
       "Rencontres et échanges autour du développement local à Ziguinchor. Un espace unique pour connecter les innovateurs et les décideurs.",
     text: "Événement Annuel",
+    bgImage: "/images/forum.jpeg",
   };
 
   const activities = [

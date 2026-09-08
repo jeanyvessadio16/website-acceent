@@ -4,7 +4,6 @@ import { programesEducation } from "@/data/education/programes-education";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpenCheck, GraduationCap } from "lucide-react";
 import { createPageMetadata } from "@/lib/seo";
 import {
   FadeIn,
@@ -26,43 +25,43 @@ export const metadata = createPageMetadata({
     "accompagnment scolaire Ziguinchor",
     "accompagnment scolaire Casamance",
     "Education inclusive Ziguinchor",
-    "Education inclusive Casamance"
+    "Education inclusive Casamance",
   ],
 });
 
-export default function Eduction() {
+export default function Education() {
   return (
     <>
       <HeaderLayout
         text="Domaine"
         title="Éducation"
         description="Nos programmes d'éducation développent les compétences, la confiance et l'autonomie des jeunes et des femmes à travers des parcours concrets."
+        bgImage="/images/educaton.jpg"
         highlights={[
           {
             label: "Programmes actifs",
-            value: `${programesEducation.length}+`,
+            value: `${programesEducation.length}`,
           },
           { label: "Public cible", value: "Jeunes & Femmes" },
           { label: "Approche", value: "Pratique & Inclusive" },
         ]}
       >
-        <section className="bg-white py-20">
+        <section className="bg-white py-16 md:py-24">
           <div className="section-container">
             <FadeIn className="mx-auto max-w-3xl text-center">
-              <h1 className="section-heading mb-2">
+              <h2 className="text-3xl sm:text-4xl font-bold text-slate-950 mb-3">
                 Nos programmes d&apos;éducation
-              </h1>
-              <p className="section-subheading">
+              </h2>
+              <p className="text-slate-600 text-base leading-relaxed">
                 Nous accompagnons les jeunes et les femmes vers l&apos;autonomie
-                avec des parcours pedagogiques modernes et adaptes à leur
-                réalité.
+                avec des parcours pédagogiques adaptés à leur réalité.
               </p>
             </FadeIn>
 
             <StaggerContainer className="mt-12 grid gap-6 md:grid-cols-2">
               {programesEducation.map((programme) => (
                 <StaggerItem key={programme.id}>
-                  <Card className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white pt-0 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-full flex flex-col">
+                  <Card className="group overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-0 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md h-full flex flex-col">
                     <CardHeader className="p-0">
                       <div className="relative h-56 w-full overflow-hidden">
                         <Image
@@ -74,9 +73,8 @@ export default function Eduction() {
                       </div>
                     </CardHeader>
                     <CardContent className="p-6 flex flex-col flex-grow">
-                      <div className="mb-3 inline-flex w-fit items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                        <BookOpenCheck className="h-3.5 w-3.5" />
-                        Programme education
+                      <div className="mb-3 inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-primary">
+                        Programme éducation
                       </div>
                       <CardTitle className="text-2xl font-bold text-slate-950">
                         {programme.nom}
@@ -84,10 +82,9 @@ export default function Eduction() {
                       <p className="mt-3 text-sm leading-relaxed text-slate-600 flex-grow">
                         {programme.description}
                       </p>
-                      <Button asChild className="mt-6 rounded-full w-fit">
+                      <Button asChild className="mt-6 rounded-full w-fit bg-primary text-white hover:bg-primary/90">
                         <Link href={programme.page}>
-                          En savoir plus
-                          <ArrowRight className="ml-2 h-4 w-4" />
+                          En savoir plus &rarr;
                         </Link>
                       </Button>
                     </CardContent>
@@ -98,34 +95,30 @@ export default function Eduction() {
           </div>
         </section>
 
-        <section className="bg-gradient-to-b from-slate-50 to-white py-20">
+        <section className="bg-slate-50 py-16 md:py-20 border-t border-slate-200/60">
           <div className="section-container">
             <FadeIn
               delay={0.2}
               direction="up"
-              className="rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm md:p-12"
+              className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xs md:p-12"
             >
               <div className="mx-auto max-w-3xl text-center">
-                <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary">
-                  <GraduationCap className="h-7 w-7" />
-                </div>
-                <h2 className="text-3xl font-bold tracking-tight text-slate-950 md:text-4xl">
+                <h2 className="text-2xl font-bold tracking-tight text-slate-950 md:text-3xl">
                   Construisons ensemble un avenir plus équitable
                 </h2>
-                <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 md:text-lg">
+                <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
                   Nos actions éducatives s&apos;adressent à celles et ceux qui
-                  veulent apprendre, entreprendre et contribuer positivement a
+                  veulent apprendre, entreprendre et contribuer positivement à
                   leur territoire.
                 </p>
                 <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-                  <Button asChild size="lg" className="rounded-full px-8">
-                    <Link href="/#contact">Nous contacter</Link>
+                  <Button asChild size="lg" className="rounded-full px-8 bg-primary text-white hover:bg-primary/90 font-semibold shadow-xs">
+                    <Link href="/contact">Nous contacter</Link>
                   </Button>
                   <Button
                     asChild
                     size="lg"
-                    variant="outline"
-                    className="rounded-full px-8"
+                    className="rounded-full px-8 bg-slate-100 text-slate-800 border border-slate-300 hover:bg-slate-200 hover:text-slate-950 font-semibold shadow-xs transition-colors"
                   >
                     <Link href="/about">Découvrir ACCEENT</Link>
                   </Button>

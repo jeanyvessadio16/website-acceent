@@ -16,7 +16,7 @@ export default function MainLayout({
         Aller au contenu principal
       </a>
       <Header />
-      <main id="contenu-principal" tabIndex={-1} className="outline-none">
+      <main id="contenu-principal" tabIndex={-1} className="outline-none overflow-x-hidden w-full max-w-full relative">
         {children}
         <Analytics />
       </main>

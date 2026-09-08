@@ -14,32 +14,35 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
           {/* Logo et description */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             <Link
               href="/"
-              className="inline-block rounded-md bg-white/5 p-2 hover:cursor-pointer ring-1 ring-white/10 transition-colors hover:bg-white/10"
+              className="inline-block rounded-lg bg-white/10 p-2 ring-1 ring-white/15 transition-colors hover:bg-white/20"
             >
               <Image
                 src="/logo/logo-acceent.png"
-                alt="Logo Acceent"
+                alt="Logo ACCEENT"
                 width={140}
                 height={45}
-                className="h-8 w-auto object-contain"
+                className="h-9 w-auto object-contain"
               />
             </Link>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              Action pour la Contribution Collective pour l&apos;Éducation, l&apos;Entrepreneuriat et le Numérique des Territoires à Ziguinchor, Sénégal.
+            </p>
           </div>
 
           {/* Programmes */}
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
               Programmes
             </h3>
-            <ul className="mt-6 space-y-4">
+            <ul className="mt-4 space-y-2.5">
               {programmes.map((programme) => (
                 <li key={programme.name}>
                   <Link
                     href={programme.href}
-                    className="text-sm text-slate-400 transition-colors hover:text-blue-400"
+                    className="text-sm text-slate-400 transition-colors hover:text-white"
                   >
                     {programme.name}
                   </Link>

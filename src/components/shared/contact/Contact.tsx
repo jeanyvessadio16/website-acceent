@@ -54,46 +54,32 @@ export default function Contact() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-slate-50/50 py-20 md:py-32">
-      {/* Premium Background Blurs */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] h-[50vw] w-[50vw] rounded-full bg-[#836182]/10 blur-[120px] mix-blend-multiply" />
-        <div className="absolute top-[20%] right-[-10%] h-[40vw] w-[40vw] rounded-full bg-[#b9939e]/15 blur-[120px] mix-blend-multiply" />
-        <div className="absolute bottom-[-20%] left-[20%] h-[60vw] w-[60vw] rounded-full bg-[#836182]/10 blur-[120px] mix-blend-multiply" />
-      </div>
-
+    <section className="relative bg-slate-50 py-16 md:py-24">
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10 relative z-10">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <FadeIn delay={0.1} direction="down" className="mb-16 text-center">
-            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-md px-5 py-2 text-sm font-bold text-primary shadow-sm">
-              Restons en contact
+          <FadeIn delay={0.1} direction="down" className="mb-12 text-center">
+            <span className="mb-3 inline-block rounded-full border border-slate-200 bg-white px-4 py-1 text-xs font-bold uppercase tracking-wider text-primary shadow-2xs">
+              Contact
             </span>
-            <h2 className="mb-6 text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-none">
-              Contactez-nous
+            <h2 className="mb-4 text-3xl md:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
+              Contactez ACCEENT
             </h2>
-            <p className="mx-auto max-w-2xl text-lg md:text-xl text-slate-600 leading-relaxed">
-              Pour toute question, suggestion ou demande de partenariat,
-              n&apos;hésitez pas à nous contacter. Nous sommes là pour vous
-              aider et répondre à vos besoins.
+            <p className="mx-auto max-w-2xl text-base md:text-lg text-slate-600 leading-relaxed">
+              Une question sur nos programmes ou nos activités à Ziguinchor ? N&apos;hésitez pas à nous écrire ou nous contacter directement.
             </p>
           </FadeIn>
 
           <div className="grid items-stretch gap-10 lg:grid-cols-12">
             {/* Left Column: Info */}
-            <div className="lg:col-span-5 flex flex-col justify-between space-y-8">
+            <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
               <FadeIn
                 delay={0.2}
                 direction="right"
                 className="h-full flex flex-col justify-between gap-6"
               >
-                <div className="rounded-3xl border border-white/60 bg-white/60 p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-xl relative overflow-hidden group flex-grow">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
-                  <h3 className="mb-8 flex items-center gap-4 text-2xl font-bold text-slate-900 relative z-10">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary shadow-lg shadow-primary/20">
-                      <MapPin className="text-white" size={24} />
-                    </div>
+                <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xs flex-grow">
+                  <h3 className="mb-6 text-xl font-bold text-slate-900">
                     Nos coordonnées
                   </h3>
 

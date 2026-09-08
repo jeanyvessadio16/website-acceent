@@ -20,7 +20,7 @@ import { Label } from "../../ui/label";
 import { Textarea } from "../../ui/textarea";
 import { FormErrorBanner, SuccessAlertDialog } from "../alerts";
 import { FadeIn, StaggerContainer, StaggerItem } from "../Animations";
-import { contactSchema, ContactFormData } from "../../../zodSchema/contact";
+import { contactSchema, ContactFormData } from "../../../validation/contact";
 import { ContactService } from "../../../services/contactService";
 import { cn } from "@/lib/utils";
 

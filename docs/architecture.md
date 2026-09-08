@@ -126,7 +126,7 @@ export class MonService {
 }
 ```
 
-### 5. Validation (`src/zodSchema/`)
+### 5. Validation (`src/validation/`)
 
 Schémas Zod partagés entre service et (optionnellement) formulaire. Le type inféré `ContactFormData` évite la duplication de types.
 

@@ -1,4 +1,4 @@
-import { contactSchema, ContactFormData } from "../zodSchema/contact";
+import { contactSchema, ContactFormData } from "../validation/contact";
 
 export interface ContactServiceResult {
   success: boolean;

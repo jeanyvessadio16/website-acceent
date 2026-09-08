@@ -11,7 +11,7 @@ Documentation générale du projet : [README.md](../../README.md) · [Architectu
 Gère la validation et l’envoi du formulaire de contact.
 
 **Fichier :** `contactService.ts`  
-**Schéma associé :** `src/zodSchema/contact.ts`  
+**Schéma associé :** `src/validation/contact.ts`  
 **Composant consommateur :** `src/components/shared/Contact.tsx`
 
 ### Flux
@@ -103,7 +103,7 @@ Possible uniquement côté serveur. Si le service est appelé depuis un Client C
 ## Ajouter un nouveau service
 
 1. Créer `src/services/monService.ts`
-2. Définir un schéma Zod dans `src/zodSchema/` si validation nécessaire
+2. Définir un schéma Zod dans `src/validation/` si validation nécessaire
 3. Exporter une classe avec méthodes `static` et un type `*Result` cohérent
 4. Documenter ici ou dans `docs/architecture.md`
 

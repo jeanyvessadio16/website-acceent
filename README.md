@@ -113,7 +113,7 @@ acceent-website/
 │   ├── data/               # Contenu statique (programmes, footer, partenaires)
 │   ├── services/           # Logique métier (ex. contact)
 │   ├── types/              # Types TypeScript partagés
-│   ├── zodSchema/          # Schémas de validation Zod
+│   ├── validation/         # Schémas de validation Zod
 │   └── lib/
 │       └── utils.ts        # Utilitaire `cn()` (clsx + tailwind-merge)
 ├── components.json         # Configuration shadcn/ui
@@ -187,7 +187,7 @@ Les **groupes de routes** entre parenthèses — `(programme)`, `(education)`, e
         │                   │
         │              ContactService
         │                   │
-        └──────────► zodSchema/contact.ts
+        └──────────► validation/contact.ts
 ```
 
 - **Server Components** : pages dans `app/`, métadonnées `export const metadata`, rendu côté serveur par défaut.
@@ -239,7 +239,7 @@ Le composant `Contact` (`src/components/shared/Contact.tsx`) est réutilisé sur
 
 1. Saisie utilisateur → React Hook Form
 2. Soumission → `ContactService.submitContactForm()`
-3. Validation Zod (`src/zodSchema/contact.ts`)
+3. Validation Zod (`src/validation/contact.ts`)
 4. Envoi simulé via `sendContactEmail()` (à brancher sur une vraie API)
 
 **Champs validés :**

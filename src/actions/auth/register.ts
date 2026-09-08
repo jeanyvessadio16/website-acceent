@@ -2,7 +2,7 @@
 
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
-import { registerSchema, type RegisterInput } from "@/zodSchema/auth";
+import { registerSchema, type RegisterInput } from "@/validation/auth";
 import prisma from "@/lib/prisma";
 
 export interface RegisterActionResult {

@@ -16,7 +16,7 @@ import {
   XCircle,
   AlertCircle,
 } from "lucide-react";
-import { registerSchema, type RegisterInput } from "@/zodSchema/auth";
+import { registerSchema, type RegisterInput } from "@/validation/auth";
 import { registerAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

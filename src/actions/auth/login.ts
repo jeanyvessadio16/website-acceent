@@ -2,7 +2,7 @@
 
 import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
-import { loginSchema, type LoginInput } from "@/zodSchema/auth";
+import { loginSchema, type LoginInput } from "@/validation/auth";
 import prisma from "@/lib/prisma";
 import { createSession } from "@/lib/session";
 

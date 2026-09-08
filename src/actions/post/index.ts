@@ -9,7 +9,7 @@ import {
   SLUG_REGEX,
   type CreatePostInput,
   type UpdatePostInput,
-} from "@/zodSchema/post";
+} from "@/validation/post";
 
 // Helper pour générer un slug propre à partir d'un titre
 function slugify(text: string): string {

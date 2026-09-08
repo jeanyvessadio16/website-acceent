@@ -122,6 +122,14 @@ export const rootMetadata: Metadata = {
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
   publisher: SITE_NAME,
+  icons: {
+    icon: [
+      { url: "/logo/favicon.ico" },
+      { url: "/logo/logo-acceent.png", type: "image/png" },
+    ],
+    shortcut: "/logo/favicon.ico",
+    apple: "/logo/logoACCEENT.png",
+  },
   formatDetection: {
     email: false,
     address: false,

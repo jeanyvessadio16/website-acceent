@@ -37,7 +37,7 @@ export function buildSocialSharingMetadata({
     type: "website",
     images: [
       {
-        url: OG_IMAGE_PATH,
+        url: imageSecureUrl,
         secureUrl: imageSecureUrl,
         width: OG_IMAGE.width,
         height: OG_IMAGE.height,
@@ -56,7 +56,7 @@ export function buildSocialSharingMetadata({
     description,
     images: [
       {
-        url: OG_IMAGE_PATH,
+        url: imageSecureUrl,
         alt: OG_IMAGE.alt,
       },
     ],
@@ -64,8 +64,12 @@ export function buildSocialSharingMetadata({
 
   const other: NonNullable<Metadata["other"]> = {
     // Open Graph renforcé — lu par Facebook, Instagram, WhatsApp et TikTok
+    "og:image": imageSecureUrl,
     "og:image:secure_url": imageSecureUrl,
     "og:image:type": "image/png",
+    "og:image:width": String(OG_IMAGE.width),
+    "og:image:height": String(OG_IMAGE.height),
+    "og:image:alt": OG_IMAGE.alt,
     "og:locale:alternate": "fr_FR",
     // Facebook (Sharing Debugger)
     "article:publisher": SOCIAL_PROFILES.facebook.url,

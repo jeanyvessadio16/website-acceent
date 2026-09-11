@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { createPageMetadata } from "@/lib/seo";
 import { PostDetailView } from "@/components/actualites/PostDetailView";
+import { ArticleJsonLd, BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -75,18 +76,35 @@ export default async function PostDetailPage({ params }: PostPageProps) {
     : "ACCEENT";
 
   return (
-    <main className="min-h-screen bg-slate-50/50 py-12 sm:py-16">
-      <PostDetailView
-        post={{
-          id: post.id,
-          title: post.title,
-          slug: post.slug,
-          content: post.content,
-          imageUrl: post.imageUrl,
-          createdAt: formattedDate,
-          authorName,
-        }}
+    <>
+      <ArticleJsonLd
+        title={post.title}
+        description={post.content.slice(0, 160)}
+        url={`/actualites/${post.slug}`}
+        imageUrl={post.imageUrl ?? undefined}
+        datePublished={post.createdAt.toISOString()}
+        authorName={authorName}
       />
-    </main>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "Actualités", item: "/actualites" },
+          { name: post.title, item: `/actualites/${post.slug}` },
+        ]}
+      />
+      <main className="min-h-screen bg-slate-50/50 py-12 sm:py-16">
+        <PostDetailView
+          post={{
+            id: post.id,
+            title: post.title,
+            slug: post.slug,
+            content: post.content,
+            imageUrl: post.imageUrl,
+            createdAt: formattedDate,
+            authorName,
+          }}
+        />
+      </main>
+    </>
   );
 }

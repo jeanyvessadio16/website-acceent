@@ -5,7 +5,7 @@ import { list_actions } from "@/data/list-actions";
 import Image from "next/image";
 import Partenaire from "@/components/shared/Partenaires";
 import Contact from "@/components/shared/contact/Contact";
-import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/JsonLd";
+import { OrganizationJsonLd, WebSiteJsonLd, FAQJsonLd } from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo";
 import prisma from "@/lib/prisma";
 import { PublishedPost } from "@/components/actualites/PostCard";
@@ -15,6 +15,25 @@ import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/shared/Animations";
+
+const homeFaqs = [
+  {
+    question: "Qu'est-ce que l'association ACCEENT ?",
+    answer: "ACCEENT (Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires) est une association sénégalaise basée à Ziguinchor (quartier Santhiaba). Elle accompagne les jeunes et les femmes vers l'autonomie.",
+  },
+  {
+    question: "Quels sont les piliers d'intervention d’ACCEENT à Ziguinchor ?",
+    answer: "ACCEENT agit à travers trois piliers majeurs : l'Éducation (accompagnement scolaire, Tut-Tank, ACCEENT4ELLES), l'Entrepreneuriat (ACCEENT Incub, ateliers et forums), et le Numérique (initiation au code, robotique WRO et intelligence artificielle).",
+  },
+  {
+    question: "Où se situe l'association ACCEENT ?",
+    answer: "L'association ACCEENT est située au quartier Santhiaba à Ziguinchor, en Casamance (Sénégal).",
+  },
+  {
+    question: "Qui peut participer aux programmes d'ACCEENT ?",
+    answer: "Les programmes s'adressent principalement aux jeunes et aux femmes de la région de Ziguinchor et de la Casamance souhaitant se former, lancer un projet ou développer des compétences numériques.",
+  },
+];
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -112,6 +131,7 @@ export default async function Home() {
     <>
       <OrganizationJsonLd />
       <WebSiteJsonLd />
+      <FAQJsonLd faqs={homeFaqs} />
       <div>
         {/* Section 1 — Hero */}
         <section
@@ -127,14 +147,14 @@ export default async function Home() {
             </FadeIn>
 
             <FadeIn delay={0.2} direction="up">
-              <h1 id="hero-heading" className="max-w-4xl text-xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
-                Action pour la Contribution Collective pour l&apos;Éducation, l&apos;Entrepreneuriat et le Numérique des Territoires
+              <h1 id="hero-heading" className="max-w-4xl text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+                Autonomiser les Jeunes et les Femmes par l&apos;Éducation, l&apos;Entrepreneuriat et le Numérique
               </h1>
             </FadeIn>
 
             <FadeIn delay={0.3} direction="up">
               <p className="max-w-2xl text-slate-200 text-xs sm:text-base md:text-lg leading-relaxed">
-                ACCEENT accompagne les jeunes et les femmes de Ziguinchor à travers des initiatives d&apos;éducation, d&apos;entrepreneuriat et de numérique pour favoriser l&apos;autonomie et le développement local durable.
+                ACCEENT accompagne la jeunesse et les femmes de Ziguinchor à travers des initiatives concrètes d&apos;éducation, d&apos;entrepreneuriat et d&apos;inclusion numérique pour favoriser l&apos;autonomie et le développement local durable.
               </p>
             </FadeIn>
 

@@ -10,13 +10,25 @@ export const DEFAULT_DESCRIPTION =
 
 export const DEFAULT_KEYWORDS = [
   "ACCEENT",
+  "ACCEENT Ziguinchor",
   "association Ziguinchor",
+  "association Santhiaba",
   "éducation Ziguinchor",
   "entrepreneuriat Sénégal",
   "numérique Casamance",
   "formation jeunes Ziguinchor",
   "femmes tech Sénégal",
+  "autonomisation femmes Ziguinchor",
   "ONG Ziguinchor",
+  "ONG Casamance",
+  "ACCEENT Elles",
+  "Tut-Tank Ziguinchor",
+  "ACCEENT Incub",
+  "WRO Sénégal World Robot Olympiad",
+  "incubateur Ziguinchor",
+  "développement territorial Sénégal",
+  "innovation sociale Ziguinchor",
+  "mentorat jeunes filles Ziguinchor",
 ];
 
 export const OG_IMAGE_PATH = "/logo/logoACCEENT.png";
@@ -26,6 +38,13 @@ export const OG_IMAGE = {
   width: 1200,
   height: 630,
   alt: "Logo ACCEENT — Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires",
+};
+
+export const GEO_METADATA = {
+  "geo.region": "SN-ZG",
+  "geo.placename": "Ziguinchor, Santhiaba, Sénégal",
+  "geo.position": "12.5683;-16.2733",
+  ICBM: "12.5683, -16.2733",
 };
 
 export const siteRoutes = [
@@ -101,12 +120,16 @@ export function createPageMetadata({
           follow: true,
           googleBot: { index: true, follow: true },
         },
+    other: {
+      ...GEO_METADATA,
+      ...(social.other ?? {}),
+    },
     ...social,
   };
 }
 
 const rootSocial = buildSocialSharingMetadata({
-  title: `${SITE_NAME} — Éducation, entrepreneuriat et numérique`,
+  title: `${SITE_NAME} — Éducation, entrepreneuriat et numérique à Ziguinchor`,
   description: DEFAULT_DESCRIPTION,
   path: "/",
 });
@@ -142,5 +165,8 @@ export const rootMetadata: Metadata = {
   },
   openGraph: rootSocial.openGraph,
   twitter: rootSocial.twitter,
-  other: rootSocial.other,
+  other: {
+    ...GEO_METADATA,
+    ...(rootSocial.other ?? {}),
+  },
 };

@@ -55,4 +55,20 @@ export const list_actions: ActionTerrain[] = [
     description:
       "Formations pratiques aux outils numériques essentiels de communication et gestion.",
   },
+  {
+    id: 7,
+    src: "/images/gestionAdministrativeFinanciere.jpeg",
+    alt: "Gestion administrative et financière",
+    title: "Gestion Administrative & Financière",
+    description:
+      "Formations et accompagnement en organisation administrative, gestion budgétaire et suivi financier.",
+  },
+  {
+    id: 8,
+    src: "/images/preincubation.jpeg",
+    alt: "Programme de préincubation",
+    title: "Préincubation",
+    description:
+      "Accompagnement à la structuration d'idées, modélisation de projets et formalisation des initiatives.",
+  },
 ];

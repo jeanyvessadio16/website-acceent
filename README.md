@@ -303,11 +303,16 @@ CONTACT_TO_EMAIL=info@acceent.org
 
 ## Documentation complémentaire
 
+Toute la documentation complète du projet se trouve dans le dossier [`documentation/`](documentation/README.md) :
+
 | Document | Public cible |
 |----------|----------------|
-| [docs/architecture.md](docs/architecture.md) | Développeurs — patterns, composants, conventions |
-| [docs/guide-contenu.md](docs/guide-contenu.md) | Équipe contenu — programmes, images, footer |
-| [src/services/README.md](src/services/README.md) | Intégration API / e-mail du formulaire |
+| [documentation/README.md](documentation/README.md) | Sommaire et vue d'ensemble de la documentation |
+| [documentation/architecture-technique.md](documentation/architecture-technique.md) | Développeurs — App Router, Prisma ORM, JWT JOSE, Middleware |
+| [documentation/installation-et-deploiement.md](documentation/installation-et-deploiement.md) | Développeurs / DevOps — Déploiement Vercel, .env, Prisma migrations |
+| [documentation/base-de-donnees-et-securite.md](documentation/base-de-donnees-et-securite.md) | Développeurs — Schéma Prisma, Rôles (ADMIN, AUTHOR, USER), Cookie HTTP-only |
+| [documentation/guide-contenu-et-admin.md](documentation/guide-contenu-et-admin.md) | Équipe contenu & Admins — Mise à jour des programmes, gestion d'admin |
+| [documentation/api-et-server-actions.md](documentation/api-et-server-actions.md) | Développeurs — Server Actions (`src/actions`), validation Zod |
 
 ---
 

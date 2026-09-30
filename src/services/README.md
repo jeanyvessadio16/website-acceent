@@ -2,7 +2,7 @@
 
 Couche de **logique métier** isolée des composants React. Les services ne doivent pas importer de hooks ni de composants UI.
 
-Documentation générale du projet : [README.md](../../README.md) · [Architecture](../../docs/architecture.md)
+Documentation générale du projet : [README.md](../../README.md) · [Architecture](../../documentation/architecture-technique.md)
 
 ---
 
@@ -105,7 +105,7 @@ Possible uniquement côté serveur. Si le service est appelé depuis un Client C
 1. Créer `src/services/monService.ts`
 2. Définir un schéma Zod dans `src/validation/` si validation nécessaire
 3. Exporter une classe avec méthodes `static` et un type `*Result` cohérent
-4. Documenter ici ou dans `docs/architecture.md`
+4. Documenter ici ou dans `documentation/architecture-technique.md`
 
 ---
 

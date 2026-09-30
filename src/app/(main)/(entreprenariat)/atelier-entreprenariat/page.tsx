@@ -1,20 +1,22 @@
 import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
 import { createPageMetadata } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
-  title: "Atelier Entrepreneuriat",
+  title: "Ateliers d'Entrepreneuriat Pratique à Ziguinchor",
   description:
-    "Les ateliers entrepreneuriat ACCEENT à Ziguinchor encouragent l'esprit d'entreprise chez les jeunes : idéation, structuration de projet et travail en équipe.",
+    "Participez aux ateliers d'entrepreneuriat ACCEENT à Ziguinchor : idéation, modélisation d'affaires (Business Model Canvas), structuration financière et travail en équipe.",
   path: "/atelier-entreprenariat",
   keywords: [
-    "entrepreneuriat",
-    "atelier entrepreneuriat",
-    "atelier entrepreneuriat jeunes",
-    "entrepreneuriat jeunes Ziguinchor",
-    "formation business plan Ziguinchor",
+    "ateliers entrepreneuriat Ziguinchor",
+    "formation business plan Casamance",
+    "création d'entreprise jeunes Ziguinchor",
+    "ateliers pratiques entrepreneuriat Sénégal",
+    "modélisation de projet Santhiaba",
+    "formation gestion entreprise Ziguinchor",
   ],
 });
 
@@ -44,7 +46,15 @@ export default function AtelierEntreprenariat() {
   ];
 
   return (
-    <ProgrammeLayout
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "Entrepreneuriat", item: "/entreprenariat" },
+          { name: "Atelier Entrepreneuriat", item: "/atelier-entreprenariat" },
+        ]}
+      />
+      <ProgrammeLayout
       image="/images/entreprenariat.jpeg"
       text="Programme Entrepreneuriat"
       {...programme}
@@ -110,5 +120,6 @@ export default function AtelierEntreprenariat() {
         </div>
       </FadeIn>
     </ProgrammeLayout>
+    </>
   );
 }

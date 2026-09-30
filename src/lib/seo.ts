@@ -48,9 +48,10 @@ export const GEO_METADATA = {
 };
 
 export const siteRoutes = [
-  { path: "/", priority: 1, changeFrequency: "weekly" as const },
+  { path: "/", priority: 1.0, changeFrequency: "weekly" as const },
   { path: "/about", priority: 0.8, changeFrequency: "monthly" as const },
   { path: "/contact", priority: 0.8, changeFrequency: "monthly" as const },
+  { path: "/actualites", priority: 0.85, changeFrequency: "daily" as const },
   { path: "/education", priority: 0.9, changeFrequency: "weekly" as const },
   {
     path: "/entreprenariat",
@@ -80,7 +81,7 @@ export const siteRoutes = [
     changeFrequency: "monthly" as const,
   },
   { path: "/wro", priority: 0.85, changeFrequency: "monthly" as const },
-  { path: "/ia", priority: 0.6, changeFrequency: "monthly" as const },
+  { path: "/ia4good", priority: 0.85, changeFrequency: "monthly" as const },
 ];
 
 type CreatePageMetadataOptions = {

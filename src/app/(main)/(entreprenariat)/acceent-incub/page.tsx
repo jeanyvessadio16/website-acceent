@@ -1,22 +1,25 @@
 import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
 import { AtelierEntreprenariatProgrammes } from "@/data/entreprenariat/acceentIncub";
 import { createPageMetadata } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
-  title: "ACCEENT'INCUB",
+  title: "ACCEENT'INCUB — Incubateur de Startups & Projets à Ziguinchor",
   description:
-    "ACCEENT'INCUB est l'incubateur de jeunes porteurs de projets à Ziguinchor : idéation, structuration, mentorat et accompagnement pour transformer une idée en initiative viable.",
+    "ACCEENT'INCUB est l'incubateur de projets pour jeunes et femmes à Ziguinchor : mentorat, idéation, structuration financière et accompagnement vers la réussite en Casamance.",
   path: "/acceent-incub",
   keywords: [
-    "incubateur Ziguinchor",
     "ACCEENT INCUB",
-    "jeunes entrepreneurs Ziguinchor",
+    "incubateur Ziguinchor",
     "accompagnement startup Ziguinchor",
-    "accompagnement startup Casamance",
-    "entrepreneuriat Ziguinchor",
+    "incubateur entreprise Casamance",
+    "jeunes entrepreneurs Ziguinchor",
+    "coaching projet entrepreneurial Sénégal",
+    "structuration d'entreprise Ziguinchor",
+    "mentorat entrepreneuriat Casamance",
   ],
 });
 
@@ -28,6 +31,14 @@ export default function AcceentIncub() {
   };
 
   return (
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "Entrepreneuriat", item: "/entreprenariat" },
+          { name: "ACCEENT Incub", item: "/acceent-incub" },
+        ]}
+      />
     <ProgrammeLayout
       image="/images/acceent-incub.jpeg"
       text="Programme Entrepreneuriat"
@@ -93,5 +104,6 @@ export default function AcceentIncub() {
         </div>
       </FadeIn>
     </ProgrammeLayout>
+    </>
   );
 }

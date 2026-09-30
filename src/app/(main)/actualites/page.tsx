@@ -3,20 +3,24 @@ import prisma from "@/lib/prisma";
 import { ActualitesList } from "@/components/actualites/ActualitesList";
 import { FadeIn } from "@/components/shared/Animations";
 import { Newspaper } from "lucide-react";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata = createPageMetadata({
-  title: "Actualités",
+  title: "Actualités & Événements — Association ACCEENT Ziguinchor",
   description:
-    "Suivez toute l'actualité, les événements et les réussites portés par l'association ACCEENT à Ziguinchor.",
+    "Suivez l'actualité des programmes, témoignages, événements et réussites portés par l'association ACCEENT en éducation, entrepreneuriat et numérique à Ziguinchor et en Casamance.",
   path: "/actualites",
   keywords: [
-    "actualités ACCEENT",
-    "événements Ziguinchor",
-    "projets Casamance",
-    "nouvelles éducation entrepreneuriat numérique",
+    "actualités ACCEENT Ziguinchor",
+    "événements Ziguinchor Casamance",
+    "projets association ACCEENT",
+    "blog éducation Ziguinchor",
+    "nouvelles entrepreneuriat Casamance",
+    "activités jeunesse Ziguinchor",
+    "succès ACCEENT",
   ],
 });
 
@@ -66,7 +70,14 @@ export default async function ActualitesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50/50 py-12 sm:py-16">
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "Actualités", item: "/actualites" },
+        ]}
+      />
+      <main className="min-h-screen bg-slate-50/50 py-12 sm:py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl space-y-12">
         {/* Header Hero */}
         <FadeIn direction="up">
@@ -90,5 +101,6 @@ export default async function ActualitesPage() {
         </FadeIn>
       </div>
     </main>
+    </>
   );
 }

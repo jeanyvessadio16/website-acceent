@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import {
   FadeIn,
   StaggerContainer,
@@ -11,15 +12,19 @@ import {
 import { equipeAcceent } from "@/data/list-equipe-acceent";
 
 export const metadata = createPageMetadata({
-  title: "À propos",
+  title: "À Propos d'ACCEENT — Notre Mission, Équipe et Histoire à Ziguinchor",
   description:
-    "Découvrez ACCEENT : une équipe engagée à Ziguinchor pour former, inspirer et accompagner les jeunes et les femmes vers l'autonomie à travers l'éducation, l'entrepreneuriat et le numérique.",
+    "Découvrez l'association ACCEENT à Ziguinchor (Santhiaba) : notre vision, nos valeurs, l'équipe dirigeante et nos actions pour l'éducation, l'entrepreneuriat et le numérique en Casamance.",
   path: "/about",
   keywords: [
-    "association ACCEENT",
-    "équipe ACCEENT Ziguinchor",
-    "impact local Casamance",
-    "valeurs inclusion jeunes femmes",
+    "association ACCEENT Ziguinchor",
+    "équipe ACCEENT Santhiaba",
+    "histoire ACCEENT Casamance",
+    "ONG développement Ziguinchor",
+    "mission éducative Ziguinchor",
+    "inclusion numérique jeunes filles Casamance",
+    "valeurs association Sénégal",
+    "bénévoles Ziguinchor",
   ],
 });
 
@@ -49,7 +54,14 @@ export default function About() {
   ];
 
   return (
-    <main className="min-h-screen bg-slate-50">
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "À Propos", item: "/about" },
+        ]}
+      />
+      <main className="min-h-screen bg-slate-50">
       {/* 1. HERO SECTION */}
       <section
         className="relative w-full h-[calc(100dvh-5rem)] flex flex-col justify-center items-start overflow-hidden bg-slate-900"
@@ -305,5 +317,6 @@ export default function About() {
         </FadeIn>
       </section>
     </main>
+    </>
   );
 }

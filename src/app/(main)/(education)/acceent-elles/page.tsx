@@ -12,21 +12,23 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { FadeIn } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
-  title: "ACCEENT4ELLES",
+  title: "ACCEENT4ELLES — Autonomisation & Leadership des Filles à Ziguinchor",
   description:
-    "ACCEENT4ELLES met en lumière des parcours de femmes et de jeunes filles à Ziguinchor pour promouvoir la diversité, l'inclusion et l'autonomie.",
+    "ACCEENT4ELLES accompagne et valorise les jeunes filles et femmes de Ziguinchor : mentorat, ateliers d'émancipation, leadership et égalité des chances en Casamance.",
   path: "/acceent-elles",
   keywords: [
-    "éducation filles Ziguinchor",
-    "autonomisation des jeunes filles",
-    "inclusion des filles",
     "ACCEENT4ELLES Ziguinchor",
-    "jeunes filles vulnérables",
-    "autonomie des jeunes filles",
-    "mentorat jeunes filles",
+    "autonomisation des jeunes filles Ziguinchor",
+    "mentorat filles Casamance",
+    "éducation des filles Ziguinchor",
+    "leadership féminin Sénégal",
+    "inclusion des filles Ziguinchor",
+    "égalités des chances femmes Casamance",
+    "femmes et numérique Ziguinchor",
   ],
 });
 
@@ -45,7 +47,15 @@ export default function AcceentEllesPage() {
   } as const;
 
   return (
-    <ProgrammeLayout
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "Éducation", item: "/education" },
+          { name: "ACCEENT4ELLES", item: "/acceent-elles" },
+        ]}
+      />
+      <ProgrammeLayout
       image="/images/acceentImage.jpg"
       text="Programme Éducation"
       {...programme}
@@ -150,5 +160,6 @@ export default function AcceentEllesPage() {
         </div>
       </FadeIn>
     </ProgrammeLayout>
+    </>
   );
 }

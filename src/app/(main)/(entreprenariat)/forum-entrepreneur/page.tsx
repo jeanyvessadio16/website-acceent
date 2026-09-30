@@ -1,16 +1,21 @@
 import HeaderLayout from "@/components/shared/HeaderLayout";
 import { createPageMetadata } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { MessagesSquare, Mic } from "lucide-react";
 
 export const metadata = createPageMetadata({
-  title: "Forum des acteurs locaux",
+  title: "Forum des Entrepreneurs & Acteurs Locaux de Ziguinchor",
   description:
-    "Le forum entrepreneur ACCEENT à Ziguinchor réunit innovateurs et décideurs locaux pour des conférences, échanges et networking autour du développement économique de la Casamance.",
+    "Le Forum des entrepreneurs ACCEENT à Ziguinchor rassemble créateurs de projets, mentors, décideurs et investisseurs pour dynamiser l'économie et l'innovation en Casamance.",
   path: "/forum-entrepreneur",
   keywords: [
     "forum entrepreneur Ziguinchor",
-    "réseau acteurs locaux Casamance",
-    "événement entrepreneuriat Sénégal",
+    "forum acteurs locaux Casamance",
+    "networking entrepreneuriat Ziguinchor",
+    "événement économique Ziguinchor",
+    "salon entrepreneuriat Casamance",
+    "rencontres entrepreneurs Sénégal",
+    "développement local Casamance",
   ],
 });
 
@@ -40,6 +45,13 @@ export default function ForumEntrepreneur() {
 
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "Entrepreneuriat", item: "/entreprenariat" },
+          { name: "Forum des Entrepreneurs", item: "/forum-entrepreneur" },
+        ]}
+      />
       <HeaderLayout {...programme}>
         <section className="section-padding bg-slate-50/50 relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0">

@@ -3,20 +3,23 @@ import { tuttankProgrammes } from "@/data/education/tut-tank";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
-  title: "TUT-TANK",
+  title: "TUT-TANK — Accompagnement Scolaire & Social des Filles à Ziguinchor",
   description:
-    "TUT-TANK : accompagnement scolaire et social pour les jeunes filles vulnérables à Ziguinchor, avec un suivi personnalisé pour favoriser la réussite et l'autonomie.",
+    "TUT-TANK par ACCEENT : accompagnement scolaire, soutien social et suivi individuel des jeunes filles en situation de vulnérabilité à Ziguinchor (Casamance).",
   path: "/tut-tank",
   keywords: [
     "TUT-TANK Ziguinchor",
+    "Tut-Tank ACCEENT",
     "accompagnement scolaire filles Ziguinchor",
-    "soutien familial Ziguinchor",
-    "TUT-TANK ACCEENT",
-    "jeunes filles vulnérables Ziguinchor",
-    "réussite scolaire Ziguinchor",
+    "soutien social famille Ziguinchor",
+    "réussite scolaire Casamance",
+    "parrainage scolaire Ziguinchor",
+    "lutte contre le décrochage scolaire Sénégal",
+    "jeunes filles vulnérables Santhiaba",
   ],
 });
 
@@ -28,6 +31,14 @@ export default function TutTankPage() {
   };
 
   return (
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "Éducation", item: "/education" },
+          { name: "Tut-Tank", item: "/tut-tank" },
+        ]}
+      />
     <ProgrammeLayout
       image="/images/tuttank.jpeg"
       text="Programme Éducation"
@@ -96,5 +107,6 @@ export default function TutTankPage() {
         </div>
       </FadeIn>
     </ProgrammeLayout>
+    </>
   );
 }

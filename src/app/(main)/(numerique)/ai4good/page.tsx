@@ -1,6 +1,7 @@
 import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
 import { Button } from "@/components/ui/button";
 import { createPageMetadata } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import Link from "next/link";
 import { ai4good } from "@/data/numerique/AI4GOOD";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,21 +9,32 @@ import { ArrowRight } from "lucide-react";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
-  title: "AI4GOOD Festival",
+  title: "AI4GOOD Festival — Intelligence Artificielle & Impact Social à Ziguinchor",
   description:
-    "Inspirer la nouvelle génération à utiliser l'intelligence artificielle pour résoudre les défis mondiaux et créer un avenir meilleur.",
+    "Le festival AI4GOOD par ACCEENT à Ziguinchor initie les jeunes et les femmes à l'intelligence artificielle responsable pour répondre aux défis sociétaux et environnementaux de la Casamance.",
   path: "/ia4good",
   keywords: [
-    "intelligence artificielle jeunes Sénégal",
-    "formation IA Ziguinchor",
-    "numérique Casamance",
+    "AI4GOOD Ziguinchor",
+    "intelligence artificielle impact social Sénégal",
+    "formation IA jeunes Ziguinchor",
+    "festival numérique Casamance",
+    "intelligence artificielle pour le bien social",
+    "innovation éthique Sénégal",
+    "IA et éducation Ziguinchor",
   ],
-  noIndex: true,
 });
 
 export default function AI4GoodPage() {
   return (
-    <ProgrammeLayout
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "Numérique", item: "/numerique" },
+          { name: "AI4GOOD Festival", item: "/ia4good" },
+        ]}
+      />
+      <ProgrammeLayout
       titre="AI4GOOD Festival"
       description="Ensemble, créons un futur numérique où la technologie élève, protège et émancipe."
       image="/images/ai4good.png"
@@ -116,5 +128,6 @@ export default function AI4GoodPage() {
         </div>
       </FadeIn>
     </ProgrammeLayout>
+    </>
   );
 }

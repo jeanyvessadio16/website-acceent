@@ -8,21 +8,26 @@ import {
 } from "@/components/ui/card";
 import { wroAction } from "@/data/numerique/wroAction";
 import { createPageMetadata } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
-  title: "World Robot Olympiad (WRO)",
+  title: "WRO Sénégal — World Robot Olympiad & Robotique à Ziguinchor",
   description:
-    "Programme WRO d'ACCEENT à Ziguinchor : compétition internationale de robotique, ateliers d'initiation et défis locaux pour apprendre à programmer, construire et collaborer.",
+    "Programme World Robot Olympiad (WRO) à Ziguinchor par ACCEENT : ateliers de robotique éducative, programmation, construction de robots et compétition pour les jeunes en Casamance.",
   path: "/wro",
   keywords: [
     "World Robot Olympiad Sénégal",
+    "WRO Sénégal Ziguinchor",
     "robotique jeunes Ziguinchor",
-    "programmation visuelle collège lycée",
     "compétition robotique Casamance",
+    "programmation visuelle collège lycée Ziguinchor",
+    "ateliers robotique ACCEENT",
+    "STEM et sciences Sénégal",
+    "innovation technologique jeunes Casamance",
   ],
 });
 
@@ -34,7 +39,15 @@ export default function WROPage() {
   };
 
   return (
-    <ProgrammeLayout
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "Numérique", item: "/numerique" },
+          { name: "WRO Robotique", item: "/wro" },
+        ]}
+      />
+      <ProgrammeLayout
       image="/images/WRO.webp"
       text="Programme Numérique"
       {...programme}
@@ -112,5 +125,6 @@ export default function WROPage() {
         </div>
       </FadeIn>
     </ProgrammeLayout>
+    </>
   );
 }

@@ -36,20 +36,25 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata = createPageMetadata({
-  title: "Accueil",
+  title: "Éducation, Entrepreneuriat & Numérique à Ziguinchor (Sénégal)",
   description:
-    "ACCEENT accompagne les jeunes et les femmes de Ziguinchor à travers des programmes d'éducation, d'entrepreneuriat et de numérique pour favoriser l'autonomie et l'impact local.",
+    "ACCEENT est une association sénégalaise basée à Ziguinchor (Santhiaba) qui accompagne les jeunes et les femmes vers l'autonomie à travers l'éducation, l'entrepreneuriat et le numérique en Casamance.",
   path: "/",
   keywords: [
     "ACCEENT Ziguinchor",
     "association Ziguinchor",
-    "association éducation Ziguinchor",
-    "formation entrepreneuriat Ziguinchor",
-    "programmes numériques Ziguinchor",
+    "ONG Ziguinchor Santhiaba",
+    "association Casamance",
+    "éducation Ziguinchor",
+    "entrepreneuriat jeunes Sénégal",
+    "incubateur ACCEENT Incub Ziguinchor",
+    "formation numérique Casamance",
+    "robotique WRO Sénégal",
+    "Tut-Tank soutien scolaire Ziguinchor",
+    "ACCEENT4ELLES autonomisation femmes",
     "inclusion numérique filles Ziguinchor",
-    "autonomie des jeunes filles Ziguinchor",
-    "mentorat jeunes filles Ziguinchor",
-    "égalité filles-garçons Ziguinchor",
+    "mentorat jeunes filles Sénégal",
+    "développement local Casamance",
   ],
 });
 

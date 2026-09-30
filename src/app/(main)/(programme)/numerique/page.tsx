@@ -10,23 +10,36 @@ import {
   StaggerItem,
 } from "@/components/shared/Animations";
 import { createPageMetadata } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata = createPageMetadata({
-  title: "Domaine Numérique",
+  title: "Programme Numérique, Coding & Robotique à Ziguinchor",
   description:
-    "Programmes numériques ACCEENT à Ziguinchor : robotique (WRO), intelligence artificielle et initiation au numérique pour les jeunes de la Casamance.",
+    "Découvrez le pôle Numérique d'ACCEENT à Ziguinchor : initiation à la programmation, robotique WRO Sénégal, intelligence artificielle AI4GOOD et inclusion digitale des jeunes et des femmes en Casamance.",
   path: "/numerique",
   keywords: [
     "numérique Ziguinchor",
+    "formation digitale Casamance",
     "robotique jeunes Sénégal",
     "World Robot Olympiad Casamance",
-    "formation IA jeunes",
+    "WRO Sénégal Ziguinchor",
+    "AI4GOOD Ziguinchor",
+    "initiation au code Ziguinchor",
+    "formation IA jeunes Sénégal",
+    "STEM Sénégal",
+    "inclusion numérique femmes Ziguinchor",
   ],
 });
 
 export default function Numerique() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "Numérique", item: "/numerique" },
+        ]}
+      />
       <HeaderLayout
         text="Domaine"
         title="Numérique"

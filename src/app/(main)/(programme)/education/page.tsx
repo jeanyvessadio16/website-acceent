@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createPageMetadata } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import {
   FadeIn,
   StaggerContainer,
@@ -12,26 +13,33 @@ import {
 } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
-  title: "Programme Éducation",
+  title: "Programme Éducation & Soutien Scolaire à Ziguinchor",
   description:
-    "Programmes d'éducation ACCEENT à Ziguinchor : Tut-Tank, ACCEENT4ELLES et parcours pour développer les compétences, la confiance et l'autonomie des jeunes et des femmes.",
+    "Découvrez le pôle Éducation d'ACCEENT à Ziguinchor : Tut-Tank, ACCEENT4ELLES et accompagnement personnalisé pour la réussite et l'autonomie des jeunes et des femmes en Casamance.",
   path: "/education",
   keywords: [
     "éducation Ziguinchor",
-    "programme Tut-Tank",
+    "soutien scolaire Casamance",
+    "programme Tut-Tank Ziguinchor",
     "ACCEENT4ELLES",
     "formation jeunes filles Casamance",
-    "Education feminine Ziguinchor",
-    "accompagnment scolaire Ziguinchor",
-    "accompagnment scolaire Casamance",
-    "Education inclusive Ziguinchor",
-    "Education inclusive Casamance",
+    "éducation féminine Ziguinchor",
+    "accompagnement scolaire Ziguinchor",
+    "éducation inclusive Casamance",
+    "réussite scolaire Santhiaba",
+    "mentorat filles Sénégal",
   ],
 });
 
 export default function Education() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "Éducation", item: "/education" },
+        ]}
+      />
       <HeaderLayout
         text="Domaine"
         title="Éducation"

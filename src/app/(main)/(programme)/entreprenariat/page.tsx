@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createPageMetadata } from "@/lib/seo";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import {
   FadeIn,
   StaggerContainer,
@@ -12,22 +13,33 @@ import {
 } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
-  title: "Domaine Entrepreneuriat",
+  title: "Programme Entrepreneuriat & Incubation à Ziguinchor",
   description:
-    "Programmes d'entrepreneuriat ACCEENT à Ziguinchor : ACCEENT'INCUB, ateliers entrepreneuriat et accompagnement des jeunes porteurs de projets en Casamance.",
+    "Découvrez le pôle Entrepreneuriat d'ACCEENT à Ziguinchor : ACCEENT'INCUB, ateliers de création d'entreprise et accompagnement sur mesure des porteurs de projets en Casamance.",
   path: "/entreprenariat",
   keywords: [
     "entrepreneuriat Ziguinchor",
     "incubateur Casamance",
     "ACCEENT INCUB",
     "accompagnement startup Ziguinchor",
+    "création d'entreprise Casamance",
+    "ateliers entrepreneuriat Ziguinchor",
+    "forum entrepreneur Ziguinchor",
     "GIE Ziguinchor",
+    "économie sociale et solidaire Sénégal",
+    "financement projet jeune Ziguinchor",
   ],
 });
 
 export default function Entreprenariat() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Accueil", item: "/" },
+          { name: "Entrepreneuriat", item: "/entreprenariat" },
+        ]}
+      />
       <HeaderLayout
         text="Domaine"
         title="Entrepreneuriat"

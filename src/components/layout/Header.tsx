@@ -71,10 +71,10 @@ export default function Header() {
   const getNavLinkClass = (href: string) => {
     const isActive = pathname === href;
     return cn(
-      "relative rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 outline-none",
+      "relative px-3 py-2 text-sm font-medium transition-colors outline-none",
       isActive
-        ? "bg-primary text-white font-semibold shadow-xs"
-        : "text-slate-700 hover:bg-slate-100 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary/50",
+        ? "text-primary font-semibold after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-primary after:rounded-full"
+        : "text-slate-600 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary/50 rounded-md",
     );
   };
 
@@ -90,15 +90,15 @@ export default function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="relative flex w-44 sm:w-52 h-16 shrink-0 items-center overflow-hidden transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
+            className="relative flex w-52 sm:w-64 h-16 sm:h-18 shrink-0 items-center transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
             aria-label="ACCEENT — Accueil"
           >
             <Image
               src="/logo/logoACCEENT.png"
               alt="ACCEENT Ziguinchor"
               fill
-              className="object-contain object-left scale-110 origin-left"
-              sizes="(max-width: 640px) 176px, 208px"
+              className="object-contain object-left scale-125 sm:scale-130 origin-left"
+              sizes="(max-width: 640px) 220px, 260px"
               priority
             />
           </Link>
@@ -108,7 +108,7 @@ export default function Header() {
             className="hidden items-center gap-1 lg:flex"
             aria-label="Navigation principale"
           >
-            <ul className="flex items-center gap-1 bg-slate-50/80 p-1.5 rounded-full border border-slate-200/60">
+            <ul className="flex items-center gap-1 sm:gap-2">
               {navLinksBefore.map((lien) => (
                 <li key={lien.id}>
                   <Link href={lien.href} className={getNavLinkClass(lien.href)}>
@@ -124,11 +124,11 @@ export default function Header() {
                     <button
                       type="button"
                       className={cn(
-                        "flex cursor-pointer items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 outline-none select-none",
+                        "flex cursor-pointer items-center gap-1 px-3 py-2 text-sm font-medium transition-colors outline-none select-none relative",
                         isProgramActive
-                          ? "bg-primary text-white font-semibold"
-                          : "text-slate-700 hover:bg-slate-100 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary/50",
-                        "data-[state=open]:bg-slate-100 data-[state=open]:text-primary group",
+                          ? "text-primary font-semibold after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-primary after:rounded-full"
+                          : "text-slate-600 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary/50 rounded-md",
+                        "data-[state=open]:text-primary group",
                       )}
                     >
                       Programmes
@@ -245,15 +245,15 @@ export default function Header() {
               <div className="flex items-center justify-between px-5 h-16 border-b border-slate-100 shrink-0">
                 <Link
                   href="/"
-                  className="relative w-36 h-11 overflow-hidden"
+                  className="relative w-44 h-13"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <Image
                     src="/logo/logoACCEENT.png"
                     alt="ACCEENT Ziguinchor"
                     fill
-                    className="object-contain object-left scale-110 origin-left"
-                    sizes="144px"
+                    className="object-contain object-left scale-125 origin-left"
+                    sizes="176px"
                   />
                 </Link>
                 <Button

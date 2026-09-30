@@ -22,7 +22,7 @@ export default function ProgrammeLayout({
       {/* Section 1 — Hero */}
       <section
         className={cn(
-          "relative w-full min-h-[calc(100dvh-5rem)] flex flex-col items-center justify-center overflow-hidden bg-slate-950 pt-20 text-white",
+          "relative w-full h-[calc(100dvh-5rem)] flex flex-col justify-center items-start overflow-hidden bg-slate-900 text-white",
           className,
         )}
       >
@@ -33,29 +33,28 @@ export default function ProgrammeLayout({
               alt={titre}
               fill
               priority
-              className="object-cover object-center opacity-35"
+              className="object-cover"
               sizes="100vw"
-              quality={85}
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/85 via-slate-950/75 to-slate-950" />
           </div>
         )}
+        <div className="pointer-events-none absolute inset-0 bg-slate-950/75 backdrop-blur-[2px]" />
 
-        <div className="section-container relative z-10 flex min-h-[calc(100dvh-5rem)] flex-col justify-center items-center gap-4 text-center px-4 sm:px-6 md:px-10 py-12 md:py-20">
+        <div className="relative section-container py-4 sm:py-10 z-10 flex flex-col items-start justify-center text-left text-white space-y-3 sm:space-y-6">
           {text ? (
             <FadeIn delay={0.1} direction="down">
-              <span className="inline-block rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-200 backdrop-blur-md">
+              <span className="inline-block rounded-full border border-white/20 bg-white/10 px-3 py-1 sm:px-4 sm:py-1.5 text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-200">
                 {text}
               </span>
             </FadeIn>
           ) : null}
           <FadeIn delay={0.2} direction="up">
-            <h1 className="text-2xl sm:text-4xl lg:text-6xl font-bold text-white max-w-4xl leading-tight">
+            <h1 className="max-w-4xl text-2xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
               {titre}
             </h1>
           </FadeIn>
           <FadeIn delay={0.3} direction="up">
-            <p className="mt-1 sm:mt-2 text-sm sm:text-lg md:text-xl text-slate-200 max-w-2xl leading-relaxed">
+            <p className="max-w-2xl text-slate-200 text-xs sm:text-base md:text-lg leading-relaxed">
               {description}
             </p>
           </FadeIn>

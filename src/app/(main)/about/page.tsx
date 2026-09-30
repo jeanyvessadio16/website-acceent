@@ -51,7 +51,10 @@ export default function About() {
   return (
     <main className="min-h-screen bg-slate-50">
       {/* 1. HERO SECTION */}
-      <section className="relative py-20 md:py-28 bg-slate-900 text-white overflow-hidden">
+      <section
+        className="relative w-full h-[calc(100dvh-5rem)] flex flex-col justify-center items-start overflow-hidden bg-slate-900"
+        aria-labelledby="hero-heading"
+      >
         <div className="absolute inset-0 z-0">
           <Image
             src="/images/campus.jpeg"
@@ -59,29 +62,50 @@ export default function About() {
             fill
             priority
             sizes="100vw"
-            className="object-cover opacity-25"
+            className="object-cover"
           />
-          <div className="absolute inset-0 bg-slate-950/80" />
         </div>
+        <div className="pointer-events-none absolute inset-0 bg-slate-950/75 backdrop-blur-[2px]" />
 
-        <div className="container relative z-10 mx-auto px-6 lg:px-8 flex flex-col items-center text-center">
+        <div className="relative section-container py-4 sm:py-10 z-10 flex flex-col items-start justify-center text-left text-white space-y-3 sm:space-y-6">
           <FadeIn delay={0.1} direction="down">
-            <span className="mb-4 inline-block rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-200">
-              Association à Ziguinchor
+            <span className="inline-block rounded-full border border-white/20 bg-white/10 px-3 py-1 sm:px-4 sm:py-1.5 text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-200">
+              Association — Ziguinchor, Sénégal
             </span>
           </FadeIn>
 
           <FadeIn delay={0.2} direction="up">
-            <h1 className="max-w-4xl text-4xl sm:text-6xl font-bold tracking-tight text-white mb-6">
+            <h1 id="hero-heading" className="max-w-4xl text-2xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
               À propos d&apos;ACCEENT
             </h1>
           </FadeIn>
 
-          <FadeIn delay={0.3} direction="up" className="w-full max-w-3xl mx-auto">
-            <div className="rounded-2xl border border-white/15 bg-white/10 p-6 sm:p-8 backdrop-blur-xs">
-              <p className="text-base sm:text-xl text-slate-100 font-medium leading-relaxed">
-                Action pour la Contribution Collective pour l&apos;Éducation, l&apos;Entrepreneuriat et le Numérique des Territoires
-              </p>
+          <FadeIn delay={0.3} direction="up">
+            <p className="max-w-2xl text-slate-200 text-xs sm:text-base md:text-lg leading-relaxed">
+              ACCEENT (Action pour la Contribution Collective pour l&apos;Éducation, l&apos;Entrepreneuriat et le Numérique des Territoires) est une association sénégalaise basée à Ziguinchor qui accompagne la jeunesse et les femmes vers l&apos;autonomie et le développement local durable.
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={0.4} direction="up">
+            <div className="flex flex-row gap-2.5 sm:gap-4 pt-1 sm:pt-2">
+              <Button
+                asChild
+                size="default"
+                className="rounded-full px-5 sm:px-8 bg-primary text-white hover:bg-primary/90 font-semibold text-xs sm:text-sm h-10 sm:h-11"
+              >
+                <Link href="/contact">
+                  Nous contacter
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="default"
+                className="rounded-full px-5 sm:px-8 bg-white/15 text-white hover:bg-white/25 border border-white/30 backdrop-blur-md font-semibold text-xs sm:text-sm h-10 sm:h-11 transition-colors shadow-xs"
+              >
+                <Link href="#histoire">
+                  Notre Histoire
+                </Link>
+              </Button>
             </div>
           </FadeIn>
         </div>

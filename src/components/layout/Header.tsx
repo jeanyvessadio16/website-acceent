@@ -183,8 +183,7 @@ export default function Header() {
           <div className="hidden lg:flex items-center">
             <Button
               asChild
-              size="default"
-              className="rounded-full bg-primary text-white hover:bg-primary/90 font-medium px-5 shadow-xs"
+              className="rounded-full bg-primary text-white hover:bg-primary/90 font-medium px-5 py-2 h-auto text-sm shadow-xs"
             >
               <Link href="/contact">Nous contacter</Link>
             </Button>

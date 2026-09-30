@@ -7,9 +7,6 @@ import Partenaire from "@/components/shared/Partenaires";
 import Contact from "@/components/shared/contact/Contact";
 import { OrganizationJsonLd, WebSiteJsonLd, FAQJsonLd } from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo";
-import prisma from "@/lib/prisma";
-import { PublishedPost } from "@/components/actualites/PostCard";
-import { HomeActualitesSection } from "@/components/actualites/HomeActualitesSection";
 import {
   FadeIn,
   StaggerContainer,
@@ -56,76 +53,7 @@ export const metadata = createPageMetadata({
   ],
 });
 
-export default async function Home() {
-  let posts: PublishedPost[] = [];
-
-  try {
-    const dbPosts = await prisma.post.findMany({
-      where: { published: true },
-      orderBy: { createdAt: "desc" },
-      take: 3,
-      include: {
-        author: {
-          select: {
-            firstname: true,
-            lastname: true,
-          },
-        },
-      },
-    });
-
-    posts = dbPosts.map((p) => ({
-      id: p.id,
-      title: p.title,
-      slug: p.slug,
-      content: p.content,
-      imageUrl: p.imageUrl,
-      link: p.link,
-      authorName: p.author
-        ? `${p.author.firstname} ${p.author.lastname}`
-        : "ACCEENT",
-      createdAt: p.createdAt.toLocaleDateString("fr-FR", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      }),
-    }));
-  } catch (error) {
-    console.error("Erreur de récupération des articles sur la page d'accueil:", error);
-  }
-
-  // Fallback avec articles réels si aucun post n'est publié dans la base de données
-  if (posts.length === 0) {
-    posts = [
-      {
-        id: "sample-1",
-        title: "Lancement des formations au numérique et à l'entrepreneuriat à Ziguinchor",
-        slug: "lancement-des-formations-au-numerique-et-a-l-entrepreneuriat",
-        content: "L'association ACCEENT ouvre ses nouvelles sessions d'accompagnement destinées aux jeunes et aux femmes de Ziguinchor, axées sur les compétences numériques et l'innovation sociale.",
-        imageUrl: "/images/formation-outil-digital.jpeg",
-        createdAt: "8 septembre 2026",
-        authorName: "Équipe ACCEENT",
-      },
-      {
-        id: "sample-2",
-        title: "Atelier pratique de Design Thinking & Innovation Sociale",
-        slug: "atelier-pratique-de-design-thinking-et-innovation-sociale",
-        content: "Retour sur la journée d'échange et de co-création avec la jeunesse de Santhiaba pour imaginer et développer des projets communautaires durables.",
-        imageUrl: "/images/designthinkig.jpeg",
-        createdAt: "5 septembre 2026",
-        authorName: "Équipe ACCEENT",
-      },
-      {
-        id: "sample-3",
-        title: "Valorisation de l'artisanat : Formation en Batik et Teinture",
-        slug: "valorisation-de-l-artisanat-formation-en-batik-et-teinture",
-        content: "Accompagnement et renforcement des capacités des femmes de la région à travers l'apprentissage des techniques textiles artisanales et de la gestion d'activité.",
-        imageUrl: "/images/batik.jpeg",
-        createdAt: "1 septembre 2026",
-        authorName: "Équipe ACCEENT",
-      },
-    ];
-  }
+export default function Home() {
 
   return (
     <>
@@ -135,11 +63,11 @@ export default async function Home() {
       <div>
         {/* Section 1 — Hero */}
         <section
-          className="relative w-full h-[calc(100dvh-5rem)] flex flex-col justify-center items-center overflow-hidden bg-slate-900 bg-[url('/team/team.jpeg')] bg-cover bg-fixed bg-center"
+          className="relative w-full h-[calc(100dvh-5rem)] flex flex-col justify-center items-start overflow-hidden bg-slate-900 bg-[url('/team/team.jpeg')] bg-cover bg-fixed bg-center"
           aria-labelledby="hero-heading"
         >
           <div className="pointer-events-none absolute inset-0 bg-slate-950/75 backdrop-blur-[2px]" />
-          <div className="relative section-container py-4 sm:py-10 z-10 flex flex-col items-center justify-center text-center text-white space-y-3 sm:space-y-6">
+          <div className="relative section-container py-4 sm:py-10 z-10 flex flex-col items-start justify-center text-left text-white space-y-3 sm:space-y-6">
             <FadeIn delay={0.1} direction="down">
               <span className="inline-block rounded-full border border-white/20 bg-white/10 px-3 py-1 sm:px-4 sm:py-1.5 text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-200">
                 Association — Ziguinchor, Sénégal
@@ -147,7 +75,7 @@ export default async function Home() {
             </FadeIn>
 
             <FadeIn delay={0.2} direction="up">
-              <h1 id="hero-heading" className="max-w-4xl text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+              <h1 id="hero-heading" className="max-w-4xl text-2xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
                 Autonomiser les Jeunes et les Femmes par l&apos;Éducation, l&apos;Entrepreneuriat et le Numérique
               </h1>
             </FadeIn>
@@ -334,9 +262,6 @@ export default async function Home() {
             </StaggerContainer>
           </div>
         </section>
-
-        {/* Section Actualités & Posts */}
-        <HomeActualitesSection posts={posts} />
 
         {/* Section 5 — Partenaires */}
         <section

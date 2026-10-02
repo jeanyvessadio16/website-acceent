@@ -1,10 +1,14 @@
 import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
 import { tuttankProgrammes } from "@/data/education/tut-tank";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { createPageMetadata } from "@/lib/seo";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
-import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
+import {
+  FadeIn,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
   title: "TUT-TANK — Accompagnement Scolaire & Social des Filles à Ziguinchor",
@@ -30,6 +34,14 @@ export default function TutTankPage() {
       "Un accompagnement scolaire et social pour les jeunes filles vulnérables",
   };
 
+  const highlights = [
+    "Renforcement de la pensée critique des enfants.",
+    "Amélioration des relations familiales et du dialogue parents-enfants.",
+    "Soutien aux parents dans leur rôle éducatif au quotidien.",
+    "Création d'espaces d'échange, d'apprentissage et de complicité.",
+    "Accompagnement bienveillant et adapté à chaque situation.",
+  ];
+
   return (
     <>
       <BreadcrumbJsonLd
@@ -39,74 +51,100 @@ export default function TutTankPage() {
           { name: "Tut-Tank", item: "/tut-tank" },
         ]}
       />
-    <ProgrammeLayout
-      image="/images/tuttank.jpeg"
-      text="Programme Éducation"
-      {...programme}
-    >
-      {/* 1. Présentation du programme */}
-      <FadeIn delay={0.1} direction="up">
-        <div className="rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-10 md:p-12 text-center shadow-xs">
-          <span className="mb-4 inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary">
-            Inclusion, éducation et autonomie
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-bold text-slate-900 mb-4">
-            À propos du programme
-          </h2>
-          <p className="mx-auto max-w-3xl text-slate-600 text-base sm:text-lg leading-relaxed">
-            <strong>TUT-TANK</strong> est un programme mis en place par ACCEENT pour accompagner les enfants et leurs familles dans un cadre éducatif et bienveillant. Il vise à renforcer la pensée critique des enfants, améliorer les relations familiales et soutenir les parents dans leur rôle éducatif.
-          </p>
-        </div>
-      </FadeIn>
+      <ProgrammeLayout
+        image="/images/tuttank.jpeg"
+        text="Programme Éducation"
+        {...programme}
+      >
+        {/* 1. Présentation + Points clés côte à côte */}
+        <FadeIn delay={0.1} direction="up">
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
+            {/* Texte */}
+            <div className="flex-1">
+              <span className="inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary mb-4">
+                Éducation, famille et autonomie
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4 leading-tight">
+                À propos du programme
+              </h2>
+              <p className="text-slate-600 text-base leading-relaxed">
+                <strong>TUT-TANK</strong> est un programme mis en place par
+                ACCEENT pour accompagner les enfants et leurs familles dans un
+                cadre éducatif et bienveillant. Il vise à renforcer la pensée
+                critique des enfants, améliorer les relations familiales et
+                soutenir les parents dans leur rôle éducatif.
+              </p>
+            </div>
 
-      {/* 2. Activités du programme */}
-      <div className="space-y-8">
-        <FadeIn delay={0.2} direction="down" className="text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
-            Activités du programme
-          </h2>
-          <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto">
-            Découvrez les différentes actions que nous menons pour accompagner les jeunes filles et leurs familles.
-          </p>
+            {/* Points clés */}
+            <ul className="flex-1 space-y-3">
+              {highlights.map((point, idx) => (
+                <li
+                  key={idx}
+                  className="flex items-start gap-3 text-sm text-slate-700 leading-relaxed"
+                >
+                  <CheckCircle2
+                    size={18}
+                    className="shrink-0 mt-0.5 text-primary"
+                  />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </FadeIn>
 
-        <StaggerContainer delay={0.3} className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {tuttankProgrammes.map((item, idx) => (
-            <StaggerItem key={item.id}>
-              <div className="group relative flex flex-col justify-between h-full overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-8 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-                <div>
-                  <div className="mb-4 inline-flex items-center justify-center rounded-xl bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
-                    0{idx + 1}
+        {/* 2. Activités du programme — panel stepped */}
+        <FadeIn delay={0.3} direction="up">
+          <div>
+            <div className="mb-6">
+              <span className="inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary mb-3">
+                Ce que nous faisons
+              </span>
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900">
+                Activités du programme
+              </h3>
+            </div>
+            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-slate-200 rounded-3xl overflow-hidden border border-slate-200">
+              {tuttankProgrammes.map((item, idx) => (
+                <StaggerItem key={item.id}>
+                  <div className="bg-white h-full p-6 sm:p-8 flex flex-col gap-4">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+                        0{idx + 1}
+                      </span>
+                      <h4 className="text-sm font-bold text-slate-900 leading-snug">
+                        {item.libelle}
+                      </h4>
+                    </div>
+                    <p className="text-xs text-slate-600 leading-relaxed">
+                      {item.detail}
+                    </p>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">
-                    {item.libelle}
-                  </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
-                    {item.detail}
-                  </p>
-                </div>
-              </div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-      </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        </FadeIn>
 
-      {/* 3. Banner CTA */}
-      <FadeIn delay={0.4} direction="up">
-        <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <p className="text-sm sm:text-base font-medium text-slate-800 text-center sm:text-left max-w-xl">
-            TUT&apos;TANK place la famille au cœur de l&apos;éducation, en créant des espaces d&apos;échange, d&apos;apprentissage et de complicité.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-xs transition-all hover:bg-primary/90 shrink-0"
-          >
-            Nous contacter
-            <ArrowRight size={16} className="ml-2" />
-          </Link>
-        </div>
-      </FadeIn>
-    </ProgrammeLayout>
+        {/* 3. Banner CTA */}
+        <FadeIn delay={0.45} direction="up">
+          <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <p className="text-sm sm:text-base font-medium text-slate-800 text-center sm:text-left max-w-xl">
+              TUT&apos;TANK place la famille au cœur de l&apos;éducation, en
+              créant des espaces d&apos;échange, d&apos;apprentissage et de
+              complicité.
+            </p>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-xs transition-all hover:bg-primary/90 shrink-0"
+            >
+              Nous contacter
+              <ArrowRight size={16} className="ml-2" />
+            </Link>
+          </div>
+        </FadeIn>
+      </ProgrammeLayout>
     </>
   );
 }

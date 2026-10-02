@@ -69,3 +69,78 @@ export const acceentEllesApproche = [
       "Un appui après les temps forts du programme pour sécuriser la transition et l’autonomie.",
   },
 ];
+
+export const acceent4ellesComposants = [
+  {
+    id: 1,
+    libelle: "Accompagnement des jeunes filles",
+    taches: [
+      "Soutien scolaire",
+      "Développement personnel",
+      "Ateliers créatifs",
+      "Acculturation digitale",
+      "Jeux educatifs",
+    ]
+  },
+  {
+    id: 2,
+    libelle: "Soutien aux jeunes filles",
+    taches: [
+      "Orientation professionnelle",
+      "Développement de l'employabilité",
+      "Formation entrepreneuriale",
+      "Intégration digitale",
+      "Developpement des soft skills",
+      "Decouverte de metiers"
+    ]
+  },
+  {
+    id: 3,
+    libelle: "Renforcement des capacités",
+    taches: [
+      "Leadership féminin",
+      "Santé et bien-être",
+      "Développement communautaire",
+      "Plaidoyer"
+    ]
+  },
+
+];
+
+export const temoignages = [
+  {
+    id: 1,
+    image: "/images/acceentImage.jpg",
+    name: "Aissatou",
+    quote: "Les ateliers m'ont permis de découvrir de nouveaux talents et de m'ouvrir à d'autres horizons.",
+  },
+  {
+    id: 2,
+    image: "/images/acceentImage.jpg",
+    name: "Mariama",
+    quote: "Grâce à ACCEENT4ELLES, j'ai pu reprendre confiance en moi et trouver un emploi stable.",
+  },
+];
+
+export const questions = [
+  {
+    id: 1,
+    question: "Comment participer ?",
+    reponse: "Pour participer au programme, vous devez être une jeune fille âgée de 15 à 25 ans, résidant à Ziguinchor. Les inscriptions se font en ligne ou dans nos locaux.",
+  },
+  {
+    id: 2,
+    question: "Comment nous soutenir ?",
+    reponse: "Vous pouvez nous soutenir en faisant un don, en devenant mentor, en partageant nos actions ou en proposant des opportunités de stage.",
+  },
+  {
+    id: 3,
+    question: "Quelles sont les formations proposées ?",
+    reponse: "Nous proposons des formations en entrepreneuriat, en développement personnel, en compétences numériques et en leadership.",
+  },
+  {
+    id: 4,
+    question: "Quels sont les résultats ?",
+    reponse: "Nos bénéficiaires ont un taux d'insertion professionnelle de 85% et développent des compétences essentielles pour leur avenir.",
+  },
+];

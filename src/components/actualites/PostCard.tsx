@@ -91,7 +91,7 @@ export function PostCard({ post, onImagePreview, index = 0 }: PostCardProps) {
         {/* ── Contenu texte de la carte ── */}
         <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
           <div className="space-y-3">
-            <Link href={`/actualites/${post.slug}`} className="block">
+            <Link href={`/actualites/${post.id}`} className="block">
               <h3 className="text-lg font-bold text-slate-900 leading-snug group-hover:text-[#836182] transition-colors line-clamp-2">
                 {post.title}
               </h3>
@@ -104,7 +104,7 @@ export function PostCard({ post, onImagePreview, index = 0 }: PostCardProps) {
 
           <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
             <Link
-              href={`/actualites/${post.slug}`}
+              href={`/actualites/${post.id}`}
               className="inline-flex items-center gap-1.5 text-xs font-bold text-[#836182] group-hover:text-[#6d4c6c] transition-colors"
             >
               <span>Lire l&apos;article</span>

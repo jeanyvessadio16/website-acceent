@@ -157,7 +157,7 @@ export function ActualitesList({ posts }: ActualitesListProps) {
                       <span>{Math.max(1, Math.ceil((featuredPost.content ? featuredPost.content.split(/\s+/).length : 0) / 200))} min de lecture</span>
                     </div>
 
-                    <Link href={`/actualites/${featuredPost.slug}`}>
+                    <Link href={`/actualites/${featuredPost.id}`}>
                       <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight group-hover:text-[#836182] transition-colors">
                         {featuredPost.title}
                       </h2>
@@ -170,7 +170,7 @@ export function ActualitesList({ posts }: ActualitesListProps) {
 
                   <div className="flex flex-wrap items-center gap-3 pt-6 border-t border-slate-100">
                     <Link
-                      href={`/actualites/${featuredPost.slug}`}
+                      href={`/actualites/${featuredPost.id}`}
                       className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-[#836182] hover:bg-[#6d4c6c] text-white text-sm font-bold transition-all shadow-md hover:shadow-lg group/btn"
                     >
                       <span>Lire l&apos;article complet</span>

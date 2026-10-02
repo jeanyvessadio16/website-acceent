@@ -31,6 +31,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { ImageUploader } from "@/components/admin/ImageUploader";
 
 export interface ArticleItem {
   id: string;
@@ -55,7 +56,6 @@ export function ArticleList({ articles }: ArticleListProps) {
   // ── Modale de création d'article ─────────────────────────────────────────
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [createTitle, setCreateTitle] = useState("");
-  const [createSlug, setCreateSlug] = useState("");
   const [createContent, setCreateContent] = useState("");
   const [createImageUrl, setCreateImageUrl] = useState("");
   const [createLink, setCreateLink] = useState("");
@@ -64,7 +64,6 @@ export function ArticleList({ articles }: ArticleListProps) {
   // ── Modale d'édition d'article ───────────────────────────────────────────
   const [editingArticle, setEditingArticle] = useState<ArticleItem | null>(null);
   const [editTitle, setEditTitle] = useState("");
-  const [editSlug, setEditSlug] = useState("");
   const [editContent, setEditContent] = useState("");
   const [editImageUrl, setEditImageUrl] = useState("");
   const [editLink, setEditLink] = useState("");
@@ -112,9 +111,8 @@ export function ArticleList({ articles }: ArticleListProps) {
   // ── Ouverture modale Création ────────────────────────────────────────────
   const handleOpenCreate = () => {
     setCreateTitle("");
-    setCreateSlug("");
     setCreateContent("");
-    setCreateImageUrl("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80");
+    setCreateImageUrl("");
     setCreateLink("");
     setCreatePublished(true);
     setErrorMsg(null);
@@ -129,7 +127,6 @@ export function ArticleList({ articles }: ArticleListProps) {
 
     const res = await createPostAction({
       title: createTitle,
-      slug: createSlug.trim() || undefined,
       content: createContent,
       imageUrl: createImageUrl || "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
       link: createLink.trim() || undefined,
@@ -150,7 +147,6 @@ export function ArticleList({ articles }: ArticleListProps) {
   const handleOpenEdit = (article: ArticleItem) => {
     setEditingArticle(article);
     setEditTitle(article.title);
-    setEditSlug(article.slug);
     setEditContent(article.content || "");
     setEditImageUrl(article.imageUrl || "");
     setEditLink(article.link || "");
@@ -167,7 +163,6 @@ export function ArticleList({ articles }: ArticleListProps) {
 
     const res = await updatePostAction(editingArticle.id, {
       title: editTitle,
-      slug: editSlug,
       content: editContent,
       imageUrl: editImageUrl,
       link: editLink.trim() || undefined,
@@ -304,7 +299,7 @@ export function ArticleList({ articles }: ArticleListProps) {
                         Par {a.authorName}
                       </span>
                       <span className="text-zinc-700">•</span>
-                      <span className="font-mono text-[11px] text-zinc-600 truncate">/{a.slug}</span>
+                      <span className="font-mono text-[11px] text-zinc-600 truncate">ID: {a.id.slice(0, 8)}…</span>
                     </p>
                   </div>
 
@@ -444,37 +439,14 @@ export function ArticleList({ articles }: ArticleListProps) {
                 />
               </div>
 
-              {/* Slug & Image URL (2 colonnes) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <Label htmlFor="create-slug" className="text-xs text-zinc-300 font-medium">
-                    Slug (URL personnalisée - optionnel)
-                  </Label>
-                  <Input
-                    id="create-slug"
-                    type="text"
-                    placeholder="lancement-education-numerique"
-                    value={createSlug}
-                    onChange={(e) => setCreateSlug(e.target.value)}
-                    className="bg-white/[0.03] border-white/[0.1] text-zinc-100 placeholder:text-zinc-600 focus:border-[#836182]"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label htmlFor="create-imageUrl" className="text-xs text-zinc-300 font-medium flex items-center gap-1">
-                    <ImageIcon className="size-3 text-[#b9939e]" />
-                    URL de l'image de couverture
-                  </Label>
-                  <Input
-                    id="create-imageUrl"
-                    type="text"
-                    required
-                    placeholder="https://..."
-                    value={createImageUrl}
-                    onChange={(e) => setCreateImageUrl(e.target.value)}
-                    className="bg-white/[0.03] border-white/[0.1] text-zinc-100 placeholder:text-zinc-600 focus:border-[#836182]"
-                  />
-                </div>
+              {/* Image URL / Televersement */}
+              <div className="space-y-4">
+                <ImageUploader
+                  id="create-imageUrl"
+                  label="Image de couverture de l'article"
+                  value={createImageUrl}
+                  onChange={(url) => setCreateImageUrl(url)}
+                />
               </div>
 
               {/* Lien externe (optionnel) */}
@@ -603,32 +575,14 @@ export function ArticleList({ articles }: ArticleListProps) {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <Label htmlFor="edit-slug" className="text-xs text-zinc-300 font-medium">
-                    Slug
-                  </Label>
-                  <Input
-                    id="edit-slug"
-                    type="text"
-                    value={editSlug}
-                    onChange={(e) => setEditSlug(e.target.value)}
-                    className="bg-white/[0.03] border-white/[0.1] text-zinc-100 placeholder:text-zinc-600 focus:border-[#836182]"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <Label htmlFor="edit-imageUrl" className="text-xs text-zinc-300 font-medium">
-                    URL de l'image
-                  </Label>
-                  <Input
-                    id="edit-imageUrl"
-                    type="text"
-                    value={editImageUrl}
-                    onChange={(e) => setEditImageUrl(e.target.value)}
-                    className="bg-white/[0.03] border-white/[0.1] text-zinc-100 placeholder:text-zinc-600 focus:border-[#836182]"
-                  />
-                </div>
+              {/* Image URL / Televersement */}
+              <div className="space-y-4">
+                <ImageUploader
+                  id="edit-imageUrl"
+                  label="Image de couverture de l'article"
+                  value={editImageUrl}
+                  onChange={(url) => setEditImageUrl(url)}
+                />
               </div>
 
               {/* Lien externe en Édition */}

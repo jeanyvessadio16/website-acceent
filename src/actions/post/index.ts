@@ -47,7 +47,7 @@ export async function togglePublishPostAction(postId: string) {
     });
 
     revalidatePath("/actualites");
-    revalidatePath("/actualites/[slug]", "page");
+    revalidatePath("/actualites/[id]", "page");
     revalidatePath("/admin/articles");
     revalidatePath("/admin");
     revalidatePath("/");
@@ -237,7 +237,7 @@ export async function deletePostAction(postId: string) {
     });
 
     revalidatePath("/actualites");
-    revalidatePath("/actualites/[slug]", "page");
+    revalidatePath("/actualites/[id]", "page");
     revalidatePath("/admin/articles");
     revalidatePath("/admin");
     revalidatePath("/");

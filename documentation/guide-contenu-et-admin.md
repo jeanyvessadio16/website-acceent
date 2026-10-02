@@ -68,8 +68,10 @@ Le site dispose d'un espace d'administration accessible aux utilisateurs ayant l
 
 ### Fonctionnalités Admin
 - **Gestion des Articles (`Post`)** :
-  - Création, édition, publication et suppression d'actualités et d'articles de blog.
-  - Génération de slugs uniques pour le référencement SEO.
+  - **Accès par ID** : Chaque article est désormais accessible publiquement via son identifiant unique (`/actualites/[id]`). Il n'est plus nécessaire d'inventer ni de gérer des slugs manuellement dans les formulaires.
+  - **Téléversement Automatique d'Images (Supabase Storage)** : Les modales de création et d'édition incluent un sélecteur d'image interactif (`ImageUploader`). Lors du choix d'un fichier (PNG, JPG, WebP jusqu'à 10 Mo), l'image est automatiquement envoyée vers le bucket Supabase `news-images`.
+  - **Verrouillage de l'URL** : L'URL publique générée par Supabase s'insère automatiquement dans le champ d'URL et est verrouillée en lecture seule pour éviter toute altération accidentelle. Un bouton *« Effacer »* ou *« Changer l'image »* permet de réinitialiser si besoin.
+  - **Publication / Brouillon** : Publication immédiate ou basculement en brouillon depuis la liste en un clic.
 - **Gestion des Utilisateurs (`User`)** *(Rôle ADMIN uniquement)* :
   - Modification des rôles (`USER`, `AUTHOR`, `ADMIN`).
   - Gestion des comptes utilisateurs enregistrés.

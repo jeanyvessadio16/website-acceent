@@ -58,6 +58,9 @@ npx prisma generate
 
 # Appliquer la structure du schéma sur la base de données PostgreSQL
 npx prisma db push
+
+# Configurer le bucket Supabase Storage et les politiques de sécurité (RLS)
+pnpm exec tsx scripts/setup_storage_policy.ts
 ```
 
 ### 3. Lancer le serveur de développement

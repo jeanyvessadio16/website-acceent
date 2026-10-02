@@ -54,14 +54,18 @@ src/actions/
 
 ---
 
-## 📝 2. Server Actions des Articles (`src/actions/post`)
+## 📝 2. Server Actions & Service de Stockage (`src/actions/post` & `src/services/storage`)
 
-Fichier principal : [src/actions/post/index.ts](file:///c:/ACCEENT/acceent-website/src/actions/post/index.ts)
+### Service de Stockage Supabase (`src/services/storage.ts`)
+- **`uploadPostImage(file: File)`** : Reçoit un fichier image depuis le composant `ImageUploader`, l'envoie dans le bucket Supabase `news-images` (sous le sous-dossier `articles/`) et retourne l'URL publique générée.
+- **Script de configuration RLS** (`scripts/setup_storage_policy.ts`) : Script exécutable (`pnpm exec tsx scripts/setup_storage_policy.ts`) configurant automatiquement le bucket public et les règles RLS `INSERT`, `SELECT`, `UPDATE` et `DELETE` sur Supabase.
+
+### Actions des Articles (`src/actions/post/index.ts`)
 
 | Action | Rôle | Contrôle d'Accès |
 | :--- | :--- | :--- |
-| `createPostAction(formData)` | Crée un nouvel article avec slug unique. | Rôles `ADMIN` ou `AUTHOR` |
-| `updatePostAction(id, formData)` | Met à jour le titre, le contenu ou l'image d'un article. | Auteur de l'article ou `ADMIN` |
+| `createPostAction(data)` | Crée un nouvel article. L'accès public se fait via l'ID (`/actualites/[id]`). | Rôles `ADMIN` ou `AUTHOR` |
+| `updatePostAction(id, data)` | Met à jour le titre, le contenu ou l'image d'un article. | Auteur de l'article ou `ADMIN` |
 | `deletePostAction(id)` | Supprime un article de la base de données. | Auteur de l'article ou `ADMIN` |
 | `togglePublishPostAction(id)` | Alterne l'état de publication (`published: true/false`). | Rôles `ADMIN` ou `AUTHOR` |
 

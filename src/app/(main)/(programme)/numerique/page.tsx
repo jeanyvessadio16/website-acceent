@@ -10,7 +10,7 @@ import {
   StaggerItem,
 } from "@/components/shared/Animations";
 import { createPageMetadata } from "@/lib/seo";
-import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { BreadcrumbJsonLd, ProgrammeJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata = createPageMetadata({
   title: "Programme Numérique, Coding & Robotique à Ziguinchor",
@@ -34,6 +34,12 @@ export const metadata = createPageMetadata({
 export default function Numerique() {
   return (
     <>
+      <ProgrammeJsonLd
+        name="Programme Numérique ACCEENT"
+        description="Formations au numérique, robotique WRO, intelligence artificielle AI4Good et inclusion digitale à Ziguinchor, Casamance."
+        url="/numerique"
+        domaine="Numérique"
+      />
       <BreadcrumbJsonLd
         items={[
           { name: "Accueil", item: "/" },

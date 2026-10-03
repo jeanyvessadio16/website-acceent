@@ -18,22 +18,50 @@ export function OrganizationJsonLd() {
   const data = {
     "@context": "https://schema.org",
     "@type": ["NGO", "EducationalOrganization"],
+    "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
     legalName:
       "Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires",
-    alternateName: ["ACCEENT", "ACCEENT Ziguinchor"],
+    alternateName: ["ACCEENT", "ACCEENT Ziguinchor", "ACCEENT Santhiaba"],
     url: SITE_URL,
-    logo: `${SITE_URL}/logo/logoACCEENT.png`,
+    logo: {
+      "@type": "ImageObject",
+      "@id": `${SITE_URL}/#logo`,
+      url: `${SITE_URL}/logo/logoACCEENT.png`,
+      width: 512,
+      height: 512,
+      contentUrl: `${SITE_URL}/logo/logoACCEENT.png`,
+    },
     image: `${SITE_URL}/logo/logoACCEENT.png`,
     description: DEFAULT_DESCRIPTION,
     email: "info@acceent.org",
     telephone: "+221761417070",
+    foundingDate: "2019",
+    knowsLanguage: ["fr", "fr-SN"],
     address: {
       "@type": "PostalAddress",
       streetAddress: "Quartier Santhiaba",
       addressLocality: "Ziguinchor",
       addressRegion: "Ziguinchor",
+      postalCode: "22000",
       addressCountry: "SN",
+    },
+    location: {
+      "@type": "Place",
+      name: "ACCEENT — Siège de Ziguinchor",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Quartier Santhiaba",
+        addressLocality: "Ziguinchor",
+        addressRegion: "Ziguinchor",
+        postalCode: "22000",
+        addressCountry: "SN",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: "12.5683",
+        longitude: "-16.2733",
+      },
     },
     geo: {
       "@type": "GeoCoordinates",
@@ -61,7 +89,21 @@ export function OrganizationJsonLd() {
       "Autonomisation des femmes",
       "Formation de la jeunesse",
       "Robotique WRO",
+      "Intelligence Artificielle",
       "Incubation de projets",
+      "Mentorat",
+      "Développement territorial",
+    ],
+    // Membres / bénéficiaires cibles
+    member: [
+      {
+        "@type": "OrganizationRole",
+        member: {
+          "@type": "Person",
+          name: "Jeunes de la Casamance",
+        },
+        startDate: "2019",
+      },
     ],
     sameAs: SOCIAL_SAME_AS,
     hasOfferCatalog: {
@@ -71,25 +113,86 @@ export function OrganizationJsonLd() {
         {
           "@type": "Offer",
           itemOffered: {
-            "@type": "Service",
-            name: "Programme Éducation (Tut-Tank, ACCEENT4ELLES)",
-            description: "Accompagnement scolaire, mentorat et renforcement de capacités.",
+            "@type": "EducationalOccupationalProgram",
+            name: "Programme Éducation",
+            description:
+              "Accompagnement scolaire, mentorat et renforcement de capacités des jeunes et des femmes à Ziguinchor.",
+            url: `${SITE_URL}/education`,
+            hasPart: [
+              {
+                "@type": "Course",
+                name: "ACCEENT-Elles",
+                description:
+                  "Programme d'autonomisation et de mentorat des jeunes filles.",
+                url: `${SITE_URL}/acceent-elles`,
+              },
+              {
+                "@type": "Course",
+                name: "Tut-Tank",
+                description:
+                  "Soutien scolaire et accompagnement pédagogique des élèves à Ziguinchor.",
+                url: `${SITE_URL}/tut-tank`,
+              },
+            ],
           },
         },
         {
           "@type": "Offer",
           itemOffered: {
-            "@type": "Service",
-            name: "Programme Entrepreneuriat (ACCEENT Incub, Ateliers)",
-            description: "Incubation, ateliers pratiques et accompagnement des porteurs de projet.",
+            "@type": "EducationalOccupationalProgram",
+            name: "Programme Entrepreneuriat",
+            description:
+              "Incubation, ateliers pratiques et accompagnement des porteurs de projet en Casamance.",
+            url: `${SITE_URL}/entreprenariat`,
+            hasPart: [
+              {
+                "@type": "Course",
+                name: "ACCEENT Incub",
+                description:
+                  "Incubateur de projets entrepreneuriaux pour les jeunes de Ziguinchor.",
+                url: `${SITE_URL}/acceent-incub`,
+              },
+              {
+                "@type": "Course",
+                name: "Atelier Entrepreneuriat",
+                description:
+                  "Ateliers pratiques de formation à l'entrepreneuriat.",
+                url: `${SITE_URL}/atelier-entreprenariat`,
+              },
+              {
+                "@type": "Course",
+                name: "Forum Entrepreneur",
+                description:
+                  "Forum annuel de mise en réseau des entrepreneurs de Casamance.",
+                url: `${SITE_URL}/forum-entrepreneur`,
+              },
+            ],
           },
         },
         {
           "@type": "Offer",
           itemOffered: {
-            "@type": "Service",
-            name: "Programme Numérique (Initiation au code, Robotique WRO, IA)",
-            description: "Formations au numérique, initiation aux outils digitaux et compétitions de robotique.",
+            "@type": "EducationalOccupationalProgram",
+            name: "Programme Numérique",
+            description:
+              "Formations au numérique, initiation aux outils digitaux, IA et compétitions de robotique.",
+            url: `${SITE_URL}/numerique`,
+            hasPart: [
+              {
+                "@type": "Course",
+                name: "AI4Good",
+                description:
+                  "Initiation à l'intelligence artificielle au service du bien commun.",
+                url: `${SITE_URL}/ai4good`,
+              },
+              {
+                "@type": "Course",
+                name: "WRO Sénégal",
+                description:
+                  "Participation à la World Robot Olympiad — compétition internationale de robotique.",
+                url: `${SITE_URL}/wro`,
+              },
+            ],
           },
         },
       ],
@@ -103,14 +206,22 @@ export function WebSiteJsonLd() {
   const data = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
     name: SITE_NAME,
     url: SITE_URL,
     description: DEFAULT_DESCRIPTION,
     inLanguage: "fr-SN",
     publisher: {
-      "@type": "NGO",
-      name: SITE_NAME,
-      url: SITE_URL,
+      "@id": `${SITE_URL}/#organization`,
+    },
+    // SearchAction — permet aux moteurs de proposer la recherche sur le site
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${SITE_URL}/actualites?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
     },
   };
 
@@ -163,36 +274,99 @@ export function ArticleJsonLd({
   url,
   imageUrl,
   datePublished,
+  dateModified,
   authorName,
+  keywords,
 }: {
   title: string;
   description: string;
   url: string;
   imageUrl?: string;
   datePublished?: string;
+  dateModified?: string;
   authorName?: string;
+  keywords?: string[];
 }) {
+  const canonicalUrl = url.startsWith("http") ? url : `${SITE_URL}${url}`;
+  const imageUrlFull = imageUrl
+    ? imageUrl.startsWith("http")
+      ? imageUrl
+      : `${SITE_URL}${imageUrl}`
+    : `${SITE_URL}/logo/logoACCEENT.png`;
+
   const data = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
+    "@id": canonicalUrl,
     headline: title,
     description,
+    keywords: keywords?.join(", "),
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": url.startsWith("http") ? url : `${SITE_URL}${url}`,
+      "@id": canonicalUrl,
     },
-    image: imageUrl ? [imageUrl.startsWith("http") ? imageUrl : `${SITE_URL}${imageUrl}`] : [`${SITE_URL}/logo/logoACCEENT.png`],
+    image: [imageUrlFull],
     datePublished: datePublished || new Date().toISOString(),
+    dateModified: dateModified || datePublished || new Date().toISOString(),
+    inLanguage: "fr-SN",
     author: {
       "@type": "Person",
       name: authorName || "Équipe ACCEENT",
+      affiliation: {
+        "@id": `${SITE_URL}/#organization`,
+      },
     },
     publisher: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      logo: {
-        "@type": "ImageObject",
-        url: `${SITE_URL}/logo/logoACCEENT.png`,
+      "@id": `${SITE_URL}/#organization`,
+    },
+    isPartOf: {
+      "@id": `${SITE_URL}/#website`,
+    },
+  };
+
+  return <JsonLd data={data} />;
+}
+
+/** JSON-LD pour une page programme / service spécifique */
+export function ProgrammeJsonLd({
+  name,
+  description,
+  url,
+  domaine,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  domaine: "Éducation" | "Entrepreneuriat" | "Numérique";
+}) {
+  const canonicalUrl = url.startsWith("http") ? url : `${SITE_URL}${url}`;
+
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "EducationalOccupationalProgram",
+    "@id": canonicalUrl,
+    name,
+    description,
+    url: canonicalUrl,
+    inLanguage: "fr-SN",
+    educationalProgramMode: "in-person",
+    occupationalCategory: domaine,
+    provider: {
+      "@id": `${SITE_URL}/#organization`,
+    },
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "XOF",
+      availability: "https://schema.org/InStock",
+    },
+    locationCreated: {
+      "@type": "Place",
+      name: "Ziguinchor, Sénégal",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Ziguinchor",
+        addressCountry: "SN",
       },
     },
   };

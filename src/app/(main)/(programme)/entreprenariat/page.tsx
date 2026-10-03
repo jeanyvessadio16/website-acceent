@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createPageMetadata } from "@/lib/seo";
-import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { BreadcrumbJsonLd, ProgrammeJsonLd } from "@/components/seo/JsonLd";
 import {
   FadeIn,
   StaggerContainer,
@@ -34,6 +34,12 @@ export const metadata = createPageMetadata({
 export default function Entreprenariat() {
   return (
     <>
+      <ProgrammeJsonLd
+        name="Programme Entrepreneuriat ACCEENT"
+        description="Incubation, ateliers pratiques et accompagnement des porteurs de projet en Casamance, Sénégal."
+        url="/entreprenariat"
+        domaine="Entrepreneuriat"
+      />
       <BreadcrumbJsonLd
         items={[
           { name: "Accueil", item: "/" },

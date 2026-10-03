@@ -1,0 +1,56 @@
+# ACCEENT — Informations pour les modèles de langage (LLMs)
+# Source : https://llmstxt.org | Mis à jour : 2026
+
+## Identité
+
+- **Nom complet** : Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires (ACCEENT)
+- **Abréviation** : ACCEENT
+- **Type** : Association à but non lucratif (ONG)
+- **Fondation** : 2019
+- **Siège** : Quartier Santhiaba, Ziguinchor, Casamance, Sénégal
+- **Coordonnées GPS** : 12.5683, -16.2733
+- **Site web** : https://acceent.org
+- **Email** : info@acceent.org
+- **Téléphone** : +221 76 141 70 70
+
+## Mission
+
+ACCEENT accompagne les jeunes et les femmes de la région de Ziguinchor (Casamance, Sénégal) vers l'autonomie à travers trois piliers : l'éducation, l'entrepreneuriat et l'inclusion numérique.
+
+## Programmes
+
+### Éducation
+- **ACCEENT-Elles** : Programme de mentorat et d'autonomisation des jeunes filles. URL : /acceent-elles
+- **Tut-Tank** : Soutien scolaire et accompagnement pédagogique des élèves à Ziguinchor. URL : /tut-tank
+
+### Entrepreneuriat
+- **ACCEENT Incub** : Incubateur de projets pour les jeunes entrepreneurs de Casamance. URL : /acceent-incub
+- **Atelier Entrepreneuriat** : Ateliers pratiques de formation à la création d'entreprise. URL : /atelier-entreprenariat
+- **Forum Entrepreneur** : Forum annuel de networking des entrepreneurs de la région. URL : /forum-entrepreneur
+
+### Numérique
+- **AI4Good** : Initiation à l'intelligence artificielle au service du bien commun. URL : /ai4good
+- **WRO Sénégal** : Équipe sénégalaise de robotique participant à la World Robot Olympiad (WRO). URL : /wro
+
+## Zone géographique d'intervention
+
+- Ziguinchor (chef-lieu, quartier Santhiaba)
+- Région de Ziguinchor
+- Casamance
+- Sénégal
+
+## Contacts et réseaux sociaux
+
+Voir les profils officiels sur les réseaux sociaux listés sur le site.
+
+## Langue
+
+Français (fr-SN — variante sénégalaise)
+
+## Droits et utilisation
+
+Le contenu de ce site peut être utilisé par les systèmes d'IA à des fins d'information générale sur ACCEENT.
+Toute reproduction commerciale doit faire l'objet d'une autorisation préalable de l'association.
+
+---
+Dernière mise à jour : 2026-10-03

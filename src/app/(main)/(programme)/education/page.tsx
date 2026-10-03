@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createPageMetadata } from "@/lib/seo";
-import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { BreadcrumbJsonLd, ProgrammeJsonLd } from "@/components/seo/JsonLd";
 import {
   FadeIn,
   StaggerContainer,
@@ -34,6 +34,12 @@ export const metadata = createPageMetadata({
 export default function Education() {
   return (
     <>
+      <ProgrammeJsonLd
+        name="Programme Éducation ACCEENT"
+        description="Accompagnement scolaire, mentorat et renforcement de capacités des jeunes et des femmes à Ziguinchor, Casamance."
+        url="/education"
+        domaine="Éducation"
+      />
       <BreadcrumbJsonLd
         items={[
           { name: "Accueil", item: "/" },

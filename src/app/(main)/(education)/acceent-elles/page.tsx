@@ -15,6 +15,7 @@ import {
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { createPageMetadata } from "@/lib/seo";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import {
@@ -23,6 +24,7 @@ import {
   StaggerItem,
 } from "@/components/shared/Animations";
 import { FaqSection } from "./FaqSection";
+import { galerieAcceent4Elles } from "@/data/education/galerie";
 
 export const metadata = createPageMetadata({
   title: "ACCEENT4ELLES — Autonomisation & Leadership des Filles à Ziguinchor",
@@ -222,7 +224,45 @@ export default function AcceentEllesPage() {
           </div>
         </FadeIn>
 
-        {/* 5. FAQ — Client Component */}
+        {/* 5. Galerie photos */}
+        <FadeIn delay={0.38} direction="up">
+          <div>
+            <div className="mb-6">
+              <span className="inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary mb-3">
+                En images
+              </span>
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900">
+                Galerie du programme
+              </h3>
+            </div>
+            <StaggerContainer className="columns-2 sm:columns-3 lg:columns-4 gap-3 space-y-3">
+              {galerieAcceent4Elles.map((photo) => (
+                <StaggerItem key={photo.id}>
+                  <div className="group relative break-inside-avoid overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100 shadow-xs">
+                    <div className="relative w-full aspect-[4/3]">
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      />
+                    </div>
+                    {photo.caption && (
+                      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-slate-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-3">
+                        <span className="text-xs font-medium text-white leading-tight">
+                          {photo.caption}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        </FadeIn>
+
+        {/* 6. FAQ — Client Component */}
         <FadeIn delay={0.4} direction="up">
           <FaqSection />
         </FadeIn>

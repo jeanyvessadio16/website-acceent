@@ -279,19 +279,19 @@ export default function Header() {
           scrolled ? "shadow-md" : "shadow-xs",
         )}
       >
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-8 flex h-20 items-center justify-between gap-4">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-8 flex h-20 sm:h-22 lg:h-24 items-center justify-between gap-4">
           {/* Logo */}
           <Link
             href="/"
-            className="relative flex w-48 sm:w-60 h-16 sm:h-18 shrink-0 items-center transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
+            className="relative flex w-56 sm:w-72 lg:w-80 xl:w-88 h-18 sm:h-22 lg:h-24 shrink-0 items-center transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
             aria-label="ACCEENT — Accueil"
           >
             <Image
               src="/logo/logoACCEENT.png"
               alt="ACCEENT Ziguinchor"
               fill
-              className="object-contain object-left scale-125 sm:scale-130 origin-left"
-              sizes="(max-width: 640px) 200px, 240px"
+              className="object-contain object-left scale-130 sm:scale-140 lg:scale-150 origin-left"
+              sizes="(max-width: 640px) 224px, (max-width: 1024px) 288px, 320px"
               priority
             />
           </Link>
@@ -394,18 +394,18 @@ export default function Header() {
               aria-label="Menu de navigation mobile"
             >
               {/* Header Bar */}
-              <div className="flex items-center justify-between px-5 h-16 border-b border-slate-100 shrink-0">
+              <div className="flex items-center justify-between px-5 h-18 border-b border-slate-100 shrink-0">
                 <Link
                   href="/"
-                  className="relative w-44 h-13"
+                  className="relative w-52 h-16"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <Image
                     src="/logo/logoACCEENT.png"
                     alt="ACCEENT Ziguinchor"
                     fill
-                    className="object-contain object-left scale-125 origin-left"
-                    sizes="176px"
+                    className="object-contain object-left scale-130 origin-left"
+                    sizes="208px"
                   />
                 </Link>
                 <Button

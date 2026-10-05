@@ -97,13 +97,6 @@ export default function Home() {
         <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-950/40 to-transparent" />
 
         <div className="relative section-container z-10 flex flex-col items-start text-left text-white gap-4 sm:gap-6">
-          {/* Étiquette géographique */}
-          <FadeIn delay={0.1} direction="down">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 sm:px-4 sm:py-1.5 text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-200 backdrop-blur-sm">
-              <MapPin className="size-3 shrink-0" aria-hidden />
-              Ziguinchor, Sénégal
-            </span>
-          </FadeIn>
 
           {/* Titre principal — h1 unique sur la page */}
           <FadeIn delay={0.2} direction="up">

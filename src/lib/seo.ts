@@ -49,7 +49,7 @@ export const OG_IMAGE = {
   url: OG_IMAGE_PATH,
   width: 1200,
   height: 630,
-  alt: "Logo ACCEENT — Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires",
+  alt: "Logo ACCEENT — Éducation, Entrepreneuriat et Numérique à Ziguinchor, Sénégal",
 };
 
 /** Balises GEO géographiques (Ziguinchor, Sénégal) */

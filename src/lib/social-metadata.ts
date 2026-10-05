@@ -14,8 +14,8 @@ type SocialSharingOptions = {
 
 /**
  * Métadonnées de partage pour :
- * - Open Graph → Facebook, Instagram, WhatsApp, TikTok
- * - `twitter:*` → X (ex-Twitter ; nom de champ conservé par Next.js)
+ * - Open Graph → Facebook, Instagram, WhatsApp, TikTok, LinkedIn
+ * - `twitter:*` → X — les balises portent encore ce nom technique ; Next.js et X les lisent ainsi
  */
 export function buildSocialSharingMetadata({
   title,

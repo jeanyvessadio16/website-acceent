@@ -1,3 +1,5 @@
+
+import { GoogleAnalytics } from '@next/third-parties/google'
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -37,6 +39,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col overflow-x-hidden w-full max-w-full relative">
         {children}
       </body>
+      <GoogleAnalytics gaId="G-LHX5D4CQ9T" />
     </html>
   );
 }

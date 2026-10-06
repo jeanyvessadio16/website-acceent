@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Newspaper, Calendar, Clock, ExternalLink } from "lucide-react";
+import { ArrowRight, Newspaper } from "lucide-react";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 import { PostCard, PublishedPost } from "./PostCard";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,9 @@ interface HomeActualitesSectionProps {
 }
 
 export function HomeActualitesSection({ posts }: HomeActualitesSectionProps) {
-  if (!posts || posts.length === 0) {
+  const latestPosts = posts ? posts.slice(0, 3) : [];
+
+  if (latestPosts.length === 0) {
     return null;
   }
 
@@ -43,19 +45,19 @@ export function HomeActualitesSection({ posts }: HomeActualitesSectionProps) {
               className="rounded-full border-[#836182]/30 text-[#836182] hover:bg-[#836182] hover:text-white font-semibold text-xs sm:text-sm px-6 h-11 transition-all shadow-xs group"
             >
               <Link href="/actualites" className="flex items-center gap-2">
-                <span>Toutes les actualités</span>
+                <span>Voir toutes les publications</span>
                 <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
           </div>
         </FadeIn>
 
-        {/* Grille des articles */}
+        {/* Grille des 3 derniers articles */}
         <StaggerContainer
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
           delay={0.2}
         >
-          {posts.map((post, index) => (
+          {latestPosts.map((post, index) => (
             <StaggerItem key={post.id}>
               <PostCard post={post} index={index} />
             </StaggerItem>
@@ -69,7 +71,7 @@ export function HomeActualitesSection({ posts }: HomeActualitesSectionProps) {
             className="rounded-full bg-[#836182] text-white hover:bg-[#6d4c6c] font-semibold text-sm px-8 h-11 w-full max-w-xs shadow-md"
           >
             <Link href="/actualites" className="flex items-center justify-center gap-2">
-              <span>Voir toutes les actualités</span>
+              <span>Voir toutes les publications</span>
               <ArrowRight className="size-4" />
             </Link>
           </Button>

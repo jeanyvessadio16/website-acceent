@@ -9,6 +9,8 @@ import { createPageMetadata } from "@/lib/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 import { list_domaines } from "@/data/list-domaines";
 import { list_actions } from "@/data/list-actions";
+import prisma from "@/lib/prisma";
+import { HomeActualitesSection } from "@/components/actualites/HomeActualitesSection";
 
 // ─── SEO ────────────────────────────────────────────────────────────────────
 
@@ -69,7 +71,53 @@ const domaineIcons = [BookOpen, TrendingUp, Cpu] as const;
 
 // ─── Page ────────────────────────────────────────────────────────────────────
 
-export default function Home() {
+export default async function Home() {
+  let posts: Array<{
+    id: string;
+    title: string;
+    slug: string;
+    content: string;
+    imageUrl: string | null;
+    link?: string | null;
+    authorName: string;
+    createdAt: string;
+  }> = [];
+
+  try {
+    const dbPosts = await prisma.post.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+      take: 3,
+      include: {
+        author: {
+          select: {
+            firstname: true,
+            lastname: true,
+          },
+        },
+      },
+    });
+
+    posts = dbPosts.map((p) => ({
+      id: p.id,
+      title: p.title,
+      slug: p.slug,
+      content: p.content,
+      imageUrl: p.imageUrl,
+      link: p.link,
+      authorName: p.author
+        ? `${p.author.firstname} ${p.author.lastname}`
+        : "ACCEENT",
+      createdAt: p.createdAt.toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    }));
+  } catch (error) {
+    console.error("Erreur de récupération des actualités sur la page d'accueil:", error);
+  }
+
   return (
     <>
       {/* Structured data */}
@@ -374,6 +422,9 @@ export default function Home() {
           </StaggerContainer>
         </div>
       </section>
+
+      {/* ── 4.5. ACTUALITÉS & PUBLICATIONS ─────────────────────────────────── */}
+      <HomeActualitesSection posts={posts} />
 
       {/* ── 5. PARTENAIRES ──────────────────────────────────────────────────── */}
       <section

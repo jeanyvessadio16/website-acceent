@@ -279,7 +279,7 @@ export default function Header() {
           scrolled ? "shadow-md" : "shadow-xs",
         )}
       >
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-8 flex h-20 sm:h-22 lg:h-24 items-center justify-between gap-4">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-8 flex h-18 sm:h-20 items-center justify-between gap-4">
           {/* Logo */}
           <Link
             href="/"

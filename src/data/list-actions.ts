@@ -35,9 +35,9 @@ export const list_actions: ActionTerrain[] = [
     id: 4,
     src: "/images/leadership.jpeg",
     alt: "Formation leadership",
-    title: "Leadership & Gestion",
+    title: "Leadership",
     description:
-      "Développement des compétences d'organisation, de prise d'initiative et de projet.",
+      "Développement des compétences des jeunes pour devenir des leaders de demain, capables de prendre des initiatives et de gérer des projets.",
   },
   {
     id: 5,

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { programmes } from "@/data/footer/programmes";
 import { mediaLinks } from "@/data/footer/link-media";
+import { CookieSettingsButton } from "@/components/shared/CookieSettingsButton";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -114,13 +115,14 @@ export default function Footer() {
           <p className="text-sm text-slate-500">
             © {currentYear} ACCEENT. Tous droits réservés.
           </p>
-          <div className="flex gap-6 text-sm text-slate-500">
+          <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500">
             <Link href="#" className="transition-colors hover:text-white">
               Mentions légales
             </Link>
             <Link href="#" className="transition-colors hover:text-white">
               Politique de confidentialité
             </Link>
+            <CookieSettingsButton />
           </div>
         </div>
       </div>

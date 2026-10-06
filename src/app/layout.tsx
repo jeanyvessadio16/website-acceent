@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { rootMetadata, SITE_URL } from "@/lib/seo";
+import { CookieBanner } from "@/components/shared/CookieBanner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -38,6 +39,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col overflow-x-hidden w-full max-w-full relative">
         {children}
+        <CookieBanner />
       </body>
       <GoogleAnalytics gaId="G-LHX5D4CQ9T" />
     </html>

@@ -22,7 +22,7 @@ export function buildSocialSharingMetadata({
   description,
   path,
 }: SocialSharingOptions): Pick<Metadata, "openGraph" | "twitter" | "other"> {
-  const fullTitle = `${title} | ${SITE_NAME}`;
+  const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
   const canonicalPath = path.startsWith("/") ? path : `/${path}`;
   const imageSecureUrl = new URL(OG_IMAGE_PATH, SITE_URL).toString();
   const xHandle = `@${X_HANDLE.replace(/^@/, "")}`;

@@ -6,17 +6,27 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://acceent.org";
 
 export const DEFAULT_DESCRIPTION =
-  "ACCEENT est une association sénégalaise basée à Ziguinchor (Santhiaba). Elle agit pour l'éducation, l'entrepreneuriat et le numérique au service des jeunes et des femmes en Casamance, Sénégal.";
+  "ACCEENT (Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires) est l'association principale basée à Ziguinchor (Santhiaba, Sénégal). Elle agit pour l'éducation, l'entrepreneuriat et l'inclusion numérique des jeunes et des femmes en Casamance.";
 
 export const DEFAULT_KEYWORDS = [
-  // Nom et identité
+  // Nom et identité principale de l'Association (SEO & GEO)
   "ACCEENT",
+  "Association ACCEENT",
+  "Association ACCEENT Ziguinchor",
   "ACCEENT Ziguinchor",
   "ACCEENT Santhiaba",
+  "ACCEENT Sénégal",
+  "ACCEENT Casamance",
+  "ACCEENT ONG",
+  "ACCEENT organisation",
+  "ONG ACCEENT",
+  "A.C.C.E.E.N.T.",
+  "Action pour la Contribution Collective pour l'Éducation l'Entrepreneuriat et le Numérique des Territoires",
   "association Ziguinchor",
   "association Santhiaba",
   "ONG Ziguinchor",
   "ONG Casamance",
+  "ONG Sénégal",
   // Domaines d'action
   "éducation Ziguinchor",
   "entrepreneuriat Sénégal",
@@ -26,13 +36,14 @@ export const DEFAULT_KEYWORDS = [
   // Programmes
   "ACCEENT Elles",
   "ACCEENT4ELLES",
+  "ACCEENT Incub",
+  "ACCEENT Incubateur Ziguinchor",
   "Tut-Tank Ziguinchor",
-  "ACCEENT Incub incubateur Ziguinchor",
   "Forum Entrepreneur Ziguinchor",
   "Atelier Entrepreneuriat Casamance",
   "WRO Sénégal World Robot Olympiad",
   "AI4Good intelligence artificielle Ziguinchor",
-  // Cibles
+  // Cibles et impact
   "femmes tech Sénégal",
   "autonomisation femmes Ziguinchor",
   "mentorat jeunes filles Ziguinchor",
@@ -49,15 +60,19 @@ export const OG_IMAGE = {
   url: OG_IMAGE_PATH,
   width: 1200,
   height: 630,
-  alt: "Logo ACCEENT — Éducation, Entrepreneuriat et Numérique à Ziguinchor, Sénégal",
+  alt: "Logo ACCEENT — Association pour l'Éducation, l'Entrepreneuriat et le Numérique à Ziguinchor, Sénégal",
 };
 
-/** Balises GEO géographiques (Ziguinchor, Sénégal) */
+/** Balises GEO géographiques et métadonnées d'entité IA (Ziguinchor, Sénégal, ACCEENT) */
 export const GEO_METADATA = {
   "geo.region": "SN-ZG",
   "geo.placename": "Ziguinchor, Santhiaba, Sénégal",
   "geo.position": "12.5683;-16.2733",
   ICBM: "12.5683, -16.2733",
+  "application-name": "ACCEENT",
+  author: "Association ACCEENT",
+  publisher: "ACCEENT",
+  subject: "Association ACCEENT — Éducation, Entrepreneuriat et Numérique à Ziguinchor, Sénégal",
 };
 
 /** Routes statiques du site — utilisées par le sitemap et la navigation */

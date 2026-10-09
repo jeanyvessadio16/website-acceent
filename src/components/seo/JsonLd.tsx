@@ -17,13 +17,35 @@ export function JsonLd({ data }: JsonLdProps) {
 export function OrganizationJsonLd() {
   const data = {
     "@context": "https://schema.org",
-    "@type": ["NGO", "EducationalOrganization"],
+    "@type": ["NGO", "EducationalOrganization", "NonprofitOrganization"],
     "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
     legalName:
-      "Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires",
-    alternateName: ["ACCEENT", "ACCEENT Ziguinchor", "ACCEENT Santhiaba"],
+      "Association ACCEENT - Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires",
+    alternateName: [
+      "ACCEENT",
+      "Association ACCEENT",
+      "ACCEENT Ziguinchor",
+      "ACCEENT Santhiaba",
+      "ACCEENT Sénégal",
+      "ACCEENT Casamance",
+      "ONG ACCEENT",
+      "ACCEENT NGO",
+      "A.C.C.E.E.N.T.",
+      "Association ACCEENT Ziguinchor",
+    ],
     url: SITE_URL,
+    slogan:
+      "Éducation, Entrepreneuriat et Numérique au service des jeunes et des femmes à Ziguinchor",
+    disambiguatingDescription:
+      "ACCEENT est le nom officiel et principal de l'Association pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires, basée à Ziguinchor (quartier Santhiaba, Sénégal).",
+    brand: {
+      "@type": "Brand",
+      name: "ACCEENT",
+      alternateName: "Association ACCEENT",
+      logo: `${SITE_URL}/logo/logoACCEENT.png`,
+      url: SITE_URL,
+    },
     logo: {
       "@type": "ImageObject",
       "@id": `${SITE_URL}/#logo`,
@@ -31,6 +53,7 @@ export function OrganizationJsonLd() {
       width: 512,
       height: 512,
       contentUrl: `${SITE_URL}/logo/logoACCEENT.png`,
+      caption: "Logo officiel de l'Association ACCEENT",
     },
     image: `${SITE_URL}/logo/logoACCEENT.png`,
     description: DEFAULT_DESCRIPTION,
@@ -48,7 +71,7 @@ export function OrganizationJsonLd() {
     },
     location: {
       "@type": "Place",
-      name: "ACCEENT — Siège de Ziguinchor",
+      name: "Association ACCEENT — Siège de Ziguinchor",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Quartier Santhiaba",
@@ -83,15 +106,19 @@ export function OrganizationJsonLd() {
       },
     ],
     knowsAbout: [
+      "ACCEENT",
+      "Association ACCEENT",
+      "ACCEENT Ziguinchor",
+      "ACCEENT Casamance",
       "Éducation",
       "Entrepreneuriat",
       "Inclusion Numérique",
       "Autonomisation des femmes",
       "Formation de la jeunesse",
       "Robotique WRO",
-      "Intelligence Artificielle",
-      "Incubation de projets",
-      "Mentorat",
+      "Intelligence Artificielle AI4Good",
+      "Incubation de projets ACCEENT Incub",
+      "Mentorat ACCEENT Elles",
       "Développement territorial",
     ],
     // Membres / bénéficiaires cibles
@@ -100,7 +127,7 @@ export function OrganizationJsonLd() {
         "@type": "OrganizationRole",
         member: {
           "@type": "Person",
-          name: "Jeunes de la Casamance",
+          name: "Jeunes et Femmes de la Casamance",
         },
         startDate: "2019",
       },

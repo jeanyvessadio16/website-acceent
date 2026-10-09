@@ -235,17 +235,17 @@ export default function AcceentEllesPage() {
                 Galerie du programme
               </h3>
             </div>
-            <StaggerContainer className="columns-2 sm:columns-3 lg:columns-4 gap-3 space-y-3">
+            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
               {galerieAcceent4Elles.map((photo) => (
                 <StaggerItem key={photo.id}>
-                  <div className="group relative break-inside-avoid overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100 shadow-xs">
+                  <div className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100 shadow-xs">
                     <div className="relative w-full aspect-[4/3]">
                       <Image
                         src={photo.src}
                         alt={photo.alt}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
                       />
                     </div>
                     {photo.caption && (

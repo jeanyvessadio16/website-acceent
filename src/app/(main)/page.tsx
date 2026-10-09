@@ -317,53 +317,57 @@ export default async function Home() {
               const Icon = domaineIcons[index];
               return (
                 <StaggerItem key={domaine.id}>
-                  <article className="group bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs h-full flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-300">
-                    {/* Image */}
-                    <div className="relative h-48 w-full overflow-hidden bg-slate-100 flex-shrink-0">
-                      <Image
-                        src={domaine.image}
-                        alt={`Programme ${domaine.nom} — ACCEENT`}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                      {/* Badge numéro */}
-                      <div
-                        aria-hidden
-                        className="absolute top-4 left-4 bg-slate-950/80 backdrop-blur-xs text-white text-xs font-bold px-3 py-1 rounded-full"
-                      >
-                        0{index + 1}
-                      </div>
-                    </div>
-
-                    {/* Contenu */}
-                    <div className="p-6 flex flex-col flex-grow gap-3">
-                      {/* Icône + Titre */}
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
-                          <Icon className="size-4" aria-hidden />
+                  <Link
+                    href={domaine.page}
+                    className="group bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs h-full flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-300 focus:outline-hidden focus:ring-2 focus:ring-primary"
+                    aria-label={`Découvrir le domaine ${domaine.nom} — ACCEENT`}
+                  >
+                    <article className="h-full flex flex-col">
+                      {/* Image */}
+                      <div className="relative h-48 w-full overflow-hidden bg-slate-100 flex-shrink-0">
+                        <Image
+                          src={domaine.image}
+                          alt={`Programme ${domaine.nom} — ACCEENT`}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 33vw"
+                        />
+                        {/* Badge numéro */}
+                        <div
+                          aria-hidden
+                          className="absolute top-4 left-4 bg-slate-950/80 backdrop-blur-xs text-white text-xs font-bold px-3 py-1 rounded-full"
+                        >
+                          0{index + 1}
                         </div>
-                        <h3 className="text-lg font-bold text-slate-900">
-                          {domaine.nom}
-                        </h3>
                       </div>
 
-                      {/* Description */}
-                      <p className="text-sm text-slate-600 leading-relaxed flex-grow">
-                        {domaine.description}
-                      </p>
+                      {/* Contenu */}
+                      <div className="p-6 flex flex-col flex-grow gap-3">
+                        {/* Icône + Titre */}
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-colors duration-200">
+                            <Icon className="size-4" aria-hidden />
+                          </div>
+                          <h3 className="text-lg font-bold text-slate-900 group-hover:text-primary transition-colors duration-200">
+                            {domaine.nom}
+                          </h3>
+                        </div>
 
-                      {/* Lien */}
-                      <Link
-                        href={domaine.page}
-                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:gap-2.5 transition-all duration-200 mt-auto pt-1"
-                        aria-label={`Voir les programmes ${domaine.nom}`}
-                      >
-                        Voir les programmes
-                        <ArrowRight className="size-4" aria-hidden />
-                      </Link>
-                    </div>
-                  </article>
+                        {/* Description */}
+                        <p className="text-sm text-slate-600 leading-relaxed flex-grow">
+                          {domaine.description}
+                        </p>
+
+                        {/* Lien visuel */}
+                        <span
+                          className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:gap-2.5 transition-all duration-200 mt-auto pt-1"
+                        >
+                          Voir les programmes
+                          <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden />
+                        </span>
+                      </div>
+                    </article>
+                  </Link>
                 </StaggerItem>
               );
             })}

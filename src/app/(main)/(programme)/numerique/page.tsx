@@ -9,6 +9,7 @@ import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/shared/Animations";
+import DomaineBottomCta from "@/components/shared/DomaineBottomCta";
 import { createPageMetadata } from "@/lib/seo";
 import { BreadcrumbJsonLd, ProgrammeJsonLd } from "@/components/seo/JsonLd";
 
@@ -120,37 +121,13 @@ export default function Numerique() {
           </div>
         </section>
 
-        <section className="bg-slate-50 py-16 md:py-20 border-t border-slate-200/60">
-          <div className="section-container">
-            <FadeIn
-              delay={0.2}
-              direction="up"
-              className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xs md:p-12"
-            >
-              <div className="mx-auto max-w-3xl text-center">
-                <h2 className="text-2xl font-bold tracking-tight text-slate-950 md:text-3xl">
-                  Le numérique au service de l&apos;inclusion
-                </h2>
-                <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
-                  Nos actions numériques vous forment aux compétences de demain,
-                  et vous ouvrent de nouvelles opportunités professionnelles.
-                </p>
-                <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-                  <Button asChild size="lg" className="rounded-full px-8 bg-primary text-white">
-                    <Link href="/contact">Nous contacter</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    size="lg"
-                    className="rounded-full px-8 bg-slate-100 text-slate-800 border border-slate-300 hover:bg-slate-200 hover:text-slate-950 font-semibold shadow-xs transition-colors"
-                  >
-                    <Link href="/about">Découvrir ACCEENT</Link>
-                  </Button>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
+        <DomaineBottomCta
+          currentDomaine="Numérique"
+          title="Le numérique au service de l'inclusion et de l'innovation"
+          description="Nos actions numériques vous forment aux compétences d'avenir (coding, robotique, IA responsable) et vous ouvrent de nouvelles opportunités professionnelles et créatives."
+          primaryButtonText="Nous contacter"
+          primaryButtonHref="/contact"
+        />
       </HeaderLayout>
     </>
   );

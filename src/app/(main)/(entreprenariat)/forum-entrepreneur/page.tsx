@@ -2,6 +2,7 @@ import HeaderLayout from "@/components/shared/HeaderLayout";
 import { createPageMetadata } from "@/lib/seo";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { MessagesSquare, Mic } from "lucide-react";
+import ProgrammeNavigationCta from "@/components/shared/ProgrammeNavigationCta";
 
 export const metadata = createPageMetadata({
   title: "Forum des Entrepreneurs & Acteurs Locaux de Ziguinchor",
@@ -91,12 +92,18 @@ export default function ForumEntrepreneur() {
               ))}
             </div>
 
-            <div className="mt-16 rounded-3xl bg-primary/5 p-8 text-center ring-1 ring-primary/10 md:p-12">
-              <p className="text-fluid-p-large text-slate-800 font-medium max-w-3xl mx-auto text-balance">
-                Ensemble, construisons l&apos;avenir économique de Ziguinchor.
-                Rejoignez-nous lors de la prochaine édition pour faire entendre
-                votre voix et propulser vos projets.
-              </p>
+            <div className="mt-16">
+              <ProgrammeNavigationCta
+                currentProgrammeTitle="le Forum des Entrepreneurs & Acteurs Locaux"
+                parentDomaine={{ nom: "Entrepreneuriat", href: "/entreprenariat" }}
+                callToActionText="Ensemble, construisons l'avenir économique de Ziguinchor. Rejoignez-nous lors de la prochaine édition pour faire entendre votre voix, pitcher votre projet ou nouer des partenariats stratégiques."
+                primaryButtonText="Participer / Nous contacter"
+                primaryButtonHref="/contact"
+                relatedProgrammes={[
+                  { nom: "ACCEENT'INCUB", href: "/acceent-incub" },
+                  { nom: "Atelier Entrepreneuriat", href: "/atelier-entreprenariat" },
+                ]}
+              />
             </div>
           </div>
         </section>

@@ -175,25 +175,23 @@ export default async function Home() {
           </FadeIn>
 
           {/* CTAs */}
-          <FadeIn delay={0.4} direction="up">
-            <div className="flex flex-row flex-wrap gap-3 pt-1">
-              <Button
-                asChild
-                size="default"
-                className="rounded-full px-5 sm:px-8 bg-primary text-white hover:bg-primary/90 font-semibold text-xs sm:text-sm h-10 sm:h-11 shadow-lg"
-              >
-                <Link href="/contact">Nous contacter</Link>
-              </Button>
-              <Button
-                asChild
-                size="default"
-                variant="outline"
-                className="rounded-full px-5 sm:px-8 bg-white/10 text-white hover:bg-white/20 border border-white/30 backdrop-blur-md font-semibold text-xs sm:text-sm h-10 sm:h-11"
-              >
-                <Link href="/about">Découvrir ACCEENT</Link>
-              </Button>
-            </div>
-          </FadeIn>
+          <div className="flex flex-row flex-wrap gap-3 pt-1">
+            <Button
+              asChild
+              size="default"
+              className="rounded-full px-5 sm:px-8 bg-primary text-white hover:bg-primary/90 font-semibold text-xs sm:text-sm h-10 sm:h-11 shadow-lg"
+            >
+              <Link href="/#domaines">Voir nos programmes</Link>
+            </Button>
+            <Button
+              asChild
+              size="default"
+              variant="outline"
+              className="rounded-full px-5 sm:px-8 bg-white/10 text-white hover:bg-white/20 border border-white/30 backdrop-blur-md font-semibold text-xs sm:text-sm h-10 sm:h-11"
+            >
+              <Link href="/about">Découvrir ACCEENT</Link>
+            </Button>
+          </div>
 
           {/* Indicateur de scroll */}
           <FadeIn delay={0.6} direction="none" className="absolute bottom-8 left-1/2 -translate-x-1/2">
@@ -430,6 +428,31 @@ export default async function Home() {
               </StaggerItem>
             ))}
           </StaggerContainer>
+
+          {/* Boutons d'incitation à la navigation */}
+          <FadeIn delay={0.4} direction="up" className="mt-12 text-center">
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+              <Button
+                asChild
+                size="lg"
+                className="rounded-full px-7 bg-primary text-white hover:bg-primary/90 font-semibold shadow-xs transition-all hover:scale-[1.02]"
+              >
+                <Link href="/education">
+                  <span>Découvrir l&apos;ensemble de nos programmes</span>
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full px-7 border-slate-300 bg-white text-slate-800 hover:bg-slate-50 font-semibold shadow-2xs hover:border-primary/50 transition-all"
+              >
+                <Link href="/contact">
+                  <span>Participer ou devenir partenaire</span>
+                </Link>
+              </Button>
+            </div>
+          </FadeIn>
         </div>
       </section>
 

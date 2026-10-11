@@ -2,8 +2,7 @@ import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
 import { AtelierEntreprenariatProgrammes } from "@/data/entreprenariat/acceentIncub";
 import { createPageMetadata } from "@/lib/seo";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+import ProgrammeNavigationCta from "@/components/shared/ProgrammeNavigationCta";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
@@ -88,21 +87,18 @@ export default function AcceentIncub() {
         </StaggerContainer>
       </div>
 
-      {/* 3. Banner CTA */}
-      <FadeIn delay={0.4} direction="up">
-        <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <p className="text-sm sm:text-base font-medium text-slate-800 text-center sm:text-left max-w-xl">
-            ACCEENT&apos;INCUB, c&apos;est un tremplin pour une jeunesse créative, engagée et ambitieuse, prête à construire des solutions durables et à impact.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-xs transition-all hover:bg-primary/90 shrink-0"
-          >
-            Nous contacter
-            <ArrowRight size={16} className="ml-2" />
-          </Link>
-        </div>
-      </FadeIn>
+      {/* 3. Navigation & CTA vers les pages clés */}
+      <ProgrammeNavigationCta
+        currentProgrammeTitle="l'incubateur ACCEENT'INCUB"
+        parentDomaine={{ nom: "Entrepreneuriat", href: "/entreprenariat" }}
+        callToActionText="ACCEENT'INCUB est un tremplin pour une jeunesse créative et ambitieuse. Vous avez un projet à structurer, besoin de mentorat ou souhaitez soutenir nos porteurs de projet ?"
+        primaryButtonText="Candidater / Nous contacter"
+        primaryButtonHref="/contact"
+        relatedProgrammes={[
+          { nom: "Atelier Entrepreneuriat", href: "/atelier-entreprenariat" },
+          { nom: "Forum Entrepreneur", href: "/forum-entrepreneur" },
+        ]}
+      />
     </ProgrammeLayout>
     </>
   );

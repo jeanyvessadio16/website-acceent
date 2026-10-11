@@ -5,7 +5,7 @@ import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import Link from "next/link";
 import { ai4good } from "@/data/numerique/AI4GOOD";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
+import ProgrammeNavigationCta from "@/components/shared/ProgrammeNavigationCta";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
@@ -109,24 +109,43 @@ export default function AI4GoodPage() {
         </StaggerContainer>
       </div>
 
-      {/* 3. Banner CTA */}
-      <FadeIn delay={0.5} direction="up">
-        <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <p className="text-sm sm:text-base font-medium text-slate-800 text-center sm:text-left max-w-xl">
-            Ensemble, créons un futur numérique où la technologie élève, protège et émancipe.
-          </p>
-          <Button
-            asChild
-            size="lg"
-            className="rounded-full px-6 py-3 bg-primary text-white font-semibold shadow-xs hover:bg-primary/90 shrink-0"
-          >
-            <Link href="https://ai4goodfestival.org/" target="_blank">
-              <span>Découvrir le festival</span>
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-          </Button>
-        </div>
-      </FadeIn>
+      {/* 3. Bandeau Festival AI4GOOD & Navigation */}
+      <div className="space-y-6">
+        <FadeIn delay={0.4} direction="up">
+          <div className="rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xs">
+            <div className="space-y-1 text-center sm:text-left">
+              <span className="text-xs font-bold text-primary uppercase tracking-wider">
+                Site officiel
+              </span>
+              <p className="text-sm sm:text-base font-semibold text-slate-900">
+                Découvrez les éditions passées et futures du AI4GOOD Festival
+              </p>
+            </div>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="rounded-full px-6 border-primary/30 text-primary hover:bg-primary hover:text-white font-semibold transition-all shrink-0"
+            >
+              <Link href="https://ai4goodfestival.org/" target="_blank" rel="noopener noreferrer">
+                <span>Accéder au site officiel</span>
+              </Link>
+            </Button>
+          </div>
+        </FadeIn>
+
+        {/* Navigation & CTA vers les pages clés */}
+        <ProgrammeNavigationCta
+          currentProgrammeTitle="le festival et les formations AI4GOOD"
+          parentDomaine={{ nom: "Numérique", href: "/numerique" }}
+          callToActionText="Ensemble, formons les leaders de demain à une technologie inclusive, éthique et au service des communautés. Vous souhaitez organiser un atelier, devenir intervenant ou inscrire un groupe ?"
+          primaryButtonText="Nous contacter"
+          primaryButtonHref="/contact"
+          relatedProgrammes={[
+            { nom: "WRO Robotique", href: "/wro" },
+          ]}
+        />
+      </div>
     </ProgrammeLayout>
     </>
   );

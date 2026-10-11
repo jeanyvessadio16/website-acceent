@@ -9,9 +9,8 @@ import {
 import { wroAction } from "@/data/numerique/wroAction";
 import { createPageMetadata } from "@/lib/seo";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
-import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import ProgrammeNavigationCta from "@/components/shared/ProgrammeNavigationCta";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 
 export const metadata = createPageMetadata({
@@ -109,21 +108,17 @@ export default function WROPage() {
         </StaggerContainer>
       </div>
 
-      {/* 3. Banner CTA */}
-      <FadeIn delay={0.4} direction="up">
-        <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <p className="text-sm sm:text-base font-medium text-slate-800 text-center sm:text-left max-w-xl">
-            Vous souhaitez soutenir les équipes de robotique de Ziguinchor ou devenir mentor ? N&apos;hésitez pas à nous contacter.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-xs transition-all hover:bg-primary/90 shrink-0"
-          >
-            Nous contacter
-            <ArrowRight size={16} className="ml-2" />
-          </Link>
-        </div>
-      </FadeIn>
+      {/* 3. Navigation & CTA vers les pages clés */}
+      <ProgrammeNavigationCta
+        currentProgrammeTitle="la Robotique WRO Sénégal"
+        parentDomaine={{ nom: "Numérique", href: "/numerique" }}
+        callToActionText="Vous souhaitez inscrire une équipe de jeunes aux compétitions de robotique, équiper nos laboratoires ou intervenir comme mentor technique à Ziguinchor ? Contactez notre équipe."
+        primaryButtonText="Nous contacter"
+        primaryButtonHref="/contact"
+        relatedProgrammes={[
+          { nom: "AI4Good Festival", href: "/ai4good" },
+        ]}
+      />
     </ProgrammeLayout>
     </>
   );

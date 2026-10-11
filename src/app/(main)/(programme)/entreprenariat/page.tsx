@@ -11,6 +11,7 @@ import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/shared/Animations";
+import DomaineBottomCta from "@/components/shared/DomaineBottomCta";
 
 export const metadata = createPageMetadata({
   title: "Programme Entrepreneuriat & Incubation à Ziguinchor",
@@ -108,39 +109,6 @@ export default function Entreprenariat() {
           </div>
         </section>
 
-        <section className="bg-slate-50 py-16 md:py-20 border-t border-slate-200/60">
-          <div className="section-container">
-            <FadeIn
-              delay={0.2}
-              direction="up"
-              className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xs md:p-12"
-            >
-              <div className="mx-auto max-w-3xl text-center">
-                <h2 className="text-2xl font-bold tracking-tight text-slate-950 md:text-3xl">
-                  Transformez vos idées en projets à succès
-                </h2>
-                <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
-                  Nos programmes d&apos;entrepreneuriat s&apos;adressent à
-                  celles et ceux qui veulent innover, créer de la valeur et
-                  contribuer positivement au développement économique de leur
-                  territoire.
-                </p>
-                <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-                  <Button asChild size="lg" className="rounded-full px-8 bg-primary text-white">
-                    <Link href="/contact">Nous contacter</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    size="lg"
-                    className="rounded-full px-8 bg-slate-100 text-slate-800 border border-slate-300 hover:bg-slate-200 hover:text-slate-950 font-semibold shadow-xs transition-colors"
-                  >
-                    <Link href="/about">Découvrir ACCEENT</Link>
-                  </Button>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
       </HeaderLayout>
 
       <section className="py-16 md:py-20 bg-white border-t border-slate-200/60">
@@ -181,6 +149,15 @@ export default function Entreprenariat() {
           </div>
         </div>
       </section>
+
+      {/* Navigation & CTA vers les pages clés */}
+      <DomaineBottomCta
+        currentDomaine="Entrepreneuriat"
+        title="Transformez vos idées en projets viables et durables"
+        description="Nos programmes d'entrepreneuriat s'adressent à celles et ceux qui veulent innover, créer de la valeur et dynamiser l'économie locale de Ziguinchor et de la Casamance."
+        primaryButtonText="Nous contacter"
+        primaryButtonHref="/contact"
+      />
     </>
   );
 }

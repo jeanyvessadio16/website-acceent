@@ -18,6 +18,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { createPageMetadata } from "@/lib/seo";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import ProgrammeNavigationCta from "@/components/shared/ProgrammeNavigationCta";
 import {
   FadeIn,
   StaggerContainer,
@@ -267,22 +268,17 @@ export default function AcceentEllesPage() {
           <FaqSection />
         </FadeIn>
 
-        {/* 6. Banner CTA */}
-        <FadeIn delay={0.45} direction="up">
-          <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <p className="text-sm sm:text-base font-medium text-slate-800 text-center sm:text-left max-w-xl">
-              Vous souhaitez soutenir le programme ou orienter une bénéficiaire ?
-              Notre équipe peut vous accompagner.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-xs transition-all hover:bg-primary/90 shrink-0"
-            >
-              Nous contacter
-              <ArrowRight size={16} className="ml-2" />
-            </Link>
-          </div>
-        </FadeIn>
+        {/* 6. Navigation & CTA vers les pages clés */}
+        <ProgrammeNavigationCta
+          currentProgrammeTitle="le programme ACCEENT-Elles"
+          parentDomaine={{ nom: "Éducation", href: "/education" }}
+          callToActionText="Vous souhaitez soutenir l'autonomisation et la réussite des jeunes filles à Ziguinchor, devenir mentor ou orienter une bénéficiaire ? Notre équipe est à votre écoute."
+          primaryButtonText="Nous contacter"
+          primaryButtonHref="/contact"
+          relatedProgrammes={[
+            { nom: "Tut-Tank", href: "/tut-tank" },
+          ]}
+        />
       </ProgrammeLayout>
     </>
   );

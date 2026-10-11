@@ -1,7 +1,7 @@
 import ProgrammeLayout from "@/components/layout/ProgrammeLayout";
 import { tuttankProgrammes } from "@/data/education/tut-tank";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
+import { CheckCircle2 } from "lucide-react";
+import ProgrammeNavigationCta from "@/components/shared/ProgrammeNavigationCta";
 import { createPageMetadata } from "@/lib/seo";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import {
@@ -127,23 +127,17 @@ export default function TutTankPage() {
           </div>
         </FadeIn>
 
-        {/* 3. Banner CTA */}
-        <FadeIn delay={0.45} direction="up">
-          <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <p className="text-sm sm:text-base font-medium text-slate-800 text-center sm:text-left max-w-xl">
-              TUT&apos;TANK place la famille au cœur de l&apos;éducation, en
-              créant des espaces d&apos;échange, d&apos;apprentissage et de
-              complicité.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white shadow-xs transition-all hover:bg-primary/90 shrink-0"
-            >
-              Nous contacter
-              <ArrowRight size={16} className="ml-2" />
-            </Link>
-          </div>
-        </FadeIn>
+        {/* 3. Navigation & CTA vers les pages clés */}
+        <ProgrammeNavigationCta
+          currentProgrammeTitle="le programme TUT-TANK"
+          parentDomaine={{ nom: "Éducation", href: "/education" }}
+          callToActionText="TUT'TANK place la famille au cœur de l'éducation en créant des espaces d'échange, d'apprentissage et de bienveillance. Vous souhaitez inscrire une participante, parrainer ou soutenir le programme ?"
+          primaryButtonText="Nous contacter"
+          primaryButtonHref="/contact"
+          relatedProgrammes={[
+            { nom: "ACCEENT-Elles", href: "/acceent-elles" },
+          ]}
+        />
       </ProgrammeLayout>
     </>
   );

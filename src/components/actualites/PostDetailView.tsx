@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Calendar, ArrowLeft, BookOpen, Clock, UserCheck, Maximize2, X, Share2, Check, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeIn } from "@/components/shared/Animations";
+import { Button } from "@/components/ui/button";
 
 interface PostDetailViewProps {
   post: {
@@ -162,6 +163,43 @@ export function PostDetailView({ post }: PostDetailViewProps) {
                   </>
                 )}
               </button>
+            </div>
+          </div>
+        </FadeIn>
+
+        {/* ── Bloc d'incitation à l'action et navigation ── */}
+        <FadeIn direction="up" delay={0.25}>
+          <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-primary/5 to-white p-6 sm:p-8 text-center sm:text-left shadow-xs flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="space-y-1.5 max-w-lg">
+              <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
+                <span>Rejoindre nos actions</span>
+              </div>
+              <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                Vous souhaitez en savoir plus ou soutenir ACCEENT ?
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Découvrez nos programmes sur le terrain ou prenez contact avec notre équipe à Ziguinchor.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap sm:flex-nowrap gap-2.5 shrink-0">
+              <Button
+                asChild
+                className="rounded-full px-5 bg-primary text-white hover:bg-primary/90 font-semibold shadow-xs text-xs sm:text-sm h-10"
+              >
+                <Link href="/contact">
+                  <span>Nous contacter</span>
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-full px-5 border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-xs sm:text-sm h-10"
+              >
+                <Link href="/education">
+                  <span>Nos programmes</span>
+                </Link>
+              </Button>
             </div>
           </div>
         </FadeIn>

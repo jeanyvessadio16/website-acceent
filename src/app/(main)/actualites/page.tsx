@@ -3,6 +3,8 @@ import prisma from "@/lib/prisma";
 import { ActualitesList } from "@/components/actualites/ActualitesList";
 import { FadeIn } from "@/components/shared/Animations";
 import { Newspaper } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export const dynamic = "force-dynamic";
@@ -98,6 +100,57 @@ export default async function ActualitesPage() {
         {/* Liste des articles */}
         <FadeIn direction="up" delay={0.15}>
           <ActualitesList posts={posts} />
+        </FadeIn>
+
+        {/* ── Section d'incitation à la navigation & CTA ── */}
+        <FadeIn direction="up" delay={0.25}>
+          <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/10 via-primary/5 to-white p-8 sm:p-12 text-center shadow-xs space-y-6">
+            <div className="mx-auto max-w-2xl space-y-3">
+              <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
+                <span>Passer à l&apos;action</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                Envie de participer à l&apos;aventure ACCEENT ?
+              </h2>
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                Que vous soyez un·e jeune porteur de projet, une étudiante, un partenaire institutionnel ou une association locale, nous avons des opportunités adaptées à vos besoins.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-4 pt-2">
+              <Button
+                asChild
+                size="lg"
+                className="rounded-full px-7 bg-primary text-white hover:bg-primary/90 font-semibold shadow-xs transition-all hover:scale-[1.02]"
+              >
+                <Link href="/contact">
+                  Nous contacter
+                </Link>
+              </Button>
+
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full px-7 border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-semibold shadow-2xs hover:border-primary/50 transition-all"
+              >
+                <Link href="/education">
+                  <span>Explorer nos programmes</span>
+                </Link>
+              </Button>
+
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="rounded-full px-6 border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-medium shadow-2xs transition-all"
+              >
+                <Link href="/about">
+                  <span>À propos d&apos;ACCEENT</span>
+                </Link>
+              </Button>
+            </div>
+          </div>
         </FadeIn>
       </div>
     </main>

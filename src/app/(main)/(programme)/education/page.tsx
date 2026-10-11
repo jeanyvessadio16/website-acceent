@@ -11,6 +11,7 @@ import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/shared/Animations";
+import DomaineBottomCta from "@/components/shared/DomaineBottomCta";
 
 export const metadata = createPageMetadata({
   title: "Programme Éducation & Soutien Scolaire à Ziguinchor",
@@ -109,38 +110,13 @@ export default function Education() {
           </div>
         </section>
 
-        <section className="bg-slate-50 py-16 md:py-20 border-t border-slate-200/60">
-          <div className="section-container">
-            <FadeIn
-              delay={0.2}
-              direction="up"
-              className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xs md:p-12"
-            >
-              <div className="mx-auto max-w-3xl text-center">
-                <h2 className="text-2xl font-bold tracking-tight text-slate-950 md:text-3xl">
-                  Construisons ensemble un avenir plus équitable
-                </h2>
-                <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
-                  Nos actions éducatives s&apos;adressent à celles et ceux qui
-                  veulent apprendre, entreprendre et contribuer positivement à
-                  leur territoire.
-                </p>
-                <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-                  <Button asChild size="lg" className="rounded-full px-8 bg-primary text-white hover:bg-primary/90 font-semibold shadow-xs">
-                    <Link href="/contact">Nous contacter</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    size="lg"
-                    className="rounded-full px-8 bg-slate-100 text-slate-800 border border-slate-300 hover:bg-slate-200 hover:text-slate-950 font-semibold shadow-xs transition-colors"
-                  >
-                    <Link href="/about">Découvrir ACCEENT</Link>
-                  </Button>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </section>
+        <DomaineBottomCta
+          currentDomaine="Éducation"
+          title="Construisons ensemble un avenir plus équitable"
+          description="Nos actions éducatives s'adressent à celles et ceux qui veulent apprendre, réussir et contribuer positivement à leur territoire. Rejoignez-nous en tant qu'élève, mentor ou partenaire."
+          primaryButtonText="Nous contacter"
+          primaryButtonHref="/contact"
+        />
       </HeaderLayout>
     </>
   );

@@ -13,7 +13,22 @@ const ADMIN_PREFIX = "/admin";
 const USER_PREFIX = "/dashboard";
 
 /** Routes publiques qui ne nécessitent aucune vérification d'auth */
-const PUBLIC_ROUTES = ["/", "/about", "/contact", "/actualites", "/education", "/entreprenariat", "/numerique"];
+const PUBLIC_ROUTES = [
+    "/",
+    "/about",
+    "/contact",
+    "/actualites",
+    "/education",
+    "/tut-tank",
+    "/acceent-elles",
+    "/entreprenariat",
+    "/acceent-incub",
+    "/atelier-entreprenariat",
+    "/forum-entrepreneur",
+    "/numerique",
+    "/ai4good",
+    "/wro",
+];
 
 // ─── Middleware ───────────────────────────────────────────────────────────────
 

@@ -9,6 +9,8 @@ import {
   StaggerContainer,
   StaggerItem,
 } from "@/components/shared/Animations";
+import Image from "next/image";
+import { tutTankGalerie } from "@/data/education/tut-tank-galerie";
 
 export const metadata = createPageMetadata({
   title: "TUT-TANK — Accompagnement Scolaire & Social des Filles à Ziguinchor",
@@ -127,7 +129,49 @@ export default function TutTankPage() {
           </div>
         </FadeIn>
 
-        {/* 3. Navigation & CTA vers les pages clés */}
+        {/* 3. Galerie photos TUT-TANK */}
+        <FadeIn delay={0.35} direction="up">
+          <div className="space-y-6">
+            <div className="text-center sm:text-left">
+              <span className="inline-flex rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary mb-2">
+                En images
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
+                Galerie du programme
+              </h2>
+              <p className="text-slate-600 text-sm sm:text-base max-w-2xl mt-1">
+                Découvrez les moments forts des séances de soutien scolaire, des ateliers et des activités collectives de TUT-TANK.
+              </p>
+            </div>
+
+            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {tutTankGalerie.map((photo) => (
+                <StaggerItem key={photo.id}>
+                  <div className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100 shadow-xs transition-all duration-300 hover:shadow-md">
+                    <div className="relative w-full aspect-[4/3]">
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    </div>
+                    {photo.caption && (
+                      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4">
+                        <span className="text-xs sm:text-sm font-semibold text-white leading-tight">
+                          {photo.caption}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        </FadeIn>
+
+        {/* 4. Navigation & CTA vers les pages clés */}
         <ProgrammeNavigationCta
           currentProgrammeTitle="le programme TUT-TANK"
           parentDomaine={{ nom: "Éducation", href: "/education" }}

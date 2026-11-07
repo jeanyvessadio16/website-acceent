@@ -152,18 +152,11 @@ export default async function Home() {
 
           {/* Titre principal — h1 unique sur la page */}
           <FadeIn delay={0.2} direction="up">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/20 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground backdrop-blur-md mb-3">
-              Association ACCEENT • Ziguinchor, Sénégal
-            </span>
             <h1
               id="hero-heading"
-              className="max-w-3xl text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight"
+              className="max-w-3xl text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight"
             >
-              <span className="sr-only">ACCEENT — </span>
-              Autonomiser les Jeunes et les Femmes par&nbsp;
-              <span className="text-primary">l&apos;Éducation</span>,{" "}
-              <span className="text-primary">l&apos;Entrepreneuriat</span> et le{" "}
-              <span className="text-primary">Numérique</span>
+              <span className="text-primary font-extrabold">ACCEENT</span> : Éducation, Entrepreneuriat & Numérique
             </h1>
           </FadeIn>
 

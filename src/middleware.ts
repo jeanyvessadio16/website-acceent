@@ -34,6 +34,14 @@ const PUBLIC_ROUTES = [
 
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
+    const host = request.headers.get("host") || "";
+
+    // ── 0. Anti-cannibalisation SEO : Redirection des domaines Vercel ─────────
+    // Transfère 100% de la réputation SEO de *.vercel.app vers acceent.org
+    if (host.includes(".vercel.app") && !host.includes("localhost")) {
+        const canonicalUrl = new URL(pathname + request.nextUrl.search, "https://acceent.org");
+        return NextResponse.redirect(canonicalUrl, 301);
+    }
 
     // ── Passe directement les routes entièrement publiques ────────────────
     const isPublicRoute =

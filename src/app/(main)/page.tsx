@@ -4,7 +4,7 @@ import { ArrowRight, BookOpen, Cpu, TrendingUp, MapPin, Mail, Phone } from "luci
 import { Button } from "@/components/ui/button";
 import Partenaire from "@/components/shared/Partenaires";
 import Contact from "@/components/shared/contact/Contact";
-import { OrganizationJsonLd, WebSiteJsonLd, FAQJsonLd } from "@/components/seo/JsonLd";
+import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 import { list_domaines } from "@/data/list-domaines";
@@ -126,9 +126,7 @@ export default async function Home() {
 
   return (
     <>
-      {/* Structured data */}
-      <OrganizationJsonLd />
-      <WebSiteJsonLd />
+      {/* Structured data pour la FAQ de la page d'accueil (Organization et WebSite sont dans RootLayout) */}
       <FAQJsonLd faqs={homeFaqs} />
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
@@ -154,10 +152,14 @@ export default async function Home() {
 
           {/* Titre principal — h1 unique sur la page */}
           <FadeIn delay={0.2} direction="up">
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/20 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground backdrop-blur-md mb-3">
+              Association ACCEENT • Ziguinchor, Sénégal
+            </span>
             <h1
               id="hero-heading"
               className="max-w-3xl text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight"
             >
+              <span className="sr-only">ACCEENT — </span>
               Autonomiser les Jeunes et les Femmes par&nbsp;
               <span className="text-primary">l&apos;Éducation</span>,{" "}
               <span className="text-primary">l&apos;Entrepreneuriat</span> et le{" "}
@@ -168,7 +170,13 @@ export default async function Home() {
           {/* Accroche */}
           <FadeIn delay={0.3} direction="up">
             <p className="max-w-2xl text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed">
-              ACCEENT accompagne la jeunesse et les femmes de Ziguinchor à travers des
+              <abbr
+                title="Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires"
+                className="no-underline font-semibold text-white"
+              >
+                ACCEENT
+              </abbr>{" "}
+              accompagne la jeunesse et les femmes de Ziguinchor à travers des
               initiatives concrètes d&apos;éducation, d&apos;entrepreneuriat et d&apos;inclusion
               numérique pour favoriser l&apos;autonomie et le développement local durable.
             </p>

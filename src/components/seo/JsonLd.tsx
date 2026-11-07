@@ -235,6 +235,17 @@ export function WebSiteJsonLd() {
     "@type": "WebSite",
     "@id": `${SITE_URL}/#website`,
     name: SITE_NAME,
+    alternateName: [
+      "Association ACCEENT",
+      "ACCEENT Ziguinchor",
+      "ACCEENT Santhiaba",
+      "ACCEENT Sénégal",
+      "ACCEENT Casamance",
+      "ONG ACCEENT",
+      "A.C.C.E.E.N.T.",
+    ],
+    disambiguatingDescription:
+      "Site officiel de l'Association ACCEENT (Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires), basée à Ziguinchor (Sénégal).",
     url: SITE_URL,
     description: DEFAULT_DESCRIPTION,
     inLanguage: "fr-SN",

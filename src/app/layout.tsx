@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { rootMetadata, SITE_URL } from "@/lib/seo";
 import { CookieBanner } from "@/components/shared/CookieBanner";
+import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/JsonLd";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -37,6 +38,8 @@ export default function RootLayout({
         <meta name="referrer" content="strict-origin-when-cross-origin" />
       </head>
       <body className="min-h-full flex flex-col overflow-x-hidden w-full max-w-full relative">
+        <OrganizationJsonLd />
+        <WebSiteJsonLd />
         {children}
         <CookieBanner />
       </body>

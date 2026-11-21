@@ -2,24 +2,20 @@ import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
 import { logger } from "./core/logger";
+import { buildPgPoolConfig } from "./prisma-pool";
 
 const globalForPrisma = globalThis as unknown as {
   pgPool: Pool | undefined;
   prisma: PrismaClient | undefined;
 };
 
-const rawPoolMax = Number(process.env.PG_POOL_MAX ?? 10);
-const poolMax = Number.isFinite(rawPoolMax) && rawPoolMax > 0 ? Math.min(rawPoolMax, 50) : 10;
+const defaultPoolMax = process.env.VERCEL ? 3 : 10;
+const rawPoolMax = Number(process.env.PG_POOL_MAX ?? defaultPoolMax);
+const poolMax = Number.isFinite(rawPoolMax) && rawPoolMax > 0 ? Math.min(rawPoolMax, 50) : defaultPoolMax;
 
 const pool =
   globalForPrisma.pgPool ??
-  new Pool({
-    connectionString: process.env.DATABASE_URL,
-    max: poolMax,
-    idleTimeoutMillis: 20_000,
-    connectionTimeoutMillis: 10_000,
-    allowExitOnIdle: true,
-  });
+  new Pool(buildPgPoolConfig(process.env.DATABASE_URL, poolMax));
 
 if (!globalForPrisma.pgPool) {
   pool.on("error", (err) => {
@@ -35,9 +31,7 @@ export const prisma =
     adapter,
   });
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.pgPool = pool;
-  globalForPrisma.prisma = prisma;
-}
+globalForPrisma.pgPool = pool;
+globalForPrisma.prisma = prisma;
 
 export default prisma;

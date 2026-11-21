@@ -32,6 +32,11 @@ export async function generateMetadata({ params }: PostPageProps) {
       title: post.title,
       description: post.content.slice(0, 160),
       path: `/actualites/${post.id}`,
+      type: "article",
+      dateModified: post.updatedAt.toISOString(),
+      image: post.imageUrl
+        ? { url: post.imageUrl, alt: post.title }
+        : undefined,
     });
   } catch {
     return createPageMetadata({

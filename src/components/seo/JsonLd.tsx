@@ -1,5 +1,5 @@
 import { SOCIAL_SAME_AS } from "@/data/social-profiles";
-import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
+import { DEFAULT_DESCRIPTION, OG_IMAGE_PATH, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 type JsonLdProps = {
   data: Record<string, unknown>;
@@ -64,7 +64,7 @@ export function OrganizationJsonLd() {
       contentUrl: `${SITE_URL}/logo/logoACCEENT.png`,
       caption: "Logo officiel de l'Association ACCEENT",
     },
-    image: `${SITE_URL}/logo/logoACCEENT.png`,
+    image: `${SITE_URL}${OG_IMAGE_PATH}`,
     description: DEFAULT_DESCRIPTION,
     email: "info@acceent.org",
     telephone: "+221761417070",
@@ -339,7 +339,7 @@ export function ArticleJsonLd({
     ? imageUrl.startsWith("http")
       ? imageUrl
       : `${SITE_URL}${imageUrl}`
-    : `${SITE_URL}/logo/logoACCEENT.png`;
+    : `${SITE_URL}${OG_IMAGE_PATH}`;
 
   const data = {
     "@context": "https://schema.org",

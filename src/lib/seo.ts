@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { buildSocialSharingMetadata } from "@/lib/social-metadata";
 
 export const SITE_NAME = "ACCEENT";
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://acceent.org";
+export const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://acceent.org"
+).replace(/\/+$/, "");
 
 export const DEFAULT_DESCRIPTION =
   "ACCEENT (Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires) est l'association principale basée à Ziguinchor (Santhiaba, Sénégal). Elle agit pour l'éducation, l'entrepreneuriat et l'inclusion numérique des jeunes et des femmes en Casamance.";
@@ -54,14 +55,15 @@ export const DEFAULT_KEYWORDS = [
   "Casamance développement",
 ];
 
-export const OG_IMAGE_PATH = "/logo/logoACCEENT.png";
+export const OG_IMAGE_PATH = "/og-acceent.png";
 
 export const OG_IMAGE = {
   url: OG_IMAGE_PATH,
   width: 1200,
   height: 630,
-  alt: "Logo ACCEENT — Association pour l'Éducation, l'Entrepreneuriat et le Numérique à Ziguinchor, Sénégal",
-};
+  type: "image/png",
+  alt: "ACCEENT — Éducation, Entrepreneuriat et Numérique à Ziguinchor, Sénégal",
+} as const;
 
 /** Balises GEO géographiques et métadonnées d'entité IA (Ziguinchor, Sénégal, ACCEENT) */
 export const GEO_METADATA = {
@@ -130,6 +132,14 @@ type CreatePageMetadataOptions = {
   skipCanonical?: boolean;
   /** Date de dernière modification (ISO 8601). Améliore la fraîcheur pour Google. */
   dateModified?: string;
+  image?: {
+    url: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+    type?: string;
+  };
+  type?: "website" | "article";
 };
 
 export function createPageMetadata({
@@ -140,8 +150,16 @@ export function createPageMetadata({
   noIndex = false,
   skipCanonical = false,
   dateModified,
+  image,
+  type,
 }: CreatePageMetadataOptions): Metadata {
-  const social = buildSocialSharingMetadata({ title, description, path });
+  const social = buildSocialSharingMetadata({
+    title,
+    description,
+    path,
+    image,
+    type,
+  });
   const canonicalUrl = path.startsWith("/") ? path : `/${path}`;
 
   return {
@@ -175,6 +193,8 @@ export function createPageMetadata({
             "max-snippet": -1,
           },
         },
+    openGraph: social.openGraph,
+    twitter: social.twitter,
     other: {
       ...GEO_METADATA,
       ...(social.other ?? {}),
@@ -184,7 +204,6 @@ export function createPageMetadata({
       // Date de modification pour la fraîcheur du contenu
       ...(dateModified ? { "article:modified_time": dateModified } : {}),
     },
-    ...social,
   };
 }
 

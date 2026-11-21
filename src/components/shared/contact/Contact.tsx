@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -21,7 +21,7 @@ import { Textarea } from "../../ui/textarea";
 import { FormErrorBanner, SuccessAlertDialog } from "../alerts";
 import { FadeIn, StaggerContainer, StaggerItem } from "../Animations";
 import { contactSchema, ContactFormData } from "../../../validation/contact";
-import { ContactService } from "../../../services/contactService";
+import { submitContactAction } from "@/actions/contact";
 import { cn } from "@/lib/utils";
 
 export default function Contact() {
@@ -29,6 +29,15 @@ export default function Contact() {
   const [dialogMessage, setDialogMessage] = useState("");
   const [formError, setFormError] = useState("");
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [formLoadedAt, setFormLoadedAt] = useState<number | undefined>(undefined);
+  const [resetGeneration, setResetGeneration] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setFormLoadedAt(Date.now());
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [resetGeneration]);
 
   const {
     register,
@@ -40,13 +49,14 @@ export default function Contact() {
   });
 
   const onSubmit = async (data: ContactFormData) => {
-    const result = await ContactService.submitContactForm(data);
+    const result = await submitContactAction(data, { formLoadedAt });
 
     if (result.success) {
       setFormError("");
       setDialogMessage(result.message);
       setDialogOpen(true);
       reset();
+      setResetGeneration((prev) => prev + 1);
     } else {
       setFormError(result.message);
     }

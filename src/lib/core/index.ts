@@ -16,9 +16,11 @@ export {
 } from "./auth-guard";
 export {
   checkRateLimit,
+  checkDistributedRateLimit,
   resetRateLimiter,
   type RateLimitOptions,
   type RateLimitResult,
+  type RateLimitDbExecutor,
 } from "./rate-limit";
 export { getClientIp, getRequestOrigin } from "./request";
 export { generateAuthToken, hashAuthToken } from "./tokens";

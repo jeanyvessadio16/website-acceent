@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
-  checkRateLimit,
+  checkDistributedRateLimit,
   getClientIp,
   getRequestOrigin,
   logger,
@@ -26,7 +26,7 @@ export async function requestPasswordResetAction(data: ForgotPasswordInput) {
   }
 
   const ip = await getClientIp();
-  const rate = checkRateLimit(`pwd-reset:${ip}:${parsed.data.email}`, {
+  const rate = await checkDistributedRateLimit(`pwd-reset:${ip}:${parsed.data.email}`, {
     limit: 5,
     windowMs: 15 * 60 * 1000,
   });

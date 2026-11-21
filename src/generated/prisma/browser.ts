@@ -82,3 +82,8 @@ export type NewsletterCampaign = Prisma.NewsletterCampaignModel
  * 
  */
 export type AuditLog = Prisma.AuditLogModel
+/**
+ * Model RateLimitBucket
+ * 
+ */
+export type RateLimitBucket = Prisma.RateLimitBucketModel

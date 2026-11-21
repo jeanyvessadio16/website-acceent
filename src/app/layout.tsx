@@ -1,5 +1,6 @@
 import { GoogleAnalytics } from '@next/third-parties/google'
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { rootMetadata, SITE_URL } from "@/lib/seo";
@@ -23,11 +24,13 @@ export const viewport: Viewport = {
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-LHX5D4CQ9T";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   return (
     <html
       lang="fr"
@@ -45,14 +48,14 @@ export default function RootLayout({
         <meta name="referrer" content="strict-origin-when-cross-origin" />
       </head>
       <body className="min-h-full flex flex-col overflow-x-hidden w-full max-w-full relative">
-        <ThemeProvider>
+        <ThemeProvider nonce={nonce}>
           <OrganizationJsonLd />
           <WebSiteJsonLd />
           {children}
           <CookieBanner />
         </ThemeProvider>
       </body>
-      <GoogleAnalytics gaId={GA_ID} />
+      <GoogleAnalytics gaId={GA_ID} nonce={nonce} />
     </html>
   );
 }

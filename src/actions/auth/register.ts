@@ -6,7 +6,7 @@ import prisma from "@/lib/prisma";
 import type { MilieuResidence, Sexe } from "@/generated/prisma/client";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
-  checkRateLimit,
+  checkDistributedRateLimit,
   getClientIp,
   getRequestOrigin,
   logger,
@@ -40,7 +40,7 @@ export async function registerAction(
   }
 
   const ip = await getClientIp();
-  const rate = checkRateLimit(`register:${ip}`, {
+  const rate = await checkDistributedRateLimit(`register:${ip}`, {
     limit: 5,
     windowMs: 60 * 60 * 1000,
   });

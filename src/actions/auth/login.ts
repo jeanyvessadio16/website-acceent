@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { loginSchema, type LoginInput } from "@/validation/auth";
 import prisma from "@/lib/prisma";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { checkRateLimit, getClientIp, logger, recordAuditLog } from "@/lib/core";
+import { checkDistributedRateLimit, getClientIp, logger, recordAuditLog } from "@/lib/core";
 
 export interface LoginActionResult {
   success: boolean;
@@ -37,7 +37,7 @@ export async function loginAction(
 
   const { email, password } = parsed.data;
   const ip = await getClientIp();
-  const rate = checkRateLimit(`login:${ip}:${email}`, {
+  const rate = await checkDistributedRateLimit(`login:${ip}:${email}`, {
     limit: 10,
     windowMs: 15 * 60 * 1000,
   });

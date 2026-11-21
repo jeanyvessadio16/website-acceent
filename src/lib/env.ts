@@ -3,6 +3,7 @@ import { z } from "zod";
 const serverEnvSchema = z.object({
   DATABASE_URL: z.string().min(1, "DATABASE_URL manquante."),
   DIRECT_URL: z.string().optional(),
+  DATABASE_SSL_CA: z.string().optional(),
   PG_POOL_MAX: z.coerce.number().int().min(1).max(50).default(10),
   SESSION_SECRET: z.string().optional(),
   WEB3FORMS_ACCESS_KEY: z.string().optional(),

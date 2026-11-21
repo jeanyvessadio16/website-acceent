@@ -7,7 +7,7 @@ import {
   sendNewsletterCampaignEmails,
   type CampaignRecipient,
 } from "@/services/emailService";
-import { checkRateLimit, getClientIp, handleActionError, recordAuditLog } from "@/lib/core";
+import { checkDistributedRateLimit, getClientIp, handleActionError, recordAuditLog } from "@/lib/core";
 import {
   subscribeNewsletterSchema,
   sendCampaignSchema,
@@ -17,7 +17,7 @@ import {
 
 export async function subscribeNewsletterAction(data: SubscribeNewsletterInput) {
   const ip = await getClientIp();
-  const rate = checkRateLimit(`nl-sub:${ip}`, {
+  const rate = await checkDistributedRateLimit(`nl-sub:${ip}`, {
     limit: 10,
     windowMs: 15 * 60 * 1000,
   });

@@ -26,29 +26,10 @@ const nextConfig: NextConfig = {
   },
 
   async headers() {
-    const isProd = process.env.NODE_ENV === "production";
-    const cspDirectives = [
-      "default-src 'self'",
-      `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"} https://www.googletagmanager.com`,
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://twizxowdhtmhwsytlztr.supabase.co https://images.unsplash.com https://www.google-analytics.com",
-      "font-src 'self' data:",
-      "connect-src 'self' https://twizxowdhtmhwsytlztr.supabase.co https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://vitals.vercel-insights.com https://api.web3forms.com",
-      "object-src 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-      "frame-ancestors 'none'",
-      ...(isProd ? ["upgrade-insecure-requests"] : []),
-    ];
-
     return [
       {
         source: "/:path*",
         headers: [
-          {
-            key: "Content-Security-Policy",
-            value: cspDirectives.join("; "),
-          },
           {
             key: "X-Frame-Options",
             value: "DENY",

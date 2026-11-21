@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
+import { buildCspHeader, generateCspNonce } from "@/lib/core/csp";
 
 // ─── Routes protégées et publiques ───────────────────────────────────────────
 
@@ -56,16 +57,30 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(confirmUrl);
   }
 
+  const nonce = generateCspNonce();
+  const cspHeader = buildCspHeader(nonce, process.env.NODE_ENV === "production");
+
+  const nextWithCsp = () => {
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set("x-nonce", nonce);
+    requestHeaders.set("Content-Security-Policy", cspHeader);
+    const response = NextResponse.next({
+      request: { headers: requestHeaders },
+    });
+    response.headers.set("Content-Security-Policy", cspHeader);
+    return response;
+  };
+
   // ── Passe directement les routes entièrement publiques ────────────────────
   const isPublicRoute = PUBLIC_ROUTES.some(
     (route) => pathname === route || pathname.startsWith(route + "/")
   );
 
   if (isPublicRoute) {
-    return NextResponse.next();
+    return nextWithCsp();
   }
 
-  let supabaseResponse = NextResponse.next({ request });
+  let supabaseResponse = nextWithCsp();
 
   try {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -84,7 +99,7 @@ export async function proxy(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) => {
             request.cookies.set(name, value);
           });
-          supabaseResponse = NextResponse.next({ request });
+          supabaseResponse = nextWithCsp();
           cookiesToSet.forEach(({ name, value, options }) => {
             supabaseResponse.cookies.set(name, value, options);
           });
@@ -120,6 +135,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|logo|images|team|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.webmanifest|logo|images|team|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
-  checkRateLimit,
+  checkDistributedRateLimit,
   getClientIp,
   getRequestOrigin,
   logger,
@@ -25,7 +25,7 @@ export async function resendVerificationEmailAction(email: string): Promise<{
 
   const normalizedEmail = parsed.data.email;
   const ip = await getClientIp();
-  const rate = checkRateLimit(`verify-resend:${ip}:${normalizedEmail}`, {
+  const rate = await checkDistributedRateLimit(`verify-resend:${ip}:${normalizedEmail}`, {
     limit: 3,
     windowMs: 15 * 60 * 1000,
   });

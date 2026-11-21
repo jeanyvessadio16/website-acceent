@@ -9,7 +9,7 @@ import {
   type ApplicationStatusKey,
 } from "@/lib/constants/platform";
 import { sendApplicationStatusEmail } from "@/services/emailService";
-import { checkRateLimit, handleActionError, recordAuditLog } from "@/lib/core";
+import { checkDistributedRateLimit, handleActionError, recordAuditLog } from "@/lib/core";
 import {
   submitApplicationSchema,
   updateApplicationStatusSchema,
@@ -23,7 +23,7 @@ export async function submitApplicationAction(data: SubmitApplicationInput) {
     return { success: false, message: "Vous devez être connecté·e pour candidater." };
   }
 
-  const rate = checkRateLimit(`apply:${session.userId}`, {
+  const rate = await checkDistributedRateLimit(`apply:${session.userId}`, {
     limit: 10,
     windowMs: 60 * 60 * 1000,
   });

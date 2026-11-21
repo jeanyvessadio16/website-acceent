@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { getSession } from "@/lib/session";
-import { checkRateLimit, logger } from "@/lib/core";
+import { checkDistributedRateLimit, logger } from "@/lib/core";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
@@ -101,7 +101,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Authentification requise." }, { status: 401 });
   }
 
-  const rate = checkRateLimit(`upload:${session.userId}`, {
+  const rate = await checkDistributedRateLimit(`upload:${session.userId}`, {
     limit: 30,
     windowMs: 15 * 60 * 1000,
   });

@@ -34,8 +34,21 @@ export const FILE_SIZE_REGEX =
 
 export const RESET_TOKEN_REGEX = /^[a-fA-F0-9]{10,128}$/;
 
-export function isValidSenegalOrIntlPhone(val: string): boolean {
+function stripPhoneDigits(val: string): string {
   const digits = val.replace(/\D/g, "");
+  return digits.startsWith("00") ? digits.slice(2) : digits;
+}
+
+export function normalizePhoneNumber(val: string): string {
+  const digits = stripPhoneDigits(val);
+  if (digits.length === 9 && /^(?:7[05678]|3[03]|6\d)\d{7}$/.test(digits)) {
+    return `+221${digits}`;
+  }
+  return `+${digits}`;
+}
+
+export function isValidSenegalOrIntlPhone(val: string): boolean {
+  const digits = stripPhoneDigits(val);
   if (digits.length < 8 || digits.length > 15) return false;
   if (digits.startsWith("221")) {
     return /^221(?:7[05678]|3[03]|6\d)\d{7}$/.test(digits);
@@ -87,7 +100,8 @@ export const phoneFieldSchema = z
   .refine(
     isValidSenegalOrIntlPhone,
     "Format Sénégal (+221 7X XXX XX XX) ou international valide requis."
-  );
+  )
+  .transform(normalizePhoneNumber);
 
 export const optionalPhoneFieldSchema = z
   .string()

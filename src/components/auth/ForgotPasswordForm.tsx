@@ -4,13 +4,19 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { Mail, ArrowLeft, ArrowRight, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Mail, ArrowLeft, ArrowRight, Loader2, KeyRound } from "lucide-react";
 import { forgotPasswordSchema, type ForgotPasswordInput } from "@/validation/auth";
 import { requestPasswordResetAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import {
+  AUTH_FIELD_ERROR_CLASS,
+  AUTH_INPUT_CLASS,
+  AuthAlert,
+  AuthFieldError,
+} from "./AuthShared";
 
 export default function ForgotPasswordForm() {
   const [serverError, setServerError] = useState<string | null>(null);
@@ -36,76 +42,65 @@ export default function ForgotPasswordForm() {
   };
 
   return (
-    <div className="w-full space-y-6">
-      <div className="space-y-2 text-center">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-          Mot de passe oublié
-        </h1>
-        <p className="text-white/60 text-sm">
-          Entrez votre adresse e-mail pour recevoir un lien de réinitialisation sécurisé.
-        </p>
+    <div className="w-full space-y-4">
+      <div className="space-y-2.5 text-center">
+        <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-[#836182]/10 text-[#836182] ring-1 ring-[#836182]/20">
+          <KeyRound className="size-4.5" aria-hidden />
+        </div>
+        <div className="space-y-1">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
+            Mot de passe oublié
+          </h1>
+          <p className="text-slate-500 text-xs sm:text-sm">
+            Entrez votre adresse e-mail pour recevoir un lien de réinitialisation sécurisé.
+          </p>
+        </div>
       </div>
 
-      {successMsg && (
-        <div
-          role="status"
-          className="flex items-start gap-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300"
-        >
-          <CheckCircle2 className="size-4 shrink-0 mt-0.5" />
-          <span>{successMsg}</span>
-        </div>
-      )}
+      {successMsg && <AuthAlert variant="success" message={successMsg} />}
+      {serverError && <AuthAlert variant="error" message={serverError} />}
 
-      {serverError && (
-        <div
-          role="alert"
-          className="flex items-start gap-2.5 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-300"
-        >
-          <AlertCircle className="size-4 shrink-0 mt-0.5" />
-          <span>{serverError}</span>
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
-        <div className="space-y-1.5">
-          <Label htmlFor="forgot-email" className="text-white/80 text-sm font-medium">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3" noValidate>
+        <div className="space-y-1">
+          <Label htmlFor="forgot-email" className="text-slate-700 text-xs font-semibold">
             Adresse e-mail
           </Label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/40 pointer-events-none" />
+            <Mail
+              className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none"
+              aria-hidden
+            />
             <Input
               id="forgot-email"
               type="email"
               autoComplete="email"
               placeholder="vous@exemple.com"
+              aria-invalid={!!errors.email}
               {...register("email")}
               className={cn(
-                "h-11 pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/30",
-                "focus-visible:border-[#b9939e] focus-visible:ring-[#b9939e]/20",
-                errors.email && "border-red-400/60 ring-2 ring-red-400/20"
+                AUTH_INPUT_CLASS,
+                "pl-9.5",
+                errors.email && AUTH_FIELD_ERROR_CLASS
               )}
             />
           </div>
-          {errors.email && (
-            <p className="text-xs text-red-400">{errors.email.message}</p>
-          )}
+          <AuthFieldError message={errors.email?.message} />
         </div>
 
         <Button
           type="submit"
           disabled={isSubmitting}
-          size="xl"
-          className="w-full bg-gradient-to-r from-[#836182] to-[#b9939e] hover:from-[#9a7396] hover:to-[#c9a3ae] text-white font-semibold shadow-lg shadow-[#836182]/30"
+          className="w-full h-10 rounded-xl bg-[#836182] hover:bg-[#6f4f6e] text-white font-semibold shadow-md shadow-[#836182]/20 transition-all cursor-pointer"
         >
           {isSubmitting ? (
             <>
-              <Loader2 className="size-4 animate-spin" />
+              <Loader2 className="size-4 animate-spin" aria-hidden />
               Envoi en cours…
             </>
           ) : (
             <>
-              Envoyer le lien de réinitialisation
-              <ArrowRight className="size-4" />
+              <span>Envoyer le lien de réinitialisation</span>
+              <ArrowRight className="size-4" aria-hidden />
             </>
           )}
         </Button>
@@ -114,10 +109,10 @@ export default function ForgotPasswordForm() {
       <div className="text-center">
         <Link
           href="/auth/login"
-          className="inline-flex items-center gap-1.5 text-sm text-[#b9939e] hover:text-white font-medium transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#836182] hover:text-[#684b67] transition-colors"
         >
-          <ArrowLeft className="size-3.5" />
-          Retour à la connexion
+          <ArrowLeft className="size-3.5" aria-hidden />
+          <span>Retour à la connexion</span>
         </Link>
       </div>
     </div>

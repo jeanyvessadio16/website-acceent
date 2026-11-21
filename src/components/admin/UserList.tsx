@@ -41,11 +41,11 @@ export interface UserItem {
   lastname: string;
   email: string;
   role: string;
-  age?: number | null;
-  sexe?: string | null;
-  milieuResidence?: string | null;
-  telephone?: string | null;
-  sdh?: boolean;
+  age: number;
+  sexe: "HOMME" | "FEMME";
+  milieuResidence: "RURAL" | "URBAIN";
+  telephone: string;
+  sdh: boolean;
   createdAt: string;
 }
 
@@ -69,8 +69,8 @@ export function UserList({
   const [editEmail, setEditEmail] = useState("");
   const [editRole, setEditRole] = useState<"USER" | "AUTHOR" | "ADMIN">("USER");
   const [editAgeStr, setEditAgeStr] = useState("");
-  const [editSexe, setEditSexe] = useState<"" | "HOMME" | "FEMME">("");
-  const [editMilieu, setEditMilieu] = useState<"" | "RURAL" | "URBAIN">("");
+  const [editSexe, setEditSexe] = useState<"HOMME" | "FEMME">("HOMME");
+  const [editMilieu, setEditMilieu] = useState<"RURAL" | "URBAIN">("URBAIN");
   const [editTelephone, setEditTelephone] = useState("");
   const [editSdh, setEditSdh] = useState(false);
 
@@ -81,8 +81,8 @@ export function UserList({
   const [createPassword, setCreatePassword] = useState("");
   const [createRole, setCreateRole] = useState<"USER" | "AUTHOR" | "ADMIN">("USER");
   const [createAgeStr, setCreateAgeStr] = useState("");
-  const [createSexe, setCreateSexe] = useState<"" | "HOMME" | "FEMME">("HOMME");
-  const [createMilieu, setCreateMilieu] = useState<"" | "RURAL" | "URBAIN">("URBAIN");
+  const [createSexe, setCreateSexe] = useState<"HOMME" | "FEMME">("HOMME");
+  const [createMilieu, setCreateMilieu] = useState<"RURAL" | "URBAIN">("URBAIN");
   const [createTelephone, setCreateTelephone] = useState("");
   const [createSdh, setCreateSdh] = useState(false);
 
@@ -91,12 +91,11 @@ export function UserList({
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const parseOptionalAge = (raw: string): { ok: true; value: number | null } | { ok: false; error: string } => {
+  const parseRequiredAge = (raw: string): { ok: true; value: number } | { ok: false; error: string } => {
     const trimmed = raw.trim();
-    if (!trimmed) return { ok: true, value: null };
     const n = Number(trimmed);
-    if (Number.isNaN(n) || !Number.isInteger(n)) {
-      return { ok: false, error: "L'âge doit être un nombre entier valide." };
+    if (!trimmed || Number.isNaN(n) || !Number.isInteger(n)) {
+      return { ok: false, error: "Veuillez saisir un âge entier valide (entre 10 et 120 ans)." };
     }
     return { ok: true, value: n };
   };
@@ -107,15 +106,11 @@ export function UserList({
     setEditLastname(user.lastname);
     setEditEmail(user.email);
     setEditRole(user.role as "USER" | "AUTHOR" | "ADMIN");
-    setEditAgeStr(user.age !== null && user.age !== undefined ? String(user.age) : "");
-    setEditSexe(user.sexe === "HOMME" || user.sexe === "FEMME" ? user.sexe : "");
-    setEditMilieu(
-      user.milieuResidence === "RURAL" || user.milieuResidence === "URBAIN"
-        ? user.milieuResidence
-        : ""
-    );
-    setEditTelephone(user.telephone || "");
-    setEditSdh(Boolean(user.sdh));
+    setEditAgeStr(String(user.age));
+    setEditSexe(user.sexe);
+    setEditMilieu(user.milieuResidence);
+    setEditTelephone(user.telephone);
+    setEditSdh(user.sdh);
     setErrorMsg(null);
   };
 
@@ -124,7 +119,7 @@ export function UserList({
     if (!editingUser) return;
     setErrorMsg(null);
 
-    const ageCheck = parseOptionalAge(editAgeStr);
+    const ageCheck = parseRequiredAge(editAgeStr);
     if (!ageCheck.ok) {
       setErrorMsg(ageCheck.error);
       return;
@@ -137,8 +132,8 @@ export function UserList({
       email: editEmail,
       role: editRole,
       age: ageCheck.value,
-      sexe: editSexe || null,
-      milieuResidence: editMilieu || null,
+      sexe: editSexe,
+      milieuResidence: editMilieu,
       telephone: editTelephone.trim(),
       sdh: editSdh,
     };
@@ -164,7 +159,7 @@ export function UserList({
     e.preventDefault();
     setErrorMsg(null);
 
-    const ageCheck = parseOptionalAge(createAgeStr);
+    const ageCheck = parseRequiredAge(createAgeStr);
     if (!ageCheck.ok) {
       setErrorMsg(ageCheck.error);
       return;
@@ -177,8 +172,8 @@ export function UserList({
       password: createPassword,
       role: createRole,
       age: ageCheck.value,
-      sexe: createSexe || null,
-      milieuResidence: createMilieu || null,
+      sexe: createSexe,
+      milieuResidence: createMilieu,
       telephone: createTelephone.trim(),
       sdh: createSdh,
     };
@@ -584,12 +579,13 @@ export function UserList({
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Téléphone</Label>
+                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Téléphone *</Label>
                   <Input
                     type="tel"
                     value={createTelephone}
                     onChange={(e) => setCreateTelephone(e.target.value)}
                     placeholder="+221 77 123 45 67"
+                    required
                     className="h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                   />
                 </div>
@@ -597,7 +593,7 @@ export function UserList({
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Âge</Label>
+                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Âge *</Label>
                   <Input
                     type="number"
                     min={10}
@@ -605,38 +601,40 @@ export function UserList({
                     value={createAgeStr}
                     onChange={(e) => setCreateAgeStr(e.target.value)}
                     placeholder="24"
+                    required
                     className="h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Sexe</Label>
+                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Sexe *</Label>
                   <select
                     value={createSexe}
-                    onChange={(e) => setCreateSexe(e.target.value as "" | "HOMME" | "FEMME")}
+                    onChange={(e) => setCreateSexe(e.target.value as "HOMME" | "FEMME")}
+                    required
                     className="w-full h-10 px-2.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
                   >
-                    <option value="">—</option>
                     <option value="HOMME">Homme</option>
                     <option value="FEMME">Femme</option>
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Milieu</Label>
+                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Milieu *</Label>
                   <select
                     value={createMilieu}
-                    onChange={(e) => setCreateMilieu(e.target.value as "" | "RURAL" | "URBAIN")}
+                    onChange={(e) => setCreateMilieu(e.target.value as "RURAL" | "URBAIN")}
+                    required
                     className="w-full h-10 px-2.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
                   >
-                    <option value="">—</option>
                     <option value="URBAIN">Urbain</option>
                     <option value="RURAL">Rural</option>
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">SDH</Label>
+                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">SDH *</Label>
                   <select
                     value={createSdh ? "OUI" : "NON"}
                     onChange={(e) => setCreateSdh(e.target.value === "OUI")}
+                    required
                     className="w-full h-10 px-2.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
                   >
                     <option value="NON">Non</option>
@@ -754,12 +752,13 @@ export function UserList({
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Téléphone</Label>
+                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Téléphone *</Label>
                   <Input
                     type="tel"
                     value={editTelephone}
                     onChange={(e) => setEditTelephone(e.target.value)}
                     placeholder="+221 77 123 45 67"
+                    required
                     className="h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                   />
                 </div>
@@ -767,7 +766,7 @@ export function UserList({
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Âge</Label>
+                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Âge *</Label>
                   <Input
                     type="number"
                     min={10}
@@ -775,38 +774,40 @@ export function UserList({
                     value={editAgeStr}
                     onChange={(e) => setEditAgeStr(e.target.value)}
                     placeholder="24"
+                    required
                     className="h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Sexe</Label>
+                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Sexe *</Label>
                   <select
                     value={editSexe}
-                    onChange={(e) => setEditSexe(e.target.value as "" | "HOMME" | "FEMME")}
+                    onChange={(e) => setEditSexe(e.target.value as "HOMME" | "FEMME")}
+                    required
                     className="w-full h-10 px-2.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
                   >
-                    <option value="">—</option>
                     <option value="HOMME">Homme</option>
                     <option value="FEMME">Femme</option>
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Milieu</Label>
+                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Milieu *</Label>
                   <select
                     value={editMilieu}
-                    onChange={(e) => setEditMilieu(e.target.value as "" | "RURAL" | "URBAIN")}
+                    onChange={(e) => setEditMilieu(e.target.value as "RURAL" | "URBAIN")}
+                    required
                     className="w-full h-10 px-2.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
                   >
-                    <option value="">—</option>
                     <option value="URBAIN">Urbain</option>
                     <option value="RURAL">Rural</option>
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">SDH</Label>
+                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">SDH *</Label>
                   <select
                     value={editSdh ? "OUI" : "NON"}
                     onChange={(e) => setEditSdh(e.target.value === "OUI")}
+                    required
                     className="w-full h-10 px-2.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
                   >
                     <option value="NON">Non</option>

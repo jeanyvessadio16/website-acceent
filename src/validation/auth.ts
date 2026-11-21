@@ -64,6 +64,21 @@ export const registerSchema = z.object({
     error: () => "Veuillez préciser si vous êtes en situation de handicap (Oui ou Non).",
   }),
 
+  acceptCgu: z
+    .boolean({
+      error: () =>
+        "Vous devez accepter les Conditions Générales d'Utilisation pour vous inscrire.",
+    })
+    .superRefine((val, ctx) => {
+      if (val !== true) {
+        ctx.addIssue({
+          code: "custom",
+          message:
+            "Vous devez accepter les Conditions Générales d'Utilisation pour vous inscrire.",
+        });
+      }
+    }),
+
   password: z
     .string({
       error: (issue) =>
@@ -109,7 +124,8 @@ export const resetPasswordSchema = z
       .regex(
         RESET_TOKEN_REGEX,
         "Le jeton de réinitialisation est invalide ou mal formé."
-      ),
+      )
+      .optional(),
     password: z
       .string({
         error: (issue) =>

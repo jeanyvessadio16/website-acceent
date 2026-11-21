@@ -46,6 +46,7 @@ export type UserMinAggregateOutputType = {
   milieuResidence: $Enums.MilieuResidence | null
   telephone: string | null
   sdh: boolean | null
+  emailVerifiedAt: Date | null
   newsletterOptIn: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -63,6 +64,7 @@ export type UserMaxAggregateOutputType = {
   milieuResidence: $Enums.MilieuResidence | null
   telephone: string | null
   sdh: boolean | null
+  emailVerifiedAt: Date | null
   newsletterOptIn: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -80,6 +82,7 @@ export type UserCountAggregateOutputType = {
   milieuResidence: number
   telephone: number
   sdh: number
+  emailVerifiedAt: number
   newsletterOptIn: number
   createdAt: number
   updatedAt: number
@@ -107,6 +110,7 @@ export type UserMinAggregateInputType = {
   milieuResidence?: true
   telephone?: true
   sdh?: true
+  emailVerifiedAt?: true
   newsletterOptIn?: true
   createdAt?: true
   updatedAt?: true
@@ -124,6 +128,7 @@ export type UserMaxAggregateInputType = {
   milieuResidence?: true
   telephone?: true
   sdh?: true
+  emailVerifiedAt?: true
   newsletterOptIn?: true
   createdAt?: true
   updatedAt?: true
@@ -141,6 +146,7 @@ export type UserCountAggregateInputType = {
   milieuResidence?: true
   telephone?: true
   sdh?: true
+  emailVerifiedAt?: true
   newsletterOptIn?: true
   createdAt?: true
   updatedAt?: true
@@ -238,13 +244,14 @@ export type UserGroupByOutputType = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password: string | null
   role: $Enums.Role
-  age: number | null
-  sexe: $Enums.Sexe | null
-  milieuResidence: $Enums.MilieuResidence | null
-  telephone: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh: boolean
+  emailVerifiedAt: Date | null
   newsletterOptIn: boolean
   createdAt: Date
   updatedAt: Date
@@ -278,13 +285,14 @@ export type UserWhereInput = {
   firstname?: Prisma.StringFilter<"User"> | string
   lastname?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
-  password?: Prisma.StringFilter<"User"> | string
+  password?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
-  age?: Prisma.IntNullableFilter<"User"> | number | null
-  sexe?: Prisma.EnumSexeNullableFilter<"User"> | $Enums.Sexe | null
-  milieuResidence?: Prisma.EnumMilieuResidenceNullableFilter<"User"> | $Enums.MilieuResidence | null
-  telephone?: Prisma.StringNullableFilter<"User"> | string | null
+  age?: Prisma.IntFilter<"User"> | number
+  sexe?: Prisma.EnumSexeFilter<"User"> | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFilter<"User"> | $Enums.MilieuResidence
+  telephone?: Prisma.StringFilter<"User"> | string
   sdh?: Prisma.BoolFilter<"User"> | boolean
+  emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   newsletterOptIn?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -292,6 +300,7 @@ export type UserWhereInput = {
   applications?: Prisma.ProgramApplicationListRelationFilter
   eventRegistrations?: Prisma.EventRegistrationListRelationFilter
   passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
+  emailVerificationTokens?: Prisma.EmailVerificationTokenListRelationFilter
   createdResources?: Prisma.ResourceListRelationFilter
   createdEvents?: Prisma.EventListRelationFilter
   newsletterCampaigns?: Prisma.NewsletterCampaignListRelationFilter
@@ -302,13 +311,14 @@ export type UserOrderByWithRelationInput = {
   firstname?: Prisma.SortOrder
   lastname?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
+  password?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
-  age?: Prisma.SortOrderInput | Prisma.SortOrder
-  sexe?: Prisma.SortOrderInput | Prisma.SortOrder
-  milieuResidence?: Prisma.SortOrderInput | Prisma.SortOrder
-  telephone?: Prisma.SortOrderInput | Prisma.SortOrder
+  age?: Prisma.SortOrder
+  sexe?: Prisma.SortOrder
+  milieuResidence?: Prisma.SortOrder
+  telephone?: Prisma.SortOrder
   sdh?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   newsletterOptIn?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -316,6 +326,7 @@ export type UserOrderByWithRelationInput = {
   applications?: Prisma.ProgramApplicationOrderByRelationAggregateInput
   eventRegistrations?: Prisma.EventRegistrationOrderByRelationAggregateInput
   passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenOrderByRelationAggregateInput
   createdResources?: Prisma.ResourceOrderByRelationAggregateInput
   createdEvents?: Prisma.EventOrderByRelationAggregateInput
   newsletterCampaigns?: Prisma.NewsletterCampaignOrderByRelationAggregateInput
@@ -324,18 +335,19 @@ export type UserOrderByWithRelationInput = {
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
+  telephone?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   firstname?: Prisma.StringFilter<"User"> | string
   lastname?: Prisma.StringFilter<"User"> | string
-  password?: Prisma.StringFilter<"User"> | string
+  password?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
-  age?: Prisma.IntNullableFilter<"User"> | number | null
-  sexe?: Prisma.EnumSexeNullableFilter<"User"> | $Enums.Sexe | null
-  milieuResidence?: Prisma.EnumMilieuResidenceNullableFilter<"User"> | $Enums.MilieuResidence | null
-  telephone?: Prisma.StringNullableFilter<"User"> | string | null
+  age?: Prisma.IntFilter<"User"> | number
+  sexe?: Prisma.EnumSexeFilter<"User"> | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFilter<"User"> | $Enums.MilieuResidence
   sdh?: Prisma.BoolFilter<"User"> | boolean
+  emailVerifiedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   newsletterOptIn?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -343,23 +355,25 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   applications?: Prisma.ProgramApplicationListRelationFilter
   eventRegistrations?: Prisma.EventRegistrationListRelationFilter
   passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
+  emailVerificationTokens?: Prisma.EmailVerificationTokenListRelationFilter
   createdResources?: Prisma.ResourceListRelationFilter
   createdEvents?: Prisma.EventListRelationFilter
   newsletterCampaigns?: Prisma.NewsletterCampaignListRelationFilter
-}, "id" | "email">
+}, "id" | "email" | "telephone">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   firstname?: Prisma.SortOrder
   lastname?: Prisma.SortOrder
   email?: Prisma.SortOrder
-  password?: Prisma.SortOrder
+  password?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrder
-  age?: Prisma.SortOrderInput | Prisma.SortOrder
-  sexe?: Prisma.SortOrderInput | Prisma.SortOrder
-  milieuResidence?: Prisma.SortOrderInput | Prisma.SortOrder
-  telephone?: Prisma.SortOrderInput | Prisma.SortOrder
+  age?: Prisma.SortOrder
+  sexe?: Prisma.SortOrder
+  milieuResidence?: Prisma.SortOrder
+  telephone?: Prisma.SortOrder
   sdh?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   newsletterOptIn?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -378,13 +392,14 @@ export type UserScalarWhereWithAggregatesInput = {
   firstname?: Prisma.StringWithAggregatesFilter<"User"> | string
   lastname?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
-  password?: Prisma.StringWithAggregatesFilter<"User"> | string
+  password?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
-  age?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
-  sexe?: Prisma.EnumSexeNullableWithAggregatesFilter<"User"> | $Enums.Sexe | null
-  milieuResidence?: Prisma.EnumMilieuResidenceNullableWithAggregatesFilter<"User"> | $Enums.MilieuResidence | null
-  telephone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  age?: Prisma.IntWithAggregatesFilter<"User"> | number
+  sexe?: Prisma.EnumSexeWithAggregatesFilter<"User"> | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceWithAggregatesFilter<"User"> | $Enums.MilieuResidence
+  telephone?: Prisma.StringWithAggregatesFilter<"User"> | string
   sdh?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  emailVerifiedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   newsletterOptIn?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -395,13 +410,14 @@ export type UserCreateInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -409,6 +425,7 @@ export type UserCreateInput = {
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
@@ -419,13 +436,14 @@ export type UserUncheckedCreateInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -433,6 +451,7 @@ export type UserUncheckedCreateInput = {
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
@@ -443,13 +462,14 @@ export type UserUpdateInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -457,6 +477,7 @@ export type UserUpdateInput = {
   applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
@@ -467,13 +488,14 @@ export type UserUncheckedUpdateInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -481,6 +503,7 @@ export type UserUncheckedUpdateInput = {
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -491,13 +514,14 @@ export type UserCreateManyInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -508,13 +532,14 @@ export type UserUpdateManyMutationInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -525,13 +550,14 @@ export type UserUncheckedUpdateManyInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -549,6 +575,7 @@ export type UserCountOrderByAggregateInput = {
   milieuResidence?: Prisma.SortOrder
   telephone?: Prisma.SortOrder
   sdh?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrder
   newsletterOptIn?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -570,6 +597,7 @@ export type UserMaxOrderByAggregateInput = {
   milieuResidence?: Prisma.SortOrder
   telephone?: Prisma.SortOrder
   sdh?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrder
   newsletterOptIn?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -587,6 +615,7 @@ export type UserMinOrderByAggregateInput = {
   milieuResidence?: Prisma.SortOrder
   telephone?: Prisma.SortOrder
   sdh?: Prisma.SortOrder
+  emailVerifiedAt?: Prisma.SortOrder
   newsletterOptIn?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -605,32 +634,36 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
+export type IntFieldUpdateOperationsInput = {
+  set?: number
   increment?: number
   decrement?: number
   multiply?: number
   divide?: number
 }
 
-export type NullableEnumSexeFieldUpdateOperationsInput = {
-  set?: $Enums.Sexe | null
+export type EnumSexeFieldUpdateOperationsInput = {
+  set?: $Enums.Sexe
 }
 
-export type NullableEnumMilieuResidenceFieldUpdateOperationsInput = {
-  set?: $Enums.MilieuResidence | null
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type EnumMilieuResidenceFieldUpdateOperationsInput = {
+  set?: $Enums.MilieuResidence
 }
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -663,6 +696,20 @@ export type UserUpdateOneRequiredWithoutPasswordResetTokensNestedInput = {
   upsert?: Prisma.UserUpsertWithoutPasswordResetTokensInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, Prisma.UserUpdateWithoutPasswordResetTokensInput>, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type UserCreateNestedOneWithoutEmailVerificationTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEmailVerificationTokensInput, Prisma.UserUncheckedCreateWithoutEmailVerificationTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmailVerificationTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutEmailVerificationTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEmailVerificationTokensInput, Prisma.UserUncheckedCreateWithoutEmailVerificationTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEmailVerificationTokensInput
+  upsert?: Prisma.UserUpsertWithoutEmailVerificationTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEmailVerificationTokensInput, Prisma.UserUpdateWithoutEmailVerificationTokensInput>, Prisma.UserUncheckedUpdateWithoutEmailVerificationTokensInput>
 }
 
 export type UserCreateNestedOneWithoutApplicationsInput = {
@@ -740,19 +787,21 @@ export type UserCreateWithoutPostsInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
@@ -763,19 +812,21 @@ export type UserUncheckedCreateWithoutPostsInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
@@ -802,19 +853,21 @@ export type UserUpdateWithoutPostsInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
@@ -825,19 +878,21 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -848,19 +903,21 @@ export type UserCreateWithoutPasswordResetTokensInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
@@ -871,19 +928,21 @@ export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
@@ -910,19 +969,21 @@ export type UserUpdateWithoutPasswordResetTokensInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
@@ -933,19 +994,137 @@ export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutEmailVerificationTokensInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password?: string | null
+  role?: $Enums.Role
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
+  sdh?: boolean
+  emailVerifiedAt?: Date | string | null
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutEmailVerificationTokensInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password?: string | null
+  role?: $Enums.Role
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
+  sdh?: boolean
+  emailVerifiedAt?: Date | string | null
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutEmailVerificationTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutEmailVerificationTokensInput, Prisma.UserUncheckedCreateWithoutEmailVerificationTokensInput>
+}
+
+export type UserUpsertWithoutEmailVerificationTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutEmailVerificationTokensInput, Prisma.UserUncheckedUpdateWithoutEmailVerificationTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutEmailVerificationTokensInput, Prisma.UserUncheckedCreateWithoutEmailVerificationTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutEmailVerificationTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutEmailVerificationTokensInput, Prisma.UserUncheckedUpdateWithoutEmailVerificationTokensInput>
+}
+
+export type UserUpdateWithoutEmailVerificationTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutEmailVerificationTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -956,19 +1135,21 @@ export type UserCreateWithoutApplicationsInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
@@ -979,19 +1160,21 @@ export type UserUncheckedCreateWithoutApplicationsInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1018,19 +1201,21 @@ export type UserUpdateWithoutApplicationsInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
@@ -1041,19 +1226,21 @@ export type UserUncheckedUpdateWithoutApplicationsInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1064,13 +1251,14 @@ export type UserCreateWithoutCreatedEventsInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1078,6 +1266,7 @@ export type UserCreateWithoutCreatedEventsInput = {
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
 }
@@ -1087,13 +1276,14 @@ export type UserUncheckedCreateWithoutCreatedEventsInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1101,6 +1291,7 @@ export type UserUncheckedCreateWithoutCreatedEventsInput = {
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
 }
@@ -1126,13 +1317,14 @@ export type UserUpdateWithoutCreatedEventsInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1140,6 +1332,7 @@ export type UserUpdateWithoutCreatedEventsInput = {
   applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
 }
@@ -1149,13 +1342,14 @@ export type UserUncheckedUpdateWithoutCreatedEventsInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1163,6 +1357,7 @@ export type UserUncheckedUpdateWithoutCreatedEventsInput = {
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
 }
@@ -1172,19 +1367,21 @@ export type UserCreateWithoutEventRegistrationsInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
@@ -1195,19 +1392,21 @@ export type UserUncheckedCreateWithoutEventRegistrationsInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1234,19 +1433,21 @@ export type UserUpdateWithoutEventRegistrationsInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
@@ -1257,19 +1458,21 @@ export type UserUncheckedUpdateWithoutEventRegistrationsInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1280,13 +1483,14 @@ export type UserCreateWithoutCreatedResourcesInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1294,6 +1498,7 @@ export type UserCreateWithoutCreatedResourcesInput = {
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
 }
@@ -1303,13 +1508,14 @@ export type UserUncheckedCreateWithoutCreatedResourcesInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1317,6 +1523,7 @@ export type UserUncheckedCreateWithoutCreatedResourcesInput = {
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
 }
@@ -1342,13 +1549,14 @@ export type UserUpdateWithoutCreatedResourcesInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1356,6 +1564,7 @@ export type UserUpdateWithoutCreatedResourcesInput = {
   applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
 }
@@ -1365,13 +1574,14 @@ export type UserUncheckedUpdateWithoutCreatedResourcesInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1379,6 +1589,7 @@ export type UserUncheckedUpdateWithoutCreatedResourcesInput = {
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
   newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
 }
@@ -1388,13 +1599,14 @@ export type UserCreateWithoutNewsletterCampaignsInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1402,6 +1614,7 @@ export type UserCreateWithoutNewsletterCampaignsInput = {
   applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
   createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
 }
@@ -1411,13 +1624,14 @@ export type UserUncheckedCreateWithoutNewsletterCampaignsInput = {
   firstname: string
   lastname: string
   email: string
-  password: string
+  password?: string | null
   role?: $Enums.Role
-  age?: number | null
-  sexe?: $Enums.Sexe | null
-  milieuResidence?: $Enums.MilieuResidence | null
-  telephone?: string | null
+  age: number
+  sexe: $Enums.Sexe
+  milieuResidence: $Enums.MilieuResidence
+  telephone: string
   sdh?: boolean
+  emailVerifiedAt?: Date | string | null
   newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1425,6 +1639,7 @@ export type UserUncheckedCreateWithoutNewsletterCampaignsInput = {
   applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedCreateNestedManyWithoutUserInput
   createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
   createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
 }
@@ -1450,13 +1665,14 @@ export type UserUpdateWithoutNewsletterCampaignsInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1464,6 +1680,7 @@ export type UserUpdateWithoutNewsletterCampaignsInput = {
   applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
   createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
 }
@@ -1473,13 +1690,14 @@ export type UserUncheckedUpdateWithoutNewsletterCampaignsInput = {
   firstname?: Prisma.StringFieldUpdateOperationsInput | string
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
-  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
-  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.IntFieldUpdateOperationsInput | number
+  sexe?: Prisma.EnumSexeFieldUpdateOperationsInput | $Enums.Sexe
+  milieuResidence?: Prisma.EnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence
+  telephone?: Prisma.StringFieldUpdateOperationsInput | string
   sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  emailVerifiedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1487,6 +1705,7 @@ export type UserUncheckedUpdateWithoutNewsletterCampaignsInput = {
   applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
   eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
   passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  emailVerificationTokens?: Prisma.EmailVerificationTokenUncheckedUpdateManyWithoutUserNestedInput
   createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
   createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
 }
@@ -1501,6 +1720,7 @@ export type UserCountOutputType = {
   applications: number
   eventRegistrations: number
   passwordResetTokens: number
+  emailVerificationTokens: number
   createdResources: number
   createdEvents: number
   newsletterCampaigns: number
@@ -1511,6 +1731,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   applications?: boolean | UserCountOutputTypeCountApplicationsArgs
   eventRegistrations?: boolean | UserCountOutputTypeCountEventRegistrationsArgs
   passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
+  emailVerificationTokens?: boolean | UserCountOutputTypeCountEmailVerificationTokensArgs
   createdResources?: boolean | UserCountOutputTypeCountCreatedResourcesArgs
   createdEvents?: boolean | UserCountOutputTypeCountCreatedEventsArgs
   newsletterCampaigns?: boolean | UserCountOutputTypeCountNewsletterCampaignsArgs
@@ -1557,6 +1778,13 @@ export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runt
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountEmailVerificationTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EmailVerificationTokenWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountCreatedResourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ResourceWhereInput
 }
@@ -1588,6 +1816,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   milieuResidence?: boolean
   telephone?: boolean
   sdh?: boolean
+  emailVerifiedAt?: boolean
   newsletterOptIn?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1595,6 +1824,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
   eventRegistrations?: boolean | Prisma.User$eventRegistrationsArgs<ExtArgs>
   passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
+  emailVerificationTokens?: boolean | Prisma.User$emailVerificationTokensArgs<ExtArgs>
   createdResources?: boolean | Prisma.User$createdResourcesArgs<ExtArgs>
   createdEvents?: boolean | Prisma.User$createdEventsArgs<ExtArgs>
   newsletterCampaigns?: boolean | Prisma.User$newsletterCampaignsArgs<ExtArgs>
@@ -1613,6 +1843,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   milieuResidence?: boolean
   telephone?: boolean
   sdh?: boolean
+  emailVerifiedAt?: boolean
   newsletterOptIn?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1630,6 +1861,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   milieuResidence?: boolean
   telephone?: boolean
   sdh?: boolean
+  emailVerifiedAt?: boolean
   newsletterOptIn?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1647,17 +1879,19 @@ export type UserSelectScalar = {
   milieuResidence?: boolean
   telephone?: boolean
   sdh?: boolean
+  emailVerifiedAt?: boolean
   newsletterOptIn?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstname" | "lastname" | "email" | "password" | "role" | "age" | "sexe" | "milieuResidence" | "telephone" | "sdh" | "newsletterOptIn" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstname" | "lastname" | "email" | "password" | "role" | "age" | "sexe" | "milieuResidence" | "telephone" | "sdh" | "emailVerifiedAt" | "newsletterOptIn" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   posts?: boolean | Prisma.User$postsArgs<ExtArgs>
   applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
   eventRegistrations?: boolean | Prisma.User$eventRegistrationsArgs<ExtArgs>
   passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
+  emailVerificationTokens?: boolean | Prisma.User$emailVerificationTokensArgs<ExtArgs>
   createdResources?: boolean | Prisma.User$createdResourcesArgs<ExtArgs>
   createdEvents?: boolean | Prisma.User$createdEventsArgs<ExtArgs>
   newsletterCampaigns?: boolean | Prisma.User$newsletterCampaignsArgs<ExtArgs>
@@ -1673,6 +1907,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     applications: Prisma.$ProgramApplicationPayload<ExtArgs>[]
     eventRegistrations: Prisma.$EventRegistrationPayload<ExtArgs>[]
     passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
+    emailVerificationTokens: Prisma.$EmailVerificationTokenPayload<ExtArgs>[]
     createdResources: Prisma.$ResourcePayload<ExtArgs>[]
     createdEvents: Prisma.$EventPayload<ExtArgs>[]
     newsletterCampaigns: Prisma.$NewsletterCampaignPayload<ExtArgs>[]
@@ -1682,13 +1917,14 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     firstname: string
     lastname: string
     email: string
-    password: string
+    password: string | null
     role: $Enums.Role
-    age: number | null
-    sexe: $Enums.Sexe | null
-    milieuResidence: $Enums.MilieuResidence | null
-    telephone: string | null
+    age: number
+    sexe: $Enums.Sexe
+    milieuResidence: $Enums.MilieuResidence
+    telephone: string
     sdh: boolean
+    emailVerifiedAt: Date | null
     newsletterOptIn: boolean
     createdAt: Date
     updatedAt: Date
@@ -2090,6 +2326,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   applications<T extends Prisma.User$applicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   eventRegistrations<T extends Prisma.User$eventRegistrationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$eventRegistrationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   passwordResetTokens<T extends Prisma.User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  emailVerificationTokens<T extends Prisma.User$emailVerificationTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$emailVerificationTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmailVerificationTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdResources<T extends Prisma.User$createdResourcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdResourcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdEvents<T extends Prisma.User$createdEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   newsletterCampaigns<T extends Prisma.User$newsletterCampaignsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$newsletterCampaignsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NewsletterCampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2133,6 +2370,7 @@ export interface UserFieldRefs {
   readonly milieuResidence: Prisma.FieldRef<"User", 'MilieuResidence'>
   readonly telephone: Prisma.FieldRef<"User", 'String'>
   readonly sdh: Prisma.FieldRef<"User", 'Boolean'>
+  readonly emailVerifiedAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly newsletterOptIn: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
@@ -2622,6 +2860,30 @@ export type User$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.PasswordResetTokenScalarFieldEnum | Prisma.PasswordResetTokenScalarFieldEnum[]
+}
+
+/**
+ * User.emailVerificationTokens
+ */
+export type User$emailVerificationTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EmailVerificationToken
+   */
+  select?: Prisma.EmailVerificationTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EmailVerificationToken
+   */
+  omit?: Prisma.EmailVerificationTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EmailVerificationTokenInclude<ExtArgs> | null
+  where?: Prisma.EmailVerificationTokenWhereInput
+  orderBy?: Prisma.EmailVerificationTokenOrderByWithRelationInput | Prisma.EmailVerificationTokenOrderByWithRelationInput[]
+  cursor?: Prisma.EmailVerificationTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EmailVerificationTokenScalarFieldEnum | Prisma.EmailVerificationTokenScalarFieldEnum[]
 }
 
 /**

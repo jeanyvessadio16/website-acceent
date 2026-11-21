@@ -136,14 +136,9 @@ export async function GET(request: NextRequest) {
         email: u.email,
         role: u.role,
         age: u.age,
-        sexe: u.sexe === "HOMME" ? "Homme" : u.sexe === "FEMME" ? "Femme" : "",
-        milieuResidence:
-          u.milieuResidence === "RURAL"
-            ? "Rural"
-            : u.milieuResidence === "URBAIN"
-            ? "Urbain"
-            : "",
-        telephone: u.telephone || "",
+        sexe: u.sexe === "HOMME" ? "Homme" : "Femme",
+        milieuResidence: u.milieuResidence === "RURAL" ? "Rural" : "Urbain",
+        telephone: u.telephone,
         sdh: u.sdh,
         newsletterOptIn: u.newsletterOptIn,
         date: formatDateFr(u.createdAt, {
@@ -324,14 +319,9 @@ export async function GET(request: NextRequest) {
       email: u.email,
       role: u.role,
       age: u.age,
-      sexe: u.sexe === "HOMME" ? "Homme" : u.sexe === "FEMME" ? "Femme" : "",
-      milieuResidence:
-        u.milieuResidence === "RURAL"
-          ? "Rural"
-          : u.milieuResidence === "URBAIN"
-          ? "Urbain"
-          : "",
-      telephone: u.telephone || "",
+      sexe: u.sexe === "HOMME" ? "Homme" : "Femme",
+      milieuResidence: u.milieuResidence === "RURAL" ? "Rural" : "Urbain",
+      telephone: u.telephone,
       sdh: u.sdh,
       newsletterOptIn: u.newsletterOptIn,
       date: formatDateFr(u.createdAt, {

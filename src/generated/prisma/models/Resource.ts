@@ -583,14 +583,6 @@ export type EnumResourceTypeFieldUpdateOperationsInput = {
   set?: $Enums.ResourceType
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type ResourceCreateWithoutCreatedByInput = {
   id?: string
   title: string

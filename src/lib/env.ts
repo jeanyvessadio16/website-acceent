@@ -4,9 +4,7 @@ const serverEnvSchema = z.object({
   DATABASE_URL: z.string().min(1, "DATABASE_URL manquante."),
   DIRECT_URL: z.string().optional(),
   PG_POOL_MAX: z.coerce.number().int().min(1).max(50).default(10),
-  SESSION_SECRET: z
-    .string()
-    .min(16, "SESSION_SECRET doit contenir au moins 16 caractères."),
+  SESSION_SECRET: z.string().optional(),
   WEB3FORMS_ACCESS_KEY: z.string().optional(),
   NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY: z.string().optional(),
   RESEND_API_KEY: z.string().optional(),
@@ -15,6 +13,7 @@ const serverEnvSchema = z.object({
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z
     .string()
     .min(1, "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY manquante."),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   NEXT_PUBLIC_SUPABASE_DOCS_BUCKET: z.string().default("documents"),
   NEXT_PUBLIC_SITE_URL: z.string().url().default("https://acceent.org"),
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),

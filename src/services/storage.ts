@@ -1,5 +1,3 @@
-import { supabase } from "@/lib/supabase";
-
 const ALLOWED_IMAGE_MIME_TYPES = [
   "image/jpeg",
   "image/png",
@@ -21,20 +19,33 @@ const ALLOWED_DOC_MIME_TYPES = [
 const ALLOWED_DOC_EXTENSIONS = ["pdf", "doc", "docx", "ppt", "pptx"];
 const MAX_DOC_SIZE = 15 * 1024 * 1024; // 15 Mo
 
-function buildCleanPath(folder: string, fileName: string, ext: string): string {
-  const safeFolder = folder.replace(/[^a-z0-9-_]/gi, "") || "uploads";
-  const baseName = fileName.includes(".")
-    ? fileName.substring(0, fileName.lastIndexOf("."))
-    : fileName;
-  const cleanFileName =
-    baseName
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "-")
-      .replace(/-+/g, "-")
-      .slice(0, 40) || "fichier";
+async function uploadToServerApi(
+  file: File,
+  kind: "image" | "document",
+  folder: string
+): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("kind", kind);
+  formData.append("folder", folder);
 
-  const uniqueId = `${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
-  return `${safeFolder}/${cleanFileName}-${uniqueId}.${ext}`;
+  const response = await fetch("/api/upload", {
+    method: "POST",
+    body: formData,
+  });
+
+  const payload = (await response.json().catch(() => null)) as {
+    url?: string;
+    error?: string;
+  } | null;
+
+  if (!response.ok || !payload?.url) {
+    throw new Error(
+      payload?.error || "Échec du téléversement du fichier. Veuillez réessayer."
+    );
+  }
+
+  return payload.url;
 }
 
 export async function uploadImage(file: File, folder = "articles"): Promise<string> {
@@ -59,29 +70,7 @@ export async function uploadImage(file: File, folder = "articles"): Promise<stri
     throw new Error("Extension de fichier non autorisée.");
   }
 
-  const filePath = buildCleanPath(folder, file.name, fileExt);
-
-  const { error } = await supabase.storage
-    .from("news-images")
-    .upload(filePath, file, {
-      cacheControl: "3600",
-      upsert: false,
-    });
-
-  if (error) {
-    console.error("[Supabase Image Upload Error]", error);
-    throw new Error(`Échec du téléversement Supabase : ${error.message}`);
-  }
-
-  const { data: publicUrlData } = supabase.storage
-    .from("news-images")
-    .getPublicUrl(filePath);
-
-  if (!publicUrlData?.publicUrl) {
-    throw new Error("L'URL publique n'a pas pu être générée.");
-  }
-
-  return publicUrlData.publicUrl;
+  return uploadToServerApi(file, "image", folder);
 }
 
 export async function uploadPostImage(file: File): Promise<string> {
@@ -112,46 +101,5 @@ export async function uploadDocument(file: File, folder = "resources"): Promise<
     throw new Error("Le document dépasse la taille maximale autorisée (15 Mo).");
   }
 
-  const filePath = buildCleanPath(folder, file.name, fileExt);
-  const preferredBucket = process.env.NEXT_PUBLIC_SUPABASE_DOCS_BUCKET || "documents";
-
-  let usedBucket = preferredBucket;
-  let uploadResult = await supabase.storage
-    .from(preferredBucket)
-    .upload(filePath, file, {
-      cacheControl: "3600",
-      upsert: false,
-    });
-
-  // Fallback vers le bucket news-images si le bucket "documents" n'existe pas encore
-  if (
-    uploadResult.error &&
-    /bucket.*not found|not found/i.test(uploadResult.error.message) &&
-    preferredBucket !== "news-images"
-  ) {
-    usedBucket = "news-images";
-    uploadResult = await supabase.storage
-      .from("news-images")
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-  }
-
-  if (uploadResult.error) {
-    console.error("[Supabase Document Upload Error]", uploadResult.error);
-    throw new Error(
-      `Échec du téléversement du document : ${uploadResult.error.message}`
-    );
-  }
-
-  const { data: publicUrlData } = supabase.storage
-    .from(usedBucket)
-    .getPublicUrl(filePath);
-
-  if (!publicUrlData?.publicUrl) {
-    throw new Error("L'URL publique du document n'a pas pu être générée.");
-  }
-
-  return publicUrlData.publicUrl;
+  return uploadToServerApi(file, "document", folder);
 }

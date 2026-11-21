@@ -12,3 +12,4 @@ export {
   validateResetTokenAction,
   resetPasswordAction,
 } from "./password-reset";
+export { resendVerificationEmailAction } from "./verify-email";

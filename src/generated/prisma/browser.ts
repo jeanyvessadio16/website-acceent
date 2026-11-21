@@ -33,6 +33,11 @@ export type Post = Prisma.PostModel
  */
 export type PasswordResetToken = Prisma.PasswordResetTokenModel
 /**
+ * Model EmailVerificationToken
+ * 
+ */
+export type EmailVerificationToken = Prisma.EmailVerificationTokenModel
+/**
  * Model ProgramApplication
  * 
  */

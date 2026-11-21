@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { ProfileForm } from "@/components/admin/ProfileForm";
 import { Shield, Database, Globe, UserCheck, ArrowUpRight } from "lucide-react";
@@ -12,6 +13,9 @@ export const metadata: Metadata = {
 
 export default async function ParametresPage() {
   const session = await getSession();
+  if (!session || (session.role !== "ADMIN" && session.role !== "AUTHOR")) {
+    redirect("/auth/login");
+  }
 
   let dbUser = null;
   if (session?.userId) {
@@ -50,10 +54,10 @@ export default async function ParametresPage() {
     lastname: session?.lastname || "",
     email: session?.email || "",
     role: session?.role || "USER",
-    age: null,
-    sexe: null,
-    milieuResidence: null,
-    telephone: null,
+    age: 25,
+    sexe: "HOMME" as const,
+    milieuResidence: "URBAIN" as const,
+    telephone: "",
     sdh: false,
   };
 

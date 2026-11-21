@@ -1,15 +1,16 @@
 "use server";
 
-import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
 import { loginSchema, type LoginInput } from "@/validation/auth";
 import prisma from "@/lib/prisma";
-import { createSession } from "@/lib/session";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { checkRateLimit, getClientIp, logger, recordAuditLog } from "@/lib/core";
 
 export interface LoginActionResult {
   success: boolean;
   message: string;
+  code?: "EMAIL_NOT_VERIFIED";
+  unverifiedEmail?: string;
   fieldErrors?: Partial<Record<keyof LoginInput, string>>;
 }
 
@@ -57,41 +58,97 @@ export async function loginAction(
   let userRole: string = "USER";
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { email },
-      select: {
-        id: true,
-        email: true,
-        password: true,
-        firstname: true,
-        lastname: true,
-        role: true,
-      },
-    });
+    const supabase = await createSupabaseServerClient();
+    const { data: authData, error: authError } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (!user) {
-      await bcrypt.hash(password, 12);
-      return { success: false, message: INVALID_CREDENTIALS_MSG };
-    }
+    if (authError) {
+      const isUnconfirmed =
+        authError.code === "email_not_confirmed" ||
+        /email not confirmed/i.test(authError.message);
 
-    const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) {
-      logger.warn("auth.login", "Échec d'authentification (mot de passe incorrect)", {
+      if (isUnconfirmed) {
+        logger.warn("auth.login", "Connexion bloquée : e-mail non confirmé", {
+          ip,
+          email,
+        });
+        return {
+          success: false,
+          code: "EMAIL_NOT_VERIFIED",
+          unverifiedEmail: email,
+          message:
+            "Votre adresse e-mail n'est pas encore confirmée. Vérifiez votre boîte de réception ou demandez un nouveau lien ci-dessous.",
+        };
+      }
+
+      logger.warn("auth.login", "Échec d'authentification Supabase", {
         ip,
-        userId: user.id,
+        code: authError.code,
       });
       return { success: false, message: INVALID_CREDENTIALS_MSG };
     }
 
-    userRole = user.role;
+    const authUser = authData.user;
+    if (!authUser) {
+      return { success: false, message: INVALID_CREDENTIALS_MSG };
+    }
 
-    await createSession({
-      userId: user.id,
-      email: user.email,
-      role: user.role,
-      firstname: user.firstname,
-      lastname: user.lastname,
+    if (!authUser.email_confirmed_at) {
+      await supabase.auth.signOut();
+      return {
+        success: false,
+        code: "EMAIL_NOT_VERIFIED",
+        unverifiedEmail: email,
+        message:
+          "Votre adresse e-mail n'est pas encore confirmée. Vérifiez votre boîte de réception ou demandez un nouveau lien ci-dessous.",
+      };
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: authUser.id },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        emailVerifiedAt: true,
+      },
     });
+
+    if (!user) {
+      await supabase.auth.signOut();
+      return { success: false, message: INVALID_CREDENTIALS_MSG };
+    }
+
+    const confirmedEmail = authUser.email?.trim().toLowerCase();
+    const shouldSyncEmail = Boolean(
+      confirmedEmail && confirmedEmail !== user.email.toLowerCase()
+    );
+
+    if (!user.emailVerifiedAt || shouldSyncEmail) {
+      try {
+        const updated = await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            ...(!user.emailVerifiedAt
+              ? { emailVerifiedAt: new Date(authUser.email_confirmed_at) }
+              : {}),
+            ...(shouldSyncEmail && confirmedEmail ? { email: confirmedEmail } : {}),
+          },
+          select: { email: true },
+        });
+        user.email = updated.email;
+      } catch (syncError) {
+        logger.warn("auth.login", "Impossible de synchroniser l'e-mail confirmé", {
+          userId: user.id,
+          error: syncError instanceof Error ? syncError.message : String(syncError),
+        });
+      }
+    }
+
+    userRole = user.role;
 
     await recordAuditLog({
       actorId: user.id,
@@ -112,7 +169,7 @@ export async function loginAction(
   const defaultTarget =
     userRole === "ADMIN" || userRole === "AUTHOR" ? "/admin" : "/dashboard";
   const safeRedirect =
-    callbackUrl && callbackUrl.startsWith("/") && !callbackUrl.startsWith("//")
+    callbackUrl && callbackUrl.startsWith("/") && !/^\/[\\/]/.test(callbackUrl)
       ? callbackUrl
       : defaultTarget;
   redirect(safeRedirect);

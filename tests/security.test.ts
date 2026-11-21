@@ -7,6 +7,8 @@ import {
   getProgramBySlug,
 } from "@/lib/constants/platform";
 import { slugify } from "@/lib/core/strings";
+import { generateAuthToken, hashAuthToken } from "@/lib/core/tokens";
+import { RESET_TOKEN_REGEX } from "@/validation/patterns";
 
 describe("Security & Sanitization Helpers", () => {
   it("autorise uniquement les URLs http/https et chemins relatifs simples", () => {
@@ -60,5 +62,16 @@ describe("Security & Sanitization Helpers", () => {
     assert.ok(incub);
     assert.equal(incub.pole, "ENTREPRENEURIAT");
     assert.equal(getProgramBySlug("inconnu"), undefined);
+  });
+
+  it("génère des jetons de confirmation valides et un hachage SHA-256 déterministe", () => {
+    const rawA = generateAuthToken();
+    const rawB = generateAuthToken();
+    assert.equal(rawA.length, 64);
+    assert.equal(RESET_TOKEN_REGEX.test(rawA), true);
+    assert.notEqual(rawA, rawB);
+    assert.equal(hashAuthToken(rawA), hashAuthToken(rawA));
+    assert.equal(hashAuthToken(rawA).length, 64);
+    assert.notEqual(hashAuthToken(rawA), hashAuthToken(rawB));
   });
 });

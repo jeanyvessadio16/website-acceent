@@ -142,6 +142,39 @@ export async function sendPasswordResetEmail(
   });
 }
 
+export async function sendEmailVerificationEmail(
+  to: string,
+  firstname: string,
+  verifyUrl: string
+): Promise<EmailSendResult> {
+  if (!isEmailConfigured() && process.env.NODE_ENV !== "production") {
+    console.info(`[EmailService DEV] Lien de confirmation d'e-mail pour ${to} : ${verifyUrl}`);
+  }
+
+  const body = `
+    <p style="font-size:15px;line-height:1.6;color:#334155;">Bonjour ${escapeHtml(firstname)},</p>
+    <p style="font-size:15px;line-height:1.6;color:#334155;">
+      Merci pour votre inscription sur la plateforme ACCEENT !
+      Pour activer votre compte et pouvoir vous connecter, veuillez confirmer votre adresse e-mail en cliquant sur le bouton ci-dessous (lien valable 24 heures) :
+    </p>
+    <p style="margin:24px 0;">
+      <a href="${escapeHtml(verifyUrl)}" style="display:inline-block;padding:12px 24px;background:#836182;color:#ffffff;text-decoration:none;border-radius:999px;font-weight:700;font-size:14px;">
+        Confirmer mon adresse e-mail
+      </a>
+    </p>
+    <p style="font-size:13px;line-height:1.5;color:#64748b;">
+      Une fois confirmé, vous serez automatiquement redirigé·e vers la page de connexion.
+    </p>
+  `;
+
+  return sendEmail({
+    to,
+    subject: "Confirmez votre adresse e-mail — ACCEENT",
+    html: wrapEmailLayout("Confirmation de votre inscription", body),
+    text: `Bonjour ${firstname},\n\nConfirmez votre adresse e-mail pour activer votre compte ACCEENT (valable 24 h) :\n${verifyUrl}\n`,
+  });
+}
+
 export async function sendApplicationStatusEmail(params: {
   to: string;
   firstname: string;

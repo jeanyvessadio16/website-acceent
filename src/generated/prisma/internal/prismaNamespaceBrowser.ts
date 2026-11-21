@@ -54,6 +54,7 @@ export const ModelName = {
   User: 'User',
   Post: 'Post',
   PasswordResetToken: 'PasswordResetToken',
+  EmailVerificationToken: 'EmailVerificationToken',
   ProgramApplication: 'ProgramApplication',
   Event: 'Event',
   EventRegistration: 'EventRegistration',
@@ -93,6 +94,7 @@ export const UserScalarFieldEnum = {
   milieuResidence: 'milieuResidence',
   telephone: 'telephone',
   sdh: 'sdh',
+  emailVerifiedAt: 'emailVerifiedAt',
   newsletterOptIn: 'newsletterOptIn',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -129,6 +131,18 @@ export const PasswordResetTokenScalarFieldEnum = {
 } as const
 
 export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum]
+
+
+export const EmailVerificationTokenScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type EmailVerificationTokenScalarFieldEnum = (typeof EmailVerificationTokenScalarFieldEnum)[keyof typeof EmailVerificationTokenScalarFieldEnum]
 
 
 export const ProgramApplicationScalarFieldEnum = {

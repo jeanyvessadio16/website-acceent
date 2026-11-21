@@ -18,51 +18,48 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative min-h-screen w-full flex flex-col items-center justify-center bg-[#12080f] px-6 py-12 overflow-hidden">
-      {/* Orbes de fond */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#836182]/15 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#b9939e]/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 w-[600px] h-[300px] bg-[#836182]/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-
-      {/* Logo */}
-      <div className="relative z-10 mb-8">
-        <Link href="/" aria-label="Retour à l'accueil ACCEENT">
-          <Image
-            src="/logo/logo-acceent.png"
-            alt="Logo ACCEENT"
-            width={130}
-            height={40}
-            priority
-            className="h-10 w-auto brightness-0 invert"
-          />
-        </Link>
-      </div>
-
-      {/* Carte du formulaire */}
-      <div className="relative z-10 w-full max-w-lg">
-        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl shadow-black/40">
-          {children}
+    <main className="min-h-dvh w-full flex flex-col items-center justify-center bg-slate-50 text-slate-900 px-4 sm:px-6 py-3 sm:py-4">
+      {/* Carte centrée du formulaire */}
+      <div className="w-full max-w-[560px] rounded-2xl sm:rounded-3xl border border-slate-200/90 bg-white px-5 py-4 sm:px-7 sm:py-5 shadow-xl shadow-slate-900/5">
+        {/* Entête logo ACCEENT à l'intérieur du formulaire */}
+        <div className="mb-3.5 flex justify-center pb-3 border-b border-slate-100">
+          <Link
+            href="/"
+            aria-label="Retour à l'accueil ACCEENT"
+            className="relative block h-14 sm:h-16 w-56 sm:w-64 overflow-hidden transition-opacity hover:opacity-85"
+          >
+            <Image
+              src="/logo/logoACCEENT.png"
+              alt="Logo ACCEENT"
+              fill
+              sizes="(max-width: 640px) 224px, 256px"
+              priority
+              className="object-contain object-center scale-125"
+            />
+          </Link>
         </div>
 
-        {/* Mentions légales */}
-        <p className="mt-6 text-center text-xs text-white/30">
-          En continuant, vous acceptez nos{" "}
-          <Link
-            href="/mentions-legales"
-            className="underline underline-offset-2 hover:text-white/60 transition-colors"
-          >
-            Mentions légales
-          </Link>{" "}
-          et notre{" "}
-          <Link
-            href="/confidentialite"
-            className="underline underline-offset-2 hover:text-white/60 transition-colors"
-          >
-            Politique de confidentialité
-          </Link>
-          .
-        </p>
+        {children}
       </div>
-    </div>
+
+      {/* Liens légaux */}
+      <p className="mt-3 text-center text-[11px] text-slate-500">
+        En continuant, vous acceptez nos{" "}
+        <Link
+          href="/cgu"
+          className="font-medium text-slate-700 underline underline-offset-2 hover:text-[#836182] transition-colors"
+        >
+          CGU
+        </Link>{" "}
+        et notre{" "}
+        <Link
+          href="/politique-de-confidentialite"
+          className="font-medium text-slate-700 underline underline-offset-2 hover:text-[#836182] transition-colors"
+        >
+          Politique de confidentialité
+        </Link>
+        .
+      </p>
+    </main>
   );
 }

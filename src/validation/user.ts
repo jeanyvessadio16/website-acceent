@@ -6,8 +6,8 @@ import {
   STRONG_PASSWORD_REGEX,
   SexeSchema,
   emailFieldSchema,
-  optionalAgeFieldSchema,
-  optionalPhoneFieldSchema,
+  phoneFieldSchema,
+  requiredAgeFieldSchema,
 } from "./patterns";
 
 const strongPasswordSchema = z
@@ -30,15 +30,19 @@ const personNameSchema = (fieldLabel: string) =>
       `${fieldLabel} ne doit contenir que des lettres, espaces, tirets ou apostrophes.`
     );
 
+const sdhFieldSchema = z.boolean({
+  error: () => "Veuillez indiquer votre situation de handicap (Oui ou Non).",
+});
+
 export const updateProfileSchema = z.object({
   firstname: personNameSchema("Le prénom"),
   lastname: personNameSchema("Le nom"),
   email: emailFieldSchema,
-  age: optionalAgeFieldSchema,
-  sexe: SexeSchema.nullable().optional(),
-  milieuResidence: MilieuResidenceSchema.nullable().optional(),
-  telephone: optionalPhoneFieldSchema,
-  sdh: z.boolean().default(false),
+  age: requiredAgeFieldSchema,
+  sexe: SexeSchema,
+  milieuResidence: MilieuResidenceSchema,
+  telephone: phoneFieldSchema,
+  sdh: sdhFieldSchema,
   password: z
     .string()
     .trim()
@@ -56,11 +60,11 @@ export const adminCreateUserSchema = z.object({
   email: emailFieldSchema,
   password: strongPasswordSchema,
   role: RoleSchema,
-  age: optionalAgeFieldSchema,
-  sexe: SexeSchema.nullable().optional(),
-  milieuResidence: MilieuResidenceSchema.nullable().optional(),
-  telephone: optionalPhoneFieldSchema,
-  sdh: z.boolean().default(false),
+  age: requiredAgeFieldSchema,
+  sexe: SexeSchema,
+  milieuResidence: MilieuResidenceSchema,
+  telephone: phoneFieldSchema,
+  sdh: sdhFieldSchema,
 });
 
 export const adminUpdateUserSchema = z.object({
@@ -69,11 +73,11 @@ export const adminUpdateUserSchema = z.object({
   lastname: personNameSchema("Le nom"),
   email: emailFieldSchema,
   role: RoleSchema,
-  age: optionalAgeFieldSchema,
-  sexe: SexeSchema.nullable().optional(),
-  milieuResidence: MilieuResidenceSchema.nullable().optional(),
-  telephone: optionalPhoneFieldSchema,
-  sdh: z.boolean().default(false),
+  age: requiredAgeFieldSchema,
+  sexe: SexeSchema,
+  milieuResidence: MilieuResidenceSchema,
+  telephone: phoneFieldSchema,
+  sdh: sdhFieldSchema,
 });
 
 export type UpdateProfileInput = z.input<typeof updateProfileSchema>;

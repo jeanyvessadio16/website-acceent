@@ -11,6 +11,7 @@
 export type * from './models/User'
 export type * from './models/Post'
 export type * from './models/PasswordResetToken'
+export type * from './models/EmailVerificationToken'
 export type * from './models/ProgramApplication'
 export type * from './models/Event'
 export type * from './models/EventRegistration'

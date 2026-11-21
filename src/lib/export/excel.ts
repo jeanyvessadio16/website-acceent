@@ -144,7 +144,7 @@ export interface OverviewExcelPayload {
     fullName: string;
     email: string;
     role: string;
-    age: number | null;
+    age: number;
     sexe: string;
     milieuResidence: string;
     telephone: string;
@@ -252,7 +252,7 @@ export async function buildAdminOverviewWorkbook(
       sanitizeExcelValue(u.fullName),
       sanitizeExcelValue(u.email),
       sanitizeExcelValue(u.role),
-      sanitizeExcelValue(u.age ?? ""),
+      sanitizeExcelValue(u.age),
       sanitizeExcelValue(u.sexe),
       sanitizeExcelValue(u.milieuResidence),
       sanitizeExcelValue(u.telephone),
@@ -296,7 +296,7 @@ export async function buildUsersWorkbook(
       sanitizeExcelValue(u.fullName),
       sanitizeExcelValue(u.email),
       sanitizeExcelValue(u.role),
-      sanitizeExcelValue(u.age ?? ""),
+      sanitizeExcelValue(u.age),
       sanitizeExcelValue(u.sexe),
       sanitizeExcelValue(u.milieuResidence),
       sanitizeExcelValue(u.telephone),

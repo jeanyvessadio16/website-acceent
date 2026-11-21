@@ -74,19 +74,21 @@ model User {
   firstname           String
   lastname            String
   email               String               @unique
-  password            String
+  password            String?
   role                Role                 @default(USER)
-  age                 Int?
-  sexe                Sexe?
-  milieuResidence     MilieuResidence?
-  telephone           String?
-  sdh                 Boolean              @default(false)
-  newsletterOptIn     Boolean              @default(true)
-  posts               Post[]
-  applications        ProgramApplication[]
-  eventRegistrations  EventRegistration[]
-  passwordResetTokens PasswordResetToken[]
-  createdResources    Resource[]
+  age                 Int
+  sexe                Sexe
+  milieuResidence     MilieuResidence
+  telephone           String               @unique
+  sdh                     Boolean                  @default(false)
+  emailVerifiedAt         DateTime?
+  newsletterOptIn         Boolean                  @default(true)
+  posts                   Post[]
+  applications            ProgramApplication[]
+  eventRegistrations      EventRegistration[]
+  passwordResetTokens     PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
+  createdResources        Resource[]
   createdEvents       Event[]
   newsletterCampaigns NewsletterCampaign[]
   createdAt           DateTime             @default(now())
@@ -127,6 +129,20 @@ model PasswordResetToken {
   @@index([userId])
   @@index([expiresAt])
   @@map("password_reset_tokens")
+}
+
+model EmailVerificationToken {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("email_verification_tokens")
 }
 
 model ProgramApplication {

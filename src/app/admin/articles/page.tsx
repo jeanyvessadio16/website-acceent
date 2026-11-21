@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { ArticleList } from "@/components/admin/ArticleList";
 import { getSession } from "@/lib/session";
@@ -14,7 +15,11 @@ export default async function ArticlesPage({
   searchParams: Promise<{ new?: string; action?: string }>;
 }) {
   const session = await getSession();
-  const isAuthorOnly = session?.role === "AUTHOR";
+  if (!session || (session.role !== "ADMIN" && session.role !== "AUTHOR")) {
+    redirect("/auth/login");
+  }
+
+  const isAuthorOnly = session.role === "AUTHOR";
   const [sp, formattedArticles] = await Promise.all([
     searchParams,
     findAllPostsForAdmin(isAuthorOnly ? session?.userId : undefined),

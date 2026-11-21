@@ -13,10 +13,7 @@ import {
   Phone,
   ArrowRight,
   Loader2,
-  CheckCircle2,
-  XCircle,
-  AlertCircle,
-  Accessibility,
+  ChevronDown,
 } from "lucide-react";
 import { registerSchema, type RegisterInput } from "@/validation/auth";
 import { registerAction } from "@/actions/auth";
@@ -24,84 +21,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-
-function PasswordStrength({ password }: { password: string }) {
-  const checks = [
-    { label: "8 caractères minimum", ok: password.length >= 8 },
-    { label: "Une majuscule (A-Z)", ok: /[A-Z]/.test(password) },
-    { label: "Une minuscule (a-z)", ok: /[a-z]/.test(password) },
-    { label: "Un chiffre (0-9)", ok: /\d/.test(password) },
-    { label: "Caractère spécial (@$!%*?&)", ok: /[@$!%*?&]/.test(password) },
-  ];
-
-  const score = checks.filter((c) => c.ok).length;
-  const strengthLabel =
-    score <= 1
-      ? "Très faible"
-      : score === 2
-      ? "Faible"
-      : score === 3
-      ? "Moyen"
-      : score === 4
-      ? "Fort"
-      : "Très fort";
-  const strengthColor =
-    score <= 1
-      ? "bg-red-500"
-      : score === 2
-      ? "bg-orange-500"
-      : score === 3
-      ? "bg-yellow-500"
-      : score === 4
-      ? "bg-emerald-500"
-      : "bg-green-400";
-
-  if (!password) return null;
-
-  return (
-    <div className="space-y-2 animate-in fade-in slide-in-from-top-1 duration-200">
-      <div className="flex items-center gap-2">
-        <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
-          <div
-            className={cn("h-full rounded-full transition-all duration-500", strengthColor)}
-            style={{ width: `${(score / 5) * 100}%` }}
-          />
-        </div>
-        <span className="text-xs text-white/50 shrink-0">{strengthLabel}</span>
-      </div>
-
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-0.5">
-        {checks.map((c) => (
-          <li
-            key={c.label}
-            className={cn(
-              "flex items-center gap-1.5 text-xs transition-colors duration-200",
-              c.ok ? "text-emerald-400" : "text-white/40"
-            )}
-          >
-            {c.ok ? (
-              <CheckCircle2 className="size-3 shrink-0" />
-            ) : (
-              <XCircle className="size-3 shrink-0" />
-            )}
-            {c.label}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+import {
+  AUTH_FIELD_ERROR_CLASS,
+  AUTH_INPUT_CLASS,
+  AUTH_SELECT_CLASS,
+  AuthAlert,
+  AuthFieldError,
+  AuthTabs,
+  PasswordStrength,
+} from "./AuthShared";
 
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordPreview, setPasswordPreview] = useState("");
-  const [sdhChoice, setSdhChoice] = useState<boolean>(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
-    setValue,
     setError,
     formState: { errors, isSubmitting },
   } = useForm<RegisterInput>({
@@ -110,6 +47,7 @@ export default function RegisterForm() {
       sexe: "HOMME",
       milieuResidence: "URBAIN",
       sdh: false,
+      acceptCgu: false,
     },
   });
 
@@ -129,40 +67,37 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="w-full space-y-5">
-      <div className="space-y-1.5 text-center">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-          Rejoindre ACCEENT
+    <div className="w-full space-y-3">
+      <AuthTabs />
+
+      <div className="space-y-0.5 text-center">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
+          Créer votre compte membre
         </h1>
-        <p className="text-white/60 text-sm">
-          Créez votre profil membre pour accéder aux programmes et événements
+        <p className="text-slate-500 text-xs">
+          Rejoignez les programmes et événements ACCEENT
         </p>
       </div>
 
-      {serverError && (
-        <div
-          role="alert"
-          className="flex items-start gap-2.5 rounded-lg border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-300"
-        >
-          <AlertCircle className="size-4 shrink-0 mt-0.5" />
-          <span>{serverError}</span>
-        </div>
-      )}
+      {serverError && <AuthAlert variant="error" message={serverError} />}
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4"
+        className="space-y-2.5"
         noValidate
         aria-label="Formulaire d'inscription"
       >
-        {/* Prénom & Nom */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <Label htmlFor="register-firstname" className="text-white/80 text-xs font-semibold">
+        {/* Ligne 1 : Prénom & Nom */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div className="space-y-1">
+            <Label htmlFor="register-firstname" className="text-slate-700 text-xs font-semibold">
               Prénom *
             </Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/40 pointer-events-none" />
+              <User
+                className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none"
+                aria-hidden
+              />
               <Input
                 id="register-firstname"
                 type="text"
@@ -171,25 +106,24 @@ export default function RegisterForm() {
                 aria-invalid={!!errors.firstname}
                 {...register("firstname")}
                 className={cn(
-                  "h-10 pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/30",
-                  "focus-visible:border-[#b9939e] focus-visible:ring-[#b9939e]/20",
-                  errors.firstname && "border-red-400/60 ring-2 ring-red-400/20"
+                  AUTH_INPUT_CLASS,
+                  "pl-9.5",
+                  errors.firstname && AUTH_FIELD_ERROR_CLASS
                 )}
               />
             </div>
-            {errors.firstname && (
-              <p role="alert" className="text-xs text-red-400">
-                {errors.firstname.message}
-              </p>
-            )}
+            <AuthFieldError message={errors.firstname?.message} />
           </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="register-lastname" className="text-white/80 text-xs font-semibold">
+          <div className="space-y-1">
+            <Label htmlFor="register-lastname" className="text-slate-700 text-xs font-semibold">
               Nom *
             </Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/40 pointer-events-none" />
+              <User
+                className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none"
+                aria-hidden
+              />
               <Input
                 id="register-lastname"
                 type="text"
@@ -198,24 +132,20 @@ export default function RegisterForm() {
                 aria-invalid={!!errors.lastname}
                 {...register("lastname")}
                 className={cn(
-                  "h-10 pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/30",
-                  "focus-visible:border-[#b9939e] focus-visible:ring-[#b9939e]/20",
-                  errors.lastname && "border-red-400/60 ring-2 ring-red-400/20"
+                  AUTH_INPUT_CLASS,
+                  "pl-9.5",
+                  errors.lastname && AUTH_FIELD_ERROR_CLASS
                 )}
               />
             </div>
-            {errors.lastname && (
-              <p role="alert" className="text-xs text-red-400">
-                {errors.lastname.message}
-              </p>
-            )}
+            <AuthFieldError message={errors.lastname?.message} />
           </div>
         </div>
 
-        {/* Âge & Sexe */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <Label htmlFor="register-age" className="text-white/80 text-xs font-semibold">
+        {/* Ligne 2 : Âge, Sexe, Milieu, SDH */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <div className="space-y-1">
+            <Label htmlFor="register-age" className="text-slate-700 text-xs font-semibold">
               Âge *
             </Label>
             <Input
@@ -228,73 +158,112 @@ export default function RegisterForm() {
               aria-invalid={!!errors.age}
               {...register("age", { valueAsNumber: true })}
               className={cn(
-                "h-10 bg-white/10 border-white/20 text-white placeholder:text-white/30",
-                "focus-visible:border-[#b9939e] focus-visible:ring-[#b9939e]/20",
-                errors.age && "border-red-400/60 ring-2 ring-red-400/20"
+                AUTH_INPUT_CLASS,
+                errors.age && AUTH_FIELD_ERROR_CLASS
               )}
             />
-            {errors.age && (
-              <p role="alert" className="text-xs text-red-400">
-                {errors.age.message}
-              </p>
-            )}
+            <AuthFieldError message={errors.age?.message} />
           </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="register-sexe" className="text-white/80 text-xs font-semibold">
+          <div className="space-y-1">
+            <Label htmlFor="register-sexe" className="text-slate-700 text-xs font-semibold">
               Sexe *
             </Label>
-            <select
-              id="register-sexe"
-              aria-invalid={!!errors.sexe}
-              {...register("sexe")}
-              className={cn(
-                "w-full h-10 rounded-md px-3 bg-[#1d111b] border border-white/20 text-white text-sm outline-none focus:border-[#b9939e]",
-                errors.sexe && "border-red-400/60 ring-2 ring-red-400/20"
-              )}
+            <div className="relative">
+              <select
+                id="register-sexe"
+                aria-invalid={!!errors.sexe}
+                {...register("sexe")}
+                className={cn(
+                  AUTH_SELECT_CLASS,
+                  errors.sexe && AUTH_FIELD_ERROR_CLASS
+                )}
+              >
+                <option value="HOMME">Homme</option>
+                <option value="FEMME">Femme</option>
+              </select>
+              <ChevronDown
+                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 size-3.5 text-slate-400"
+                aria-hidden
+              />
+            </div>
+            <AuthFieldError message={errors.sexe?.message} />
+          </div>
+
+          <div className="space-y-1">
+            <Label
+              htmlFor="register-milieu"
+              title="Milieu de résidence"
+              className="text-slate-700 text-xs font-semibold"
             >
-              <option value="HOMME">Homme</option>
-              <option value="FEMME">Femme</option>
-            </select>
-            {errors.sexe && (
-              <p role="alert" className="text-xs text-red-400">
-                {errors.sexe.message}
-              </p>
-            )}
+              Milieu *
+            </Label>
+            <div className="relative">
+              <select
+                id="register-milieu"
+                title="Milieu de résidence"
+                aria-invalid={!!errors.milieuResidence}
+                {...register("milieuResidence")}
+                className={cn(
+                  AUTH_SELECT_CLASS,
+                  errors.milieuResidence && AUTH_FIELD_ERROR_CLASS
+                )}
+              >
+                <option value="URBAIN">Urbain</option>
+                <option value="RURAL">Rural</option>
+              </select>
+              <ChevronDown
+                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 size-3.5 text-slate-400"
+                aria-hidden
+              />
+            </div>
+            <AuthFieldError message={errors.milieuResidence?.message} />
+          </div>
+
+          <div className="space-y-1">
+            <Label
+              htmlFor="register-sdh"
+              title="Situation de Handicap (SDH)"
+              className="text-slate-700 text-xs font-semibold"
+            >
+              SDH *
+            </Label>
+            <div className="relative">
+              <select
+                id="register-sdh"
+                title="Situation de Handicap (SDH)"
+                aria-invalid={!!errors.sdh}
+                {...register("sdh", {
+                  setValueAs: (value) => value === true || value === "true",
+                })}
+                className={cn(
+                  AUTH_SELECT_CLASS,
+                  errors.sdh && AUTH_FIELD_ERROR_CLASS
+                )}
+              >
+                <option value="false">Non</option>
+                <option value="true">Oui</option>
+              </select>
+              <ChevronDown
+                className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 size-3.5 text-slate-400"
+                aria-hidden
+              />
+            </div>
+            <AuthFieldError message={errors.sdh?.message} />
           </div>
         </div>
 
-        {/* Milieu de résidence & Téléphone */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <Label htmlFor="register-milieu" className="text-white/80 text-xs font-semibold">
-              Milieu de résidence *
-            </Label>
-            <select
-              id="register-milieu"
-              aria-invalid={!!errors.milieuResidence}
-              {...register("milieuResidence")}
-              className={cn(
-                "w-full h-10 rounded-md px-3 bg-[#1d111b] border border-white/20 text-white text-sm outline-none focus:border-[#b9939e]",
-                errors.milieuResidence && "border-red-400/60 ring-2 ring-red-400/20"
-              )}
-            >
-              <option value="URBAIN">Urbain</option>
-              <option value="RURAL">Rural</option>
-            </select>
-            {errors.milieuResidence && (
-              <p role="alert" className="text-xs text-red-400">
-                {errors.milieuResidence.message}
-              </p>
-            )}
-          </div>
-
-          <div className="space-y-1.5">
-            <Label htmlFor="register-telephone" className="text-white/80 text-xs font-semibold">
-              Téléphone (WhatsApp) *
+        {/* Ligne 3 : Téléphone & Email */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div className="space-y-1">
+            <Label htmlFor="register-telephone" className="text-slate-700 text-xs font-semibold">
+              Téléphone *
             </Label>
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/40 pointer-events-none" />
+              <Phone
+                className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none"
+                aria-hidden
+              />
               <Input
                 id="register-telephone"
                 type="tel"
@@ -303,102 +272,52 @@ export default function RegisterForm() {
                 aria-invalid={!!errors.telephone}
                 {...register("telephone")}
                 className={cn(
-                  "h-10 pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/30",
-                  "focus-visible:border-[#b9939e] focus-visible:ring-[#b9939e]/20",
-                  errors.telephone && "border-red-400/60 ring-2 ring-red-400/20"
+                  AUTH_INPUT_CLASS,
+                  "pl-9.5",
+                  errors.telephone && AUTH_FIELD_ERROR_CLASS
                 )}
               />
             </div>
-            {errors.telephone && (
-              <p role="alert" className="text-xs text-red-400">
-                {errors.telephone.message}
-              </p>
-            )}
+            <AuthFieldError message={errors.telephone?.message} />
+          </div>
+
+          <div className="space-y-1">
+            <Label htmlFor="register-email" className="text-slate-700 text-xs font-semibold">
+              Adresse e-mail *
+            </Label>
+            <div className="relative">
+              <Mail
+                className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none"
+                aria-hidden
+              />
+              <Input
+                id="register-email"
+                type="email"
+                autoComplete="email"
+                placeholder="vous@exemple.com"
+                aria-invalid={!!errors.email}
+                {...register("email")}
+                className={cn(
+                  AUTH_INPUT_CLASS,
+                  "pl-9.5",
+                  errors.email && AUTH_FIELD_ERROR_CLASS
+                )}
+              />
+            </div>
+            <AuthFieldError message={errors.email?.message} />
           </div>
         </div>
 
-        {/* SDH : Situation De Handicap */}
-        <div className="space-y-1.5">
-          <Label className="text-white/80 text-xs font-semibold flex items-center gap-1.5">
-            <Accessibility className="size-3.5 text-[#b9939e]" />
-            <span>Situation de Handicap (SDH) *</span>
-          </Label>
-          <div className="grid grid-cols-2 gap-2.5">
-            <button
-              type="button"
-              aria-pressed={!sdhChoice}
-              onClick={() => {
-                setSdhChoice(false);
-                setValue("sdh", false, { shouldValidate: true });
-              }}
-              className={cn(
-                "h-10 rounded-lg border text-xs font-semibold transition-all cursor-pointer",
-                !sdhChoice
-                  ? "bg-[#836182] border-[#b9939e] text-white shadow-xs"
-                  : "bg-white/5 border-white/15 text-white/70 hover:bg-white/10"
-              )}
-            >
-              Non
-            </button>
-            <button
-              type="button"
-              aria-pressed={sdhChoice}
-              onClick={() => {
-                setSdhChoice(true);
-                setValue("sdh", true, { shouldValidate: true });
-              }}
-              className={cn(
-                "h-10 rounded-lg border text-xs font-semibold transition-all cursor-pointer",
-                sdhChoice
-                  ? "bg-[#836182] border-[#b9939e] text-white shadow-xs"
-                  : "bg-white/5 border-white/15 text-white/70 hover:bg-white/10"
-              )}
-            >
-              Oui
-            </button>
-          </div>
-          {errors.sdh && (
-            <p role="alert" className="text-xs text-red-400">
-              {errors.sdh.message}
-            </p>
-          )}
-        </div>
-
-        {/* Email */}
-        <div className="space-y-1.5">
-          <Label htmlFor="register-email" className="text-white/80 text-xs font-semibold">
-            Adresse e-mail *
-          </Label>
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/40 pointer-events-none" />
-            <Input
-              id="register-email"
-              type="email"
-              autoComplete="email"
-              placeholder="vous@exemple.com"
-              aria-invalid={!!errors.email}
-              {...register("email")}
-              className={cn(
-                "h-10 pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/30",
-                "focus-visible:border-[#b9939e] focus-visible:ring-[#b9939e]/20",
-                errors.email && "border-red-400/60 ring-2 ring-red-400/20"
-              )}
-            />
-          </div>
-          {errors.email && (
-            <p role="alert" className="text-xs text-red-400">
-              {errors.email.message}
-            </p>
-          )}
-        </div>
-
-        {/* Mot de passe */}
-        <div className="space-y-1.5">
-          <Label htmlFor="register-password" className="text-white/80 text-xs font-semibold">
+        {/* Ligne 4 : Mot de passe */}
+        <div className="space-y-1">
+          <Label htmlFor="register-password" className="text-slate-700 text-xs font-semibold">
             Mot de passe *
           </Label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/40 pointer-events-none" />
+            <Lock
+              className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none"
+              aria-hidden
+            />
             <Input
               id="register-password"
               type={showPassword ? "text" : "password"}
@@ -409,60 +328,96 @@ export default function RegisterForm() {
                 onChange: (e) => setPasswordPreview(e.target.value),
               })}
               className={cn(
-                "h-10 pl-10 pr-11 bg-white/10 border-white/20 text-white placeholder:text-white/30",
-                "focus-visible:border-[#b9939e] focus-visible:ring-[#b9939e]/20",
-                errors.password && "border-red-400/60 ring-2 ring-red-400/20"
+                AUTH_INPUT_CLASS,
+                "pl-9.5 pr-10",
+                errors.password && AUTH_FIELD_ERROR_CLASS
               )}
             />
             <button
               type="button"
               aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
               onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/80"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors p-1 rounded cursor-pointer"
             >
-              {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+              {showPassword ? (
+                <EyeOff className="size-4" aria-hidden />
+              ) : (
+                <Eye className="size-4" aria-hidden />
+              )}
             </button>
           </div>
 
           <PasswordStrength password={passwordPreview} />
+          <AuthFieldError message={errors.password?.message} />
+        </div>
 
-          {errors.password && (
-            <p role="alert" className="text-xs text-red-400">
-              {errors.password.message}
-            </p>
-          )}
+        {/* Acceptation obligatoire des CGU */}
+        <div className="space-y-1">
+          <label
+            htmlFor="register-accept-cgu"
+            className={cn(
+              "flex items-start gap-2 rounded-xl border px-3 py-2 text-[11px] text-slate-600 cursor-pointer transition-colors",
+              errors.acceptCgu
+                ? "border-red-300 bg-red-50/70"
+                : "border-slate-200 bg-slate-50/70 hover:bg-slate-100/70"
+            )}
+          >
+            <input
+              id="register-accept-cgu"
+              type="checkbox"
+              aria-invalid={!!errors.acceptCgu}
+              {...register("acceptCgu")}
+              className="mt-0.5 size-3.5 shrink-0 rounded border-slate-300 accent-[#836182] cursor-pointer"
+            />
+            <span className="leading-snug">
+              J&apos;accepte les{" "}
+              <Link
+                href="/cgu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-[#836182] underline underline-offset-2 hover:text-[#684b67]"
+              >
+                CGU
+              </Link>{" "}
+              et la{" "}
+              <Link
+                href="/politique-de-confidentialite"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-[#836182] underline underline-offset-2 hover:text-[#684b67]"
+              >
+                Politique de confidentialité
+              </Link>
+              . *
+            </span>
+          </label>
+          <AuthFieldError message={errors.acceptCgu?.message} />
         </div>
 
         <Button
           type="submit"
           disabled={isSubmitting}
-          size="xl"
-          className={cn(
-            "w-full mt-2 group relative overflow-hidden",
-            "bg-gradient-to-r from-[#836182] to-[#b9939e]",
-            "hover:from-[#9a7396] hover:to-[#c9a3ae]",
-            "text-white font-semibold tracking-wide shadow-lg shadow-[#836182]/30"
-          )}
+          className="w-full h-10 rounded-xl bg-[#836182] hover:bg-[#6f4f6e] text-white font-semibold shadow-md shadow-[#836182]/20 transition-all cursor-pointer"
         >
           {isSubmitting ? (
             <>
-              <Loader2 className="size-4 animate-spin" />
+              <Loader2 className="size-4 animate-spin" aria-hidden />
               Création du compte…
             </>
           ) : (
             <>
-              Créer mon compte
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+              <span>Créer mon compte</span>
+              <ArrowRight className="size-4" aria-hidden />
             </>
           )}
         </Button>
       </form>
 
-      <p className="text-center text-sm text-white/50">
+      <p className="text-center text-xs text-slate-500">
         Déjà un compte ?{" "}
         <Link
           href="/auth/login"
-          className="text-[#b9939e] hover:text-white font-medium underline-offset-4 hover:underline"
+          className="text-[#836182] hover:text-[#684b67] font-semibold underline-offset-4 hover:underline"
         >
           Se connecter
         </Link>

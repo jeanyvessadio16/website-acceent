@@ -23,11 +23,11 @@ interface ProfileFormProps {
     lastname: string;
     email: string;
     role: string;
-    age?: number | null;
-    sexe?: string | null;
-    milieuResidence?: string | null;
-    telephone?: string | null;
-    sdh?: boolean;
+    age: number;
+    sexe: "HOMME" | "FEMME";
+    milieuResidence: "RURAL" | "URBAIN";
+    telephone: string;
+    sdh: boolean;
   };
 }
 
@@ -35,19 +35,13 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
   const [firstname, setFirstname] = useState(initialUser.firstname);
   const [lastname, setLastname] = useState(initialUser.lastname);
   const [email, setEmail] = useState(initialUser.email);
-  const [ageStr, setAgeStr] = useState(
-    initialUser.age !== null && initialUser.age !== undefined ? String(initialUser.age) : ""
-  );
-  const [sexe, setSexe] = useState<"" | "HOMME" | "FEMME">(
-    initialUser.sexe === "HOMME" || initialUser.sexe === "FEMME" ? initialUser.sexe : ""
-  );
-  const [milieuResidence, setMilieuResidence] = useState<"" | "RURAL" | "URBAIN">(
-    initialUser.milieuResidence === "RURAL" || initialUser.milieuResidence === "URBAIN"
-      ? initialUser.milieuResidence
-      : ""
+  const [ageStr, setAgeStr] = useState(String(initialUser.age));
+  const [sexe, setSexe] = useState<"HOMME" | "FEMME">(initialUser.sexe);
+  const [milieuResidence, setMilieuResidence] = useState<"RURAL" | "URBAIN">(
+    initialUser.milieuResidence
   );
   const [telephone, setTelephone] = useState(initialUser.telephone || "");
-  const [sdh, setSdh] = useState<boolean>(Boolean(initialUser.sdh));
+  const [sdh, setSdh] = useState<boolean>(initialUser.sdh);
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -59,14 +53,14 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
     e.preventDefault();
     setMessage(null);
 
-    let parsedAge: number | null = null;
-    if (ageStr.trim() !== "") {
-      const n = Number(ageStr.trim());
-      if (Number.isNaN(n) || !Number.isInteger(n)) {
-        setMessage({ type: "error", text: "L'âge doit être un nombre entier valide." });
-        return;
-      }
-      parsedAge = n;
+    const trimmedAge = ageStr.trim();
+    const parsedAge = Number(trimmedAge);
+    if (!trimmedAge || Number.isNaN(parsedAge) || !Number.isInteger(parsedAge)) {
+      setMessage({
+        type: "error",
+        text: "Veuillez saisir un âge entier valide (entre 10 et 120 ans).",
+      });
+      return;
     }
 
     const payload = {
@@ -74,8 +68,8 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
       lastname,
       email,
       age: parsedAge,
-      sexe: sexe || null,
-      milieuResidence: milieuResidence || null,
+      sexe,
+      milieuResidence,
       telephone: telephone.trim(),
       sdh,
       password: password || undefined,
@@ -126,11 +120,10 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
       {message && (
         <div
           role="alert"
-          className={`flex items-start gap-2.5 p-4 rounded-xl border text-xs ${
-            message.type === "success"
-              ? "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-500/10 dark:border-emerald-500/25 dark:text-emerald-300"
-              : "bg-red-50 border-red-200 text-red-800 dark:bg-red-500/10 dark:border-red-500/25 dark:text-red-300"
-          }`}
+          className={`flex items-start gap-2.5 p-4 rounded-xl border text-xs ${message.type === "success"
+            ? "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-500/10 dark:border-emerald-500/25 dark:text-emerald-300"
+            : "bg-red-50 border-red-200 text-red-800 dark:bg-red-500/10 dark:border-red-500/25 dark:text-red-300"
+            }`}
         >
           {message.type === "success" ? (
             <CheckCircle2 className="size-4 shrink-0 mt-0.5" />
@@ -198,7 +191,7 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
 
           <div className="space-y-1.5">
             <Label htmlFor="profile-telephone" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
-              Téléphone
+              Téléphone *
             </Label>
             <div className="relative">
               <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none" />
@@ -208,6 +201,7 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
                 value={telephone}
                 onChange={(e) => setTelephone(e.target.value)}
                 placeholder="+221 77 123 45 67"
+                required
                 className="h-10 pl-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
               />
             </div>
@@ -217,7 +211,7 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
           <div className="space-y-1.5">
             <Label htmlFor="profile-age" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
-              Âge
+              Âge *
             </Label>
             <Input
               id="profile-age"
@@ -228,21 +222,22 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
               value={ageStr}
               onChange={(e) => setAgeStr(e.target.value)}
               placeholder="22"
+              required
               className="h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
             />
           </div>
 
           <div className="space-y-1.5">
             <Label htmlFor="profile-sexe" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
-              Sexe
+              Sexe *
             </Label>
             <select
               id="profile-sexe"
               value={sexe}
-              onChange={(e) => setSexe(e.target.value as "" | "HOMME" | "FEMME")}
+              onChange={(e) => setSexe(e.target.value as "HOMME" | "FEMME")}
+              required
               className="w-full h-10 rounded-md px-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-900 dark:text-white"
             >
-              <option value="">Non précisé</option>
               <option value="HOMME">Homme</option>
               <option value="FEMME">Femme</option>
             </select>
@@ -250,15 +245,15 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
 
           <div className="space-y-1.5">
             <Label htmlFor="profile-milieu" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
-              Milieu de résidence
+              Milieu de résidence *
             </Label>
             <select
               id="profile-milieu"
               value={milieuResidence}
-              onChange={(e) => setMilieuResidence(e.target.value as "" | "RURAL" | "URBAIN")}
+              onChange={(e) => setMilieuResidence(e.target.value as "RURAL" | "URBAIN")}
+              required
               className="w-full h-10 rounded-md px-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-900 dark:text-white"
             >
-              <option value="">Non précisé</option>
               <option value="URBAIN">Urbain</option>
               <option value="RURAL">Rural</option>
             </select>
@@ -266,12 +261,13 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
 
           <div className="space-y-1.5">
             <Label htmlFor="profile-sdh" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
-              SDH (Handicap)
+              SDH (Handicap) *
             </Label>
             <select
               id="profile-sdh"
               value={sdh ? "OUI" : "NON"}
               onChange={(e) => setSdh(e.target.value === "OUI")}
+              required
               className="w-full h-10 rounded-md px-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-900 dark:text-white"
             >
               <option value="NON">Non</option>

@@ -1,16 +1,21 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { createSession } from "@/lib/session";
-import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import type { MilieuResidence, Role, Sexe } from "@/generated/prisma/client";
+import {
+  createSupabaseAdminClient,
+  createSupabaseServerClient,
+  createSupabaseStatelessClient,
+} from "@/lib/supabase/server";
 import {
   requireSession,
   requireAdmin,
   fromZodError,
   handleActionError,
   recordAuditLog,
+  getRequestOrigin,
+  logger,
   ok,
   fail,
 } from "@/lib/core";
@@ -29,11 +34,11 @@ export interface UpdateUserInput {
   lastname: string;
   email: string;
   role: "USER" | "AUTHOR" | "ADMIN";
-  age?: number | null;
-  sexe?: "HOMME" | "FEMME" | null;
-  milieuResidence?: "RURAL" | "URBAIN" | null;
-  telephone?: string | null;
-  sdh?: boolean;
+  age: number;
+  sexe: "HOMME" | "FEMME";
+  milieuResidence: "RURAL" | "URBAIN";
+  telephone: string;
+  sdh: boolean;
 }
 
 export interface CreateUserInput {
@@ -42,11 +47,11 @@ export interface CreateUserInput {
   email: string;
   password: string;
   role: "USER" | "AUTHOR" | "ADMIN";
-  age?: number | null;
-  sexe?: "HOMME" | "FEMME" | null;
-  milieuResidence?: "RURAL" | "URBAIN" | null;
-  telephone?: string | null;
-  sdh?: boolean;
+  age: number;
+  sexe: "HOMME" | "FEMME";
+  milieuResidence: "RURAL" | "URBAIN";
+  telephone: string;
+  sdh: boolean;
 }
 
 export async function updateProfileAction(data: UpdateProfileInput) {
@@ -69,63 +74,66 @@ export async function updateProfileAction(data: UpdateProfileInput) {
   } = parsed.data;
 
   try {
-    if (email !== guard.session.email.toLowerCase()) {
-      const existing = await prisma.user.findUnique({
-        where: { email },
-        select: { id: true },
-      });
-      if (existing && existing.id !== guard.session.userId) {
+    const existing = await prisma.user.findFirst({
+      where: {
+        OR: [{ email }, { telephone }],
+        NOT: { id: guard.session.userId },
+      },
+      select: { email: true, telephone: true },
+    });
+    if (existing) {
+      if (existing.email === email) {
         return fail(
           "Cette adresse e-mail est déjà utilisée par un autre compte.",
           "CONFLICT"
         );
       }
+      return fail(
+        "Ce numéro de téléphone est déjà utilisé par un autre compte.",
+        "CONFLICT"
+      );
     }
 
-    const updateData: {
-      firstname: string;
-      lastname: string;
-      email: string;
-      age: number | null;
-      sexe: Sexe | null;
-      milieuResidence: MilieuResidence | null;
-      telephone: string | null;
-      sdh: boolean;
-      password?: string;
-    } = {
-      firstname,
-      lastname,
-      email,
-      age: age ?? null,
-      sexe: (sexe as Sexe | null) ?? null,
-      milieuResidence: (milieuResidence as MilieuResidence | null) ?? null,
-      telephone: telephone && telephone.trim() ? telephone.trim() : null,
-      sdh,
-    };
-
+    const emailChanged = email !== guard.session.email.toLowerCase();
     const passwordChanged = Boolean(password && password.length > 0);
-    if (password && password.length > 0) {
-      updateData.password = await bcrypt.hash(password, 12);
+
+    if (emailChanged || passwordChanged) {
+      const supabase = await createSupabaseServerClient();
+      const { error: authError } = await supabase.auth.updateUser({
+        ...(emailChanged ? { email } : {}),
+        ...(passwordChanged ? { password } : {}),
+      });
+
+      if (authError) {
+        if (
+          authError.code === "email_exists" ||
+          /already registered|already been registered/i.test(authError.message)
+        ) {
+          return fail(
+            "Cette adresse e-mail est déjà utilisée par un autre compte.",
+            "CONFLICT"
+          );
+        }
+        return fail(
+          "Impossible de mettre à jour les identifiants Supabase Auth. Veuillez réessayer.",
+          "VALIDATION_ERROR"
+        );
+      }
     }
 
     const updatedUser = await prisma.user.update({
       where: { id: guard.session.userId },
-      data: updateData,
-      select: {
-        id: true,
-        email: true,
-        role: true,
-        firstname: true,
-        lastname: true,
+      data: {
+        firstname,
+        lastname,
+        ...(emailChanged ? {} : { email }),
+        age,
+        sexe: sexe as Sexe,
+        milieuResidence: milieuResidence as MilieuResidence,
+        telephone,
+        sdh,
       },
-    });
-
-    await createSession({
-      userId: updatedUser.id,
-      email: updatedUser.email,
-      role: updatedUser.role,
-      firstname: updatedUser.firstname,
-      lastname: updatedUser.lastname,
+      select: { id: true },
     });
 
     await recordAuditLog({
@@ -133,7 +141,7 @@ export async function updateProfileAction(data: UpdateProfileInput) {
       action: "PROFILE_UPDATED",
       entity: "User",
       entityId: updatedUser.id,
-      metadata: { passwordChanged },
+      metadata: { emailChanged, passwordChanged },
     });
 
     revalidatePath("/admin");
@@ -141,7 +149,11 @@ export async function updateProfileAction(data: UpdateProfileInput) {
     revalidatePath("/admin/utilisateurs");
     revalidatePath("/dashboard/profil");
 
-    return ok("Vos informations ont été mises à jour avec succès !");
+    return ok(
+      emailChanged
+        ? "Informations mises à jour ! Un e-mail de confirmation peut être requis pour finaliser le changement d'adresse."
+        : "Vos informations ont été mises à jour avec succès !"
+    );
   } catch (error) {
     return handleActionError(
       "actions.user.updateProfile",
@@ -172,13 +184,56 @@ export async function updateUserAction(data: UpdateUserInput) {
   } = parsed.data;
 
   try {
+    const existingTarget = await prisma.user.findUnique({
+      where: { id },
+      select: { id: true, email: true },
+    });
+    if (!existingTarget) {
+      return fail("Utilisateur introuvable.", "NOT_FOUND");
+    }
+
     const existing = await prisma.user.findFirst({
-      where: { email, NOT: { id } },
-      select: { id: true },
+      where: {
+        OR: [{ email }, { telephone }],
+        NOT: { id },
+      },
+      select: { email: true, telephone: true },
     });
 
     if (existing) {
-      return fail("Cet e-mail est déjà utilisé par un autre membre.", "CONFLICT");
+      if (existing.email === email) {
+        return fail("Cet e-mail est déjà utilisé par un autre membre.", "CONFLICT");
+      }
+      return fail(
+        "Ce numéro de téléphone est déjà utilisé par un autre membre.",
+        "CONFLICT"
+      );
+    }
+
+    if (email !== existingTarget.email.toLowerCase()) {
+      const adminClient = createSupabaseAdminClient();
+      if (!adminClient) {
+        return fail(
+          "Pour modifier l'adresse e-mail d'un autre utilisateur dans Supabase Auth, configurez SUPABASE_SERVICE_ROLE_KEY côté serveur.",
+          "VALIDATION_ERROR"
+        );
+      }
+
+      const { error: authErr } = await adminClient.auth.admin.updateUserById(id, {
+        email,
+        email_confirm: true,
+      });
+      if (authErr) {
+        logger.warn("actions.user.updateUser", "Échec mise à jour e-mail Supabase Auth", {
+          userId: id,
+          code: authErr.code,
+          message: authErr.message,
+        });
+        return fail(
+          "Impossible de mettre à jour l'adresse e-mail dans Supabase Auth.",
+          "CONFLICT"
+        );
+      }
     }
 
     const updated = await prisma.user.update({
@@ -188,30 +243,18 @@ export async function updateUserAction(data: UpdateUserInput) {
         lastname,
         email,
         role: role as Role,
-        age: age ?? null,
-        sexe: (sexe as Sexe | null) ?? null,
-        milieuResidence: (milieuResidence as MilieuResidence | null) ?? null,
-        telephone: telephone && telephone.trim() ? telephone.trim() : null,
+        age,
+        sexe: sexe as Sexe,
+        milieuResidence: milieuResidence as MilieuResidence,
+        telephone,
         sdh,
       },
       select: {
         id: true,
         email: true,
         role: true,
-        firstname: true,
-        lastname: true,
       },
     });
-
-    if (guard.session.userId === updated.id) {
-      await createSession({
-        userId: updated.id,
-        email: updated.email,
-        role: updated.role,
-        firstname: updated.firstname,
-        lastname: updated.lastname,
-      });
-    }
 
     await recordAuditLog({
       session: guard.session,
@@ -246,6 +289,32 @@ export async function deleteUserAction(userId: string) {
   }
 
   try {
+    const adminClient = createSupabaseAdminClient();
+    if (adminClient) {
+      const { error: authErr } = await adminClient.auth.admin.deleteUser(userId);
+      if (
+        authErr &&
+        authErr.code !== "user_not_found" &&
+        !/not found/i.test(authErr.message)
+      ) {
+        logger.warn("actions.user.deleteUser", "Échec suppression compte Supabase Auth", {
+          userId,
+          code: authErr.code,
+          message: authErr.message,
+        });
+        return fail(
+          "Impossible de supprimer ce compte dans Supabase Auth.",
+          "INTERNAL_ERROR"
+        );
+      }
+    } else {
+      logger.warn(
+        "actions.user.deleteUser",
+        "SUPABASE_SERVICE_ROLE_KEY non configurée — suppression Supabase Auth ignorée",
+        { userId }
+      );
+    }
+
     const deleted = await prisma.user.delete({
       where: { id: userId },
       select: { id: true, email: true, role: true },
@@ -292,28 +361,67 @@ export async function createUserAction(data: CreateUserInput) {
   } = parsed.data;
 
   try {
-    const existing = await prisma.user.findUnique({
-      where: { email },
-      select: { id: true },
+    const existing = await prisma.user.findFirst({
+      where: { OR: [{ email }, { telephone }] },
+      select: { email: true, telephone: true },
     });
     if (existing) {
-      return fail("Un compte existe déjà avec cette adresse e-mail.", "CONFLICT");
+      if (existing.email === email) {
+        return fail("Un compte existe déjà avec cette adresse e-mail.", "CONFLICT");
+      }
+      return fail("Un compte existe déjà avec ce numéro de téléphone.", "CONFLICT");
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const origin = await getRequestOrigin();
+    const supabase = createSupabaseStatelessClient();
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${origin}/auth/confirm`,
+        data: { firstname, lastname },
+      },
+    });
+
+    if (
+      authError ||
+      !authData.user ||
+      (authData.user.identities && authData.user.identities.length === 0)
+    ) {
+      if (authError) {
+        logger.warn(
+          "actions.user.createUser",
+          "Erreur Supabase Auth lors de la création de compte",
+          {
+            name: authError.name,
+            status: authError.status,
+            code: authError.code,
+            message: authError.message,
+          }
+        );
+      }
+      return fail(
+        "Impossible de créer ce compte dans Supabase Auth (e-mail déjà utilisé ou mot de passe refusé).",
+        "CONFLICT"
+      );
+    }
 
     const created = await prisma.user.create({
       data: {
+        id: authData.user.id,
         firstname,
         lastname,
         email,
-        password: hashedPassword,
+        password: null,
         role: role as Role,
-        age: age ?? null,
-        sexe: (sexe as Sexe | null) ?? null,
-        milieuResidence: (milieuResidence as MilieuResidence | null) ?? null,
-        telephone: telephone && telephone.trim() ? telephone.trim() : null,
+        age,
+        sexe: sexe as Sexe,
+        milieuResidence: milieuResidence as MilieuResidence,
+        telephone,
         sdh,
+        emailVerifiedAt: authData.user.email_confirmed_at
+          ? new Date(authData.user.email_confirmed_at)
+          : null,
       },
       select: { id: true, email: true, role: true },
     });
@@ -329,7 +437,9 @@ export async function createUserAction(data: CreateUserInput) {
     revalidatePath("/admin/utilisateurs");
     revalidatePath("/admin");
 
-    return ok(`L'utilisateur ${firstname} ${lastname} a été créé avec le rôle ${role} !`);
+    return ok(
+      `L'utilisateur ${firstname} ${lastname} a été créé (${role}) et un e-mail de confirmation a été envoyé !`
+    );
   } catch (error) {
     return handleActionError(
       "actions.user.createUser",

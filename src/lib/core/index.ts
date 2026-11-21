@@ -20,6 +20,7 @@ export {
   type RateLimitOptions,
   type RateLimitResult,
 } from "./rate-limit";
-export { getClientIp } from "./request";
+export { getClientIp, getRequestOrigin } from "./request";
+export { generateAuthToken, hashAuthToken } from "./tokens";
 export { recordAuditLog, type RecordAuditParams } from "./audit";
 export { slugify, formatDateFr } from "./strings";

@@ -45,10 +45,10 @@ export default async function UserProfilPage() {
     lastname: session?.lastname || "ACCEENT",
     email: session?.email || "membre@acceent.org",
     role: session?.role || "USER",
-    age: null,
-    sexe: null,
-    milieuResidence: null,
-    telephone: null,
+    age: 25,
+    sexe: "HOMME" as const,
+    milieuResidence: "URBAIN" as const,
+    telephone: "",
     sdh: false,
   };
 

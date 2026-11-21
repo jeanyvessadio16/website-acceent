@@ -5,101 +5,195 @@ import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Loader2, Send } from "lucide-react";
 import { loginSchema, type LoginInput } from "@/validation/auth";
-import { loginAction } from "@/actions/auth";
+import { loginAction, resendVerificationEmailAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import {
+  AUTH_FIELD_ERROR_CLASS,
+  AUTH_INPUT_CLASS,
+  AuthAlert,
+  AuthFieldError,
+  AuthTabs,
+} from "./AuthShared";
 
 export default function LoginForm() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? undefined;
-  const isJustRegistered = searchParams.get("registered") === "true";
+  const registered = searchParams.get("registered");
+  const registeredEmail = searchParams.get("email");
+  const verified = searchParams.get("verified");
+  const verifyError = searchParams.get("verifyError");
   const isPasswordReset = searchParams.get("reset") === "success";
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [resendTargetEmail, setResendTargetEmail] = useState<string | null>(
+    registered === "verify" && registeredEmail ? registeredEmail : null
+  );
+  const [resending, setResending] = useState(false);
+  const [resendFeedback, setResendFeedback] = useState<{
+    variant: "success" | "error";
+    message: string;
+  } | null>(null);
 
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: registered === "verify" && registeredEmail ? registeredEmail : "",
+    },
   });
 
   const onSubmit = async (data: LoginInput) => {
     setServerError(null);
+    setResendFeedback(null);
     const result = await loginAction(data, callbackUrl);
     if (!result.success) {
       setServerError(result.message);
+      if (result.code === "EMAIL_NOT_VERIFIED") {
+        setResendTargetEmail(result.unverifiedEmail || data.email);
+      }
     }
   };
 
-  const isPending = isSubmitting;
+  const handleResendVerification = async () => {
+    const targetEmail = (resendTargetEmail || getValues("email") || "").trim();
+    if (!targetEmail) {
+      setResendFeedback({
+        variant: "error",
+        message: "Saisissez votre adresse e-mail ci-dessous pour renvoyer le lien.",
+      });
+      return;
+    }
+
+    setResending(true);
+    setResendFeedback(null);
+    const res = await resendVerificationEmailAction(targetEmail);
+    setResending(false);
+    setResendFeedback({
+      variant: res.success ? "success" : "error",
+      message: res.message,
+    });
+  };
+
+  const showResendAction = Boolean(resendTargetEmail) || verifyError === "expired";
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-3.5">
+      <AuthTabs />
+
       {/* En-tête du formulaire */}
-      <div className="space-y-2 text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-white">
-          Bon retour&nbsp;👋
+      <div className="space-y-0.5 text-center">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
+          Connexion à votre espace
         </h1>
-        <p className="text-white/60 text-sm">
-          Connectez-vous à votre espace ACCEENT
+        <p className="text-slate-500 text-xs sm:text-sm">
+          Accédez à vos programmes, candidatures et billets ACCEENT
         </p>
       </div>
 
-      {/* Bannière de confirmation d'inscription réussie */}
-      {isJustRegistered && !serverError && (
-        <div
-          role="status"
-          className="flex items-start gap-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300 animate-in fade-in slide-in-from-top-2 duration-200"
-        >
-          <CheckCircle2 className="size-4 shrink-0 mt-0.5" />
-          <span>Votre compte a été créé avec succès ! Connectez-vous ci-dessous.</span>
-        </div>
+      {/* Bannières d'état */}
+      {verified === "true" && !serverError && (
+        <AuthAlert
+          variant="success"
+          message="Adresse e-mail confirmée avec succès ! Vous pouvez maintenant vous connecter."
+        />
       )}
 
-      {/* Bannière de confirmation de réinitialisation du mot de passe */}
+      {verified === "already" && !serverError && (
+        <AuthAlert
+          variant="success"
+          message="Votre adresse e-mail est déjà confirmée. Connectez-vous ci-dessous."
+        />
+      )}
+
+      {registered === "verify" && !serverError && !verified && (
+        <AuthAlert
+          variant="success"
+          message={`Compte créé ! Un lien de confirmation a été envoyé à ${
+            registeredEmail || "votre adresse e-mail"
+          }. Confirmez votre e-mail pour vous connecter.`}
+        />
+      )}
+
       {isPasswordReset && !serverError && (
-        <div
-          role="status"
-          className="flex items-start gap-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300 animate-in fade-in slide-in-from-top-2 duration-200"
-        >
-          <CheckCircle2 className="size-4 shrink-0 mt-0.5" />
-          <span>Mot de passe modifié avec succès ! Vous pouvez maintenant vous connecter.</span>
-        </div>
+        <AuthAlert
+          variant="success"
+          message="Mot de passe modifié avec succès ! Vous pouvez maintenant vous connecter."
+        />
       )}
 
-      {/* Bannière d'erreur serveur */}
-      {serverError && (
-        <div
-          role="alert"
-          className="flex items-start gap-2.5 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-300 animate-in fade-in slide-in-from-top-2 duration-200"
-        >
-          <AlertCircle className="size-4 shrink-0 mt-0.5" />
-          <span>{serverError}</span>
+      {verifyError === "expired" && !serverError && (
+        <AuthAlert
+          variant="error"
+          message="Ce lien de confirmation a expiré. Demandez un nouvel e-mail de confirmation ci-dessous."
+        />
+      )}
+
+      {verifyError === "invalid" && !serverError && (
+        <AuthAlert
+          variant="error"
+          message="Ce lien de confirmation est invalide ou introuvable."
+        />
+      )}
+
+      {serverError && <AuthAlert variant="error" message={serverError} />}
+
+      {resendFeedback && (
+        <AuthAlert
+          variant={resendFeedback.variant}
+          message={resendFeedback.message}
+        />
+      )}
+
+      {showResendAction && (
+        <div className="flex items-center justify-between gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs">
+          <span className="text-slate-600 truncate">
+            E-mail non reçu{resendTargetEmail ? ` (${resendTargetEmail})` : ""} ?
+          </span>
+          <button
+            type="button"
+            disabled={resending}
+            onClick={handleResendVerification}
+            className="inline-flex shrink-0 items-center gap-1.5 font-semibold text-[#836182] hover:text-[#684b67] disabled:opacity-60 cursor-pointer"
+          >
+            {resending ? (
+              <Loader2 className="size-3.5 animate-spin" aria-hidden />
+            ) : (
+              <Send className="size-3.5" aria-hidden />
+            )}
+            <span>Renvoyer le lien</span>
+          </button>
         </div>
       )}
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-5"
+        className="space-y-3"
         noValidate
         aria-label="Formulaire de connexion"
       >
         {/* Champ Email */}
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           <Label
             htmlFor="login-email"
-            className="text-white/80 text-sm font-medium"
+            className="text-slate-700 text-xs font-semibold"
           >
             Adresse e-mail
           </Label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/40 pointer-events-none" />
+            <Mail
+              className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none"
+              aria-hidden
+            />
             <Input
               id="login-email"
               type="email"
@@ -109,43 +203,36 @@ export default function LoginForm() {
               aria-describedby={errors.email ? "login-email-error" : undefined}
               {...register("email")}
               className={cn(
-                "h-11 pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/30",
-                "focus-visible:border-[#b9939e] focus-visible:ring-[#b9939e]/20",
-                "transition-all duration-200",
-                errors.email && "border-red-400/60 ring-2 ring-red-400/20"
+                AUTH_INPUT_CLASS,
+                "pl-9.5",
+                errors.email && AUTH_FIELD_ERROR_CLASS
               )}
             />
           </div>
-          {errors.email && (
-            <p
-              id="login-email-error"
-              role="alert"
-              className="flex items-center gap-1.5 text-xs text-red-400 animate-in fade-in slide-in-from-top-1 duration-200"
-            >
-              <span className="size-1 rounded-full bg-red-400 inline-block" />
-              {errors.email.message}
-            </p>
-          )}
+          <AuthFieldError id="login-email-error" message={errors.email?.message} />
         </div>
 
         {/* Champ Mot de passe */}
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <div className="flex items-center justify-between gap-2">
             <Label
               htmlFor="login-password"
-              className="text-white/80 text-sm font-medium"
+              className="text-slate-700 text-xs font-semibold"
             >
               Mot de passe
             </Label>
             <Link
               href="/auth/forgot-password"
-              className="text-xs text-[#b9939e] hover:text-white transition-colors duration-200 underline-offset-4 hover:underline"
+              className="text-xs font-semibold text-[#836182] hover:text-[#684b67] transition-colors underline-offset-4 hover:underline"
             >
               Mot de passe oublié ?
             </Link>
           </div>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-white/40 pointer-events-none" />
+            <Lock
+              className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none"
+              aria-hidden
+            />
             <Input
               id="login-password"
               type={showPassword ? "text" : "password"}
@@ -157,10 +244,9 @@ export default function LoginForm() {
               }
               {...register("password")}
               className={cn(
-                "h-11 pl-10 pr-11 bg-white/10 border-white/20 text-white placeholder:text-white/30",
-                "focus-visible:border-[#b9939e] focus-visible:ring-[#b9939e]/20",
-                "transition-all duration-200",
-                errors.password && "border-red-400/60 ring-2 ring-red-400/20"
+                AUTH_INPUT_CLASS,
+                "pl-9.5 pr-10",
+                errors.password && AUTH_FIELD_ERROR_CLASS
               )}
             />
             <button
@@ -171,62 +257,47 @@ export default function LoginForm() {
                   : "Afficher le mot de passe"
               }
               onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/80 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b9939e]/50 rounded"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors p-1 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#836182]/40 cursor-pointer"
             >
               {showPassword ? (
-                <EyeOff className="size-4" />
+                <EyeOff className="size-4" aria-hidden />
               ) : (
-                <Eye className="size-4" />
+                <Eye className="size-4" aria-hidden />
               )}
             </button>
           </div>
-          {errors.password && (
-            <p
-              id="login-password-error"
-              role="alert"
-              className="flex items-center gap-1.5 text-xs text-red-400 animate-in fade-in slide-in-from-top-1 duration-200"
-            >
-              <span className="size-1 rounded-full bg-red-400 inline-block" />
-              {errors.password.message}
-            </p>
-          )}
+          <AuthFieldError
+            id="login-password-error"
+            message={errors.password?.message}
+          />
         </div>
 
         {/* Bouton de soumission */}
         <Button
           type="submit"
-          disabled={isPending}
-          size="xl"
-          className={cn(
-            "w-full group relative overflow-hidden",
-            "bg-gradient-to-r from-[#836182] to-[#b9939e]",
-            "hover:from-[#9a7396] hover:to-[#c9a3ae]",
-            "text-white font-semibold tracking-wide",
-            "shadow-lg shadow-[#836182]/30",
-            "transition-all duration-300",
-            "focus-visible:ring-[#b9939e]/50"
-          )}
+          disabled={isSubmitting}
+          className="w-full h-10 mt-1 rounded-xl bg-[#836182] hover:bg-[#6f4f6e] text-white font-semibold shadow-md shadow-[#836182]/20 transition-all cursor-pointer"
         >
-          {isPending ? (
+          {isSubmitting ? (
             <>
-              <Loader2 className="size-4 animate-spin" />
+              <Loader2 className="size-4 animate-spin" aria-hidden />
               Connexion en cours…
             </>
           ) : (
             <>
-              Se connecter
-              <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+              <span>Se connecter</span>
+              <ArrowRight className="size-4" aria-hidden />
             </>
           )}
         </Button>
       </form>
 
       {/* Lien vers l'inscription */}
-      <p className="text-center text-sm text-white/50">
+      <p className="text-center text-xs text-slate-500">
         Pas encore de compte ?{" "}
         <Link
           href="/auth/register"
-          className="text-[#b9939e] hover:text-white font-medium transition-colors duration-200 underline-offset-4 hover:underline"
+          className="text-[#836182] hover:text-[#684b67] font-semibold transition-colors underline-offset-4 hover:underline"
         >
           Créer un compte
         </Link>

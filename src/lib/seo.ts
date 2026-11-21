@@ -113,6 +113,12 @@ export const siteRoutes = [
   { path: "/wro", priority: 0.85, changeFrequency: "monthly" as const },
   // Correction : la route réelle est /ai4good (pas /ia4good)
   { path: "/ai4good", priority: 0.85, changeFrequency: "monthly" as const },
+  { path: "/cgu", priority: 0.3, changeFrequency: "yearly" as const },
+  {
+    path: "/politique-de-confidentialite",
+    priority: 0.3,
+    changeFrequency: "yearly" as const,
+  },
 ];
 
 type CreatePageMetadataOptions = {

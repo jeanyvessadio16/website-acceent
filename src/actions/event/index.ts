@@ -19,6 +19,7 @@ import {
   type CreateEventInput,
   type UpdateEventInput,
 } from "@/validation/event";
+import { optionalPhoneFieldSchema } from "@/validation/patterns";
 
 function generateTicketCode(): string {
   const random = crypto.randomBytes(3).toString("hex").toUpperCase();
@@ -230,6 +231,19 @@ export async function registerForEventAction(eventId: string, phone?: string) {
     return { success: false, message: "Connectez-vous pour vous inscrire à cet événement." };
   }
 
+  let sanitizedPhone: string | null = null;
+  if (phone !== undefined && phone.trim().length > 0) {
+    const phoneParsed = optionalPhoneFieldSchema.safeParse(phone);
+    if (!phoneParsed.success) {
+      return {
+        success: false,
+        message:
+          phoneParsed.error.issues[0]?.message || "Numéro de téléphone invalide.",
+      };
+    }
+    sanitizedPhone = phoneParsed.data?.trim() || null;
+  }
+
   try {
     const txResult = await prisma.$transaction(async (tx) => {
       const ev = await tx.event.findUnique({
@@ -262,7 +276,7 @@ export async function registerForEventAction(eventId: string, phone?: string) {
           eventId,
           userId: session.userId,
           ticketCode,
-          phone: phone?.trim() || null,
+          phone: sanitizedPhone,
         },
       });
 

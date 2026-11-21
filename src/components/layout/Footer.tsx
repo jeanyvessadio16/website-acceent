@@ -130,10 +130,13 @@ export default function Footer() {
             © {currentYear} ACCEENT. Tous droits réservés.
           </p>
           <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500">
-            <Link href="#" className="transition-colors hover:text-white">
-              Mentions légales
+            <Link href="/cgu" className="transition-colors hover:text-white">
+              CGU
             </Link>
-            <Link href="#" className="transition-colors hover:text-white">
+            <Link
+              href="/politique-de-confidentialite"
+              className="transition-colors hover:text-white"
+            >
               Politique de confidentialité
             </Link>
             <CookieSettingsButton />

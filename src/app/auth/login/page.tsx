@@ -1,5 +1,7 @@
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 import { createPageMetadata } from "@/lib/seo";
+import { getSession } from "@/lib/session";
 import LoginForm from "@/components/auth/LoginForm";
 
 export const metadata = createPageMetadata({
@@ -10,7 +12,16 @@ export const metadata = createPageMetadata({
   keywords: ["connexion ACCEENT", "se connecter", "espace membre ACCEENT"],
 });
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const session = await getSession();
+  if (session) {
+    redirect(
+      session.role === "ADMIN" || session.role === "AUTHOR"
+        ? "/admin"
+        : "/dashboard"
+    );
+  }
+
   return (
     <Suspense>
       <LoginForm />

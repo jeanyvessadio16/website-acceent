@@ -10,11 +10,15 @@ import { submitApplicationSchema } from "@/validation/application";
 import { createEventSchema } from "@/validation/event";
 import { subscribeNewsletterSchema } from "@/validation/newsletter";
 import { contactSchema } from "@/validation/contact";
-import { updateProfileSchema } from "@/validation/user";
+import {
+  adminCreateUserSchema,
+  adminUpdateUserSchema,
+  updateProfileSchema,
+} from "@/validation/user";
 import { partnerSchema, testimonialSchema } from "@/validation/showcase";
 
 describe("Validation Schemas (Zod v4 + Regex)", () => {
-  it("valide l'inscription complète avec âge, sexe, milieu, téléphone et SDH", () => {
+  it("valide l'inscription complète avec âge, sexe, milieu, téléphone, SDH et CGU", () => {
     const valid = registerSchema.safeParse({
       firstname: "Awa",
       lastname: "Diatta-Ndiaye",
@@ -24,9 +28,37 @@ describe("Validation Schemas (Zod v4 + Regex)", () => {
       milieuResidence: "URBAIN",
       telephone: "+221 77 123 45 67",
       sdh: false,
+      acceptCgu: true,
       password: "Password1@",
     });
     assert.equal(valid.success, true);
+    if (valid.success) {
+      assert.equal(valid.data.telephone, "+221771234567");
+    }
+
+    // Normalisation canonique du téléphone pour garantir l'unicité
+    for (const phoneVariant of [
+      "77 123 45 67",
+      "00221 77 123 45 67",
+      "+221771234567",
+    ]) {
+      const normalizedRes = registerSchema.safeParse({
+        firstname: "Awa",
+        lastname: "Diatta-Ndiaye",
+        email: "awa@acceent.org",
+        age: 24,
+        sexe: "FEMME",
+        milieuResidence: "URBAIN",
+        telephone: phoneVariant,
+        sdh: false,
+        acceptCgu: true,
+        password: "Password1@",
+      });
+      assert.equal(normalizedRes.success, true);
+      if (normalizedRes.success) {
+        assert.equal(normalizedRes.data.telephone, "+221771234567");
+      }
+    }
 
     // Prénom contenant des chiffres ou balises HTML rejeté
     assert.equal(
@@ -39,6 +71,7 @@ describe("Validation Schemas (Zod v4 + Regex)", () => {
         milieuResidence: "RURAL",
         telephone: "+221 77 123 45 67",
         sdh: true,
+        acceptCgu: true,
         password: "Password1@",
       }).success,
       false
@@ -55,6 +88,7 @@ describe("Validation Schemas (Zod v4 + Regex)", () => {
         milieuResidence: "RURAL",
         telephone: "+221 77 123 45 67",
         sdh: false,
+        acceptCgu: true,
         password: "Password1@",
       }).success,
       false
@@ -70,6 +104,39 @@ describe("Validation Schemas (Zod v4 + Regex)", () => {
         sexe: "FEMME",
         milieuResidence: "RURAL",
         telephone: "+221 12 345 67 89",
+        sdh: false,
+        acceptCgu: true,
+        password: "Password1@",
+      }).success,
+      false
+    );
+
+    // Refus si CGU non acceptées ou omises
+    assert.equal(
+      registerSchema.safeParse({
+        firstname: "Awa",
+        lastname: "Diatta",
+        email: "awa@acceent.org",
+        age: 22,
+        sexe: "FEMME",
+        milieuResidence: "URBAIN",
+        telephone: "+221 77 123 45 67",
+        sdh: false,
+        acceptCgu: false,
+        password: "Password1@",
+      }).success,
+      false
+    );
+
+    assert.equal(
+      registerSchema.safeParse({
+        firstname: "Awa",
+        lastname: "Diatta",
+        email: "awa@acceent.org",
+        age: 22,
+        sexe: "FEMME",
+        milieuResidence: "URBAIN",
+        telephone: "+221 77 123 45 67",
         sdh: false,
         password: "Password1@",
       }).success,
@@ -102,6 +169,132 @@ describe("Validation Schemas (Zod v4 + Regex)", () => {
         sexe: "HOMME",
         milieuResidence: "RURAL",
         telephone: "abc-invalid",
+        sdh: false,
+      }).success,
+      false
+    );
+
+    // Téléphone obligatoire rejeté si vide
+    assert.equal(
+      updateProfileSchema.safeParse({
+        firstname: "Moussa",
+        lastname: "Sarr",
+        email: "moussa@acceent.org",
+        age: 28,
+        sexe: "HOMME",
+        milieuResidence: "RURAL",
+        telephone: "",
+        sdh: false,
+      }).success,
+      false
+    );
+
+    // Champs socio-démographiques obligatoires dans updateProfile / adminCreate / adminUpdate
+    assert.equal(
+      updateProfileSchema.safeParse({
+        firstname: "Moussa",
+        lastname: "Sarr",
+        email: "moussa@acceent.org",
+        age: null,
+        sexe: "HOMME",
+        milieuResidence: "RURAL",
+        telephone: "781234567",
+        sdh: false,
+      }).success,
+      false
+    );
+
+    assert.equal(
+      adminCreateUserSchema.safeParse({
+        firstname: "Marie",
+        lastname: "Dupont",
+        email: "marie@acceent.org",
+        password: "Password1@",
+        role: "USER",
+        age: 24,
+        sexe: "FEMME",
+        milieuResidence: "URBAIN",
+        telephone: "+221 77 123 45 67",
+        sdh: false,
+      }).success,
+      true
+    );
+
+    assert.equal(
+      adminCreateUserSchema.safeParse({
+        firstname: "Marie",
+        lastname: "Dupont",
+        email: "marie@acceent.org",
+        password: "Password1@",
+        role: "USER",
+        age: 24,
+        sexe: "FEMME",
+        milieuResidence: "URBAIN",
+        telephone: "",
+        sdh: false,
+      }).success,
+      false
+    );
+
+    assert.equal(
+      adminCreateUserSchema.safeParse({
+        firstname: "Marie",
+        lastname: "Dupont",
+        email: "marie@acceent.org",
+        password: "Password1@",
+        role: "USER",
+        age: 24,
+        sexe: "",
+        milieuResidence: "URBAIN",
+        telephone: "+221 77 123 45 67",
+        sdh: false,
+      }).success,
+      false
+    );
+
+    assert.equal(
+      adminUpdateUserSchema.safeParse({
+        id: "550e8400-e29b-41d4-a716-446655440000",
+        firstname: "Marie",
+        lastname: "Dupont",
+        email: "marie@acceent.org",
+        role: "USER",
+        age: 24,
+        sexe: "FEMME",
+        milieuResidence: "RURAL",
+        telephone: "+221 77 123 45 67",
+        sdh: true,
+      }).success,
+      true
+    );
+
+    assert.equal(
+      adminUpdateUserSchema.safeParse({
+        id: "550e8400-e29b-41d4-a716-446655440000",
+        firstname: "Marie",
+        lastname: "Dupont",
+        email: "marie@acceent.org",
+        role: "USER",
+        age: 24,
+        sexe: "FEMME",
+        milieuResidence: "RURAL",
+        telephone: "",
+        sdh: false,
+      }).success,
+      false
+    );
+
+    assert.equal(
+      adminUpdateUserSchema.safeParse({
+        id: "550e8400-e29b-41d4-a716-446655440000",
+        firstname: "Marie",
+        lastname: "Dupont",
+        email: "marie@acceent.org",
+        role: "USER",
+        age: 24,
+        sexe: "FEMME",
+        milieuResidence: null,
+        telephone: "+221 77 123 45 67",
         sdh: false,
       }).success,
       false

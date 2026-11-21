@@ -15,6 +15,7 @@ import { uploadDocument } from "@/services/storage";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { isSafeUrl } from "@/lib/constants/platform";
 
 interface DocumentUploaderProps {
   value: string;
@@ -154,16 +155,18 @@ export function DocumentUploader({
               </div>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <a
-                href={value}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="text-xs text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
-              >
-                <ExternalLink className="size-3" />
-                Ouvrir
-              </a>
+              {isSafeUrl(value) && (
+                <a
+                  href={value}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-xs text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
+                >
+                  <ExternalLink className="size-3" />
+                  Ouvrir
+                </a>
+              )}
               <Button
                 type="button"
                 size="sm"
@@ -199,7 +202,7 @@ export function DocumentUploader({
 
       <Input
         id={id}
-        type="url"
+        type="text"
         required={required}
         placeholder={placeholder}
         value={value}

@@ -1,4 +1,6 @@
+import { redirect } from "next/navigation";
 import { createPageMetadata } from "@/lib/seo";
+import { getSession } from "@/lib/session";
 import RegisterForm from "@/components/auth/RegisterForm";
 
 export const metadata = createPageMetadata({
@@ -14,6 +16,15 @@ export const metadata = createPageMetadata({
   ],
 });
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
+  const session = await getSession();
+  if (session) {
+    redirect(
+      session.role === "ADMIN" || session.role === "AUTHOR"
+        ? "/admin"
+        : "/dashboard"
+    );
+  }
+
   return <RegisterForm />;
 }

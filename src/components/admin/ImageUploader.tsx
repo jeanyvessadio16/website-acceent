@@ -16,6 +16,7 @@ import { uploadImage } from "@/services/storage";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { isSafeUrl } from "@/lib/constants/platform";
 
 interface ImageUploaderProps {
   value: string;
@@ -151,14 +152,16 @@ export function ImageUploader({
         {value ? (
           <div className="w-full flex flex-col sm:flex-row items-center gap-4">
             <div className="relative size-20 shrink-0 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 bg-slate-200 dark:bg-slate-900">
-              <img
-                src={value}
-                alt="Aperçu"
-                className="size-full object-cover"
-                onError={(e) => {
-                  (e.target as HTMLElement).style.display = "none";
-                }}
-              />
+              {isSafeUrl(value) && (
+                <img
+                  src={value}
+                  alt="Aperçu"
+                  className="size-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLElement).style.display = "none";
+                  }}
+                />
+              )}
             </div>
 
             <div className="flex-1 text-left min-w-0 space-y-2">
@@ -167,16 +170,18 @@ export function ImageUploader({
                   <CheckCircle2 className="size-3" />
                   Image définie
                 </span>
-                <a
-                  href={value}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs flex items-center gap-1"
-                >
-                  <ExternalLink className="size-3" />
-                  Voir
-                </a>
+                {isSafeUrl(value) && (
+                  <a
+                    href={value}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs flex items-center gap-1"
+                  >
+                    <ExternalLink className="size-3" />
+                    Voir
+                  </a>
+                )}
               </div>
 
               <p className="text-xs text-slate-600 dark:text-slate-400 truncate font-mono bg-white dark:bg-slate-900 p-1.5 rounded border border-slate-200 dark:border-slate-700 select-all">

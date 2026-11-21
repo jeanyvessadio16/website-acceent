@@ -37,7 +37,6 @@ const sdhFieldSchema = z.boolean({
 export const updateProfileSchema = z.object({
   firstname: personNameSchema("Le prénom"),
   lastname: personNameSchema("Le nom"),
-  email: emailFieldSchema,
   age: requiredAgeFieldSchema,
   sexe: SexeSchema,
   milieuResidence: MilieuResidenceSchema,

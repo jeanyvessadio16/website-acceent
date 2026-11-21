@@ -64,7 +64,6 @@ export async function updateProfileAction(data: UpdateProfileInput) {
   const {
     firstname,
     lastname,
-    email,
     password,
     age,
     sexe,
@@ -76,46 +75,29 @@ export async function updateProfileAction(data: UpdateProfileInput) {
   try {
     const existing = await prisma.user.findFirst({
       where: {
-        OR: [{ email }, { telephone }],
+        telephone,
         NOT: { id: guard.session.userId },
       },
-      select: { email: true, telephone: true },
+      select: { id: true },
     });
     if (existing) {
-      if (existing.email === email) {
-        return fail(
-          "Cette adresse e-mail est déjà utilisée par un autre compte.",
-          "CONFLICT"
-        );
-      }
       return fail(
         "Ce numéro de téléphone est déjà utilisé par un autre compte.",
         "CONFLICT"
       );
     }
 
-    const emailChanged = email !== guard.session.email.toLowerCase();
     const passwordChanged = Boolean(password && password.length > 0);
 
-    if (emailChanged || passwordChanged) {
+    if (passwordChanged) {
       const supabase = await createSupabaseServerClient();
       const { error: authError } = await supabase.auth.updateUser({
-        ...(emailChanged ? { email } : {}),
-        ...(passwordChanged ? { password } : {}),
+        password,
       });
 
       if (authError) {
-        if (
-          authError.code === "email_exists" ||
-          /already registered|already been registered/i.test(authError.message)
-        ) {
-          return fail(
-            "Cette adresse e-mail est déjà utilisée par un autre compte.",
-            "CONFLICT"
-          );
-        }
         return fail(
-          "Impossible de mettre à jour les identifiants Supabase Auth. Veuillez réessayer.",
+          "Impossible de mettre à jour le mot de passe dans Supabase Auth. Veuillez réessayer.",
           "VALIDATION_ERROR"
         );
       }
@@ -126,7 +108,6 @@ export async function updateProfileAction(data: UpdateProfileInput) {
       data: {
         firstname,
         lastname,
-        ...(emailChanged ? {} : { email }),
         age,
         sexe: sexe as Sexe,
         milieuResidence: milieuResidence as MilieuResidence,
@@ -141,7 +122,7 @@ export async function updateProfileAction(data: UpdateProfileInput) {
       action: "PROFILE_UPDATED",
       entity: "User",
       entityId: updatedUser.id,
-      metadata: { emailChanged, passwordChanged },
+      metadata: { passwordChanged },
     });
 
     revalidatePath("/admin");
@@ -149,11 +130,7 @@ export async function updateProfileAction(data: UpdateProfileInput) {
     revalidatePath("/admin/utilisateurs");
     revalidatePath("/dashboard/profil");
 
-    return ok(
-      emailChanged
-        ? "Informations mises à jour ! Un e-mail de confirmation peut être requis pour finaliser le changement d'adresse."
-        : "Vos informations ont été mises à jour avec succès !"
-    );
+    return ok("Vos informations ont été mises à jour avec succès !");
   } catch (error) {
     return handleActionError(
       "actions.user.updateProfile",

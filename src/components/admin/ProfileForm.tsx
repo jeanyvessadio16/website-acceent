@@ -34,7 +34,6 @@ interface ProfileFormProps {
 export function ProfileForm({ initialUser }: ProfileFormProps) {
   const [firstname, setFirstname] = useState(initialUser.firstname);
   const [lastname, setLastname] = useState(initialUser.lastname);
-  const [email, setEmail] = useState(initialUser.email);
   const [ageStr, setAgeStr] = useState(String(initialUser.age));
   const [sexe, setSexe] = useState<"HOMME" | "FEMME">(initialUser.sexe);
   const [milieuResidence, setMilieuResidence] = useState<"RURAL" | "URBAIN">(
@@ -66,7 +65,6 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
     const payload = {
       firstname,
       lastname,
-      email,
       age: parsedAge,
       sexe,
       milieuResidence,
@@ -174,19 +172,24 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <Label htmlFor="profile-email" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
-              Adresse e-mail *
+              Adresse e-mail
             </Label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none" />
               <Input
                 id="profile-email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="h-10 pl-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+                value={initialUser.email}
+                readOnly
+                disabled
+                aria-readonly="true"
+                className="h-10 pl-10 pr-9 bg-slate-100 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 cursor-not-allowed"
               />
+              <Lock className="absolute right-3 top-1/2 -translate-y-1/2 size-3.5 text-slate-400 pointer-events-none" aria-hidden />
             </div>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400">
+              L&apos;adresse e-mail ne peut pas être modifiée après l&apos;inscription.
+            </p>
           </div>
 
           <div className="space-y-1.5">

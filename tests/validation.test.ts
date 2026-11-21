@@ -149,7 +149,6 @@ describe("Validation Schemas (Zod v4 + Regex)", () => {
       updateProfileSchema.safeParse({
         firstname: "Moussa",
         lastname: "Sarr",
-        email: "moussa@acceent.org",
         age: 28,
         sexe: "HOMME",
         milieuResidence: "RURAL",
@@ -160,11 +159,26 @@ describe("Validation Schemas (Zod v4 + Regex)", () => {
       true
     );
 
+    // L'adresse e-mail ne peut plus être modifiée par l'utilisateur connecté et est ignorée si injectée
+    const strippedEmailResult = updateProfileSchema.safeParse({
+      firstname: "Moussa",
+      lastname: "Sarr",
+      email: "autre@acceent.org",
+      age: 28,
+      sexe: "HOMME",
+      milieuResidence: "RURAL",
+      telephone: "781234567",
+      sdh: true,
+    });
+    assert.equal(strippedEmailResult.success, true);
+    if (strippedEmailResult.success) {
+      assert.equal("email" in strippedEmailResult.data, false);
+    }
+
     assert.equal(
       updateProfileSchema.safeParse({
         firstname: "Moussa",
         lastname: "Sarr",
-        email: "moussa@acceent.org",
         age: 28,
         sexe: "HOMME",
         milieuResidence: "RURAL",
@@ -179,7 +193,6 @@ describe("Validation Schemas (Zod v4 + Regex)", () => {
       updateProfileSchema.safeParse({
         firstname: "Moussa",
         lastname: "Sarr",
-        email: "moussa@acceent.org",
         age: 28,
         sexe: "HOMME",
         milieuResidence: "RURAL",
@@ -194,7 +207,6 @@ describe("Validation Schemas (Zod v4 + Regex)", () => {
       updateProfileSchema.safeParse({
         firstname: "Moussa",
         lastname: "Sarr",
-        email: "moussa@acceent.org",
         age: null,
         sexe: "HOMME",
         milieuResidence: "RURAL",

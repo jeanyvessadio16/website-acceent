@@ -1,8 +1,9 @@
 import prisma from "@/lib/prisma";
 import { formatDateFr, logger } from "@/lib/core";
-import type {
-  ApplicationStatusKey,
-  ProgramPoleKey,
+import {
+  APPLICATION_STATUSES,
+  type ApplicationStatusKey,
+  type ProgramPoleKey,
 } from "@/lib/constants/platform";
 
 export interface PoleBreakdownItem {
@@ -10,6 +11,80 @@ export interface PoleBreakdownItem {
   articlesCount: number;
   applicationsCount: number;
   resourcesCount: number;
+}
+
+export interface MonthlyTrendPoint {
+  month: string;
+  membres: number;
+  candidatures: number;
+  publications: number;
+  inscriptions: number;
+}
+
+export interface ApplicationStatusItem {
+  status: ApplicationStatusKey;
+  label: string;
+  count: number;
+  color: string;
+}
+
+export interface AdminDemographics {
+  bySexe: Array<{ name: string; value: number; color: string }>;
+  byMilieu: Array<{ name: string; value: number; color: string }>;
+  byAgeGroup: Array<{ group: string; count: number }>;
+  byRole: Array<{ role: string; label: string; count: number; color: string }>;
+  sdhCount: number;
+  verifiedUsersCount: number;
+}
+
+export interface RecentAuditItem {
+  id: string;
+  action: string;
+  entity: string;
+  actorEmail: string | null;
+  actorRole: string | null;
+  date: string;
+}
+
+const STATUS_CHART_COLORS: Record<ApplicationStatusKey, string> = {
+  PENDING: "#f59e0b",
+  REVIEWING: "#0ea5e9",
+  INTERVIEW: "#836182",
+  ACCEPTED: "#10b981",
+  REJECTED: "#f43f5e",
+};
+
+const ORDERED_STATUSES: ApplicationStatusKey[] = [
+  "PENDING",
+  "REVIEWING",
+  "INTERVIEW",
+  "ACCEPTED",
+  "REJECTED",
+];
+
+function createEmptySixMonthBuckets(now: Date) {
+  const monthFormatter = new Intl.DateTimeFormat("fr-FR", { month: "short" });
+  const buckets: Array<MonthlyTrendPoint & { key: string }> = [];
+  const map = new Map<string, MonthlyTrendPoint & { key: string }>();
+
+  for (let offset = 5; offset >= 0; offset -= 1) {
+    const d = new Date(now.getFullYear(), now.getMonth() - offset, 1);
+    const key = `${d.getFullYear()}-${d.getMonth()}`;
+    const rawLabel = monthFormatter.format(d).replace(/\.$/, "");
+    const month = rawLabel.charAt(0).toUpperCase() + rawLabel.slice(1);
+    const item = {
+      key,
+      month,
+      membres: 0,
+      candidatures: 0,
+      publications: 0,
+      inscriptions: 0,
+    };
+    buckets.push(item);
+    map.set(key, item);
+  }
+
+  return { buckets, map };
 }
 
 export interface AdminDashboardData {
@@ -63,11 +138,17 @@ export interface AdminDashboardData {
     registrationsCount: number;
   }>;
   poleBreakdown: PoleBreakdownItem[];
+  monthlyTrend: MonthlyTrendPoint[];
+  applicationStatusBreakdown: ApplicationStatusItem[];
+  demographics: AdminDemographics;
+  recentAuditLogs: RecentAuditItem[];
 }
 
 export async function getAdminDashboardData(): Promise<AdminDashboardData> {
+  const now = new Date();
+  const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
+
   try {
-    const now = new Date();
     const [
       usersCount,
       publishedArticlesCount,
@@ -93,6 +174,13 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
       eduRes,
       entRes,
       numRes,
+      trendUsers,
+      trendApps,
+      trendPosts,
+      trendRegs,
+      appStatusGroups,
+      allUsersDemo,
+      recAuditLogs,
     ] = await Promise.all([
       prisma.user.count(),
       prisma.post.count({ where: { published: true } }),
@@ -167,7 +255,161 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
       prisma.resource.count({ where: { pole: "EDUCATION" } }),
       prisma.resource.count({ where: { pole: "ENTREPRENEURIAT" } }),
       prisma.resource.count({ where: { pole: "NUMERIQUE" } }),
+      prisma.user.findMany({
+        where: { createdAt: { gte: sixMonthsAgo } },
+        select: { createdAt: true },
+      }),
+      prisma.programApplication.findMany({
+        where: { createdAt: { gte: sixMonthsAgo } },
+        select: { createdAt: true },
+      }),
+      prisma.post.findMany({
+        where: { createdAt: { gte: sixMonthsAgo } },
+        select: { createdAt: true },
+      }),
+      prisma.eventRegistration.findMany({
+        where: { createdAt: { gte: sixMonthsAgo } },
+        select: { createdAt: true },
+      }),
+      prisma.programApplication.groupBy({
+        by: ["status"],
+        _count: { _all: true },
+      }),
+      prisma.user.findMany({
+        select: {
+          age: true,
+          sexe: true,
+          milieuResidence: true,
+          sdh: true,
+          role: true,
+          emailVerifiedAt: true,
+        },
+      }),
+      prisma.auditLog.findMany({
+        take: 6,
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          action: true,
+          entity: true,
+          actorEmail: true,
+          actorRole: true,
+          createdAt: true,
+        },
+      }),
     ]);
+
+    const { buckets, map: bucketMap } = createEmptySixMonthBuckets(now);
+    const bumpMonth = (
+      date: Date,
+      field: "membres" | "candidatures" | "publications" | "inscriptions"
+    ) => {
+      const key = `${date.getFullYear()}-${date.getMonth()}`;
+      const bucket = bucketMap.get(key);
+      if (bucket) {
+        bucket[field] += 1;
+      }
+    };
+
+    for (const row of trendUsers) bumpMonth(row.createdAt, "membres");
+    for (const row of trendApps) bumpMonth(row.createdAt, "candidatures");
+    for (const row of trendPosts) bumpMonth(row.createdAt, "publications");
+    for (const row of trendRegs) bumpMonth(row.createdAt, "inscriptions");
+
+    const monthlyTrend: MonthlyTrendPoint[] = buckets.map(
+      ({ month, membres, candidatures, publications, inscriptions }) => ({
+        month,
+        membres,
+        candidatures,
+        publications,
+        inscriptions,
+      })
+    );
+
+    const statusCountMap = new Map<ApplicationStatusKey, number>();
+    for (const g of appStatusGroups) {
+      statusCountMap.set(g.status as ApplicationStatusKey, g._count._all);
+    }
+    const applicationStatusBreakdown: ApplicationStatusItem[] = ORDERED_STATUSES.map(
+      (status) => ({
+        status,
+        label: APPLICATION_STATUSES[status].label,
+        count: statusCountMap.get(status) ?? 0,
+        color: STATUS_CHART_COLORS[status],
+      })
+    );
+
+    let hommes = 0;
+    let femmes = 0;
+    let urbain = 0;
+    let rural = 0;
+    let age10_17 = 0;
+    let age18_24 = 0;
+    let age25_34 = 0;
+    let age35Plus = 0;
+    let roleUser = 0;
+    let roleAuthor = 0;
+    let roleAdmin = 0;
+    let sdhCount = 0;
+    let verifiedUsersCount = 0;
+
+    for (const u of allUsersDemo) {
+      if (u.sexe === "HOMME") hommes += 1;
+      else if (u.sexe === "FEMME") femmes += 1;
+
+      if (u.milieuResidence === "URBAIN") urbain += 1;
+      else if (u.milieuResidence === "RURAL") rural += 1;
+
+      if (u.age <= 17) age10_17 += 1;
+      else if (u.age <= 24) age18_24 += 1;
+      else if (u.age <= 34) age25_34 += 1;
+      else age35Plus += 1;
+
+      if (u.role === "ADMIN") roleAdmin += 1;
+      else if (u.role === "AUTHOR") roleAuthor += 1;
+      else roleUser += 1;
+
+      if (u.sdh) sdhCount += 1;
+      if (u.emailVerifiedAt) verifiedUsersCount += 1;
+    }
+
+    const demographics: AdminDemographics = {
+      bySexe: [
+        { name: "Hommes", value: hommes, color: "#0ea5e9" },
+        { name: "Femmes", value: femmes, color: "#836182" },
+      ],
+      byMilieu: [
+        { name: "Urbain", value: urbain, color: "#10b981" },
+        { name: "Rural", value: rural, color: "#f59e0b" },
+      ],
+      byAgeGroup: [
+        { group: "10-17", count: age10_17 },
+        { group: "18-24", count: age18_24 },
+        { group: "25-34", count: age25_34 },
+        { group: "35+", count: age35Plus },
+      ],
+      byRole: [
+        { role: "USER", label: "Membres", count: roleUser, color: "#0ea5e9" },
+        { role: "AUTHOR", label: "Auteurs", count: roleAuthor, color: "#e08637" },
+        { role: "ADMIN", label: "Admins", count: roleAdmin, color: "#836182" },
+      ],
+      sdhCount,
+      verifiedUsersCount,
+    };
+
+    const recentAuditLogs: RecentAuditItem[] = recAuditLogs.map((log) => ({
+      id: log.id,
+      action: log.action,
+      entity: log.entity,
+      actorEmail: log.actorEmail,
+      actorRole: log.actorRole,
+      date: formatDateFr(log.createdAt, {
+        day: "numeric",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    }));
 
     return {
       dbError: false,
@@ -257,9 +499,14 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
           resourcesCount: numRes,
         },
       ],
+      monthlyTrend,
+      applicationStatusBreakdown,
+      demographics,
+      recentAuditLogs,
     };
   } catch (error) {
     logger.error("dashboard.repository", "Erreur lors du chargement du tableau de bord admin", error);
+    const { buckets } = createEmptySixMonthBuckets(now);
     return {
       dbError: true,
       usersCount: 0,
@@ -282,6 +529,45 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
         { pole: "ENTREPRENEURIAT", articlesCount: 0, applicationsCount: 0, resourcesCount: 0 },
         { pole: "NUMERIQUE", articlesCount: 0, applicationsCount: 0, resourcesCount: 0 },
       ],
+      monthlyTrend: buckets.map(
+        ({ month, membres, candidatures, publications, inscriptions }) => ({
+          month,
+          membres,
+          candidatures,
+          publications,
+          inscriptions,
+        })
+      ),
+      applicationStatusBreakdown: ORDERED_STATUSES.map((status) => ({
+        status,
+        label: APPLICATION_STATUSES[status].label,
+        count: 0,
+        color: STATUS_CHART_COLORS[status],
+      })),
+      demographics: {
+        bySexe: [
+          { name: "Hommes", value: 0, color: "#0ea5e9" },
+          { name: "Femmes", value: 0, color: "#836182" },
+        ],
+        byMilieu: [
+          { name: "Urbain", value: 0, color: "#10b981" },
+          { name: "Rural", value: 0, color: "#f59e0b" },
+        ],
+        byAgeGroup: [
+          { group: "10-17", count: 0 },
+          { group: "18-24", count: 0 },
+          { group: "25-34", count: 0 },
+          { group: "35+", count: 0 },
+        ],
+        byRole: [
+          { role: "USER", label: "Membres", count: 0, color: "#0ea5e9" },
+          { role: "AUTHOR", label: "Auteurs", count: 0, color: "#e08637" },
+          { role: "ADMIN", label: "Admins", count: 0, color: "#836182" },
+        ],
+        sdhCount: 0,
+        verifiedUsersCount: 0,
+      },
+      recentAuditLogs: [],
     };
   }
 }

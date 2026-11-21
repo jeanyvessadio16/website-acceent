@@ -143,13 +143,11 @@ export interface OverviewExcelPayload {
   users: Array<{
     fullName: string;
     email: string;
-    role: string;
     age: number;
     sexe: string;
     milieuResidence: string;
     telephone: string;
     sdh: boolean;
-    newsletterOptIn: boolean;
     date: string;
   }>;
 }
@@ -234,34 +232,30 @@ export async function buildAdminOverviewWorkbook(
 
   // 5. Membres
   const usersSheet = workbook.addWorksheet("Membres");
-  addTitleBanner(usersSheet, "ACCEENT — Communauté & Rôles", `${payload.users.length} utilisateur(s)`, 10);
+  addTitleBanner(usersSheet, "ACCEENT — Communauté", `${payload.users.length} utilisateur(s)`, 8);
   usersSheet.addRow([
     "Nom complet",
     "E-mail",
-    "Rôle",
     "Âge",
     "Sexe",
     "Milieu de résidence",
     "Téléphone",
     "SDH",
-    "Newsletter",
     "Date d'inscription",
   ]);
   for (const u of payload.users) {
     usersSheet.addRow([
       sanitizeExcelValue(u.fullName),
       sanitizeExcelValue(u.email),
-      sanitizeExcelValue(u.role),
       sanitizeExcelValue(u.age),
       sanitizeExcelValue(u.sexe),
       sanitizeExcelValue(u.milieuResidence),
       sanitizeExcelValue(u.telephone),
       sanitizeExcelValue(u.sdh),
-      sanitizeExcelValue(u.newsletterOptIn),
       sanitizeExcelValue(u.date),
     ]);
   }
-  styleTableSheet(usersSheet, 3, [26, 30, 12, 10, 12, 18, 18, 10, 12, 18]);
+  styleTableSheet(usersSheet, 3, [26, 30, 10, 12, 18, 18, 10, 18]);
 
   return toUint8Array(workbook);
 }
@@ -277,35 +271,31 @@ export async function buildUsersWorkbook(
     sheet,
     "ACCEENT — Annuaire des Utilisateurs",
     `Exporté le ${generatedAt} • ${users.length} compte(s)`,
-    10
+    8
   );
   sheet.addRow([
     "Nom complet",
     "E-mail",
-    "Rôle",
     "Âge",
     "Sexe",
     "Milieu de résidence",
     "Téléphone",
     "SDH",
-    "Newsletter",
     "Date d'inscription",
   ]);
   for (const u of users) {
     sheet.addRow([
       sanitizeExcelValue(u.fullName),
       sanitizeExcelValue(u.email),
-      sanitizeExcelValue(u.role),
       sanitizeExcelValue(u.age),
       sanitizeExcelValue(u.sexe),
       sanitizeExcelValue(u.milieuResidence),
       sanitizeExcelValue(u.telephone),
       sanitizeExcelValue(u.sdh),
-      sanitizeExcelValue(u.newsletterOptIn),
       sanitizeExcelValue(u.date),
     ]);
   }
-  styleTableSheet(sheet, 3, [26, 30, 12, 10, 12, 18, 18, 10, 12, 18]);
+  styleTableSheet(sheet, 3, [26, 30, 10, 12, 18, 18, 10, 18]);
   return toUint8Array(workbook);
 }
 

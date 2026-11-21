@@ -13,5 +13,10 @@ export default async function UserDashboardLayout({
     redirect("/auth/login?callbackUrl=/dashboard");
   }
 
+  // Le compte ADMIN opère exclusivement dans sa console de direction /admin
+  if (session.role === "ADMIN") {
+    redirect("/admin");
+  }
+
   return <>{children}</>;
 }

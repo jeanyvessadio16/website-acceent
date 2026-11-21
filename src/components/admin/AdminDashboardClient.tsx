@@ -7,14 +7,9 @@ import {
   FileText,
   ArrowUpRight,
   CalendarDays,
-  BookOpen,
-  Briefcase,
-  Monitor,
   Plus,
   Globe,
   AlertTriangle,
-  ShieldCheck,
-  CheckCircle2,
   Clock,
   UserPlus,
   ExternalLink,
@@ -25,10 +20,11 @@ import {
   FileSpreadsheet,
   Handshake,
   ShieldAlert,
-  Sparkles,
-  UserCheck,
+  Settings,
+  Layers,
 } from "lucide-react";
 import type { AdminDashboardData } from "@/repositories/dashboard.repository";
+import { AdminAnalyticsCharts } from "@/components/admin/AdminAnalyticsCharts";
 import {
   APPLICATION_STATUSES,
   POST_CATEGORIES,
@@ -58,55 +54,19 @@ interface AdminDashboardClientProps {
   data: AdminDashboardData;
 }
 
-const POLE_CARDS = [
-  {
-    key: "EDUCATION" as const,
-    label: "Éducation",
-    desc: "ACCEENT-Elles & Tut-Tank",
-    href: "/education",
-    icon: BookOpen,
-    barColor: "bg-[#836182]",
-    iconClass:
-      "bg-[#836182]/10 text-[#6d4c6c] border-[#836182]/25 dark:bg-[#836182]/25 dark:text-[#f4e6ea]",
-  },
-  {
-    key: "ENTREPRENEURIAT" as const,
-    label: "Entrepreneuriat",
-    desc: "ACCEENT Incub, Ateliers & Forum",
-    href: "/entreprenariat",
-    icon: Briefcase,
-    barColor: "bg-amber-500",
-    iconClass:
-      "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/30",
-  },
-  {
-    key: "NUMERIQUE" as const,
-    label: "Numérique",
-    desc: "AI4Good & WRO Robotique",
-    href: "/numerique",
-    icon: Monitor,
-    barColor: "bg-cyan-500",
-    iconClass:
-      "bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-500/15 dark:text-cyan-300 dark:border-cyan-500/30",
-  },
-];
-
 export function AdminDashboardClient({ adminName, data }: AdminDashboardClientProps) {
   const publicationRate =
     data.totalArticlesCount > 0
       ? Math.round((data.publishedArticlesCount / data.totalArticlesCount) * 100)
       : 0;
   const draftCount = Math.max(0, data.totalArticlesCount - data.publishedArticlesCount);
-
-  const maxPoleItems = Math.max(
-    1,
-    ...data.poleBreakdown.map(
-      (p) => p.articlesCount + p.applicationsCount + p.resourcesCount
-    )
-  );
+  const verifiedRate =
+    data.usersCount > 0
+      ? Math.round((data.demographics.verifiedUsersCount / data.usersCount) * 100)
+      : 0;
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
+    <div className="space-y-5 max-w-7xl mx-auto">
       {data.dbError && (
         <div className="rounded-2xl border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 p-4 text-amber-900 dark:text-amber-200 flex items-center gap-3">
           <AlertTriangle className="size-5 shrink-0 text-amber-600 dark:text-amber-400" />
@@ -119,246 +79,321 @@ export function AdminDashboardClient({ adminName, data }: AdminDashboardClientPr
         </div>
       )}
 
-      {/* Bannière d'accueil claire & contrastée */}
-      <Card className="border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-white via-white to-[#f4e6ea]/50 dark:from-slate-900 dark:via-slate-900 dark:to-[#836182]/15 shadow-sm">
-        <CardContent className="p-6 sm:p-7 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div className="space-y-2.5 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#836182]/10 border border-[#836182]/25 text-[#6d4c6c] dark:bg-[#836182]/25 dark:border-[#836182]/40 dark:text-[#f4e6ea] text-xs font-bold">
-              <ShieldCheck className="size-3.5" />
-              <span>Administration Plateforme ACCEENT</span>
-              <span className="size-1 rounded-full bg-current opacity-50" />
-              <span className="text-emerald-700 dark:text-emerald-400 inline-flex items-center gap-1">
-                <CheckCircle2 className="size-3" /> Système opérationnel
-              </span>
-            </div>
-
-            <h2 className="text-slate-900 dark:text-white text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Bonjour, {adminName}
-            </h2>
-            <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-              Pilotez les publications, examinez les candidatures aux 7 programmes, suivez les ateliers et exportez vos rapports Excel et PDF en un clic.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
-            <Button
-              asChild
-              className="bg-[#836182] hover:bg-[#6f4f6e] text-white font-semibold rounded-xl h-10 px-4 shadow-xs"
+      {/* Barre d'accueil et actions rapides compacte */}
+      <div className="rounded-2xl border border-slate-800 bg-[#0d111a] text-white px-4 py-3 sm:px-5 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-xs">
+        <div className="flex flex-wrap items-center gap-2.5 min-w-0">
+          <h2 className="text-white text-base sm:text-lg font-bold tracking-tight truncate">
+            Bonjour, {adminName}
+          </h2>
+          {data.pendingAppsCount > 0 && (
+            <Link
+              href="/admin/candidatures"
+              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/35 text-amber-200 hover:bg-amber-500/30 text-[11px] font-semibold transition-colors shrink-0"
             >
-              <Link href="/admin/articles?new=true">
-                <Plus className="size-4 mr-1.5" />
-                Nouvel article
-              </Link>
-            </Button>
+              {data.pendingAppsCount} dossier{data.pendingAppsCount > 1 ? "s" : ""} à statuer
+            </Link>
+          )}
+        </div>
 
-            <Button
-              asChild
-              variant="outline"
-              className="border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 rounded-xl h-10 px-3.5 font-semibold"
-            >
-              <Link href="/admin/utilisateurs?new=true">
-                <UserPlus className="size-4 mr-1.5 text-cyan-600 dark:text-cyan-400" />
-                Membres
-              </Link>
-            </Button>
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <Button
+            asChild
+            size="sm"
+            className="bg-[#836182] hover:bg-[#957094] text-white font-semibold rounded-xl h-8.5 px-3 text-xs border border-white/10"
+          >
+            <Link href="/admin/articles?new=true">
+              <Plus className="size-3.5 mr-1" />
+              Article
+            </Link>
+          </Button>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 rounded-xl h-10 px-3.5 font-semibold cursor-pointer"
-                >
-                  <Download className="size-4 mr-1.5 text-[#836182] dark:text-[#d8b4d7]" />
-                  Rapports
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-60">
-                <DropdownMenuLabel className="text-xs text-slate-500">
-                  Télécharger un rapport
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild className="cursor-pointer">
-                  <a href="/api/admin/export/excel?type=overview" download className="flex items-center gap-2">
-                    <FileSpreadsheet className="size-4 text-emerald-600" />
-                    <span>Synthèse complète (.xlsx)</span>
-                  </a>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="cursor-pointer">
-                  <a href="/api/admin/export/pdf?type=overview" download className="flex items-center gap-2">
-                    <FileText className="size-4 text-rose-600" />
-                    <span>Rapport exécutif (PDF)</span>
-                  </a>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild className="cursor-pointer">
-                  <a href="/api/admin/export/excel?type=applications" download className="flex items-center gap-2">
-                    <ClipboardCheck className="size-4 text-amber-600" />
-                    <span>Candidatures (.xlsx)</span>
-                  </a>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild className="cursor-pointer">
-                  <a href="/api/admin/export/excel?type=users" download className="flex items-center gap-2">
-                    <Users className="size-4 text-cyan-600" />
-                    <span>Annuaire membres (.xlsx)</span>
-                  </a>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <Button
+            asChild
+            size="sm"
+            variant="outline"
+            className="border-white/20 bg-white/10 hover:bg-white/15 text-white hover:text-white rounded-xl h-8.5 px-3 text-xs font-semibold"
+          >
+            <Link href="/admin/utilisateurs?new=true">
+              <UserPlus className="size-3.5 mr-1 text-sky-300" />
+              Utilisateur
+            </Link>
+          </Button>
 
-            <Button
-              asChild
-              variant="ghost"
-              className="text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl h-10 px-3 font-medium"
-            >
-              <Link href="/" target="_blank" rel="noopener noreferrer">
-                <Globe className="size-4 mr-1.5" />
-                Site live
-              </Link>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+          <Button
+            asChild
+            size="sm"
+            variant="outline"
+            className="border-white/20 bg-white/10 hover:bg-white/15 text-white hover:text-white rounded-xl h-8.5 px-3 text-xs font-semibold"
+          >
+            <Link href="/admin/evenements?new=true">
+              <CalendarDays className="size-3.5 mr-1 text-[#f4b072]" />
+              Événement
+            </Link>
+          </Button>
 
-      {/* 4 KPI Cards Haute Visibilité */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
-          <CardContent className="p-5 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Articles publiés
-              </span>
-              <div className="size-9 rounded-xl bg-[#836182]/10 text-[#836182] dark:bg-[#836182]/25 dark:text-[#d8b4d7] flex items-center justify-center">
-                <FileText className="size-4" />
-              </div>
-            </div>
-            <div className="flex items-baseline justify-between gap-2">
-              <p className="text-3xl font-extrabold text-slate-900 dark:text-white tabular-nums">
-                {data.publishedArticlesCount}
-              </p>
-              <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/30">
-                {publicationRate}% en ligne
-              </span>
-            </div>
-            <div className="space-y-1.5">
-              <div className="h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                <div
-                  className="h-full rounded-full bg-[#836182] transition-all"
-                  style={{ width: `${publicationRate}%` }}
-                />
-              </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                {draftCount} brouillon{draftCount > 1 ? "s" : ""} sur {data.totalArticlesCount} articles
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
-          <CardContent className="p-5 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Candidatures
-              </span>
-              <div className="size-9 rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300 flex items-center justify-center">
-                <ClipboardCheck className="size-4" />
-              </div>
-            </div>
-            <div className="flex items-baseline justify-between gap-2">
-              <p className="text-3xl font-extrabold text-slate-900 dark:text-white tabular-nums">
-                {data.pendingAppsCount}
-              </p>
-              <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/30">
-                À traiter
-              </span>
-            </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 pt-1">
-              {data.totalApplicationsCount} dossier{data.totalApplicationsCount > 1 ? "s" : ""} déposé{data.totalApplicationsCount > 1 ? "s" : ""} au total
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
-          <CardContent className="p-5 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Événements &amp; Billets
-              </span>
-              <div className="size-9 rounded-xl bg-cyan-50 text-cyan-700 dark:bg-cyan-500/15 dark:text-cyan-300 flex items-center justify-center">
-                <CalendarDays className="size-4" />
-              </div>
-            </div>
-            <div className="flex items-baseline justify-between gap-2">
-              <p className="text-3xl font-extrabold text-slate-900 dark:text-white tabular-nums">
-                {data.upcomingEventsCount}
-              </p>
-              <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-cyan-50 text-cyan-800 border border-cyan-200 dark:bg-cyan-500/15 dark:text-cyan-300 dark:border-cyan-500/30">
-                À venir
-              </span>
-            </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 pt-1">
-              {data.totalRegistrationsCount} billet{data.totalRegistrationsCount > 1 ? "s" : ""} émis • {data.resourcesCount} ressources
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
-          <CardContent className="p-5 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Communauté ACCEENT
-              </span>
-              <div className="size-9 rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300 flex items-center justify-center">
-                <Users className="size-4" />
-              </div>
-            </div>
-            <div className="flex items-baseline justify-between gap-2">
-              <p className="text-3xl font-extrabold text-slate-900 dark:text-white tabular-nums">
-                {data.usersCount}
-              </p>
-              <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
-                {data.subscribersCount} abonnés
-              </span>
-            </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 pt-1">
-              {data.adminCount} admin{data.adminCount > 1 ? "s" : ""} • {data.authorCount} auteur{data.authorCount > 1 ? "s" : ""}
-            </p>
-          </CardContent>
-        </Card>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                className="border-white/20 bg-white/10 hover:bg-white/15 text-white hover:text-white rounded-xl h-8.5 px-3 text-xs font-semibold cursor-pointer"
+              >
+                <Download className="size-3.5 mr-1 text-emerald-300" />
+                Exports
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-60">
+              <DropdownMenuLabel className="text-xs text-slate-500">
+                Télécharger un rapport
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <a href="/api/admin/export/excel?type=overview" download className="flex items-center gap-2">
+                  <FileSpreadsheet className="size-4 text-emerald-600" />
+                  <span>Synthèse complète (.xlsx)</span>
+                </a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <a href="/api/admin/export/pdf?type=overview" download className="flex items-center gap-2">
+                  <FileText className="size-4 text-rose-600" />
+                  <span>Rapport exécutif (PDF)</span>
+                </a>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <a href="/api/admin/export/excel?type=applications" download className="flex items-center gap-2">
+                  <ClipboardCheck className="size-4 text-amber-600" />
+                  <span>Candidatures (.xlsx)</span>
+                </a>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <a href="/api/admin/export/excel?type=users" download className="flex items-center gap-2">
+                  <Users className="size-4 text-cyan-600" />
+                  <span>Annuaire membres (.xlsx)</span>
+                </a>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
-      {/* Corps Principal : Onglets Multi-Vues + Pôles & Raccourcis */}
+      {/* 4 KPI Cards Haute Densité Cliquables */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <Link href="/admin/utilisateurs" className="block group">
+          <Card className="h-full border border-slate-200 dark:border-slate-800 border-l-4 border-l-[#836182] bg-white dark:bg-slate-900 shadow-xs group-hover:border-[#836182]/60 transition-colors">
+            <CardContent className="p-5 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  Communauté &amp; Comptes
+                </span>
+                <div className="size-8 rounded-lg bg-[#836182]/10 text-[#836182] dark:bg-[#836182]/25 dark:text-[#d8b4d7] flex items-center justify-center">
+                  <Users className="size-4" />
+                </div>
+              </div>
+              <div className="flex items-baseline justify-between gap-2">
+                <p className="text-3xl font-extrabold text-slate-900 dark:text-white tabular-nums">
+                  {data.usersCount}
+                </p>
+                <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/30">
+                  {verifiedRate}% vérifiés
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {data.subscribersCount} abonnés • {data.adminCount} admin • {data.authorCount} auteur{data.authorCount > 1 ? "s" : ""}
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/candidatures" className="block group">
+          <Card className="h-full border border-slate-200 dark:border-slate-800 border-l-4 border-l-[#e08637] bg-white dark:bg-slate-900 shadow-xs group-hover:border-[#e08637]/60 transition-colors">
+            <CardContent className="p-5 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  Pipeline Candidatures
+                </span>
+                <div className="size-8 rounded-lg bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300 flex items-center justify-center">
+                  <ClipboardCheck className="size-4" />
+                </div>
+              </div>
+              <div className="flex items-baseline justify-between gap-2">
+                <p className="text-3xl font-extrabold text-slate-900 dark:text-white tabular-nums">
+                  {data.pendingAppsCount}
+                </p>
+                <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/30">
+                  À traiter
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {data.totalApplicationsCount} dossier{data.totalApplicationsCount > 1 ? "s" : ""} déposé{data.totalApplicationsCount > 1 ? "s" : ""} au total
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/articles" className="block group">
+          <Card className="h-full border border-slate-200 dark:border-slate-800 border-l-4 border-l-emerald-500 bg-white dark:bg-slate-900 shadow-xs group-hover:border-emerald-500/60 transition-colors">
+            <CardContent className="p-5 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  Éditorial &amp; Ressources
+                </span>
+                <div className="size-8 rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300 flex items-center justify-center">
+                  <FileText className="size-4" />
+                </div>
+              </div>
+              <div className="flex items-baseline justify-between gap-2">
+                <p className="text-3xl font-extrabold text-slate-900 dark:text-white tabular-nums">
+                  {data.publishedArticlesCount}
+                </p>
+                <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/30">
+                  {publicationRate}% publiés
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {draftCount} brouillon{draftCount > 1 ? "s" : ""} • {data.resourcesCount} ressources actives
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/admin/evenements" className="block group">
+          <Card className="h-full border border-slate-200 dark:border-slate-800 border-l-4 border-l-sky-500 bg-white dark:bg-slate-900 shadow-xs group-hover:border-sky-500/60 transition-colors">
+            <CardContent className="p-5 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  Événements &amp; Billets
+                </span>
+                <div className="size-8 rounded-lg bg-cyan-50 text-cyan-700 dark:bg-cyan-500/15 dark:text-cyan-300 flex items-center justify-center">
+                  <CalendarDays className="size-4" />
+                </div>
+              </div>
+              <div className="flex items-baseline justify-between gap-2">
+                <p className="text-3xl font-extrabold text-slate-900 dark:text-white tabular-nums">
+                  {data.upcomingEventsCount}
+                </p>
+                <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-cyan-50 text-cyan-800 border border-cyan-200 dark:bg-cyan-500/15 dark:text-cyan-300 dark:border-cyan-500/30">
+                  À venir
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {data.totalRegistrationsCount} billet{data.totalRegistrationsCount > 1 ? "s" : ""} émis sur la plateforme
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
+
+      {/* Graphiques analytiques interactifs Recharts */}
+      <AdminAnalyticsCharts data={data} />
+
+      {/* Console Opérationnelle (5 onglets) + Panneau de Gouvernance */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8">
           <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs py-0 gap-0">
-            <Tabs defaultValue="publications" className="w-full gap-0">
+            <Tabs defaultValue="candidatures" className="w-full gap-0">
               <CardHeader className="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <CardTitle className="text-base font-bold text-slate-900 dark:text-white">
-                    Activité récente de la plateforme
+                    File opérationnelle &amp; supervision
                   </CardTitle>
                   <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
-                    Basculez entre vos pôles opérationnels sans quitter le tableau de bord
+                    Contrôle direct des candidatures, publications, événements, comptes et audit
                   </CardDescription>
                 </div>
 
                 <TabsList className="bg-slate-100 dark:bg-slate-800 p-1 rounded-xl h-auto flex-wrap">
-                  <TabsTrigger value="publications" className="rounded-lg px-3 py-1.5 text-xs font-semibold cursor-pointer">
-                    Publications ({data.totalArticlesCount})
-                  </TabsTrigger>
-                  <TabsTrigger value="candidatures" className="rounded-lg px-3 py-1.5 text-xs font-semibold cursor-pointer">
+                  <TabsTrigger value="candidatures" className="rounded-lg px-2.5 py-1.5 text-xs font-semibold cursor-pointer">
                     Candidatures ({data.totalApplicationsCount})
                   </TabsTrigger>
-                  <TabsTrigger value="evenements" className="rounded-lg px-3 py-1.5 text-xs font-semibold cursor-pointer">
+                  <TabsTrigger value="publications" className="rounded-lg px-2.5 py-1.5 text-xs font-semibold cursor-pointer">
+                    Publications ({data.totalArticlesCount})
+                  </TabsTrigger>
+                  <TabsTrigger value="evenements" className="rounded-lg px-2.5 py-1.5 text-xs font-semibold cursor-pointer">
                     Événements
                   </TabsTrigger>
-                  <TabsTrigger value="membres" className="rounded-lg px-3 py-1.5 text-xs font-semibold cursor-pointer">
-                    Membres ({data.usersCount})
+                  <TabsTrigger value="membres" className="rounded-lg px-2.5 py-1.5 text-xs font-semibold cursor-pointer">
+                    Utilisateurs ({data.usersCount})
+                  </TabsTrigger>
+                  <TabsTrigger value="audit" className="rounded-lg px-2.5 py-1.5 text-xs font-semibold cursor-pointer">
+                    Audit
                   </TabsTrigger>
                 </TabsList>
               </CardHeader>
 
-              {/* Onglet 1 : Publications */}
+              {/* Onglet 1 : Candidatures */}
+              <TabsContent value="candidatures" className="mt-0">
+                <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                  {data.recentApplications.length === 0 ? (
+                    <div className="p-10 text-center space-y-2">
+                      <ClipboardCheck className="size-8 text-slate-400 mx-auto" />
+                      <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                        Aucune candidature déposée pour le moment.
+                      </p>
+                    </div>
+                  ) : (
+                    data.recentApplications.map((app) => {
+                      const statusMeta = APPLICATION_STATUSES[app.status];
+                      const poleMeta = PROGRAM_POLES[app.pole];
+                      return (
+                        <div
+                          key={app.id}
+                          className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                        >
+                          <div className="min-w-0 space-y-0.5">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                                {app.applicantName}
+                              </p>
+                              <span
+                                className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${poleMeta.badge}`}
+                              >
+                                {poleMeta.label}
+                              </span>
+                            </div>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                              {app.programName} • {app.city} • {app.date}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0">
+                            <span
+                              className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${statusMeta.badge}`}
+                            >
+                              {statusMeta.label}
+                            </span>
+                            <Link
+                              href="/admin/candidatures"
+                              className="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+                            >
+                              Examiner
+                            </Link>
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+                <div className="px-5 py-3 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs gap-2 flex-wrap">
+                  <a
+                    href="/api/admin/export/excel?type=applications"
+                    download
+                    className="inline-flex items-center gap-1.5 font-semibold text-emerald-700 dark:text-emerald-400 hover:underline"
+                  >
+                    <FileSpreadsheet className="size-3.5" />
+                    Exporter toutes les candidatures (.xlsx)
+                  </a>
+                  <Link
+                    href="/admin/candidatures"
+                    className="font-bold text-[#836182] dark:text-[#d8b4d7] hover:underline inline-flex items-center gap-1"
+                  >
+                    Gérer les candidatures <ArrowUpRight className="size-3.5" />
+                  </Link>
+                </div>
+              </TabsContent>
+
+              {/* Onglet 2 : Publications */}
               <TabsContent value="publications" className="mt-0">
                 <div className="divide-y divide-slate-100 dark:divide-slate-800">
                   {data.recentArticles.length === 0 ? (
@@ -466,77 +501,6 @@ export function AdminDashboardClient({ adminName, data }: AdminDashboardClientPr
                 </div>
               </TabsContent>
 
-              {/* Onglet 2 : Candidatures */}
-              <TabsContent value="candidatures" className="mt-0">
-                <div className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {data.recentApplications.length === 0 ? (
-                    <div className="p-10 text-center space-y-2">
-                      <ClipboardCheck className="size-8 text-slate-400 mx-auto" />
-                      <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                        Aucune candidature déposée pour le moment.
-                      </p>
-                    </div>
-                  ) : (
-                    data.recentApplications.map((app) => {
-                      const statusMeta = APPLICATION_STATUSES[app.status];
-                      const poleMeta = PROGRAM_POLES[app.pole];
-                      return (
-                        <div
-                          key={app.id}
-                          className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
-                        >
-                          <div className="min-w-0 space-y-0.5">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <p className="text-sm font-semibold text-slate-900 dark:text-white">
-                                {app.applicantName}
-                              </p>
-                              <span
-                                className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${poleMeta.badge}`}
-                              >
-                                {poleMeta.label}
-                              </span>
-                            </div>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
-                              {app.programName} • {app.city} • {app.date}
-                            </p>
-                          </div>
-
-                          <div className="flex items-center gap-2 shrink-0">
-                            <span
-                              className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border ${statusMeta.badge}`}
-                            >
-                              {statusMeta.label}
-                            </span>
-                            <Link
-                              href="/admin/candidatures"
-                              className="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
-                            >
-                              Examiner
-                            </Link>
-                          </div>
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-                <div className="px-5 py-3 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs gap-2 flex-wrap">
-                  <a
-                    href="/api/admin/export/excel?type=applications"
-                    download
-                    className="inline-flex items-center gap-1.5 font-semibold text-emerald-700 dark:text-emerald-400 hover:underline"
-                  >
-                    <FileSpreadsheet className="size-3.5" />
-                    Exporter toutes les candidatures (.xlsx)
-                  </a>
-                  <Link
-                    href="/admin/candidatures"
-                    className="font-bold text-[#836182] dark:text-[#d8b4d7] hover:underline inline-flex items-center gap-1"
-                  >
-                    Gérer les candidatures <ArrowUpRight className="size-3.5" />
-                  </Link>
-                </div>
-              </TabsContent>
-
               {/* Onglet 3 : Événements */}
               <TabsContent value="evenements" className="mt-0">
                 <div className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -604,7 +568,7 @@ export function AdminDashboardClient({ adminName, data }: AdminDashboardClientPr
                 </div>
               </TabsContent>
 
-              {/* Onglet 4 : Membres */}
+              {/* Onglet 4 : Utilisateurs */}
               <TabsContent value="membres" className="mt-0">
                 <div className="divide-y divide-slate-100 dark:divide-slate-800">
                   {data.recentUsers.map((u) => (
@@ -653,7 +617,57 @@ export function AdminDashboardClient({ adminName, data }: AdminDashboardClientPr
                     href="/admin/utilisateurs"
                     className="font-bold text-[#836182] dark:text-[#d8b4d7] hover:underline inline-flex items-center gap-1"
                   >
-                    Gérer les membres <ArrowUpRight className="size-3.5" />
+                    Gérer les utilisateurs <ArrowUpRight className="size-3.5" />
+                  </Link>
+                </div>
+              </TabsContent>
+
+              {/* Onglet 5 : Audit & Sécurité */}
+              <TabsContent value="audit" className="mt-0">
+                <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                  {data.recentAuditLogs.length === 0 ? (
+                    <div className="p-10 text-center space-y-2">
+                      <ShieldAlert className="size-8 text-slate-400 mx-auto" />
+                      <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                        Aucun événement d&apos;audit enregistré récemment.
+                      </p>
+                    </div>
+                  ) : (
+                    data.recentAuditLogs.map((log) => (
+                      <div
+                        key={log.id}
+                        className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-5 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                      >
+                        <div className="min-w-0 space-y-0.5">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-mono text-[11px] font-bold text-slate-800 dark:text-slate-200">
+                              {log.action}
+                            </span>
+                            <span className="text-xs text-slate-500 dark:text-slate-400">
+                              {log.entity}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                            {log.actorEmail || "Système"}
+                            {log.actorRole ? ` (${log.actorRole})` : ""}
+                          </p>
+                        </div>
+                        <span className="text-xs text-slate-400 shrink-0 tabular-nums">
+                          {log.date}
+                        </span>
+                      </div>
+                    ))
+                  )}
+                </div>
+                <div className="px-5 py-3 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
+                  <span className="text-slate-500 dark:text-slate-400">
+                    Journal des opérations sensibles
+                  </span>
+                  <Link
+                    href="/admin/audit"
+                    className="font-bold text-[#836182] dark:text-[#d8b4d7] hover:underline inline-flex items-center gap-1"
+                  >
+                    Ouvrir le journal complet <ArrowUpRight className="size-3.5" />
                   </Link>
                 </div>
               </TabsContent>
@@ -661,61 +675,44 @@ export function AdminDashboardClient({ adminName, data }: AdminDashboardClientPr
           </Card>
         </div>
 
-        {/* Colonne Latérale : Pôles ACCEENT + Raccourcis */}
+        {/* Colonne Latérale : Gouvernance & Répartition des Rôles */}
         <div className="lg:col-span-4 space-y-6">
           <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <Sparkles className="size-4 text-[#836182] dark:text-[#d8b4d7]" />
-                Activité par pôle d&apos;intervention
+                <Layers className="size-4 text-[#836182] dark:text-[#d8b4d7]" />
+                Répartition des rôles &amp; conformité
               </CardTitle>
               <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
-                Articles, candidatures et guides Tut-Tank
+                Structure des accès de la plateforme ACCEENT
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {POLE_CARDS.map((card) => {
-                const stats = data.poleBreakdown.find((p) => p.pole === card.key);
-                const total =
-                  (stats?.articlesCount ?? 0) +
-                  (stats?.applicationsCount ?? 0) +
-                  (stats?.resourcesCount ?? 0);
-                const pct = Math.min(100, Math.round((total / maxPoleItems) * 100));
-
+            <CardContent className="space-y-3">
+              {data.demographics.byRole.map((item) => {
+                const pct =
+                  data.usersCount > 0
+                    ? Math.round((item.count / data.usersCount) * 100)
+                    : 0;
                 return (
-                  <Link
-                    key={card.key}
-                    href={card.href}
-                    target="_blank"
-                    className="block p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-[#836182]/50 bg-slate-50/70 dark:bg-slate-800/40 transition-all group"
+                  <div
+                    key={item.role}
+                    className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 space-y-2"
                   >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`size-9 rounded-lg border flex items-center justify-center shrink-0 ${card.iconClass}`}
-                      >
-                        <card.icon className="size-4" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-[#836182] dark:group-hover:text-[#d8b4d7] truncate">
-                            {card.label}
-                          </p>
-                          <span className="text-xs font-bold text-slate-700 dark:text-slate-300 tabular-nums">
-                            {total}
-                          </span>
-                        </div>
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
-                          {stats?.articlesCount ?? 0} art. • {stats?.applicationsCount ?? 0} cand. • {stats?.resourcesCount ?? 0} ress.
-                        </p>
-                      </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-bold text-slate-900 dark:text-white">
+                        {item.label} ({item.role})
+                      </span>
+                      <span className="font-bold text-slate-700 dark:text-slate-300 tabular-nums">
+                        {item.count} ({pct}%)
+                      </span>
                     </div>
-                    <div className="mt-2.5 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                    <div className="h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
                       <div
-                        className={`h-full rounded-full ${card.barColor}`}
-                        style={{ width: `${pct}%` }}
+                        className="h-full rounded-full transition-all"
+                        style={{ width: `${pct}%`, backgroundColor: item.color }}
                       />
                     </div>
-                  </Link>
+                  </div>
                 );
               })}
             </CardContent>
@@ -724,11 +721,17 @@ export function AdminDashboardClient({ adminName, data }: AdminDashboardClientPr
           <Card className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-bold text-slate-900 dark:text-white">
-                Outils de pilotage
+                Gouvernance &amp; Modules
               </CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 gap-2">
               {[
+                {
+                  href: "/admin/candidatures",
+                  label: "Candidatures programmes",
+                  sub: `${data.pendingAppsCount} dossier${data.pendingAppsCount > 1 ? "s" : ""} en attente d'examen`,
+                  icon: ClipboardCheck,
+                },
                 {
                   href: "/admin/newsletter",
                   label: "Newsletter & Campagnes",
@@ -748,15 +751,24 @@ export function AdminDashboardClient({ adminName, data }: AdminDashboardClientPr
                   icon: ShieldAlert,
                 },
                 {
-                  href: "/dashboard",
-                  label: "Mon espace membre personnel",
-                  sub: "Mes billets & candidatures propres",
-                  icon: UserCheck,
+                  href: "/admin/parametres",
+                  label: "Paramètres système",
+                  sub: "Profil admin & état des services",
+                  icon: Settings,
+                },
+                {
+                  href: "/",
+                  label: "Portail public ACCEENT",
+                  sub: "Consulter le site en production",
+                  icon: Globe,
+                  external: true,
                 },
               ].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noopener noreferrer" : undefined}
                   className="flex items-center gap-3 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/70 transition-colors"
                 >
                   <div className="size-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center shrink-0">

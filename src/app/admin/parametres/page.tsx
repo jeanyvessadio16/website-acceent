@@ -3,7 +3,14 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { ProfileForm } from "@/components/admin/ProfileForm";
-import { Shield, Database, Globe, UserCheck, ArrowUpRight } from "lucide-react";
+import {
+  Shield,
+  Database,
+  Globe,
+  UserCheck,
+  Users,
+  ArrowUpRight,
+} from "lucide-react";
 import { getSession } from "@/lib/session";
 import prisma from "@/lib/prisma";
 
@@ -73,6 +80,12 @@ export default async function ParametresPage() {
             desc: "Sessions, exports et traçabilité complète",
           },
           {
+            href: "/admin/utilisateurs",
+            icon: Users,
+            label: "Utilisateurs & Rôles",
+            desc: "Gérer les comptes, accès et rôles",
+          },
+          {
             href: "/api/health",
             icon: Database,
             label: "Santé Base de données",
@@ -80,13 +93,14 @@ export default async function ParametresPage() {
             external: true,
           },
         ]
-      : []),
-    {
-      href: "/dashboard",
-      icon: UserCheck,
-      label: "Mon espace membre",
-      desc: "Mes candidatures, billets PDF et newsletter",
-    },
+      : [
+          {
+            href: "/dashboard",
+            icon: UserCheck,
+            label: "Mon espace membre",
+            desc: "Mes candidatures, billets PDF et newsletter",
+          },
+        ]),
     {
       href: "/",
       icon: Globe,

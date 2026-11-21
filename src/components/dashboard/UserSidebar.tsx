@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -94,22 +95,26 @@ export function UserSidebar({ user }: UserSidebarProps) {
   return (
     <Sidebar className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
       {/* En-tête : Espace Membre */}
-      <SidebarHeader className="px-4 py-4">
+      <SidebarHeader className="px-4 py-4 shrink-0">
         <Link
           href="/dashboard"
-          className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 hover:border-[#836182]/50 transition-all group"
+          className="block p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 hover:border-[#836182]/50 transition-all group space-y-2"
         >
-          <div className="size-9 rounded-lg bg-gradient-to-br from-[#836182] to-[#a57da4] flex items-center justify-center shadow-sm shrink-0 transition-transform duration-200 group-hover:scale-105">
-            <span className="text-white font-black text-sm tracking-wider">A</span>
+          <div className="rounded-lg bg-white px-2.5 py-1.5 border border-slate-100">
+            <div className="relative h-9 w-full overflow-hidden">
+              <Image
+                src="/logo/logoACCEENT.png"
+                alt="Logo ACCEENT"
+                fill
+                sizes="200px"
+                priority
+                className="object-contain object-center scale-125"
+              />
+            </div>
           </div>
-          <div className="flex flex-col leading-tight min-w-0">
-            <span className="text-slate-900 dark:text-white font-extrabold text-sm tracking-wide flex items-center gap-1">
-              ACCEENT
-              <ShieldCheck className="size-3.5 text-[#836182] dark:text-[#d8b4d7]" />
-            </span>
-            <span className="text-[#836182] dark:text-[#d8b4d7] text-[11px] font-bold mt-0.5 uppercase tracking-wider">
-              Espace Personnel
-            </span>
+          <div className="flex items-center justify-center gap-1 text-[#836182] dark:text-[#d8b4d7] text-[10px] font-extrabold uppercase tracking-widest">
+            <ShieldCheck className="size-3 shrink-0" />
+            <span>Espace Personnel</span>
           </div>
         </Link>
       </SidebarHeader>
@@ -117,7 +122,7 @@ export function UserSidebar({ user }: UserSidebarProps) {
       <SidebarSeparator className="mx-3 my-0.5 bg-slate-200 dark:bg-slate-800" />
 
       {/* Navigation Principale */}
-      <SidebarContent className="px-3 py-3">
+      <SidebarContent className="px-3 py-3 min-h-0 flex-1 overflow-y-auto">
         <SidebarGroup>
           <SidebarGroupLabel className="text-slate-500 dark:text-slate-400 text-[11px] font-bold uppercase tracking-wider px-2.5 mb-1.5">
             Mon Espace
@@ -203,7 +208,7 @@ export function UserSidebar({ user }: UserSidebarProps) {
       </SidebarContent>
 
       {/* Pied de page : Profil Membre + Déconnexion */}
-      <SidebarFooter className="px-3 py-3 border-t border-slate-200 dark:border-slate-800">
+      <SidebarFooter className="px-3 py-3 border-t border-slate-200 dark:border-slate-800 shrink-0">
         <Link
           href="/dashboard/profil"
           className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 hover:border-[#836182]/50 transition-all"

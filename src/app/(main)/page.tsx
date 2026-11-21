@@ -9,12 +9,10 @@ import {
   Mail,
   Phone,
   CalendarDays,
-  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Partenaire from "@/components/shared/Partenaires";
 import Contact from "@/components/shared/contact/Contact";
-import { NewsletterSubscribeForm } from "@/components/shared/NewsletterSubscribeForm";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
@@ -453,46 +451,6 @@ export default async function Home() {
             </h2>
             <Partenaire items={partners} />
           </FadeIn>
-        </div>
-      </section>
-
-      {/* ── 5.5. NEWSLETTER & AGENDA COMMUNAUTAIRE ─────────────────────────── */}
-      <section
-        aria-labelledby="newsletter-home-heading"
-        className="py-14 bg-slate-950 text-white"
-      >
-        <div className="section-container">
-          <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#836182]/25 via-slate-900 to-slate-950 p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-6 space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#836182]/25 border border-[#836182]/40 text-[#f4e6ea] text-xs font-bold uppercase tracking-wider">
-                <Sparkles className="size-3.5" aria-hidden />
-                <span>Restez informé·e</span>
-              </div>
-              <h2
-                id="newsletter-home-heading"
-                className="text-2xl sm:text-3xl font-bold tracking-tight text-white"
-              >
-                Appels à candidatures, ateliers et actualités ACCEENT
-              </h2>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                Recevez les prochaines sessions de formation à Ziguinchor ou consultez directement l&apos;agenda des événements.
-              </p>
-              <div className="flex flex-wrap gap-3 pt-1">
-                <Link
-                  href="/evenements"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#d8b4d7] hover:text-white transition-colors"
-                >
-                  <CalendarDays className="size-3.5" aria-hidden />
-                  <span>Voir le calendrier des ateliers</span>
-                  <ArrowRight className="size-3.5" aria-hidden />
-                </Link>
-              </div>
-            </div>
-
-            <div className="lg:col-span-6">
-              <NewsletterSubscribeForm variant="dark" />
-            </div>
-          </div>
         </div>
       </section>
 

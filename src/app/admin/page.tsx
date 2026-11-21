@@ -26,18 +26,9 @@ export default async function AdminDashboardPage() {
     const adminData = await getAdminDashboardData();
     return (
       <AdminShell
-        title="Tableau de bord Administration"
-        subtitle="Cockpit de gestion et supervision de la plateforme ACCEENT"
+        title="Console de Direction"
+        subtitle="Pilotage analytique, supervision des programmes et gouvernance ACCEENT"
         user={currentUser}
-        action={
-          <Link
-            href="/admin/articles?new=true"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#836182] hover:bg-[#6f4f6e] text-white text-xs font-bold transition-colors shadow-xs"
-          >
-            <Plus className="size-3.5" />
-            <span className="hidden sm:inline">Nouvel article</span>
-          </Link>
-        }
       >
         <AdminDashboardClient adminName={currentUser.name} data={adminData} />
       </AdminShell>

@@ -10,6 +10,10 @@ import {
   LogOut,
   ChevronRight,
   ShieldCheck,
+  Send,
+  CalendarDays,
+  FolderOpen,
+  LayoutGrid,
 } from "lucide-react";
 import {
   Sidebar,
@@ -35,23 +39,29 @@ const navMain = [
     exact: true,
   },
   {
-    label: "Mon profil",
-    href: "/dashboard/profil",
-    icon: User,
-  },
-  {
-    label: "Mes programmes",
+    label: "Programmes",
     href: "/dashboard/programmes",
     icon: BookOpen,
   },
-];
-
-const navSecondary = [
   {
-    label: "Site public",
-    href: "/",
-    icon: Globe,
-    external: true,
+    label: "Mes candidatures",
+    href: "/dashboard/candidatures",
+    icon: Send,
+  },
+  {
+    label: "Événements & Billets",
+    href: "/dashboard/evenements",
+    icon: CalendarDays,
+  },
+  {
+    label: "Ressources",
+    href: "/dashboard/ressources",
+    icon: FolderOpen,
+  },
+  {
+    label: "Mon profil",
+    href: "/dashboard/profil",
+    icon: User,
   },
 ];
 
@@ -82,48 +92,34 @@ export function UserSidebar({ user }: UserSidebarProps) {
       .toUpperCase() || "MB";
 
   return (
-    <Sidebar
-      className="border-r border-white/[0.08] bg-[#0c0d12]"
-      style={
-        {
-          "--sidebar-background": "#0c0d12",
-          "--sidebar-foreground": "#f4f4f5",
-          "--sidebar-border": "rgba(255,255,255,0.08)",
-          "--sidebar-accent": "rgba(255,255,255,0.04)",
-          "--sidebar-accent-foreground": "#ffffff",
-          "--sidebar-primary": "#836182",
-          "--sidebar-primary-foreground": "#ffffff",
-          "--sidebar-ring": "#836182",
-        } as React.CSSProperties
-      }
-    >
-      {/* ── En-tête : Espace Membre ────────────────────────────── */}
+    <Sidebar className="border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
+      {/* En-tête : Espace Membre */}
       <SidebarHeader className="px-4 py-4">
         <Link
           href="/dashboard"
-          className="flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-white/[0.15] hover:bg-white/[0.06] transition-all group"
+          className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 hover:border-[#836182]/50 transition-all group"
         >
-          <div className="size-9 rounded-lg bg-gradient-to-br from-[#836182] to-[#b9939e] flex items-center justify-center shadow-sm shrink-0 transition-transform duration-200 group-hover:scale-105">
+          <div className="size-9 rounded-lg bg-gradient-to-br from-[#836182] to-[#a57da4] flex items-center justify-center shadow-sm shrink-0 transition-transform duration-200 group-hover:scale-105">
             <span className="text-white font-black text-sm tracking-wider">A</span>
           </div>
           <div className="flex flex-col leading-tight min-w-0">
-            <span className="text-zinc-100 font-bold text-sm tracking-wide flex items-center gap-1">
+            <span className="text-slate-900 dark:text-white font-extrabold text-sm tracking-wide flex items-center gap-1">
               ACCEENT
-              <ShieldCheck className="size-3 text-[#b9939e]" />
+              <ShieldCheck className="size-3.5 text-[#836182] dark:text-[#d8b4d7]" />
             </span>
-            <span className="text-zinc-400 text-xs font-medium mt-0.5">
-              Espace Membre
+            <span className="text-[#836182] dark:text-[#d8b4d7] text-[11px] font-bold mt-0.5 uppercase tracking-wider">
+              Espace Personnel
             </span>
           </div>
         </Link>
       </SidebarHeader>
 
-      <SidebarSeparator className="bg-white/[0.06] mx-3 my-1" />
+      <SidebarSeparator className="mx-3 my-0.5 bg-slate-200 dark:bg-slate-800" />
 
-      {/* ── Navigation Principale ─────────────────────────── */}
-      <SidebarContent className="px-3 py-2">
+      {/* Navigation Principale */}
+      <SidebarContent className="px-3 py-3">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-zinc-500 text-[11px] font-semibold uppercase tracking-wider px-2 mb-2">
+          <SidebarGroupLabel className="text-slate-500 dark:text-slate-400 text-[11px] font-bold uppercase tracking-wider px-2.5 mb-1.5">
             Mon Espace
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -137,9 +133,9 @@ export function UserSidebar({ user }: UserSidebarProps) {
                       isActive={active}
                       className={cn(
                         "group/item h-10 rounded-xl px-3 gap-3 transition-all duration-150",
-                        "text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]",
-                        active &&
-                          "bg-[#836182]/20 text-white font-semibold border border-[#836182]/40 shadow-xs"
+                        active
+                          ? "bg-[#836182] text-white font-semibold shadow-sm hover:bg-[#735272] hover:text-white data-[active=true]:bg-[#836182] data-[active=true]:text-white"
+                          : "text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                       )}
                     >
                       <Link href={item.href} className="flex items-center gap-3 w-full">
@@ -147,14 +143,12 @@ export function UserSidebar({ user }: UserSidebarProps) {
                           className={cn(
                             "size-4 shrink-0 transition-colors",
                             active
-                              ? "text-[#b9939e]"
-                              : "text-zinc-500 group-hover/item:text-zinc-300"
+                              ? "text-white"
+                              : "text-slate-500 dark:text-slate-400 group-hover/item:text-[#836182] dark:group-hover/item:text-[#d8b4d7]"
                           )}
                         />
                         <span className="text-sm font-medium">{item.label}</span>
-                        {active && (
-                          <ChevronRight className="size-3.5 ml-auto text-[#b9939e]" />
-                        )}
+                        {active && <ChevronRight className="size-3.5 ml-auto text-white/85" />}
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -164,78 +158,81 @@ export function UserSidebar({ user }: UserSidebarProps) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* ── Liens Général ───────────────────────────────── */}
-        <SidebarGroup className="mt-4">
-          <SidebarGroupLabel className="text-zinc-500 text-[11px] font-semibold uppercase tracking-wider px-2 mb-2">
+        {/* Liens Général */}
+        <SidebarGroup className="mt-3">
+          <SidebarGroupLabel className="text-slate-500 dark:text-slate-400 text-[11px] font-bold uppercase tracking-wider px-2.5 mb-1.5">
             Général
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="gap-1">
-              {navSecondary.map((item) => {
-                const active = isActive(item.href);
-                return (
-                  <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={active}
-                      className={cn(
-                        "group/item h-10 rounded-xl px-3 gap-3 transition-all duration-150",
-                        "text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]",
-                        active &&
-                          "bg-[#836182]/20 text-white font-semibold border border-[#836182]/40 shadow-xs"
-                      )}
-                    >
-                      <Link
-                        href={item.href}
-                        target={item.external ? "_blank" : undefined}
-                        rel={item.external ? "noopener noreferrer" : undefined}
-                        className="flex items-center gap-3 w-full"
-                      >
-                        <item.icon
-                          className={cn(
-                            "size-4 shrink-0 transition-colors",
-                            active
-                              ? "text-[#b9939e]"
-                              : "text-zinc-500 group-hover/item:text-zinc-300"
-                          )}
-                        />
-                        <span className="text-sm font-medium">{item.label}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
+              {(displayRole === "ADMIN" || displayRole === "AUTHOR") && (
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    className="group/item h-10 rounded-xl px-3 gap-3 transition-all duration-150 bg-[#836182]/10 text-[#6d4c6c] dark:bg-[#836182]/25 dark:text-[#f4e6ea] border border-[#836182]/25 hover:bg-[#836182]/20 font-semibold"
+                  >
+                    <Link href="/admin" className="flex items-center gap-3 w-full">
+                      <LayoutGrid className="size-4 shrink-0" />
+                      <span className="text-sm">
+                        {displayRole === "ADMIN" ? "Espace Admin" : "Espace Rédacteur"}
+                      </span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              )}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  className="group/item h-10 rounded-xl px-3 gap-3 transition-all duration-150 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  <Link
+                    href="/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 w-full"
+                  >
+                    <Globe className="size-4 shrink-0 text-slate-500 dark:text-slate-400" />
+                    <span className="text-sm font-medium">Site public</span>
+                    <span className="ml-auto text-xs text-slate-400">↗</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
-      {/* ── Pied de page : Profil Membre + Déconnexion ─────── */}
-      <SidebarFooter className="px-3 py-4">
-        <SidebarSeparator className="bg-white/[0.06] mb-3 mx-0" />
-
-        <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.06] transition-colors group/profile">
-          <div className="size-8 rounded-full bg-gradient-to-br from-[#836182] to-[#b9939e] flex items-center justify-center text-white font-semibold text-xs shrink-0 shadow-xs">
+      {/* Pied de page : Profil Membre + Déconnexion */}
+      <SidebarFooter className="px-3 py-3 border-t border-slate-200 dark:border-slate-800">
+        <Link
+          href="/dashboard/profil"
+          className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 hover:border-[#836182]/50 transition-all"
+        >
+          <div className="size-9 rounded-full bg-gradient-to-br from-[#836182] to-[#a57da4] flex items-center justify-center text-white font-bold text-xs shrink-0">
             {initials}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 justify-between">
-              <p className="text-zinc-200 text-xs font-semibold truncate">{displayName}</p>
-              <span className="px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[9px] font-semibold shrink-0">
+              <p className="text-slate-900 dark:text-white text-xs font-bold truncate">
+                {displayName}
+              </p>
+              <span className="px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/30 text-[9px] font-bold shrink-0">
                 {displayRole}
               </span>
             </div>
-            <p className="text-zinc-400 text-[11px] truncate mt-0.5">{displayEmail}</p>
+            <p className="text-slate-500 dark:text-slate-400 text-[11px] truncate mt-0.5">
+              {displayEmail}
+            </p>
           </div>
-        </div>
+        </Link>
 
-        <form action={logoutAction} className="mt-1.5">
+        <form action={logoutAction} className="mt-2">
           <button
             type="submit"
-            className="flex items-center gap-2.5 w-full px-3 py-2 rounded-xl text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-colors text-xs font-medium group/logout cursor-pointer"
+            className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:hover:bg-rose-500/20 dark:border-rose-500/25 transition-colors text-xs font-semibold cursor-pointer"
           >
-            <LogOut className="size-3.5 shrink-0 transition-colors group-hover/logout:text-red-400" />
-            Se déconnecter
+            <LogOut className="size-3.5 shrink-0" />
+            <span>Se déconnecter</span>
           </button>
         </form>
       </SidebarFooter>

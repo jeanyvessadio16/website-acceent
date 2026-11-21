@@ -1,43 +1,84 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { getSession, createSession } from "@/lib/session";
+import { createSession } from "@/lib/session";
 import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
-import { Role } from "@/generated/prisma/client";
+import type { MilieuResidence, Role, Sexe } from "@/generated/prisma/client";
+import {
+  requireSession,
+  requireAdmin,
+  fromZodError,
+  handleActionError,
+  recordAuditLog,
+  ok,
+  fail,
+} from "@/lib/core";
+import {
+  updateProfileSchema,
+  adminCreateUserSchema,
+  adminUpdateUserSchema,
+  type UpdateProfileInput,
+} from "@/validation/user";
 
-// ─── Mise à jour du profil personnel ─────────────────────────────────────────
+export type { UpdateProfileInput };
 
-export interface UpdateProfileInput {
+export interface UpdateUserInput {
+  id: string;
   firstname: string;
   lastname: string;
   email: string;
-  password?: string;
+  role: "USER" | "AUTHOR" | "ADMIN";
+  age?: number | null;
+  sexe?: "HOMME" | "FEMME" | null;
+  milieuResidence?: "RURAL" | "URBAIN" | null;
+  telephone?: string | null;
+  sdh?: boolean;
+}
+
+export interface CreateUserInput {
+  firstname: string;
+  lastname: string;
+  email: string;
+  password: string;
+  role: "USER" | "AUTHOR" | "ADMIN";
+  age?: number | null;
+  sexe?: "HOMME" | "FEMME" | null;
+  milieuResidence?: "RURAL" | "URBAIN" | null;
+  telephone?: string | null;
+  sdh?: boolean;
 }
 
 export async function updateProfileAction(data: UpdateProfileInput) {
-  const session = await getSession();
-  if (!session) {
-    return { success: false, message: "Non autorisé. Veuillez vous connecter." };
-  }
+  const guard = await requireSession();
+  if (!guard.authorized) return guard.response;
+
+  const parsed = updateProfileSchema.safeParse(data);
+  if (!parsed.success) return fromZodError(parsed.error);
+
+  const {
+    firstname,
+    lastname,
+    email,
+    password,
+    age,
+    sexe,
+    milieuResidence,
+    telephone,
+    sdh,
+  } = parsed.data;
 
   try {
-    const firstname = data.firstname.trim();
-    const lastname = data.lastname.trim();
-    const email = data.email.trim().toLowerCase();
-
-    if (!firstname || !lastname || !email) {
-      return { success: false, message: "Le prénom, le nom et l'e-mail sont obligatoires." };
-    }
-
-    // Vérification de l'unicité de l'e-mail s'il a changé
-    if (email !== session.email.toLowerCase()) {
-      const existing = await prisma.user.findUnique({ where: { email } });
-      if (existing && existing.id !== session.userId) {
-        return {
-          success: false,
-          message: "Cette adresse e-mail est déjà utilisée par un autre compte.",
-        };
+    if (email !== guard.session.email.toLowerCase()) {
+      const existing = await prisma.user.findUnique({
+        where: { email },
+        select: { id: true },
+      });
+      if (existing && existing.id !== guard.session.userId) {
+        return fail(
+          "Cette adresse e-mail est déjà utilisée par un autre compte.",
+          "CONFLICT"
+        );
       }
     }
 
@@ -45,23 +86,40 @@ export async function updateProfileAction(data: UpdateProfileInput) {
       firstname: string;
       lastname: string;
       email: string;
+      age: number | null;
+      sexe: Sexe | null;
+      milieuResidence: MilieuResidence | null;
+      telephone: string | null;
+      sdh: boolean;
       password?: string;
     } = {
       firstname,
       lastname,
       email,
+      age: age ?? null,
+      sexe: (sexe as Sexe | null) ?? null,
+      milieuResidence: (milieuResidence as MilieuResidence | null) ?? null,
+      telephone: telephone && telephone.trim() ? telephone.trim() : null,
+      sdh,
     };
 
-    if (data.password && data.password.trim().length >= 8) {
-      updateData.password = await bcrypt.hash(data.password.trim(), 12);
+    const passwordChanged = Boolean(password && password.length > 0);
+    if (password && password.length > 0) {
+      updateData.password = await bcrypt.hash(password, 12);
     }
 
     const updatedUser = await prisma.user.update({
-      where: { id: session.userId },
+      where: { id: guard.session.userId },
       data: updateData,
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        firstname: true,
+        lastname: true,
+      },
     });
 
-    // Mise à jour du cookie de session actif
     await createSession({
       userId: updatedUser.id,
       email: updatedUser.email,
@@ -70,68 +128,82 @@ export async function updateProfileAction(data: UpdateProfileInput) {
       lastname: updatedUser.lastname,
     });
 
+    await recordAuditLog({
+      session: guard.session,
+      action: "PROFILE_UPDATED",
+      entity: "User",
+      entityId: updatedUser.id,
+      metadata: { passwordChanged },
+    });
+
     revalidatePath("/admin");
     revalidatePath("/admin/parametres");
     revalidatePath("/admin/utilisateurs");
+    revalidatePath("/dashboard/profil");
 
-    return {
-      success: true,
-      message: "Vos informations ont été mises à jour avec succès !",
-    };
+    return ok("Vos informations ont été mises à jour avec succès !");
   } catch (error) {
-    console.error("[updateProfileAction] Erreur:", error);
-    return {
-      success: false,
-      message: "Une erreur est survenue lors de la mise à jour du profil.",
-    };
+    return handleActionError(
+      "actions.user.updateProfile",
+      error,
+      "Une erreur est survenue lors de la mise à jour du profil."
+    );
   }
-}
-
-// ─── Mise à jour d'un utilisateur par un admin ─────────────────────────────
-
-export interface UpdateUserInput {
-  id: string;
-  firstname: string;
-  lastname: string;
-  email: string;
-  role: "USER" | "AUTHOR" | "ADMIN";
 }
 
 export async function updateUserAction(data: UpdateUserInput) {
-  const session = await getSession();
-  if (!session) {
-    return { success: false, message: "Non autorisé." };
-  }
+  const guard = await requireAdmin();
+  if (!guard.authorized) return guard.response;
+
+  const parsed = adminUpdateUserSchema.safeParse(data);
+  if (!parsed.success) return fromZodError(parsed.error);
+
+  const {
+    id,
+    firstname,
+    lastname,
+    email,
+    role,
+    age,
+    sexe,
+    milieuResidence,
+    telephone,
+    sdh,
+  } = parsed.data;
 
   try {
-    const firstname = data.firstname.trim();
-    const lastname = data.lastname.trim();
-    const email = data.email.trim().toLowerCase();
-
-    // Vérifier si l'e-mail appartient à un autre utilisateur
     const existing = await prisma.user.findFirst({
-      where: {
-        email,
-        NOT: { id: data.id },
-      },
+      where: { email, NOT: { id } },
+      select: { id: true },
     });
 
     if (existing) {
-      return { success: false, message: "Cet e-mail est déjà utilisé par un autre membre." };
+      return fail("Cet e-mail est déjà utilisé par un autre membre.", "CONFLICT");
     }
 
     const updated = await prisma.user.update({
-      where: { id: data.id },
+      where: { id },
       data: {
         firstname,
         lastname,
         email,
-        role: data.role as Role,
+        role: role as Role,
+        age: age ?? null,
+        sexe: (sexe as Sexe | null) ?? null,
+        milieuResidence: (milieuResidence as MilieuResidence | null) ?? null,
+        telephone: telephone && telephone.trim() ? telephone.trim() : null,
+        sdh,
+      },
+      select: {
+        id: true,
+        email: true,
+        role: true,
+        firstname: true,
+        lastname: true,
       },
     });
 
-    // Si l'utilisateur a modifié son propre profil dans le tableau des utilisateurs, on met à jour la session
-    if (session.userId === updated.id) {
+    if (guard.session.userId === updated.id) {
       await createSession({
         userId: updated.id,
         email: updated.email,
@@ -141,99 +213,128 @@ export async function updateUserAction(data: UpdateUserInput) {
       });
     }
 
+    await recordAuditLog({
+      session: guard.session,
+      action: "USER_UPDATED",
+      entity: "User",
+      entityId: updated.id,
+      metadata: { targetEmail: updated.email, assignedRole: updated.role },
+    });
+
     revalidatePath("/admin/utilisateurs");
     revalidatePath("/admin");
 
-    return { success: true, message: "Informations de l'utilisateur mises à jour !" };
+    return ok("Informations de l'utilisateur mises à jour !");
   } catch (error) {
-    console.error("[updateUserAction] Erreur:", error);
-    return { success: false, message: "Erreur lors de la modification de l'utilisateur." };
+    return handleActionError(
+      "actions.user.updateUser",
+      error,
+      "Erreur lors de la modification de l'utilisateur."
+    );
   }
 }
 
-// ─── Suppression d'un utilisateur par un admin ──────────────────────────────
-
 export async function deleteUserAction(userId: string) {
-  const session = await getSession();
-  if (!session) {
-    return { success: false, message: "Non autorisé." };
-  }
+  const guard = await requireAdmin();
+  if (!guard.authorized) return guard.response;
 
-  if (session.userId === userId) {
-    return {
-      success: false,
-      message: "Vous ne pouvez pas supprimer le compte actuellement connecté.",
-    };
+  if (guard.session.userId === userId) {
+    return fail(
+      "Vous ne pouvez pas supprimer le compte actuellement connecté.",
+      "VALIDATION_ERROR"
+    );
   }
 
   try {
-    await prisma.user.delete({ where: { id: userId } });
+    const deleted = await prisma.user.delete({
+      where: { id: userId },
+      select: { id: true, email: true, role: true },
+    });
+
+    await recordAuditLog({
+      session: guard.session,
+      action: "USER_DELETED",
+      entity: "User",
+      entityId: deleted.id,
+      metadata: { targetEmail: deleted.email, previousRole: deleted.role },
+    });
+
     revalidatePath("/admin/utilisateurs");
     revalidatePath("/admin");
-    return { success: true, message: "Utilisateur supprimé avec succès." };
+    return ok("Utilisateur supprimé avec succès.");
   } catch (error) {
-    console.error("[deleteUserAction] Erreur:", error);
-    return { success: false, message: "Erreur lors de la suppression de l'utilisateur." };
+    return handleActionError(
+      "actions.user.deleteUser",
+      error,
+      "Erreur lors de la suppression de l'utilisateur."
+    );
   }
-}
-
-// ─── Création d'un nouvel utilisateur par un admin ──────────────────────────
-
-export interface CreateUserInput {
-  firstname: string;
-  lastname: string;
-  email: string;
-  password: string;
-  role: "USER" | "AUTHOR" | "ADMIN";
 }
 
 export async function createUserAction(data: CreateUserInput) {
-  const session = await getSession();
-  if (!session) {
-    return { success: false, message: "Non autorisé. Veuillez vous connecter." };
-  }
+  const guard = await requireAdmin();
+  if (!guard.authorized) return guard.response;
+
+  const parsed = adminCreateUserSchema.safeParse(data);
+  if (!parsed.success) return fromZodError(parsed.error);
+
+  const {
+    firstname,
+    lastname,
+    email,
+    password,
+    role,
+    age,
+    sexe,
+    milieuResidence,
+    telephone,
+    sdh,
+  } = parsed.data;
 
   try {
-    const firstname = data.firstname.trim();
-    const lastname = data.lastname.trim();
-    const email = data.email.trim().toLowerCase();
-    const password = data.password.trim();
-    const role = data.role;
-
-    if (!firstname || !lastname || !email || !password) {
-      return { success: false, message: "Tous les champs sont obligatoires." };
-    }
-
-    if (password.length < 8) {
-      return { success: false, message: "Le mot de passe doit contenir au moins 8 caractères." };
-    }
-
-    const existing = await prisma.user.findUnique({ where: { email } });
+    const existing = await prisma.user.findUnique({
+      where: { email },
+      select: { id: true },
+    });
     if (existing) {
-      return { success: false, message: "Un compte existe déjà avec cette adresse e-mail." };
+      return fail("Un compte existe déjà avec cette adresse e-mail.", "CONFLICT");
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    await prisma.user.create({
+    const created = await prisma.user.create({
       data: {
         firstname,
         lastname,
         email,
         password: hashedPassword,
         role: role as Role,
+        age: age ?? null,
+        sexe: (sexe as Sexe | null) ?? null,
+        milieuResidence: (milieuResidence as MilieuResidence | null) ?? null,
+        telephone: telephone && telephone.trim() ? telephone.trim() : null,
+        sdh,
       },
+      select: { id: true, email: true, role: true },
+    });
+
+    await recordAuditLog({
+      session: guard.session,
+      action: "USER_CREATED",
+      entity: "User",
+      entityId: created.id,
+      metadata: { targetEmail: created.email, assignedRole: created.role },
     });
 
     revalidatePath("/admin/utilisateurs");
     revalidatePath("/admin");
 
-    return {
-      success: true,
-      message: `L'utilisateur ${firstname} ${lastname} a été créé avec le rôle ${role} !`,
-    };
+    return ok(`L'utilisateur ${firstname} ${lastname} a été créé avec le rôle ${role} !`);
   } catch (error) {
-    console.error("[createUserAction] Erreur:", error);
-    return { success: false, message: "Une erreur est survenue lors de la création de l'utilisateur." };
+    return handleActionError(
+      "actions.user.createUser",
+      error,
+      "Une erreur est survenue lors de la création de l'utilisateur."
+    );
   }
 }

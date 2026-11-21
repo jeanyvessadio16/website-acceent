@@ -20,8 +20,18 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  age: number | null
+}
+
+export type UserSumAggregateOutputType = {
+  age: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -31,6 +41,12 @@ export type UserMinAggregateOutputType = {
   email: string | null
   password: string | null
   role: $Enums.Role | null
+  age: number | null
+  sexe: $Enums.Sexe | null
+  milieuResidence: $Enums.MilieuResidence | null
+  telephone: string | null
+  sdh: boolean | null
+  newsletterOptIn: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -42,6 +58,12 @@ export type UserMaxAggregateOutputType = {
   email: string | null
   password: string | null
   role: $Enums.Role | null
+  age: number | null
+  sexe: $Enums.Sexe | null
+  milieuResidence: $Enums.MilieuResidence | null
+  telephone: string | null
+  sdh: boolean | null
+  newsletterOptIn: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,11 +75,25 @@ export type UserCountAggregateOutputType = {
   email: number
   password: number
   role: number
+  age: number
+  sexe: number
+  milieuResidence: number
+  telephone: number
+  sdh: number
+  newsletterOptIn: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type UserAvgAggregateInputType = {
+  age?: true
+}
+
+export type UserSumAggregateInputType = {
+  age?: true
+}
 
 export type UserMinAggregateInputType = {
   id?: true
@@ -66,6 +102,12 @@ export type UserMinAggregateInputType = {
   email?: true
   password?: true
   role?: true
+  age?: true
+  sexe?: true
+  milieuResidence?: true
+  telephone?: true
+  sdh?: true
+  newsletterOptIn?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -77,6 +119,12 @@ export type UserMaxAggregateInputType = {
   email?: true
   password?: true
   role?: true
+  age?: true
+  sexe?: true
+  milieuResidence?: true
+  telephone?: true
+  sdh?: true
+  newsletterOptIn?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +136,12 @@ export type UserCountAggregateInputType = {
   email?: true
   password?: true
   role?: true
+  age?: true
+  sexe?: true
+  milieuResidence?: true
+  telephone?: true
+  sdh?: true
+  newsletterOptIn?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -131,6 +185,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -161,6 +227,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -172,9 +240,17 @@ export type UserGroupByOutputType = {
   email: string
   password: string
   role: $Enums.Role
+  age: number | null
+  sexe: $Enums.Sexe | null
+  milieuResidence: $Enums.MilieuResidence | null
+  telephone: string | null
+  sdh: boolean
+  newsletterOptIn: boolean
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -204,9 +280,21 @@ export type UserWhereInput = {
   email?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  age?: Prisma.IntNullableFilter<"User"> | number | null
+  sexe?: Prisma.EnumSexeNullableFilter<"User"> | $Enums.Sexe | null
+  milieuResidence?: Prisma.EnumMilieuResidenceNullableFilter<"User"> | $Enums.MilieuResidence | null
+  telephone?: Prisma.StringNullableFilter<"User"> | string | null
+  sdh?: Prisma.BoolFilter<"User"> | boolean
+  newsletterOptIn?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   posts?: Prisma.PostListRelationFilter
+  applications?: Prisma.ProgramApplicationListRelationFilter
+  eventRegistrations?: Prisma.EventRegistrationListRelationFilter
+  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
+  createdResources?: Prisma.ResourceListRelationFilter
+  createdEvents?: Prisma.EventListRelationFilter
+  newsletterCampaigns?: Prisma.NewsletterCampaignListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -216,9 +304,21 @@ export type UserOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  age?: Prisma.SortOrderInput | Prisma.SortOrder
+  sexe?: Prisma.SortOrderInput | Prisma.SortOrder
+  milieuResidence?: Prisma.SortOrderInput | Prisma.SortOrder
+  telephone?: Prisma.SortOrderInput | Prisma.SortOrder
+  sdh?: Prisma.SortOrder
+  newsletterOptIn?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   posts?: Prisma.PostOrderByRelationAggregateInput
+  applications?: Prisma.ProgramApplicationOrderByRelationAggregateInput
+  eventRegistrations?: Prisma.EventRegistrationOrderByRelationAggregateInput
+  passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput
+  createdResources?: Prisma.ResourceOrderByRelationAggregateInput
+  createdEvents?: Prisma.EventOrderByRelationAggregateInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -231,9 +331,21 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   lastname?: Prisma.StringFilter<"User"> | string
   password?: Prisma.StringFilter<"User"> | string
   role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
+  age?: Prisma.IntNullableFilter<"User"> | number | null
+  sexe?: Prisma.EnumSexeNullableFilter<"User"> | $Enums.Sexe | null
+  milieuResidence?: Prisma.EnumMilieuResidenceNullableFilter<"User"> | $Enums.MilieuResidence | null
+  telephone?: Prisma.StringNullableFilter<"User"> | string | null
+  sdh?: Prisma.BoolFilter<"User"> | boolean
+  newsletterOptIn?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   posts?: Prisma.PostListRelationFilter
+  applications?: Prisma.ProgramApplicationListRelationFilter
+  eventRegistrations?: Prisma.EventRegistrationListRelationFilter
+  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
+  createdResources?: Prisma.ResourceListRelationFilter
+  createdEvents?: Prisma.EventListRelationFilter
+  newsletterCampaigns?: Prisma.NewsletterCampaignListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -243,11 +355,19 @@ export type UserOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  age?: Prisma.SortOrderInput | Prisma.SortOrder
+  sexe?: Prisma.SortOrderInput | Prisma.SortOrder
+  milieuResidence?: Prisma.SortOrderInput | Prisma.SortOrder
+  telephone?: Prisma.SortOrderInput | Prisma.SortOrder
+  sdh?: Prisma.SortOrder
+  newsletterOptIn?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -260,6 +380,12 @@ export type UserScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   password?: Prisma.StringWithAggregatesFilter<"User"> | string
   role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
+  age?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
+  sexe?: Prisma.EnumSexeNullableWithAggregatesFilter<"User"> | $Enums.Sexe | null
+  milieuResidence?: Prisma.EnumMilieuResidenceNullableWithAggregatesFilter<"User"> | $Enums.MilieuResidence | null
+  telephone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  sdh?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  newsletterOptIn?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -271,9 +397,21 @@ export type UserCreateInput = {
   email: string
   password: string
   role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -283,9 +421,21 @@ export type UserUncheckedCreateInput = {
   email: string
   password: string
   role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUpdateInput = {
@@ -295,9 +445,21 @@ export type UserUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -307,9 +469,21 @@ export type UserUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -319,6 +493,12 @@ export type UserCreateManyInput = {
   email: string
   password: string
   role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -330,6 +510,12 @@ export type UserUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -341,6 +527,12 @@ export type UserUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -352,8 +544,18 @@ export type UserCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  sexe?: Prisma.SortOrder
+  milieuResidence?: Prisma.SortOrder
+  telephone?: Prisma.SortOrder
+  sdh?: Prisma.SortOrder
+  newsletterOptIn?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  age?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -363,6 +565,12 @@ export type UserMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  sexe?: Prisma.SortOrder
+  milieuResidence?: Prisma.SortOrder
+  telephone?: Prisma.SortOrder
+  sdh?: Prisma.SortOrder
+  newsletterOptIn?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -374,8 +582,18 @@ export type UserMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  sexe?: Prisma.SortOrder
+  milieuResidence?: Prisma.SortOrder
+  telephone?: Prisma.SortOrder
+  sdh?: Prisma.SortOrder
+  newsletterOptIn?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  age?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -389,6 +607,30 @@ export type StringFieldUpdateOperationsInput = {
 
 export type EnumRoleFieldUpdateOperationsInput = {
   set?: $Enums.Role
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type NullableEnumSexeFieldUpdateOperationsInput = {
+  set?: $Enums.Sexe | null
+}
+
+export type NullableEnumMilieuResidenceFieldUpdateOperationsInput = {
+  set?: $Enums.MilieuResidence | null
+}
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -409,6 +651,90 @@ export type UserUpdateOneRequiredWithoutPostsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPostsInput, Prisma.UserUpdateWithoutPostsInput>, Prisma.UserUncheckedUpdateWithoutPostsInput>
 }
 
+export type UserCreateNestedOneWithoutPasswordResetTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPasswordResetTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput
+  upsert?: Prisma.UserUpsertWithoutPasswordResetTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, Prisma.UserUpdateWithoutPasswordResetTokensInput>, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type UserCreateNestedOneWithoutApplicationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApplicationsInput, Prisma.UserUncheckedCreateWithoutApplicationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApplicationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutApplicationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutApplicationsInput, Prisma.UserUncheckedCreateWithoutApplicationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutApplicationsInput
+  upsert?: Prisma.UserUpsertWithoutApplicationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApplicationsInput, Prisma.UserUpdateWithoutApplicationsInput>, Prisma.UserUncheckedUpdateWithoutApplicationsInput>
+}
+
+export type UserCreateNestedOneWithoutCreatedEventsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedEventsInput, Prisma.UserUncheckedCreateWithoutCreatedEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCreatedEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedEventsInput, Prisma.UserUncheckedCreateWithoutCreatedEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedEventsInput
+  upsert?: Prisma.UserUpsertWithoutCreatedEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedEventsInput, Prisma.UserUpdateWithoutCreatedEventsInput>, Prisma.UserUncheckedUpdateWithoutCreatedEventsInput>
+}
+
+export type UserCreateNestedOneWithoutEventRegistrationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEventRegistrationsInput, Prisma.UserUncheckedCreateWithoutEventRegistrationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEventRegistrationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutEventRegistrationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutEventRegistrationsInput, Prisma.UserUncheckedCreateWithoutEventRegistrationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutEventRegistrationsInput
+  upsert?: Prisma.UserUpsertWithoutEventRegistrationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEventRegistrationsInput, Prisma.UserUpdateWithoutEventRegistrationsInput>, Prisma.UserUncheckedUpdateWithoutEventRegistrationsInput>
+}
+
+export type UserCreateNestedOneWithoutCreatedResourcesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedResourcesInput, Prisma.UserUncheckedCreateWithoutCreatedResourcesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedResourcesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCreatedResourcesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedResourcesInput, Prisma.UserUncheckedCreateWithoutCreatedResourcesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedResourcesInput
+  upsert?: Prisma.UserUpsertWithoutCreatedResourcesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedResourcesInput, Prisma.UserUpdateWithoutCreatedResourcesInput>, Prisma.UserUncheckedUpdateWithoutCreatedResourcesInput>
+}
+
+export type UserCreateNestedOneWithoutNewsletterCampaignsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNewsletterCampaignsInput, Prisma.UserUncheckedCreateWithoutNewsletterCampaignsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNewsletterCampaignsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutNewsletterCampaignsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNewsletterCampaignsInput, Prisma.UserUncheckedCreateWithoutNewsletterCampaignsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNewsletterCampaignsInput
+  upsert?: Prisma.UserUpsertWithoutNewsletterCampaignsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNewsletterCampaignsInput, Prisma.UserUpdateWithoutNewsletterCampaignsInput>, Prisma.UserUncheckedUpdateWithoutNewsletterCampaignsInput>
+}
+
 export type UserCreateWithoutPostsInput = {
   id?: string
   firstname: string
@@ -416,8 +742,20 @@ export type UserCreateWithoutPostsInput = {
   email: string
   password: string
   role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserUncheckedCreateWithoutPostsInput = {
@@ -427,8 +765,20 @@ export type UserUncheckedCreateWithoutPostsInput = {
   email: string
   password: string
   role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
 export type UserCreateOrConnectWithoutPostsInput = {
@@ -454,8 +804,20 @@ export type UserUpdateWithoutPostsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPostsInput = {
@@ -465,8 +827,668 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+}
+
+export type UserUpsertWithoutPasswordResetTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetTokensInput, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPasswordResetTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetTokensInput, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type UserUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutApplicationsInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutApplicationsInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutApplicationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutApplicationsInput, Prisma.UserUncheckedCreateWithoutApplicationsInput>
+}
+
+export type UserUpsertWithoutApplicationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutApplicationsInput, Prisma.UserUncheckedUpdateWithoutApplicationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutApplicationsInput, Prisma.UserUncheckedCreateWithoutApplicationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutApplicationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutApplicationsInput, Prisma.UserUncheckedUpdateWithoutApplicationsInput>
+}
+
+export type UserUpdateWithoutApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutApplicationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutCreatedEventsInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutCreatedEventsInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutCreatedEventsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedEventsInput, Prisma.UserUncheckedCreateWithoutCreatedEventsInput>
+}
+
+export type UserUpsertWithoutCreatedEventsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedEventsInput, Prisma.UserUncheckedUpdateWithoutCreatedEventsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedEventsInput, Prisma.UserUncheckedCreateWithoutCreatedEventsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedEventsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedEventsInput, Prisma.UserUncheckedUpdateWithoutCreatedEventsInput>
+}
+
+export type UserUpdateWithoutCreatedEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutEventRegistrationsInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutEventRegistrationsInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutEventRegistrationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutEventRegistrationsInput, Prisma.UserUncheckedCreateWithoutEventRegistrationsInput>
+}
+
+export type UserUpsertWithoutEventRegistrationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutEventRegistrationsInput, Prisma.UserUncheckedUpdateWithoutEventRegistrationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutEventRegistrationsInput, Prisma.UserUncheckedCreateWithoutEventRegistrationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutEventRegistrationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutEventRegistrationsInput, Prisma.UserUncheckedUpdateWithoutEventRegistrationsInput>
+}
+
+export type UserUpdateWithoutEventRegistrationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutEventRegistrationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutCreatedResourcesInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutCreatedResourcesInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutCreatedResourcesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedResourcesInput, Prisma.UserUncheckedCreateWithoutCreatedResourcesInput>
+}
+
+export type UserUpsertWithoutCreatedResourcesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedResourcesInput, Prisma.UserUncheckedUpdateWithoutCreatedResourcesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedResourcesInput, Prisma.UserUncheckedCreateWithoutCreatedResourcesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedResourcesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedResourcesInput, Prisma.UserUncheckedUpdateWithoutCreatedResourcesInput>
+}
+
+export type UserUpdateWithoutCreatedResourcesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedResourcesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsletterCampaigns?: Prisma.NewsletterCampaignUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutNewsletterCampaignsInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutNewsletterCampaignsInput = {
+  id?: string
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  role?: $Enums.Role
+  age?: number | null
+  sexe?: $Enums.Sexe | null
+  milieuResidence?: $Enums.MilieuResidence | null
+  telephone?: string | null
+  sdh?: boolean
+  newsletterOptIn?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
+  applications?: Prisma.ProgramApplicationUncheckedCreateNestedManyWithoutUserInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  createdResources?: Prisma.ResourceUncheckedCreateNestedManyWithoutCreatedByInput
+  createdEvents?: Prisma.EventUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutNewsletterCampaignsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNewsletterCampaignsInput, Prisma.UserUncheckedCreateWithoutNewsletterCampaignsInput>
+}
+
+export type UserUpsertWithoutNewsletterCampaignsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNewsletterCampaignsInput, Prisma.UserUncheckedUpdateWithoutNewsletterCampaignsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNewsletterCampaignsInput, Prisma.UserUncheckedCreateWithoutNewsletterCampaignsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNewsletterCampaignsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNewsletterCampaignsInput, Prisma.UserUncheckedUpdateWithoutNewsletterCampaignsInput>
+}
+
+export type UserUpdateWithoutNewsletterCampaignsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNewsletterCampaignsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sexe?: Prisma.NullableEnumSexeFieldUpdateOperationsInput | $Enums.Sexe | null
+  milieuResidence?: Prisma.NullableEnumMilieuResidenceFieldUpdateOperationsInput | $Enums.MilieuResidence | null
+  telephone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sdh?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  newsletterOptIn?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
+  applications?: Prisma.ProgramApplicationUncheckedUpdateManyWithoutUserNestedInput
+  eventRegistrations?: Prisma.EventRegistrationUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  createdResources?: Prisma.ResourceUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdEvents?: Prisma.EventUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 
@@ -476,10 +1498,22 @@ export type UserUncheckedUpdateWithoutPostsInput = {
 
 export type UserCountOutputType = {
   posts: number
+  applications: number
+  eventRegistrations: number
+  passwordResetTokens: number
+  createdResources: number
+  createdEvents: number
+  newsletterCampaigns: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   posts?: boolean | UserCountOutputTypeCountPostsArgs
+  applications?: boolean | UserCountOutputTypeCountApplicationsArgs
+  eventRegistrations?: boolean | UserCountOutputTypeCountEventRegistrationsArgs
+  passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
+  createdResources?: boolean | UserCountOutputTypeCountCreatedResourcesArgs
+  createdEvents?: boolean | UserCountOutputTypeCountCreatedEventsArgs
+  newsletterCampaigns?: boolean | UserCountOutputTypeCountNewsletterCampaignsArgs
 }
 
 /**
@@ -499,6 +1533,48 @@ export type UserCountOutputTypeCountPostsArgs<ExtArgs extends runtime.Types.Exte
   where?: Prisma.PostWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountApplicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProgramApplicationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountEventRegistrationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EventRegistrationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PasswordResetTokenWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedResourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ResourceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.EventWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNewsletterCampaignsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NewsletterCampaignWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -507,9 +1583,21 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   email?: boolean
   password?: boolean
   role?: boolean
+  age?: boolean
+  sexe?: boolean
+  milieuResidence?: boolean
+  telephone?: boolean
+  sdh?: boolean
+  newsletterOptIn?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
+  eventRegistrations?: boolean | Prisma.User$eventRegistrationsArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
+  createdResources?: boolean | Prisma.User$createdResourcesArgs<ExtArgs>
+  createdEvents?: boolean | Prisma.User$createdEventsArgs<ExtArgs>
+  newsletterCampaigns?: boolean | Prisma.User$newsletterCampaignsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -520,6 +1608,12 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   password?: boolean
   role?: boolean
+  age?: boolean
+  sexe?: boolean
+  milieuResidence?: boolean
+  telephone?: boolean
+  sdh?: boolean
+  newsletterOptIn?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -531,6 +1625,12 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   email?: boolean
   password?: boolean
   role?: boolean
+  age?: boolean
+  sexe?: boolean
+  milieuResidence?: boolean
+  telephone?: boolean
+  sdh?: boolean
+  newsletterOptIn?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -542,13 +1642,25 @@ export type UserSelectScalar = {
   email?: boolean
   password?: boolean
   role?: boolean
+  age?: boolean
+  sexe?: boolean
+  milieuResidence?: boolean
+  telephone?: boolean
+  sdh?: boolean
+  newsletterOptIn?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstname" | "lastname" | "email" | "password" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstname" | "lastname" | "email" | "password" | "role" | "age" | "sexe" | "milieuResidence" | "telephone" | "sdh" | "newsletterOptIn" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   posts?: boolean | Prisma.User$postsArgs<ExtArgs>
+  applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
+  eventRegistrations?: boolean | Prisma.User$eventRegistrationsArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
+  createdResources?: boolean | Prisma.User$createdResourcesArgs<ExtArgs>
+  createdEvents?: boolean | Prisma.User$createdEventsArgs<ExtArgs>
+  newsletterCampaigns?: boolean | Prisma.User$newsletterCampaignsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -558,6 +1670,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     posts: Prisma.$PostPayload<ExtArgs>[]
+    applications: Prisma.$ProgramApplicationPayload<ExtArgs>[]
+    eventRegistrations: Prisma.$EventRegistrationPayload<ExtArgs>[]
+    passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
+    createdResources: Prisma.$ResourcePayload<ExtArgs>[]
+    createdEvents: Prisma.$EventPayload<ExtArgs>[]
+    newsletterCampaigns: Prisma.$NewsletterCampaignPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -566,6 +1684,12 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     email: string
     password: string
     role: $Enums.Role
+    age: number | null
+    sexe: $Enums.Sexe | null
+    milieuResidence: $Enums.MilieuResidence | null
+    telephone: string | null
+    sdh: boolean
+    newsletterOptIn: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -963,6 +2087,12 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   posts<T extends Prisma.User$postsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  applications<T extends Prisma.User$applicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProgramApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  eventRegistrations<T extends Prisma.User$eventRegistrationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$eventRegistrationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventRegistrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  passwordResetTokens<T extends Prisma.User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdResources<T extends Prisma.User$createdResourcesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdResourcesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdEvents<T extends Prisma.User$createdEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  newsletterCampaigns<T extends Prisma.User$newsletterCampaignsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$newsletterCampaignsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NewsletterCampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -998,6 +2128,12 @@ export interface UserFieldRefs {
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'Role'>
+  readonly age: Prisma.FieldRef<"User", 'Int'>
+  readonly sexe: Prisma.FieldRef<"User", 'Sexe'>
+  readonly milieuResidence: Prisma.FieldRef<"User", 'MilieuResidence'>
+  readonly telephone: Prisma.FieldRef<"User", 'String'>
+  readonly sdh: Prisma.FieldRef<"User", 'Boolean'>
+  readonly newsletterOptIn: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -1414,6 +2550,150 @@ export type User$postsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.PostScalarFieldEnum | Prisma.PostScalarFieldEnum[]
+}
+
+/**
+ * User.applications
+ */
+export type User$applicationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProgramApplication
+   */
+  select?: Prisma.ProgramApplicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProgramApplication
+   */
+  omit?: Prisma.ProgramApplicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProgramApplicationInclude<ExtArgs> | null
+  where?: Prisma.ProgramApplicationWhereInput
+  orderBy?: Prisma.ProgramApplicationOrderByWithRelationInput | Prisma.ProgramApplicationOrderByWithRelationInput[]
+  cursor?: Prisma.ProgramApplicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProgramApplicationScalarFieldEnum | Prisma.ProgramApplicationScalarFieldEnum[]
+}
+
+/**
+ * User.eventRegistrations
+ */
+export type User$eventRegistrationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EventRegistration
+   */
+  select?: Prisma.EventRegistrationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EventRegistration
+   */
+  omit?: Prisma.EventRegistrationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EventRegistrationInclude<ExtArgs> | null
+  where?: Prisma.EventRegistrationWhereInput
+  orderBy?: Prisma.EventRegistrationOrderByWithRelationInput | Prisma.EventRegistrationOrderByWithRelationInput[]
+  cursor?: Prisma.EventRegistrationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EventRegistrationScalarFieldEnum | Prisma.EventRegistrationScalarFieldEnum[]
+}
+
+/**
+ * User.passwordResetTokens
+ */
+export type User$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PasswordResetToken
+   */
+  select?: Prisma.PasswordResetTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PasswordResetToken
+   */
+  omit?: Prisma.PasswordResetTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PasswordResetTokenInclude<ExtArgs> | null
+  where?: Prisma.PasswordResetTokenWhereInput
+  orderBy?: Prisma.PasswordResetTokenOrderByWithRelationInput | Prisma.PasswordResetTokenOrderByWithRelationInput[]
+  cursor?: Prisma.PasswordResetTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PasswordResetTokenScalarFieldEnum | Prisma.PasswordResetTokenScalarFieldEnum[]
+}
+
+/**
+ * User.createdResources
+ */
+export type User$createdResourcesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Resource
+   */
+  select?: Prisma.ResourceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Resource
+   */
+  omit?: Prisma.ResourceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ResourceInclude<ExtArgs> | null
+  where?: Prisma.ResourceWhereInput
+  orderBy?: Prisma.ResourceOrderByWithRelationInput | Prisma.ResourceOrderByWithRelationInput[]
+  cursor?: Prisma.ResourceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ResourceScalarFieldEnum | Prisma.ResourceScalarFieldEnum[]
+}
+
+/**
+ * User.createdEvents
+ */
+export type User$createdEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Event
+   */
+  select?: Prisma.EventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Event
+   */
+  omit?: Prisma.EventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EventInclude<ExtArgs> | null
+  where?: Prisma.EventWhereInput
+  orderBy?: Prisma.EventOrderByWithRelationInput | Prisma.EventOrderByWithRelationInput[]
+  cursor?: Prisma.EventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EventScalarFieldEnum | Prisma.EventScalarFieldEnum[]
+}
+
+/**
+ * User.newsletterCampaigns
+ */
+export type User$newsletterCampaignsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NewsletterCampaign
+   */
+  select?: Prisma.NewsletterCampaignSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NewsletterCampaign
+   */
+  omit?: Prisma.NewsletterCampaignOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NewsletterCampaignInclude<ExtArgs> | null
+  where?: Prisma.NewsletterCampaignWhereInput
+  orderBy?: Prisma.NewsletterCampaignOrderByWithRelationInput | Prisma.NewsletterCampaignOrderByWithRelationInput[]
+  cursor?: Prisma.NewsletterCampaignWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NewsletterCampaignScalarFieldEnum | Prisma.NewsletterCampaignScalarFieldEnum[]
 }
 
 /**

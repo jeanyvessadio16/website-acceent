@@ -19,6 +19,7 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? undefined;
   const isJustRegistered = searchParams.get("registered") === "true";
+  const isPasswordReset = searchParams.get("reset") === "success";
 
   const {
     register,
@@ -58,6 +59,17 @@ export default function LoginForm() {
         >
           <CheckCircle2 className="size-4 shrink-0 mt-0.5" />
           <span>Votre compte a été créé avec succès ! Connectez-vous ci-dessous.</span>
+        </div>
+      )}
+
+      {/* Bannière de confirmation de réinitialisation du mot de passe */}
+      {isPasswordReset && !serverError && (
+        <div
+          role="status"
+          className="flex items-start gap-2.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300 animate-in fade-in slide-in-from-top-2 duration-200"
+        >
+          <CheckCircle2 className="size-4 shrink-0 mt-0.5" />
+          <span>Mot de passe modifié avec succès ! Vous pouvez maintenant vous connecter.</span>
         </div>
       )}
 

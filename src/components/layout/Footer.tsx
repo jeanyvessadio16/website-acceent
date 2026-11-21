@@ -6,6 +6,7 @@ import Link from "next/link";
 import { programmes } from "@/data/footer/programmes";
 import { mediaLinks } from "@/data/footer/link-media";
 import { CookieSettingsButton } from "@/components/shared/CookieSettingsButton";
+import { NewsletterSubscribeForm } from "@/components/shared/NewsletterSubscribeForm";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -110,8 +111,21 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Bandeau Newsletter */}
+        <div className="mt-12 rounded-2xl border border-white/10 bg-white/[0.04] p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="max-w-md space-y-1">
+            <h3 className="text-base font-bold text-white">Restez informé·e des actions ACCEENT</h3>
+            <p className="text-xs sm:text-sm text-slate-400">
+              Recevez nos nouveaux articles, appels à candidatures et prochains ateliers à Ziguinchor.
+            </p>
+          </div>
+          <div className="w-full lg:max-w-md">
+            <NewsletterSubscribeForm variant="dark" compact />
+          </div>
+        </div>
+
         {/* Ligne de séparation et Copyright */}
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
           <p className="text-sm text-slate-500">
             © {currentYear} ACCEENT. Tous droits réservés.
           </p>

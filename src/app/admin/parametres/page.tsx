@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { ProfileForm } from "@/components/admin/ProfileForm";
-import { Settings, Bell, Shield, Database } from "lucide-react";
+import { Shield, Database, Globe, UserCheck, ArrowUpRight } from "lucide-react";
 import { getSession } from "@/lib/session";
 import prisma from "@/lib/prisma";
+
+export const metadata: Metadata = {
+  title: "Paramètres",
+};
 
 export default async function ParametresPage() {
   const session = await getSession();
@@ -16,6 +22,11 @@ export default async function ParametresPage() {
         lastname: true,
         email: true,
         role: true,
+        age: true,
+        sexe: true,
+        milieuResidence: true,
+        telephone: true,
+        sdh: true,
       },
     });
   }
@@ -35,49 +46,87 @@ export default async function ParametresPage() {
     : null;
 
   const initialProfile = dbUser || {
-    firstname: session?.firstname || "Paul",
-    lastname: session?.lastname || "Coitou",
-    email: session?.email || "paulcoitou@gmail.com",
-    role: session?.role || "ADMIN",
+    firstname: session?.firstname || "Utilisateur",
+    lastname: session?.lastname || "",
+    email: session?.email || "",
+    role: session?.role || "USER",
+    age: null,
+    sexe: null,
+    milieuResidence: null,
+    telephone: null,
+    sdh: false,
   };
+
+  const isAdmin = session?.role === "ADMIN";
+
+  const shortcuts = [
+    ...(isAdmin
+      ? [
+          {
+            href: "/admin/audit",
+            icon: Shield,
+            label: "Sécurité & Journal d'audit",
+            desc: "Sessions, exports et traçabilité complète",
+          },
+          {
+            href: "/api/health",
+            icon: Database,
+            label: "Santé Base de données",
+            desc: "Vérifier le statut PostgreSQL / Supabase",
+            external: true,
+          },
+        ]
+      : []),
+    {
+      href: "/dashboard",
+      icon: UserCheck,
+      label: "Mon espace membre",
+      desc: "Mes candidatures, billets PDF et newsletter",
+    },
+    {
+      href: "/",
+      icon: Globe,
+      label: "Site public ACCEENT",
+      desc: "Consulter le portail visiteur en direct",
+      external: true,
+    },
+  ];
 
   return (
     <AdminShell
       title="Paramètres & Profil"
-      subtitle="Gestion de votre compte et des paramètres de l'application"
+      subtitle="Gestion de votre compte personnel et raccourcis système"
       user={currentUser}
     >
       <div className="space-y-6 max-w-3xl">
-        {/* Formulaire de modification du profil */}
         <ProfileForm initialUser={initialProfile} />
 
-        {/* Options de configuration système */}
-        <div className="space-y-3 pt-4 border-t border-white/[0.06]">
-          <h3 className="text-zinc-500 text-[11px] font-semibold uppercase tracking-wider px-1">
-            Préférences système
+        <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <h3 className="text-slate-500 dark:text-slate-400 text-[11px] font-bold uppercase tracking-wider px-1">
+            Espaces &amp; Supervision
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[
-              { icon: Bell, label: "Notifications", desc: "Alertes e-mail et notifications push" },
-              { icon: Shield, label: "Sécurité & Audit", desc: "Sessions actives et journaux d'accès" },
-              { icon: Database, label: "Base de données", desc: "Sauvegardes automatiques Supabase" },
-              { icon: Settings, label: "Général", desc: "Nom du site, langue et fuseau horaire" },
-            ].map((s) => (
-              <div
+            {shortcuts.map((s) => (
+              <Link
                 key={s.label}
-                className="flex items-center gap-3.5 p-4 rounded-2xl border border-white/[0.08] bg-[#12131a] hover:border-white/[0.15] transition-colors cursor-pointer group"
+                href={s.href}
+                target={s.external ? "_blank" : undefined}
+                rel={s.external ? "noopener noreferrer" : undefined}
+                className="flex items-center gap-3.5 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-[#836182]/50 transition-colors group shadow-xs"
               >
-                <div className="size-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center shrink-0 text-[#b9939e]">
+                <div className="size-9 rounded-lg bg-[#836182]/10 border border-[#836182]/25 flex items-center justify-center shrink-0 text-[#836182] dark:text-[#d8b4d7]">
                   <s.icon className="size-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-zinc-200 font-medium text-sm truncate group-hover:text-white transition-colors">
+                  <p className="text-slate-900 dark:text-white font-semibold text-sm truncate">
                     {s.label}
                   </p>
-                  <p className="text-zinc-500 text-xs mt-0.5 truncate">{s.desc}</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5 truncate">
+                    {s.desc}
+                  </p>
                 </div>
-                <span className="text-zinc-600 text-base group-hover:text-zinc-400 transition-colors">›</span>
-              </div>
+                <ArrowUpRight className="size-4 text-slate-400 group-hover:text-[#836182] shrink-0" />
+              </Link>
             ))}
           </div>
         </div>

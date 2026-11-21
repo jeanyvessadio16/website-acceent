@@ -4,16 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Mail, Menu, Phone, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, type PanInfo } from "framer-motion";
 
 // Liens simples de navigation
-const NAV_SIMPLE = [
-  { label: "Accueil", href: "/" },
-  { label: "À propos", href: "/about" },
-] as const;
+const NAV_SIMPLE = [{ label: "Accueil", href: "/" }] as const;
 
 // Liens de domaine avec sous-programmes
 const NAV_DOMAINES = [
@@ -46,9 +43,10 @@ const NAV_DOMAINES = [
 
 const NAV_END = [
   { label: "Actualités", href: "/actualites" },
+  { label: "Événements", href: "/evenements" },
 ] as const;
 
-// Composant dropdown desktop
+// Composant dropdown desktop (ouverture au survol et au focus clavier)
 function DomainDropdown({
   domaine,
   pathname,
@@ -58,28 +56,80 @@ function DomainDropdown({
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLLIElement>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isActive =
     pathname === domaine.href ||
     domaine.programmes.some((p) => pathname === p.href);
 
-  // Fermeture au clic extérieur
+  const clearCloseTimer = () => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+
+  const openMenu = () => {
+    clearCloseTimer();
+    setOpen(true);
+  };
+
+  const scheduleClose = () => {
+    clearCloseTimer();
+    closeTimerRef.current = setTimeout(() => {
+      setOpen(false);
+      closeTimerRef.current = null;
+    }, 120);
+  };
+
+  const closeImmediately = () => {
+    clearCloseTimer();
+    setOpen(false);
+  };
+
+  // Fermeture au clic extérieur et nettoyage du timer au démontage
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
+        if (closeTimerRef.current) {
+          clearTimeout(closeTimerRef.current);
+          closeTimerRef.current = null;
+        }
         setOpen(false);
       }
     };
     document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    return () => {
+      document.removeEventListener("mousedown", handler);
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+      }
+    };
   }, []);
 
   return (
-    <li ref={ref} className="relative">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
+    <li
+      ref={ref}
+      className="relative"
+      onMouseEnter={openMenu}
+      onMouseLeave={scheduleClose}
+      onFocus={openMenu}
+      onBlur={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+          closeImmediately();
+        }
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
+          closeImmediately();
+        }
+      }}
+    >
+      <Link
+        href={domaine.href}
+        onClick={closeImmediately}
         aria-expanded={open}
+        aria-haspopup="menu"
         className={cn(
           "group flex cursor-pointer items-center gap-1 px-2.5 py-2 text-sm font-medium transition-colors outline-none select-none relative",
           isActive
@@ -95,7 +145,7 @@ function DomainDropdown({
           )}
           aria-hidden
         />
-      </button>
+      </Link>
 
       <AnimatePresence>
         {open && (
@@ -104,37 +154,39 @@ function DomainDropdown({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.97 }}
             transition={{ duration: 0.15 }}
-            className="absolute left-1/2 -translate-x-1/2 top-full mt-2 min-w-[13rem] rounded-xl border border-slate-200 bg-white shadow-lg p-1.5 z-50"
+            className="absolute left-1/2 -translate-x-1/2 top-full pt-2 z-50"
           >
-            {/* Lien vers la page principale du domaine */}
-            <Link
-              href={domaine.href}
-              onClick={() => setOpen(false)}
-              className={cn(
-                "flex w-full items-center rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors border-b border-slate-100 mb-1 pb-2",
-                pathname === domaine.href
-                  ? "bg-primary/10 text-primary"
-                  : "text-slate-800 hover:bg-slate-100 hover:text-primary",
-              )}
-            >
-              Tous les programmes
-            </Link>
-            {/* Sous-programmes */}
-            {domaine.programmes.map((p) => (
+            <div className="min-w-[13rem] rounded-xl border border-slate-200 bg-white shadow-lg p-1.5">
+              {/* Lien vers la page principale du domaine */}
               <Link
-                key={p.href}
-                href={p.href}
-                onClick={() => setOpen(false)}
+                href={domaine.href}
+                onClick={closeImmediately}
                 className={cn(
-                  "flex w-full items-center rounded-lg px-3.5 py-2 text-sm font-medium transition-colors",
-                  pathname === p.href
-                    ? "bg-primary/10 text-primary font-semibold"
-                    : "text-slate-700 hover:bg-slate-100 hover:text-primary",
+                  "flex w-full items-center rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors border-b border-slate-100 mb-1 pb-2",
+                  pathname === domaine.href
+                    ? "bg-primary/10 text-primary"
+                    : "text-slate-800 hover:bg-slate-100 hover:text-primary",
                 )}
               >
-                {p.label}
+                Tous les programmes
               </Link>
-            ))}
+              {/* Sous-programmes */}
+              {domaine.programmes.map((p) => (
+                <Link
+                  key={p.href}
+                  href={p.href}
+                  onClick={closeImmediately}
+                  className={cn(
+                    "flex w-full items-center rounded-lg px-3.5 py-2 text-sm font-medium transition-colors",
+                    pathname === p.href
+                      ? "bg-primary/10 text-primary font-semibold"
+                      : "text-slate-700 hover:bg-slate-100 hover:text-primary",
+                  )}
+                >
+                  {p.label}
+                </Link>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -142,77 +194,127 @@ function DomainDropdown({
   );
 }
 
-// Composant accordéon mobile pour un domaine
+// Lien de navigation mobile épuré avec zone tactile >= 48px
+function MobileNavLink({
+  href,
+  label,
+  active,
+  onClick,
+}: {
+  href: string;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <li>
+      <Link
+        href={href}
+        onClick={onClick}
+        className={cn(
+          "flex min-h-12 items-center rounded-xl px-4 py-2.5 text-[15px] font-semibold transition-colors touch-manipulation",
+          active
+            ? "bg-primary text-white shadow-xs"
+            : "bg-slate-50 text-slate-800 hover:bg-slate-100 active:bg-slate-200/70",
+        )}
+      >
+        <span>{label}</span>
+      </Link>
+    </li>
+  );
+}
+
+// Composant accordéon mobile exclusif pour un domaine
 function MobileDomainAccordion({
   domaine,
   pathname,
+  isOpen,
+  onToggle,
   onClose,
 }: {
   domaine: (typeof NAV_DOMAINES)[number];
   pathname: string;
+  isOpen: boolean;
+  onToggle: () => void;
   onClose: () => void;
 }) {
   const isActive =
     pathname === domaine.href ||
     domaine.programmes.some((p) => pathname === p.href);
-
-  const [open, setOpen] = useState(isActive);
+  const panelId = `mobile-domain-${domaine.href.replace(/\W+/g, "")}`;
 
   return (
     <li>
-      <div className="rounded-xl border border-slate-200/70 bg-slate-50/80 p-2.5 my-0.5">
-        {/* Bouton toggle */}
+      <div
+        className={cn(
+          "rounded-2xl border transition-colors",
+          isActive || isOpen
+            ? "border-primary/25 bg-primary/[0.03]"
+            : "border-slate-200/80 bg-slate-50/70",
+        )}
+      >
         <button
           type="button"
-          onClick={() => setOpen((o) => !o)}
+          onClick={onToggle}
+          aria-expanded={isOpen}
+          aria-controls={panelId}
           className={cn(
-            "flex w-full items-center justify-between px-1 mb-1 text-sm font-semibold transition-colors",
-            isActive ? "text-primary" : "text-slate-700",
+            "flex min-h-12 w-full items-center justify-between gap-3 rounded-2xl px-4 py-2.5 text-left transition-colors touch-manipulation active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+            isActive ? "text-primary" : "text-slate-800",
           )}
         >
-          <span>{domaine.label}</span>
-          <ChevronDown
-            className={cn(
-              "size-4 transition-transform duration-200",
-              open && "rotate-180",
-            )}
-          />
+          <span className="truncate text-[15px] font-semibold">
+            {domaine.label}
+          </span>
+
+          <span className="flex items-center gap-2 shrink-0">
+            <span className="rounded-full bg-slate-200/70 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
+              {domaine.programmes.length}
+            </span>
+            <ChevronDown
+              className={cn(
+                "size-4 text-slate-500 transition-transform duration-200",
+                isOpen && "rotate-180 text-primary",
+              )}
+              aria-hidden
+            />
+          </span>
         </button>
 
         <AnimatePresence initial={false}>
-          {open && (
+          {isOpen && (
             <motion.div
+              id={panelId}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               className="overflow-hidden"
             >
-              <div className="flex flex-col gap-0.5 pt-1">
-                {/* Lien principal du domaine */}
+              <div className="ml-4 mr-2 mb-2.5 pl-3.5 border-l-2 border-primary/20 flex flex-col gap-1 pt-1">
                 <Link
                   href={domaine.href}
                   onClick={onClose}
                   className={cn(
-                    "flex items-center rounded-md px-3 py-1.5 text-xs font-semibold transition-colors border-b border-slate-200/60 pb-2 mb-0.5",
+                    "flex min-h-11 items-center rounded-xl px-3 py-2 text-sm font-semibold transition-colors touch-manipulation",
                     pathname === domaine.href
-                      ? "bg-primary text-white"
-                      : "text-slate-600 hover:bg-slate-200/60",
+                      ? "bg-primary text-white shadow-2xs"
+                      : "text-slate-800 hover:bg-white active:bg-slate-200/70",
                   )}
                 >
                   Tous les programmes
                 </Link>
-                {/* Sous-programmes */}
+
                 {domaine.programmes.map((p) => (
                   <Link
                     key={p.href}
                     href={p.href}
                     onClick={onClose}
                     className={cn(
-                      "flex items-center rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
+                      "flex min-h-11 items-center rounded-xl px-3 py-2 text-sm font-medium transition-colors touch-manipulation",
                       pathname === p.href
-                        ? "bg-primary text-white font-semibold"
-                        : "text-slate-700 hover:bg-slate-200/60",
+                        ? "bg-primary text-white font-semibold shadow-2xs"
+                        : "text-slate-700 hover:bg-white active:bg-slate-200/70",
                     )}
                   >
                     {p.label}
@@ -228,9 +330,35 @@ function MobileDomainAccordion({
 }
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const [menuPath, setMenuPath] = useState<string | null>(null);
+  const [expandedDomain, setExpandedDomain] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  const isMenuOpen = menuPath === pathname;
+  const activeDomainHref =
+    NAV_DOMAINES.find(
+      (d) =>
+        pathname === d.href || d.programmes.some((p) => pathname === p.href),
+    )?.href ?? null;
+
+  const openMenu = () => {
+    setExpandedDomain(activeDomainHref);
+    setMenuPath(pathname);
+  };
+
+  const closeMenu = () => {
+    setMenuPath(null);
+  };
+
+  const toggleMenu = () => {
+    if (isMenuOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  };
 
   // Scroll listener for sticky header background shadow
   useEffect(() => {
@@ -241,25 +369,27 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll and support Escape key when mobile drawer is open
   useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
-      document.body.style.touchAction = "none";
-    } else {
+    if (!isMenuOpen) {
       document.body.style.overflow = "";
-      document.body.style.touchAction = "";
+      return;
     }
+
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuPath(null);
+        menuButtonRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+
     return () => {
       document.body.style.overflow = "";
-      document.body.style.touchAction = "";
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isMenuOpen]);
-
-  // Close menu on route change
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [pathname]);
 
   const getNavLinkClass = (href: string) => {
     const isActive = pathname === href;
@@ -279,19 +409,19 @@ export default function Header() {
           scrolled ? "shadow-md" : "shadow-xs",
         )}
       >
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-8 flex h-18 sm:h-20 items-center justify-between gap-4">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-8 flex h-16 sm:h-20 items-center justify-between gap-3 sm:gap-4">
           {/* Logo */}
           <Link
             href="/"
-            className="relative flex w-56 sm:w-72 lg:w-80 xl:w-88 h-18 sm:h-22 lg:h-24 shrink-0 items-center transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
+            className="relative flex w-40 sm:w-64 lg:w-80 xl:w-88 h-14 sm:h-20 lg:h-24 shrink-0 items-center transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
             aria-label="ACCEENT — Accueil"
           >
             <Image
               src="/logo/logoACCEENT.png"
               alt="ACCEENT Ziguinchor"
               fill
-              className="object-contain object-left scale-130 sm:scale-140 lg:scale-150 origin-left"
-              sizes="(max-width: 640px) 224px, (max-width: 1024px) 288px, 320px"
+              className="object-contain object-left scale-115 sm:scale-135 lg:scale-150 origin-left"
+              sizes="(max-width: 640px) 160px, (max-width: 1024px) 256px, 320px"
               priority
             />
           </Link>
@@ -332,26 +462,34 @@ export default function Header() {
           </nav>
 
           {/* CTA Principal Desktop */}
-          <div className="hidden lg:flex items-center">
+          <div className="hidden lg:flex items-center gap-2 shrink-0">
             <Button
               asChild
-              className="rounded-full bg-primary text-white hover:bg-primary/90 font-medium px-5 py-2 h-auto text-sm shadow-xs"
+              className="rounded-full bg-primary text-white hover:bg-primary/90 font-medium px-4 xl:px-5 py-2 h-auto text-xs xl:text-sm shadow-xs"
             >
               <Link href="/contact">Nous contacter</Link>
             </Button>
           </div>
 
-          {/* Mobile Menu Trigger */}
-          <div className="flex items-center lg:hidden">
+          {/* Mobile & Tablet Actions */}
+          <div className="flex items-center gap-2 lg:hidden">
             <Button
+              asChild
+              size="sm"
+              className="hidden sm:inline-flex rounded-full bg-primary text-white hover:bg-primary/90 font-medium px-4 h-9 text-xs shadow-xs"
+            >
+              <Link href="/contact">Contact</Link>
+            </Button>
+            <Button
+              ref={menuButtonRef}
               type="button"
               variant="ghost"
               size="icon"
-              onClick={() => setIsMenuOpen((o) => !o)}
+              onClick={toggleMenu}
               aria-expanded={isMenuOpen}
               aria-controls="mobile-navigation"
               aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
-              className="touch-manipulation rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 focus-visible:ring-2 focus-visible:ring-primary"
+              className="h-11 w-11 touch-manipulation rounded-full border border-slate-200/80 bg-slate-50 hover:bg-slate-100 active:scale-95 text-slate-800 transition-all focus-visible:ring-2 focus-visible:ring-primary"
             >
               {isMenuOpen ? (
                 <X className="size-5" />
@@ -364,7 +502,7 @@ export default function Header() {
       </header>
 
       {/* Spacer matching fixed header height */}
-      <div className="h-20 shrink-0" aria-hidden />
+      <div className="h-16 sm:h-20 shrink-0" aria-hidden />
 
       {/* Mobile Drawer Overlay */}
       <AnimatePresence>
@@ -377,111 +515,145 @@ export default function Header() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={closeMenu}
               aria-hidden
             />
 
-            {/* Slide-out Panel */}
+            {/* Slide-out Panel (swipe-to-close compatible) */}
             <motion.nav
               id="mobile-navigation"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 28, stiffness: 280 }}
-              className="relative w-full max-w-[300px] sm:max-w-xs h-dvh max-h-dvh bg-white shadow-2xl flex flex-col z-10"
+              drag="x"
+              dragDirectionLock
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={{ left: 0, right: 0.4 }}
+              onDragEnd={(_event, info: PanInfo) => {
+                if (info.offset.x > 80 || info.velocity.x > 400) {
+                  closeMenu();
+                }
+              }}
+              style={{ touchAction: "pan-y" }}
+              className="relative w-[86vw] max-w-sm h-dvh max-h-dvh rounded-l-2xl bg-white shadow-2xl flex flex-col z-10 overflow-hidden"
               role="dialog"
               aria-modal="true"
               aria-label="Menu de navigation mobile"
             >
               {/* Header Bar */}
-              <div className="flex items-center justify-between px-5 h-18 border-b border-slate-100 shrink-0">
+              <div className="flex items-center justify-between px-5 h-16 border-b border-slate-100 shrink-0">
                 <Link
                   href="/"
-                  className="relative w-52 h-16"
-                  onClick={() => setIsMenuOpen(false)}
+                  className="relative w-40 h-12"
+                  onClick={closeMenu}
+                  aria-label="ACCEENT — Accueil"
                 >
                   <Image
                     src="/logo/logoACCEENT.png"
                     alt="ACCEENT Ziguinchor"
                     fill
-                    className="object-contain object-left scale-130 origin-left"
-                    sizes="208px"
+                    className="object-contain object-left scale-115 origin-left"
+                    sizes="160px"
                   />
                 </Link>
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={closeMenu}
                   aria-label="Fermer le menu"
-                  className="rounded-full h-9 w-9 bg-slate-100 hover:bg-slate-200 text-slate-700"
+                  className="rounded-full h-10 w-10 touch-manipulation bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 transition-all"
                 >
                   <X className="size-4" />
                 </Button>
               </div>
 
               {/* Navigation Links — scrollable */}
-              <div className="flex-1 overflow-y-auto px-4 py-4 gap-1">
-                <ul className="flex flex-col gap-1">
-                  {/* Liens simples avant */}
+              <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-5">
+                {/* Accueil */}
+                <ul className="flex flex-col gap-1.5">
                   {NAV_SIMPLE.map((lien) => (
-                    <li key={lien.href}>
-                      <Link
-                        href={lien.href}
-                        onClick={() => setIsMenuOpen(false)}
-                        className={cn(
-                          "flex items-center rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors",
-                          pathname === lien.href
-                            ? "bg-primary text-white font-semibold"
-                            : "text-slate-800 hover:bg-slate-100",
-                        )}
-                      >
-                        {lien.label}
-                      </Link>
-                    </li>
-                  ))}
-
-                  {/* Domaines avec accordéons */}
-                  {NAV_DOMAINES.map((domaine) => (
-                    <MobileDomainAccordion
-                      key={domaine.href}
-                      domaine={domaine}
-                      pathname={pathname}
-                      onClose={() => setIsMenuOpen(false)}
+                    <MobileNavLink
+                      key={lien.href}
+                      href={lien.href}
+                      label={lien.label}
+                      active={pathname === lien.href}
+                      onClick={closeMenu}
                     />
                   ))}
-
-                  {/* Liens après */}
-                  {NAV_END.map((lien) => (
-                    <li key={lien.href}>
-                      <Link
-                        href={lien.href}
-                        onClick={() => setIsMenuOpen(false)}
-                        className={cn(
-                          "flex items-center rounded-lg px-3.5 py-2.5 text-sm font-medium transition-colors",
-                          pathname === lien.href
-                            ? "bg-primary text-white font-semibold"
-                            : "text-slate-800 hover:bg-slate-100",
-                        )}
-                      >
-                        {lien.label}
-                      </Link>
-                    </li>
-                  ))}
                 </ul>
+
+                {/* Domaines avec accordéons exclusifs */}
+                <div>
+                  <p className="px-2 mb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    Nos programmes
+                  </p>
+                  <ul className="flex flex-col gap-2">
+                    {NAV_DOMAINES.map((domaine) => (
+                      <MobileDomainAccordion
+                        key={domaine.href}
+                        domaine={domaine}
+                        pathname={pathname}
+                        isOpen={expandedDomain === domaine.href}
+                        onToggle={() =>
+                          setExpandedDomain((prev) =>
+                            prev === domaine.href ? null : domaine.href,
+                          )
+                        }
+                        onClose={closeMenu}
+                      />
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Vie de l'association */}
+                <div>
+                  <p className="px-2 mb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    Vie de l&apos;association
+                  </p>
+                  <ul className="flex flex-col gap-1.5">
+                    {NAV_END.map((lien) => (
+                      <MobileNavLink
+                        key={lien.href}
+                        href={lien.href}
+                        label={lien.label}
+                        active={pathname === lien.href}
+                        onClick={closeMenu}
+                      />
+                    ))}
+                  </ul>
+                </div>
               </div>
 
-              {/* Bottom Action Button */}
-              <div className="p-4 bg-slate-50 border-t border-slate-100 shrink-0">
+              {/* Sticky Bottom Action Bar (safe-area aware) */}
+              <div className="px-4 pt-3.5 pb-[max(1rem,env(safe-area-inset-bottom))] bg-slate-50/90 border-t border-slate-200/80 shrink-0 space-y-2.5">
                 <Button
                   asChild
                   size="default"
-                  className="w-full rounded-full bg-primary text-white font-semibold text-sm h-11 hover:bg-primary/90"
+                  className="w-full rounded-full bg-primary text-white font-semibold text-sm h-12 hover:bg-primary/90 shadow-sm"
                 >
-                  <Link href="/contact" onClick={() => setIsMenuOpen(false)}>
+                  <Link href="/contact" onClick={closeMenu}>
                     Nous contacter
                   </Link>
                 </Button>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <a
+                    href="tel:+221761417070"
+                    className="flex min-h-10 items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition-colors hover:border-primary/40 hover:text-primary active:bg-slate-100 touch-manipulation"
+                  >
+                    <Phone className="size-3.5 text-primary shrink-0" aria-hidden />
+                    <span>Appeler</span>
+                  </a>
+                  <a
+                    href="mailto:info@acceent.org"
+                    className="flex min-h-10 items-center justify-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 transition-colors hover:border-primary/40 hover:text-primary active:bg-slate-100 touch-manipulation"
+                  >
+                    <Mail className="size-3.5 text-primary shrink-0" aria-hidden />
+                    <span>E-mail</span>
+                  </a>
+                </div>
               </div>
             </motion.nav>
           </div>

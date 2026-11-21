@@ -12,13 +12,20 @@ interface ApiContactResponse {
 }
 
 export class ContactService {
-  private static readonly ACCESS_KEY =
-    process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ||
-    process.env.WEB3FORMS_ACCESS_KEY ||
-    "ce7872d0-81e0-466d-a05b-2be4cbb2236f";
+  private static getAccessKey(): string {
+    const key =
+      process.env.WEB3FORMS_ACCESS_KEY ||
+      process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+    if (!key) {
+      throw new Error(
+        "Le service de messagerie n'est pas configuré. Veuillez contacter directement l'association par téléphone ou e-mail."
+      );
+    }
+    return key;
+  }
 
   /**
-   * Valide et envoie le formulaire de contact via l'API /api/contact (Web3Forms)
+   * Valide et envoie le formulaire de contact via l'API Web3Forms
    */
   static async submitContactForm(
     data: ContactFormData,
@@ -58,7 +65,7 @@ export class ContactService {
   private static async sendContactEmail(data: ContactFormData): Promise<void> {
     const payload = {
       ...data,
-      access_key: this.ACCESS_KEY,
+      access_key: this.getAccessKey(),
     };
 
     const response = await fetch("https://api.web3forms.com/submit", {

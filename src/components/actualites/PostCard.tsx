@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, ArrowRight, Clock, UserCheck, Maximize2, ExternalLink } from "lucide-react";
+import { Calendar, ArrowRight, Clock, Maximize2, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
+import { POST_CATEGORIES, type PostCategoryKey } from "@/lib/constants/platform";
 
 export interface PublishedPost {
   id: string;
@@ -12,6 +13,8 @@ export interface PublishedPost {
   content: string;
   imageUrl: string | null;
   link?: string | null;
+  category?: string;
+  tags?: string[];
   createdAt: string;
   authorName: string;
 }
@@ -19,23 +22,26 @@ export interface PublishedPost {
 interface PostCardProps {
   post: PublishedPost;
   onImagePreview?: (imageUrl: string, title: string) => void;
+  onTagClick?: (tag: string) => void;
   index?: number;
 }
 
-export function PostCard({ post, onImagePreview, index = 0 }: PostCardProps) {
-  // Calcul rapide du temps de lecture estimé (ex: 200 mots par minute)
+export function PostCard({ post, onImagePreview, onTagClick, index = 0 }: PostCardProps) {
   const wordCount = post.content ? post.content.split(/\s+/).length : 0;
   const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
   const defaultImage =
     "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80";
   const imageSrc = post.imageUrl || defaultImage;
+  const catMeta =
+    POST_CATEGORIES[(post.category as PostCategoryKey) || "GENERAL"] ||
+    POST_CATEGORIES.GENERAL;
 
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.07 }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
       className="h-full flex"
     >
       <div className="group relative flex flex-col w-full bg-white rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#836182]/40 transition-all duration-300 overflow-hidden hover:-translate-y-1">
@@ -49,16 +55,14 @@ export function PostCard({ post, onImagePreview, index = 0 }: PostCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
 
-          {/* Fondu graduel vers le bas pour maximiser la lisibilité des badges */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/10 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300" />
 
           {/* Badges superposés sur l'image */}
           <div className="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none">
-            <span className="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-md text-slate-800 text-[11px] font-bold px-3 py-1 rounded-full shadow-md border border-white/50">
-              Publication
+            <span className="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-md text-slate-800 text-[11px] font-bold px-3 py-1 rounded-full shadow-md border border-white/50">
+              {catMeta.label}
             </span>
 
-            {/* Bouton pour agrandir l'image en plein écran */}
             {onImagePreview && (
               <button
                 type="button"
@@ -67,7 +71,7 @@ export function PostCard({ post, onImagePreview, index = 0 }: PostCardProps) {
                   e.stopPropagation();
                   onImagePreview(imageSrc, post.title);
                 }}
-                className="pointer-events-auto size-8 rounded-full bg-slate-900/60 hover:bg-[#836182] backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 shadow-md hover:scale-110"
+                className="pointer-events-auto size-8 rounded-full bg-slate-900/60 hover:bg-[#836182] backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 shadow-md hover:scale-110 cursor-pointer"
                 title="Agrandir l'image en plein écran"
               >
                 <Maximize2 className="size-3.5" />
@@ -75,7 +79,6 @@ export function PostCard({ post, onImagePreview, index = 0 }: PostCardProps) {
             )}
           </div>
 
-          {/* Tempe de lecture & date en bas de l'image */}
           <div className="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between text-white text-xs font-medium">
             <span className="flex items-center gap-1 bg-slate-900/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 text-[11px]">
               <Calendar className="size-3 text-pink-300" />
@@ -100,6 +103,30 @@ export function PostCard({ post, onImagePreview, index = 0 }: PostCardProps) {
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed line-clamp-3">
               {post.content}
             </p>
+
+            {post.tags && post.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {post.tags.slice(0, 3).map((tag) =>
+                  onTagClick ? (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => onTagClick(tag)}
+                      className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 hover:bg-[#836182]/10 text-slate-600 hover:text-[#836182] transition-colors cursor-pointer"
+                    >
+                      #{tag}
+                    </button>
+                  ) : (
+                    <span
+                      key={tag}
+                      className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600"
+                    >
+                      #{tag}
+                    </span>
+                  )
+                )}
+              </div>
+            )}
           </div>
 
           <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">

@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { rootMetadata, SITE_URL } from "@/lib/seo";
 import { CookieBanner } from "@/components/shared/CookieBanner";
+import { ThemeProvider } from "@/components/shared/ThemeProvider";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/JsonLd";
 
 const inter = Inter({
@@ -20,13 +21,19 @@ export const viewport: Viewport = {
   themeColor: "#0f172a",
 };
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-LHX5D4CQ9T";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={`${inter.variable} h-full antialiased overflow-x-hidden w-full max-w-full`}>
+    <html
+      lang="fr"
+      suppressHydrationWarning
+      className={`${inter.variable} h-full antialiased overflow-x-hidden w-full max-w-full`}
+    >
       <head>
         {/* hreflang — aide Google et les moteurs localisés à cibler la bonne audience */}
         <link rel="alternate" hrefLang="fr-SN" href={SITE_URL} />
@@ -38,12 +45,14 @@ export default function RootLayout({
         <meta name="referrer" content="strict-origin-when-cross-origin" />
       </head>
       <body className="min-h-full flex flex-col overflow-x-hidden w-full max-w-full relative">
-        <OrganizationJsonLd />
-        <WebSiteJsonLd />
-        {children}
-        <CookieBanner />
+        <ThemeProvider>
+          <OrganizationJsonLd />
+          <WebSiteJsonLd />
+          {children}
+          <CookieBanner />
+        </ThemeProvider>
       </body>
-      <GoogleAnalytics gaId="G-LHX5D4CQ9T" />
+      <GoogleAnalytics gaId={GA_ID} />
     </html>
   );
 }

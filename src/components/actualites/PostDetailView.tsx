@@ -7,6 +7,7 @@ import { Calendar, ArrowLeft, BookOpen, Clock, UserCheck, Maximize2, X, Share2, 
 import { motion, AnimatePresence } from "framer-motion";
 import { FadeIn } from "@/components/shared/Animations";
 import { Button } from "@/components/ui/button";
+import { POST_CATEGORIES, type PostCategoryKey } from "@/lib/constants/platform";
 
 interface PostDetailViewProps {
   post: {
@@ -16,6 +17,8 @@ interface PostDetailViewProps {
     content: string;
     imageUrl: string | null;
     link?: string | null;
+    category?: string;
+    tags?: string[];
     createdAt: string;
     authorName: string;
   };
@@ -58,6 +61,15 @@ export function PostDetailView({ post }: PostDetailViewProps) {
         <FadeIn direction="up" delay={0.1}>
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500">
+              <span
+                className={`px-3 py-1 rounded-full border font-bold ${
+                  (POST_CATEGORIES[(post.category as PostCategoryKey) || "GENERAL"] ||
+                    POST_CATEGORIES.GENERAL).badgeLight
+                }`}
+              >
+                {(POST_CATEGORIES[(post.category as PostCategoryKey) || "GENERAL"] ||
+                  POST_CATEGORIES.GENERAL).label}
+              </span>
               <span className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full border border-slate-200/80 shadow-xs">
                 <Calendar className="size-3.5 text-[#836182]" />
                 {post.createdAt}
@@ -71,6 +83,19 @@ export function PostDetailView({ post }: PostDetailViewProps) {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-tight">
               {post.title}
             </h1>
+
+            {post.tags && post.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-600"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         </FadeIn>
 

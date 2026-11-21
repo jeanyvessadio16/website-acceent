@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowRight, Newspaper } from "lucide-react";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
@@ -23,12 +21,11 @@ export function HomeActualitesSection({ posts }: HomeActualitesSectionProps) {
       aria-labelledby="home-actualites-heading"
     >
       <div className="section-container">
-        {/* En-tête de la section */}
         <FadeIn delay={0.1} direction="up" className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#836182]/10 border border-[#836182]/20 text-[#836182] text-xs font-bold uppercase tracking-wider">
               <Newspaper className="size-3.5" />
-              <span>Actualités & Publications</span>
+              <span>Actualités &amp; Publications</span>
             </div>
             <h2 id="home-actualites-heading" className="text-3xl sm:text-4xl font-bold text-slate-950 tracking-tight">
               Nos dernières actualités
@@ -52,10 +49,9 @@ export function HomeActualitesSection({ posts }: HomeActualitesSectionProps) {
           </div>
         </FadeIn>
 
-        {/* Grille des 3 derniers articles */}
         <StaggerContainer
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
-          delay={0.2}
+          delay={0.15}
         >
           {latestPosts.map((post, index) => (
             <StaggerItem key={post.id}>
@@ -64,7 +60,6 @@ export function HomeActualitesSection({ posts }: HomeActualitesSectionProps) {
           ))}
         </StaggerContainer>
 
-        {/* Bouton mobile sous la liste */}
         <div className="mt-10 text-center md:hidden">
           <Button
             asChild

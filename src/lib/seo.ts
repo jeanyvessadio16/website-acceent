@@ -81,6 +81,7 @@ export const siteRoutes = [
   { path: "/about", priority: 0.8, changeFrequency: "monthly" as const },
   { path: "/contact", priority: 0.8, changeFrequency: "monthly" as const },
   { path: "/actualites", priority: 0.85, changeFrequency: "daily" as const },
+  { path: "/evenements", priority: 0.85, changeFrequency: "weekly" as const },
   { path: "/education", priority: 0.9, changeFrequency: "weekly" as const },
   {
     path: "/entreprenariat",

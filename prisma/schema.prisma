@@ -1,8 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -12,6 +10,8 @@ datasource db {
   provider = "postgresql"
 }
 
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
 // Définition des rôles disponibles dans l'application
 enum Role {
   USER
@@ -19,34 +19,283 @@ enum Role {
   ADMIN
 }
 
-model User {
-  id        String   @id @default(uuid())
-  firstname String
-  lastname  String
-  email     String   @unique
-  password  String
-  role      Role     @default(USER)
-  posts     Post[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum Sexe {
+  HOMME
+  FEMME
+}
 
-  // Renomme la table en "users" dans la base de données PostgreSQL
+enum MilieuResidence {
+  RURAL
+  URBAIN
+}
+
+enum PostCategory {
+  EDUCATION
+  ENTREPRENEURIAT
+  NUMERIQUE
+  VIE_ASSOCIATIVE
+  EVENEMENT
+  GENERAL
+}
+
+enum ProgramPole {
+  EDUCATION
+  ENTREPRENEURIAT
+  NUMERIQUE
+}
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWING
+  INTERVIEW
+  ACCEPTED
+  REJECTED
+}
+
+enum ResourceType {
+  PDF
+  GUIDE
+  TEMPLATE
+  VIDEO
+  LINK
+}
+
+enum CampaignStatus {
+  DRAFT
+  SENT
+  PARTIAL
+  FAILED
+}
+
+// ─── Modèles ──────────────────────────────────────────────────────────────────
+
+model User {
+  id                  String               @id @default(uuid())
+  firstname           String
+  lastname            String
+  email               String               @unique
+  password            String
+  role                Role                 @default(USER)
+  age                 Int?
+  sexe                Sexe?
+  milieuResidence     MilieuResidence?
+  telephone           String?
+  sdh                 Boolean              @default(false)
+  newsletterOptIn     Boolean              @default(true)
+  posts               Post[]
+  applications        ProgramApplication[]
+  eventRegistrations  EventRegistration[]
+  passwordResetTokens PasswordResetToken[]
+  createdResources    Resource[]
+  createdEvents       Event[]
+  newsletterCampaigns NewsletterCampaign[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
   @@map("users")
 }
 
 model Post {
-  id        String   @id @default(uuid())
+  id        String       @id @default(uuid())
   title     String
-  slug      String   @unique
+  slug      String       @unique
   content   String
   imageUrl  String
   link      String?
-  published Boolean  @default(false)
+  category  PostCategory @default(GENERAL)
+  tags      String[]     @default([])
+  published Boolean      @default(false)
   authorId  String
-  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  author    User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 
   @@index([authorId])
-  @@map("posts") // Optionnel : renomme aussi la table des articles en "posts"
+  @@index([published, category, createdAt])
+  @@map("posts")
 }
+
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
+}
+
+model ProgramApplication {
+  id           String            @id @default(uuid())
+  userId       String
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  programSlug  String
+  programName  String
+  pole         ProgramPole
+  phone        String
+  city         String            @default("Ziguinchor")
+  projectTitle String?
+  motivation   String
+  documentUrl  String?
+  status       ApplicationStatus @default(PENDING)
+  adminNotes   String?
+  reviewedAt   DateTime?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([userId])
+  @@index([status, createdAt])
+  @@index([pole])
+  @@map("program_applications")
+}
+
+model Event {
+  id            String              @id @default(uuid())
+  title         String
+  slug          String              @unique
+  description   String
+  pole          ProgramPole?
+  location      String
+  isOnline      Boolean             @default(false)
+  meetingUrl    String?
+  imageUrl      String?
+  startDate     DateTime
+  endDate       DateTime?
+  capacity      Int?
+  published     Boolean             @default(true)
+  createdById   String
+  createdBy     User                @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  registrations EventRegistration[]
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+
+  @@index([createdById])
+  @@index([published, startDate])
+  @@map("events")
+}
+
+model EventRegistration {
+  id         String   @id @default(uuid())
+  eventId    String
+  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ticketCode String   @unique
+  phone      String?
+  attended   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+  @@map("event_registrations")
+}
+
+model Resource {
+  id            String       @id @default(uuid())
+  title         String
+  description   String
+  pole          ProgramPole
+  programTag    String?
+  type          ResourceType @default(PDF)
+  fileUrl       String
+  fileSize      String?
+  published     Boolean      @default(true)
+  downloadCount Int          @default(0)
+  createdById   String
+  createdBy     User         @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([createdById])
+  @@index([published, pole])
+  @@map("resources")
+}
+
+model Partner {
+  id           String   @id @default(uuid())
+  name         String
+  logoUrl      String
+  description  String   @default("Partenaire de ACCEENT.")
+  website      String?
+  displayOrder Int      @default(0)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([active, displayOrder])
+  @@map("partners")
+}
+
+model Testimonial {
+  id           String   @id @default(uuid())
+  authorName   String
+  authorRole   String
+  program      String?
+  quote        String
+  avatarUrl    String?
+  rating       Int      @default(5)
+  active       Boolean  @default(true)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([active, displayOrder])
+  @@map("testimonials")
+}
+
+model NewsletterSubscriber {
+  id               String    @id @default(uuid())
+  email            String    @unique
+  name             String?
+  active           Boolean   @default(true)
+  unsubscribeToken String    @unique @default(uuid())
+  subscribedAt     DateTime  @default(now())
+  unsubscribedAt   DateTime?
+
+  @@index([active])
+  @@map("newsletter_subscribers")
+}
+
+model NewsletterCampaign {
+  id             String         @id @default(uuid())
+  subject        String
+  previewText    String?
+  content        String
+  postId         String?
+  recipientCount Int            @default(0)
+  sentCount      Int            @default(0)
+  status         CampaignStatus @default(DRAFT)
+  sentAt         DateTime?
+  createdById    String
+  createdBy      User           @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdAt      DateTime       @default(now())
+
+  @@index([createdById])
+  @@index([createdAt])
+  @@map("newsletter_campaigns")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  actorId    String?
+  actorEmail String?
+  actorRole  String?
+  action     String
+  entity     String
+  entityId   String?
+  ipAddress  String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  @@index([actorId])
+  @@index([entity, entityId])
+  @@index([action, createdAt])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+

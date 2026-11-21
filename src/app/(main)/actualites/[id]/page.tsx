@@ -104,6 +104,9 @@ export default async function PostDetailPage({ params }: PostPageProps) {
             slug: post.slug || post.id,
             content: post.content,
             imageUrl: post.imageUrl,
+            link: post.link,
+            category: post.category,
+            tags: post.tags,
             createdAt: formattedDate,
             authorName,
           }}

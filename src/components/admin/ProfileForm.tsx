@@ -1,8 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { User, Mail, Lock, CheckCircle2, AlertCircle, Loader2, Save } from "lucide-react";
+import {
+  User,
+  Mail,
+  Lock,
+  Phone,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+  Save,
+} from "lucide-react";
 import { updateProfileAction } from "@/actions/user";
+import { updateProfileSchema } from "@/validation/user";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +23,11 @@ interface ProfileFormProps {
     lastname: string;
     email: string;
     role: string;
+    age?: number | null;
+    sexe?: string | null;
+    milieuResidence?: string | null;
+    telephone?: string | null;
+    sdh?: boolean;
   };
 }
 
@@ -20,24 +35,64 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
   const [firstname, setFirstname] = useState(initialUser.firstname);
   const [lastname, setLastname] = useState(initialUser.lastname);
   const [email, setEmail] = useState(initialUser.email);
+  const [ageStr, setAgeStr] = useState(
+    initialUser.age !== null && initialUser.age !== undefined ? String(initialUser.age) : ""
+  );
+  const [sexe, setSexe] = useState<"" | "HOMME" | "FEMME">(
+    initialUser.sexe === "HOMME" || initialUser.sexe === "FEMME" ? initialUser.sexe : ""
+  );
+  const [milieuResidence, setMilieuResidence] = useState<"" | "RURAL" | "URBAIN">(
+    initialUser.milieuResidence === "RURAL" || initialUser.milieuResidence === "URBAIN"
+      ? initialUser.milieuResidence
+      : ""
+  );
+  const [telephone, setTelephone] = useState(initialUser.telephone || "");
+  const [sdh, setSdh] = useState<boolean>(Boolean(initialUser.sdh));
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(
+    null
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
-    setLoading(true);
 
-    try {
-      const res = await updateProfileAction({
-        firstname,
-        lastname,
-        email,
-        password: password || undefined,
+    let parsedAge: number | null = null;
+    if (ageStr.trim() !== "") {
+      const n = Number(ageStr.trim());
+      if (Number.isNaN(n) || !Number.isInteger(n)) {
+        setMessage({ type: "error", text: "L'âge doit être un nombre entier valide." });
+        return;
+      }
+      parsedAge = n;
+    }
+
+    const payload = {
+      firstname,
+      lastname,
+      email,
+      age: parsedAge,
+      sexe: sexe || null,
+      milieuResidence: milieuResidence || null,
+      telephone: telephone.trim(),
+      sdh,
+      password: password || undefined,
+    };
+
+    const validation = updateProfileSchema.safeParse(payload);
+    if (!validation.success) {
+      setMessage({
+        type: "error",
+        text: validation.error.issues[0]?.message || "Veuillez vérifier les champs saisis.",
       });
+      return;
+    }
 
+    setLoading(true);
+    try {
+      const res = await updateProfileAction(validation.data);
       if (res.success) {
         setMessage({ type: "success", text: res.message });
         setPassword("");
@@ -52,16 +107,18 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
   };
 
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-[#12131a] p-6 space-y-6 shadow-xs">
-      <div className="flex items-center gap-3 pb-4 border-b border-white/[0.06]">
-        <div className="size-10 rounded-full bg-gradient-to-br from-[#836182] to-[#b9939e] flex items-center justify-center text-white font-bold text-sm shadow-xs">
-          {firstname[0]}
-          {lastname[0]}
+    <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 space-y-6 shadow-xs">
+      <div className="flex items-center gap-3 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <div className="size-10 rounded-full bg-gradient-to-br from-[#836182] to-[#a57da4] flex items-center justify-center text-white font-bold text-sm shadow-xs">
+          {firstname[0] || "U"}
+          {lastname[0] || ""}
         </div>
         <div>
-          <h3 className="text-zinc-100 font-bold text-base">Informations personnelles</h3>
-          <p className="text-zinc-400 text-xs mt-0.5">
-            Modifiez votre identité, votre adresse e-mail et votre mot de passe d'accès
+          <h3 className="text-slate-900 dark:text-white font-bold text-base">
+            Informations personnelles &amp; Profil
+          </h3>
+          <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
+            Modifiez votre identité, vos coordonnées et votre profil socio-démographique
           </p>
         </div>
       </div>
@@ -69,10 +126,10 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
       {message && (
         <div
           role="alert"
-          className={`flex items-start gap-2.5 p-4 rounded-xl border text-xs animate-in fade-in duration-150 ${
+          className={`flex items-start gap-2.5 p-4 rounded-xl border text-xs ${
             message.type === "success"
-              ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-300"
-              : "bg-red-500/10 border-red-500/20 text-red-300"
+              ? "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-500/10 dark:border-emerald-500/25 dark:text-emerald-300"
+              : "bg-red-50 border-red-200 text-red-800 dark:bg-red-500/10 dark:border-red-500/25 dark:text-red-300"
           }`}
         >
           {message.type === "success" ? (
@@ -84,87 +141,168 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Prénom & Nom */}
+      <form onSubmit={handleSubmit} noValidate className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <Label htmlFor="profile-firstname" className="text-zinc-300 text-xs font-medium">
-              Prénom
+            <Label htmlFor="profile-firstname" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
+              Prénom *
             </Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500 pointer-events-none" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none" />
               <Input
                 id="profile-firstname"
                 type="text"
                 value={firstname}
                 onChange={(e) => setFirstname(e.target.value)}
                 required
-                className="h-10 pl-10 bg-white/[0.04] border-white/[0.1] text-zinc-100 placeholder:text-zinc-500 focus-visible:border-white/[0.2]"
+                className="h-10 pl-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
               />
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="profile-lastname" className="text-zinc-300 text-xs font-medium">
-              Nom
+            <Label htmlFor="profile-lastname" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
+              Nom *
             </Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500 pointer-events-none" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none" />
               <Input
                 id="profile-lastname"
                 type="text"
                 value={lastname}
                 onChange={(e) => setLastname(e.target.value)}
                 required
-                className="h-10 pl-10 bg-white/[0.04] border-white/[0.1] text-zinc-100 placeholder:text-zinc-500 focus-visible:border-white/[0.2]"
+                className="h-10 pl-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
               />
             </div>
           </div>
         </div>
 
-        {/* E-mail */}
-        <div className="space-y-1.5">
-          <Label htmlFor="profile-email" className="text-zinc-300 text-xs font-medium">
-            Adresse e-mail
-          </Label>
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500 pointer-events-none" />
-            <Input
-              id="profile-email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="h-10 pl-10 bg-white/[0.04] border-white/[0.1] text-zinc-100 placeholder:text-zinc-500 focus-visible:border-white/[0.2]"
-            />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="profile-email" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
+              Adresse e-mail *
+            </Label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none" />
+              <Input
+                id="profile-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="h-10 pl-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="profile-telephone" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
+              Téléphone
+            </Label>
+            <div className="relative">
+              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none" />
+              <Input
+                id="profile-telephone"
+                type="tel"
+                value={telephone}
+                onChange={(e) => setTelephone(e.target.value)}
+                placeholder="+221 77 123 45 67"
+                className="h-10 pl-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+              />
+            </div>
           </div>
         </div>
 
-        {/* Nouveau mot de passe */}
-        <div className="space-y-1.5 pt-2 border-t border-white/[0.04]">
-          <Label htmlFor="profile-password" className="text-zinc-300 text-xs font-medium">
-            Nouveau mot de passe <span className="text-zinc-500 font-normal">(optionnel)</span>
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="profile-age" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
+              Âge
+            </Label>
+            <Input
+              id="profile-age"
+              type="number"
+              min={10}
+              max={120}
+              step={1}
+              value={ageStr}
+              onChange={(e) => setAgeStr(e.target.value)}
+              placeholder="22"
+              className="h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="profile-sexe" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
+              Sexe
+            </Label>
+            <select
+              id="profile-sexe"
+              value={sexe}
+              onChange={(e) => setSexe(e.target.value as "" | "HOMME" | "FEMME")}
+              className="w-full h-10 rounded-md px-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-900 dark:text-white"
+            >
+              <option value="">Non précisé</option>
+              <option value="HOMME">Homme</option>
+              <option value="FEMME">Femme</option>
+            </select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="profile-milieu" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
+              Milieu de résidence
+            </Label>
+            <select
+              id="profile-milieu"
+              value={milieuResidence}
+              onChange={(e) => setMilieuResidence(e.target.value as "" | "RURAL" | "URBAIN")}
+              className="w-full h-10 rounded-md px-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-900 dark:text-white"
+            >
+              <option value="">Non précisé</option>
+              <option value="URBAIN">Urbain</option>
+              <option value="RURAL">Rural</option>
+            </select>
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="profile-sdh" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
+              SDH (Handicap)
+            </Label>
+            <select
+              id="profile-sdh"
+              value={sdh ? "OUI" : "NON"}
+              onChange={(e) => setSdh(e.target.value === "OUI")}
+              className="w-full h-10 rounded-md px-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-medium text-slate-900 dark:text-white"
+            >
+              <option value="NON">Non</option>
+              <option value="OUI">Oui</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="space-y-1.5 pt-2 border-t border-slate-200 dark:border-slate-800">
+          <Label htmlFor="profile-password" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
+            Nouveau mot de passe{" "}
+            <span className="text-slate-400 font-normal">(optionnel)</span>
           </Label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-zinc-500 pointer-events-none" />
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400 pointer-events-none" />
             <Input
               id="profile-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Min. 8 caractères"
-              minLength={8}
-              className="h-10 pl-10 bg-white/[0.04] border-white/[0.1] text-zinc-100 placeholder:text-zinc-500 focus-visible:border-white/[0.2]"
+              placeholder="Min. 8 caractères (A-z, 0-9, @$!%*?&)"
+              className="h-10 pl-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white"
             />
           </div>
         </div>
 
-        {/* Bouton Enregistrer */}
         <div className="pt-2 flex justify-end">
           <Button
             type="submit"
             disabled={loading}
-            className="bg-[#836182] hover:bg-[#966f95] text-white font-medium shadow-xs px-5"
+            className="bg-[#836182] hover:bg-[#6f4f6e] text-white font-semibold shadow-xs px-5 cursor-pointer"
           >
             {loading ? (
               <>

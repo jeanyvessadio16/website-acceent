@@ -31,6 +31,7 @@ export type PostMinAggregateOutputType = {
   content: string | null
   imageUrl: string | null
   link: string | null
+  category: $Enums.PostCategory | null
   published: boolean | null
   authorId: string | null
   createdAt: Date | null
@@ -44,6 +45,7 @@ export type PostMaxAggregateOutputType = {
   content: string | null
   imageUrl: string | null
   link: string | null
+  category: $Enums.PostCategory | null
   published: boolean | null
   authorId: string | null
   createdAt: Date | null
@@ -57,6 +59,8 @@ export type PostCountAggregateOutputType = {
   content: number
   imageUrl: number
   link: number
+  category: number
+  tags: number
   published: number
   authorId: number
   createdAt: number
@@ -72,6 +76,7 @@ export type PostMinAggregateInputType = {
   content?: true
   imageUrl?: true
   link?: true
+  category?: true
   published?: true
   authorId?: true
   createdAt?: true
@@ -85,6 +90,7 @@ export type PostMaxAggregateInputType = {
   content?: true
   imageUrl?: true
   link?: true
+  category?: true
   published?: true
   authorId?: true
   createdAt?: true
@@ -98,6 +104,8 @@ export type PostCountAggregateInputType = {
   content?: true
   imageUrl?: true
   link?: true
+  category?: true
+  tags?: true
   published?: true
   authorId?: true
   createdAt?: true
@@ -184,6 +192,8 @@ export type PostGroupByOutputType = {
   content: string
   imageUrl: string
   link: string | null
+  category: $Enums.PostCategory
+  tags: string[]
   published: boolean
   authorId: string
   createdAt: Date
@@ -218,6 +228,8 @@ export type PostWhereInput = {
   content?: Prisma.StringFilter<"Post"> | string
   imageUrl?: Prisma.StringFilter<"Post"> | string
   link?: Prisma.StringNullableFilter<"Post"> | string | null
+  category?: Prisma.EnumPostCategoryFilter<"Post"> | $Enums.PostCategory
+  tags?: Prisma.StringNullableListFilter<"Post">
   published?: Prisma.BoolFilter<"Post"> | boolean
   authorId?: Prisma.StringFilter<"Post"> | string
   createdAt?: Prisma.DateTimeFilter<"Post"> | Date | string
@@ -232,6 +244,8 @@ export type PostOrderByWithRelationInput = {
   content?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   link?: Prisma.SortOrderInput | Prisma.SortOrder
+  category?: Prisma.SortOrder
+  tags?: Prisma.SortOrder
   published?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -249,6 +263,8 @@ export type PostWhereUniqueInput = Prisma.AtLeast<{
   content?: Prisma.StringFilter<"Post"> | string
   imageUrl?: Prisma.StringFilter<"Post"> | string
   link?: Prisma.StringNullableFilter<"Post"> | string | null
+  category?: Prisma.EnumPostCategoryFilter<"Post"> | $Enums.PostCategory
+  tags?: Prisma.StringNullableListFilter<"Post">
   published?: Prisma.BoolFilter<"Post"> | boolean
   authorId?: Prisma.StringFilter<"Post"> | string
   createdAt?: Prisma.DateTimeFilter<"Post"> | Date | string
@@ -263,6 +279,8 @@ export type PostOrderByWithAggregationInput = {
   content?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   link?: Prisma.SortOrderInput | Prisma.SortOrder
+  category?: Prisma.SortOrder
+  tags?: Prisma.SortOrder
   published?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -282,6 +300,8 @@ export type PostScalarWhereWithAggregatesInput = {
   content?: Prisma.StringWithAggregatesFilter<"Post"> | string
   imageUrl?: Prisma.StringWithAggregatesFilter<"Post"> | string
   link?: Prisma.StringNullableWithAggregatesFilter<"Post"> | string | null
+  category?: Prisma.EnumPostCategoryWithAggregatesFilter<"Post"> | $Enums.PostCategory
+  tags?: Prisma.StringNullableListFilter<"Post">
   published?: Prisma.BoolWithAggregatesFilter<"Post"> | boolean
   authorId?: Prisma.StringWithAggregatesFilter<"Post"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Post"> | Date | string
@@ -295,6 +315,8 @@ export type PostCreateInput = {
   content: string
   imageUrl: string
   link?: string | null
+  category?: $Enums.PostCategory
+  tags?: Prisma.PostCreatetagsInput | string[]
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -308,6 +330,8 @@ export type PostUncheckedCreateInput = {
   content: string
   imageUrl: string
   link?: string | null
+  category?: $Enums.PostCategory
+  tags?: Prisma.PostCreatetagsInput | string[]
   published?: boolean
   authorId: string
   createdAt?: Date | string
@@ -321,6 +345,8 @@ export type PostUpdateInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumPostCategoryFieldUpdateOperationsInput | $Enums.PostCategory
+  tags?: Prisma.PostUpdatetagsInput | string[]
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -334,6 +360,8 @@ export type PostUncheckedUpdateInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumPostCategoryFieldUpdateOperationsInput | $Enums.PostCategory
+  tags?: Prisma.PostUpdatetagsInput | string[]
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -347,6 +375,8 @@ export type PostCreateManyInput = {
   content: string
   imageUrl: string
   link?: string | null
+  category?: $Enums.PostCategory
+  tags?: Prisma.PostCreatetagsInput | string[]
   published?: boolean
   authorId: string
   createdAt?: Date | string
@@ -360,6 +390,8 @@ export type PostUpdateManyMutationInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumPostCategoryFieldUpdateOperationsInput | $Enums.PostCategory
+  tags?: Prisma.PostUpdatetagsInput | string[]
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -372,6 +404,8 @@ export type PostUncheckedUpdateManyInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumPostCategoryFieldUpdateOperationsInput | $Enums.PostCategory
+  tags?: Prisma.PostUpdatetagsInput | string[]
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -388,6 +422,14 @@ export type PostOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type PostCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -395,6 +437,8 @@ export type PostCountOrderByAggregateInput = {
   content?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   link?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  tags?: Prisma.SortOrder
   published?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -408,6 +452,7 @@ export type PostMaxOrderByAggregateInput = {
   content?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   link?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   published?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -421,6 +466,7 @@ export type PostMinOrderByAggregateInput = {
   content?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   link?: Prisma.SortOrder
+  category?: Prisma.SortOrder
   published?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -469,12 +515,17 @@ export type PostUncheckedUpdateManyWithoutAuthorNestedInput = {
   deleteMany?: Prisma.PostScalarWhereInput | Prisma.PostScalarWhereInput[]
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type PostCreatetagsInput = {
+  set: string[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
+export type EnumPostCategoryFieldUpdateOperationsInput = {
+  set?: $Enums.PostCategory
+}
+
+export type PostUpdatetagsInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type PostCreateWithoutAuthorInput = {
@@ -484,6 +535,8 @@ export type PostCreateWithoutAuthorInput = {
   content: string
   imageUrl: string
   link?: string | null
+  category?: $Enums.PostCategory
+  tags?: Prisma.PostCreatetagsInput | string[]
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -496,6 +549,8 @@ export type PostUncheckedCreateWithoutAuthorInput = {
   content: string
   imageUrl: string
   link?: string | null
+  category?: $Enums.PostCategory
+  tags?: Prisma.PostCreatetagsInput | string[]
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -537,6 +592,8 @@ export type PostScalarWhereInput = {
   content?: Prisma.StringFilter<"Post"> | string
   imageUrl?: Prisma.StringFilter<"Post"> | string
   link?: Prisma.StringNullableFilter<"Post"> | string | null
+  category?: Prisma.EnumPostCategoryFilter<"Post"> | $Enums.PostCategory
+  tags?: Prisma.StringNullableListFilter<"Post">
   published?: Prisma.BoolFilter<"Post"> | boolean
   authorId?: Prisma.StringFilter<"Post"> | string
   createdAt?: Prisma.DateTimeFilter<"Post"> | Date | string
@@ -550,6 +607,8 @@ export type PostCreateManyAuthorInput = {
   content: string
   imageUrl: string
   link?: string | null
+  category?: $Enums.PostCategory
+  tags?: Prisma.PostCreatetagsInput | string[]
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -562,6 +621,8 @@ export type PostUpdateWithoutAuthorInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumPostCategoryFieldUpdateOperationsInput | $Enums.PostCategory
+  tags?: Prisma.PostUpdatetagsInput | string[]
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -574,6 +635,8 @@ export type PostUncheckedUpdateWithoutAuthorInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumPostCategoryFieldUpdateOperationsInput | $Enums.PostCategory
+  tags?: Prisma.PostUpdatetagsInput | string[]
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -586,6 +649,8 @@ export type PostUncheckedUpdateManyWithoutAuthorInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageUrl?: Prisma.StringFieldUpdateOperationsInput | string
   link?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumPostCategoryFieldUpdateOperationsInput | $Enums.PostCategory
+  tags?: Prisma.PostUpdatetagsInput | string[]
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -600,6 +665,8 @@ export type PostSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   content?: boolean
   imageUrl?: boolean
   link?: boolean
+  category?: boolean
+  tags?: boolean
   published?: boolean
   authorId?: boolean
   createdAt?: boolean
@@ -614,6 +681,8 @@ export type PostSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   content?: boolean
   imageUrl?: boolean
   link?: boolean
+  category?: boolean
+  tags?: boolean
   published?: boolean
   authorId?: boolean
   createdAt?: boolean
@@ -628,6 +697,8 @@ export type PostSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   content?: boolean
   imageUrl?: boolean
   link?: boolean
+  category?: boolean
+  tags?: boolean
   published?: boolean
   authorId?: boolean
   createdAt?: boolean
@@ -642,13 +713,15 @@ export type PostSelectScalar = {
   content?: boolean
   imageUrl?: boolean
   link?: boolean
+  category?: boolean
+  tags?: boolean
   published?: boolean
   authorId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "content" | "imageUrl" | "link" | "published" | "authorId" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
+export type PostOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "slug" | "content" | "imageUrl" | "link" | "category" | "tags" | "published" | "authorId" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
 export type PostInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -671,6 +744,8 @@ export type $PostPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     content: string
     imageUrl: string
     link: string | null
+    category: $Enums.PostCategory
+    tags: string[]
     published: boolean
     authorId: string
     createdAt: Date
@@ -1105,6 +1180,8 @@ export interface PostFieldRefs {
   readonly content: Prisma.FieldRef<"Post", 'String'>
   readonly imageUrl: Prisma.FieldRef<"Post", 'String'>
   readonly link: Prisma.FieldRef<"Post", 'String'>
+  readonly category: Prisma.FieldRef<"Post", 'PostCategory'>
+  readonly tags: Prisma.FieldRef<"Post", 'String[]'>
   readonly published: Prisma.FieldRef<"Post", 'Boolean'>
   readonly authorId: Prisma.FieldRef<"Post", 'String'>
   readonly createdAt: Prisma.FieldRef<"Post", 'DateTime'>

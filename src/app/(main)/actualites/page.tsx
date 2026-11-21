@@ -1,11 +1,12 @@
 import { createPageMetadata } from "@/lib/seo";
-import prisma from "@/lib/prisma";
+import { findPublishedPosts } from "@/repositories/post.repository";
 import { ActualitesList } from "@/components/actualites/ActualitesList";
 import { FadeIn } from "@/components/shared/Animations";
 import { Newspaper } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
+import { NewsletterSubscribeForm } from "@/components/shared/NewsletterSubscribeForm";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -27,49 +28,7 @@ export const metadata = createPageMetadata({
 });
 
 export default async function ActualitesPage() {
-  let posts: Array<{
-    id: string;
-    title: string;
-    slug: string;
-    content: string;
-    imageUrl: string | null;
-    authorName: string;
-    createdAt: string;
-  }> = [];
-
-  try {
-    const dbPosts = await prisma.post.findMany({
-      where: { published: true },
-      orderBy: { createdAt: "desc" },
-      include: {
-        author: {
-          select: {
-            firstname: true,
-            lastname: true,
-          },
-        },
-      },
-    });
-
-    posts = dbPosts.map((p) => ({
-      id: p.id,
-      title: p.title,
-      slug: p.slug,
-      content: p.content,
-      imageUrl: p.imageUrl,
-      link: p.link,
-      authorName: p.author
-        ? `${p.author.firstname} ${p.author.lastname}`
-        : "ACCEENT",
-      createdAt: p.createdAt.toLocaleDateString("fr-FR", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      }),
-    }));
-  } catch (error) {
-    console.error("Erreur de connexion à la base de données dans ActualitesPage:", error);
-  }
+  const posts = await findPublishedPosts();
 
   return (
     <>
@@ -100,6 +59,26 @@ export default async function ActualitesPage() {
         {/* Liste des articles */}
         <FadeIn direction="up" delay={0.15}>
           <ActualitesList posts={posts} />
+        </FadeIn>
+
+        {/* Bloc Newsletter */}
+        <FadeIn direction="up" delay={0.2}>
+          <div className="rounded-3xl border border-slate-200/80 bg-white p-6 sm:p-8 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="max-w-lg space-y-1.5">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#836182]">
+                Newsletter communautaire
+              </span>
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+                Ne manquez aucune actualité ACCEENT
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600">
+                Recevez directement par e-mail nos publications, ateliers et ouvertures de cohortes à Ziguinchor.
+              </p>
+            </div>
+            <div className="w-full lg:max-w-lg">
+              <NewsletterSubscribeForm variant="light" />
+            </div>
+          </div>
         </FadeIn>
 
         {/* ── Section d'incitation à la navigation & CTA ── */}

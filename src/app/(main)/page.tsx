@@ -1,21 +1,36 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, BookOpen, Cpu, TrendingUp, MapPin, Mail, Phone } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  Cpu,
+  TrendingUp,
+  MapPin,
+  Mail,
+  Phone,
+  CalendarDays,
+  Sparkles,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Partenaire from "@/components/shared/Partenaires";
 import Contact from "@/components/shared/contact/Contact";
+import { NewsletterSubscribeForm } from "@/components/shared/NewsletterSubscribeForm";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { createPageMetadata } from "@/lib/seo";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/Animations";
 import { list_domaines } from "@/data/list-domaines";
 import { list_actions } from "@/data/list-actions";
-import prisma from "@/lib/prisma";
 import { HomeActualitesSection } from "@/components/actualites/HomeActualitesSection";
+import { TestimonialsSection } from "@/components/shared/TestimonialsSection";
+import { findPublishedPosts } from "@/repositories/post.repository";
+import {
+  findActivePartners,
+  findActiveTestimonials,
+} from "@/repositories/showcase.repository";
 
-// ─── SEO ────────────────────────────────────────────────────────────────────
+// ─── SEO & ISR Cache (révalidé automatiquement lors des mutations admin) ──────
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 300;
 
 export const metadata = createPageMetadata({
   title: "ACCEENT — Association Éducation, Entrepreneuriat & Numérique à Ziguinchor (Sénégal)",
@@ -78,104 +93,60 @@ const domaineIcons = [BookOpen, TrendingUp, Cpu] as const;
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default async function Home() {
-  let posts: Array<{
-    id: string;
-    title: string;
-    slug: string;
-    content: string;
-    imageUrl: string | null;
-    link?: string | null;
-    authorName: string;
-    createdAt: string;
-  }> = [];
-
-  try {
-    const dbPosts = await prisma.post.findMany({
-      where: { published: true },
-      orderBy: { createdAt: "desc" },
-      take: 3,
-      include: {
-        author: {
-          select: {
-            firstname: true,
-            lastname: true,
-          },
-        },
-      },
-    });
-
-    posts = dbPosts.map((p) => ({
-      id: p.id,
-      title: p.title,
-      slug: p.slug,
-      content: p.content,
-      imageUrl: p.imageUrl,
-      link: p.link,
-      authorName: p.author
-        ? `${p.author.firstname} ${p.author.lastname}`
-        : "ACCEENT",
-      createdAt: p.createdAt.toLocaleDateString("fr-FR", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      }),
-    }));
-  } catch (error) {
-    console.error("Erreur de récupération des actualités sur la page d'accueil:", error);
-  }
+  const [posts, partners, testimonials] = await Promise.all([
+    findPublishedPosts(3),
+    findActivePartners(),
+    findActiveTestimonials(6),
+  ]);
 
   return (
     <>
       {/* Structured data pour la FAQ de la page d'accueil (Organization et WebSite sont dans RootLayout) */}
       <FAQJsonLd faqs={homeFaqs} />
 
-      {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
+      {/* ── 1. HERO (LCP optimisé : rendu immédiat sans délai d'opacité) ─────── */}
       <section
         aria-labelledby="hero-heading"
-        className="relative w-full h-[calc(100dvh-5rem)] flex flex-col justify-center items-start overflow-hidden"
+        className="relative w-full min-h-[calc(100dvh-5rem)] flex flex-col justify-center items-start overflow-hidden py-12 sm:py-16"
       >
-        {/* Image de fond */}
         <Image
           src="/team/team.jpeg"
           alt="L'équipe ACCEENT en action à Ziguinchor"
           fill
           className="object-cover object-center"
           priority
+          fetchPriority="high"
+          quality={80}
           sizes="100vw"
         />
-        {/* Overlay sombre pour lisibilité */}
-        <div className="pointer-events-none absolute inset-0 bg-slate-950/90" />
-        {/* Dégradé bas pour transition douce */}
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-950/40 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/75 to-slate-950/45" />
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-950/50 to-transparent" />
 
-        <div className="relative section-container z-10 flex flex-col items-start text-left text-white gap-4 sm:gap-6">
+        <div className="relative section-container z-10 flex flex-col items-start text-left text-white gap-5 sm:gap-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-xs font-semibold text-slate-100">
+            <MapPin className="size-3.5 text-[#d8b4d7]" aria-hidden />
+            <span>Ziguinchor • Casamance, Sénégal</span>
+          </div>
 
-          {/* Titre principal — h1 unique sur la page */}
-          <FadeIn delay={0.2} direction="up">
-            <h1
-              id="hero-heading"
-              className="max-w-3xl text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight"
+          <h1
+            id="hero-heading"
+            className="max-w-3xl text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight"
+          >
+            <span className="text-[#d8b4d7] font-extrabold">ACCEENT</span> : Éducation, Entrepreneuriat &amp; Numérique
+          </h1>
+
+          <p className="max-w-2xl text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed">
+            <abbr
+              title="Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires"
+              className="no-underline font-semibold text-white"
             >
-              <span className="text-primary font-extrabold">ACCEENT</span> : Éducation, Entrepreneuriat & Numérique
-            </h1>
-          </FadeIn>
+              ACCEENT
+            </abbr>{" "}
+            accompagne la jeunesse et les femmes de Ziguinchor à travers des
+            initiatives concrètes d&apos;éducation, d&apos;entrepreneuriat et d&apos;inclusion
+            numérique pour favoriser l&apos;autonomie et le développement local durable.
+          </p>
 
-          {/* Accroche */}
-          <FadeIn delay={0.3} direction="up">
-            <p className="max-w-2xl text-slate-200 text-sm sm:text-base md:text-lg leading-relaxed">
-              <abbr
-                title="Action pour la Contribution Collective pour l'Éducation, l'Entrepreneuriat et le Numérique des Territoires"
-                className="no-underline font-semibold text-white"
-              >
-                ACCEENT
-              </abbr>{" "}
-              accompagne la jeunesse et les femmes de Ziguinchor à travers des
-              initiatives concrètes d&apos;éducation, d&apos;entrepreneuriat et d&apos;inclusion
-              numérique pour favoriser l&apos;autonomie et le développement local durable.
-            </p>
-          </FadeIn>
-
-          {/* CTAs */}
           <div className="flex flex-row flex-wrap gap-3 pt-1">
             <Button
               asChild
@@ -190,19 +161,44 @@ export default async function Home() {
               variant="outline"
               className="rounded-full px-5 sm:px-8 bg-white/10 text-white hover:bg-white/20 border border-white/30 backdrop-blur-md font-semibold text-xs sm:text-sm h-10 sm:h-11"
             >
-              <Link href="/about">Découvrir ACCEENT</Link>
+              <Link href="/auth/register">Rejoindre la communauté</Link>
+            </Button>
+            <Button
+              asChild
+              size="default"
+              variant="ghost"
+              className="rounded-full px-4 text-slate-200 hover:text-white hover:bg-white/10 font-semibold text-xs sm:text-sm h-10 sm:h-11"
+            >
+              <Link href="/evenements" className="inline-flex items-center gap-1.5">
+                <CalendarDays className="size-4" aria-hidden />
+                <span>Événements</span>
+              </Link>
             </Button>
           </div>
 
-          {/* Indicateur de scroll */}
-          <FadeIn delay={0.6} direction="none" className="absolute bottom-8 left-1/2 -translate-x-1/2">
-            <div
-              aria-hidden
-              className="flex flex-col items-center gap-1.5 text-white/50"
-            >
-              <div className="w-px h-8 bg-white/30 animate-pulse" />
+          {/* Barre synthétique d'indicateurs */}
+          <dl className="grid grid-cols-3 gap-4 sm:gap-8 pt-4 mt-2 border-t border-white/15 max-w-xl w-full">
+            <div>
+              <dt className="text-[11px] sm:text-xs text-slate-300">Pôles d&apos;action</dt>
+              <dd className="text-xl sm:text-2xl font-extrabold text-white">3</dd>
             </div>
-          </FadeIn>
+            <div>
+              <dt className="text-[11px] sm:text-xs text-slate-300">Programmes actifs</dt>
+              <dd className="text-xl sm:text-2xl font-extrabold text-white">7</dd>
+            </div>
+            <div>
+              <dt className="text-[11px] sm:text-xs text-slate-300">Ancrage local</dt>
+              <dd className="text-xl sm:text-2xl font-extrabold text-[#d8b4d7]">Santhiaba</dd>
+            </div>
+          </dl>
+        </div>
+
+        {/* Indicateur de scroll directement dans la section pour éviter tout chevauchement */}
+        <div
+          aria-hidden
+          className="hidden sm:flex absolute bottom-5 left-1/2 -translate-x-1/2 flex-col items-center gap-1.5 text-white/50 pointer-events-none"
+        >
+          <div className="w-px h-7 bg-white/35 animate-pulse" />
         </div>
       </section>
 
@@ -213,7 +209,6 @@ export default async function Home() {
       >
         <div className="section-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Texte */}
             <FadeIn delay={0.1} direction="right" className="space-y-5">
               <span className="text-xs font-bold uppercase tracking-wider text-primary">
                 Qui sommes-nous ?
@@ -236,7 +231,6 @@ export default async function Home() {
                 développement inclusif et autonome.
               </p>
 
-              {/* Coordonnées résumées */}
               <ul className="space-y-2 text-sm text-slate-500" aria-label="Coordonnées ACCEENT">
                 <li className="flex items-center gap-2">
                   <MapPin className="size-4 shrink-0 text-primary" aria-hidden />
@@ -270,8 +264,7 @@ export default async function Home() {
               </div>
             </FadeIn>
 
-            {/* Image */}
-            <FadeIn delay={0.2} direction="left">
+            <FadeIn delay={0.15} direction="left">
               <div className="relative h-[340px] sm:h-[420px] w-full overflow-hidden rounded-2xl border border-slate-200/80 shadow-md">
                 <Image
                   src="/images/aboutacceent.jpeg"
@@ -293,7 +286,6 @@ export default async function Home() {
         className="bg-slate-50 py-16 md:py-24 border-y border-slate-200/60"
       >
         <div className="section-container">
-          {/* En-tête de section */}
           <FadeIn delay={0.1} direction="up" className="mb-12 max-w-2xl">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">
               Notre action
@@ -310,8 +302,7 @@ export default async function Home() {
             </p>
           </FadeIn>
 
-          {/* Grille des domaines */}
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8" delay={0.2}>
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8" delay={0.15}>
             {list_domaines.map((domaine, index) => {
               const Icon = domaineIcons[index];
               return (
@@ -322,7 +313,6 @@ export default async function Home() {
                     aria-label={`Découvrir le domaine ${domaine.nom} — ACCEENT`}
                   >
                     <article className="h-full flex flex-col">
-                      {/* Image */}
                       <div className="relative h-48 w-full overflow-hidden bg-slate-100 flex-shrink-0">
                         <Image
                           src={domaine.image}
@@ -331,7 +321,6 @@ export default async function Home() {
                           className="object-cover transition-transform duration-500 group-hover:scale-105"
                           sizes="(max-width: 768px) 100vw, 33vw"
                         />
-                        {/* Badge numéro */}
                         <div
                           aria-hidden
                           className="absolute top-4 left-4 bg-slate-950/80 backdrop-blur-xs text-white text-xs font-bold px-3 py-1 rounded-full"
@@ -340,9 +329,7 @@ export default async function Home() {
                         </div>
                       </div>
 
-                      {/* Contenu */}
                       <div className="p-6 flex flex-col flex-grow gap-3">
-                        {/* Icône + Titre */}
                         <div className="flex items-center gap-3">
                           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-colors duration-200">
                             <Icon className="size-4" aria-hidden />
@@ -352,15 +339,11 @@ export default async function Home() {
                           </h3>
                         </div>
 
-                        {/* Description */}
                         <p className="text-sm text-slate-600 leading-relaxed flex-grow">
                           {domaine.description}
                         </p>
 
-                        {/* Lien visuel */}
-                        <span
-                          className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:gap-2.5 transition-all duration-200 mt-auto pt-1"
-                        >
+                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:gap-2.5 transition-all duration-200 mt-auto pt-1">
                           Voir les programmes
                           <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden />
                         </span>
@@ -381,7 +364,6 @@ export default async function Home() {
         className="bg-white py-16 md:py-24"
       >
         <div className="section-container">
-          {/* En-tête */}
           <FadeIn delay={0.1} direction="up" className="mb-12 max-w-2xl">
             <span className="text-xs font-bold uppercase tracking-wider text-primary">
               Activités réelles
@@ -398,15 +380,13 @@ export default async function Home() {
             </p>
           </FadeIn>
 
-          {/* Grille des actions */}
           <StaggerContainer
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
-            delay={0.2}
+            delay={0.15}
           >
             {list_actions.map((action) => (
               <StaggerItem key={action.id}>
                 <article className="group bg-slate-50 border border-slate-200/70 rounded-xl overflow-hidden h-full flex flex-col hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200">
-                  {/* Photo */}
                   <div className="relative h-44 w-full overflow-hidden bg-slate-200 flex-shrink-0">
                     <Image
                       src={action.src}
@@ -416,7 +396,6 @@ export default async function Home() {
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                   </div>
-                  {/* Texte */}
                   <div className="p-4 flex flex-col flex-grow">
                     <h3 className="text-base font-bold text-slate-900 mb-1.5">
                       {action.title}
@@ -430,8 +409,7 @@ export default async function Home() {
             ))}
           </StaggerContainer>
 
-          {/* Boutons d'incitation à la navigation */}
-          <FadeIn delay={0.4} direction="up" className="mt-12 text-center">
+          <FadeIn delay={0.25} direction="up" className="mt-12 text-center">
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
               <Button
                 asChild
@@ -460,6 +438,9 @@ export default async function Home() {
       {/* ── 4.5. ACTUALITÉS & PUBLICATIONS ─────────────────────────────────── */}
       <HomeActualitesSection posts={posts} />
 
+      {/* ── 4.8. TÉMOIGNAGES ───────────────────────────────────────────────── */}
+      <TestimonialsSection testimonials={testimonials} />
+
       {/* ── 5. PARTENAIRES ──────────────────────────────────────────────────── */}
       <section
         aria-labelledby="partenaires-heading"
@@ -467,26 +448,58 @@ export default async function Home() {
       >
         <div className="section-container">
           <FadeIn delay={0.1} direction="up">
-            {/* Le titre visible est géré dans le composant Partenaire */}
             <h2 id="partenaires-heading" className="sr-only">
               Nos partenaires
             </h2>
-            <Partenaire />
+            <Partenaire items={partners} />
           </FadeIn>
         </div>
       </section>
 
-      {/* ── 6. CONTACT ──────────────────────────────────────────────────────── */}
+      {/* ── 5.5. NEWSLETTER & AGENDA COMMUNAUTAIRE ─────────────────────────── */}
       <section
-        id="contact-section"
-        aria-labelledby="contact-heading"
-        className="py-16 md:py-24 bg-white"
+        aria-labelledby="newsletter-home-heading"
+        className="py-14 bg-slate-950 text-white"
       >
-        <h2 id="contact-heading" className="sr-only">
-          Nous contacter
-        </h2>
-        <Contact />
+        <div className="section-container">
+          <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#836182]/25 via-slate-900 to-slate-950 p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-6 space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#836182]/25 border border-[#836182]/40 text-[#f4e6ea] text-xs font-bold uppercase tracking-wider">
+                <Sparkles className="size-3.5" aria-hidden />
+                <span>Restez informé·e</span>
+              </div>
+              <h2
+                id="newsletter-home-heading"
+                className="text-2xl sm:text-3xl font-bold tracking-tight text-white"
+              >
+                Appels à candidatures, ateliers et actualités ACCEENT
+              </h2>
+              <p className="text-slate-300 text-sm leading-relaxed">
+                Recevez les prochaines sessions de formation à Ziguinchor ou consultez directement l&apos;agenda des événements.
+              </p>
+              <div className="flex flex-wrap gap-3 pt-1">
+                <Link
+                  href="/evenements"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#d8b4d7] hover:text-white transition-colors"
+                >
+                  <CalendarDays className="size-3.5" aria-hidden />
+                  <span>Voir le calendrier des ateliers</span>
+                  <ArrowRight className="size-3.5" aria-hidden />
+                </Link>
+              </div>
+            </div>
+
+            <div className="lg:col-span-6">
+              <NewsletterSubscribeForm variant="dark" />
+            </div>
+          </div>
+        </div>
       </section>
+
+      {/* ── 6. CONTACT (section unique, sans double padding) ────────────────── */}
+      <div id="contact-section">
+        <Contact />
+      </div>
     </>
   );
 }

@@ -1,5 +1,6 @@
 import { UserShell } from "@/components/dashboard/UserShell";
 import { ProfileForm } from "@/components/admin/ProfileForm";
+import { MemberNewsletterToggle } from "@/components/dashboard/MemberNewsletterToggle";
 import { getSession } from "@/lib/session";
 import prisma from "@/lib/prisma";
 
@@ -15,6 +16,12 @@ export default async function UserProfilPage() {
         lastname: true,
         email: true,
         role: true,
+        age: true,
+        sexe: true,
+        milieuResidence: true,
+        telephone: true,
+        sdh: true,
+        newsletterOptIn: true,
       },
     });
   }
@@ -38,6 +45,11 @@ export default async function UserProfilPage() {
     lastname: session?.lastname || "ACCEENT",
     email: session?.email || "membre@acceent.org",
     role: session?.role || "USER",
+    age: null,
+    sexe: null,
+    milieuResidence: null,
+    telephone: null,
+    sdh: false,
   };
 
   return (
@@ -48,6 +60,7 @@ export default async function UserProfilPage() {
     >
       <div className="space-y-6 max-w-3xl">
         <ProfileForm initialUser={initialProfile} />
+        <MemberNewsletterToggle initialOptIn={dbUser?.newsletterOptIn ?? true} />
       </div>
     </UserShell>
   );

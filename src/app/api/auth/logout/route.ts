@@ -4,19 +4,10 @@ import { destroySession } from "@/lib/session";
 /**
  * POST /api/auth/logout
  * Supprime le cookie de session et redirige vers la page de connexion.
+ * Restreint à POST pour protéger contre la déconnexion CSRF par requête GET.
  */
 export async function POST(request: NextRequest) {
-    await destroySession();
-    const loginUrl = new URL("/auth/login", request.url);
-    return NextResponse.redirect(loginUrl, { status: 303 });
-}
-
-/**
- * GET /api/auth/logout
- * Permet la déconnexion via un lien simple (ex: bouton <a>).
- */
-export async function GET(request: NextRequest) {
-    await destroySession();
-    const loginUrl = new URL("/auth/login", request.url);
-    return NextResponse.redirect(loginUrl, { status: 303 });
+  await destroySession();
+  const loginUrl = new URL("/auth/login", request.url);
+  return NextResponse.redirect(loginUrl, { status: 303 });
 }

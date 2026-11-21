@@ -1,10 +1,26 @@
+import type { Metadata } from "next";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { ArticleList } from "@/components/admin/ArticleList";
-import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
+import { findAllPostsForAdmin } from "@/repositories/post.repository";
 
-export default async function ArticlesPage() {
+export const metadata: Metadata = {
+  title: "Articles",
+};
+
+export default async function ArticlesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ new?: string; action?: string }>;
+}) {
   const session = await getSession();
+  const isAuthorOnly = session?.role === "AUTHOR";
+  const [sp, formattedArticles] = await Promise.all([
+    searchParams,
+    findAllPostsForAdmin(isAuthorOnly ? session?.userId : undefined),
+  ]);
+
+  const initialOpenCreate = sp.new === "true" || sp.action === "new";
   const currentUser = session
     ? {
         name: `${session.firstname} ${session.lastname}`,
@@ -13,45 +29,22 @@ export default async function ArticlesPage() {
       }
     : null;
 
-  // Récupération de tous les articles avec leur auteur depuis PostgreSQL via Prisma
-  const dbArticles = await prisma.post.findMany({
-    orderBy: { createdAt: "desc" },
-    include: {
-      author: {
-        select: {
-          firstname: true,
-          lastname: true,
-          email: true,
-        },
-      },
-    },
-  });
-
-  const formattedArticles = dbArticles.map((a) => ({
-    id: a.id,
-    title: a.title,
-    slug: a.slug,
-    content: a.content,
-    imageUrl: a.imageUrl,
-    link: a.link,
-    published: a.published,
-    authorName: a.author
-      ? `${a.author.firstname} ${a.author.lastname}`
-      : "Auteur inconnu",
-    createdAt: a.createdAt.toLocaleDateString("fr-FR", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    }),
-  }));
-
   return (
     <AdminShell
-      title="Articles"
-      subtitle="Gestion des publications dans la base de données"
+      title={isAuthorOnly ? "Mes Articles" : "Articles & Actualités"}
+      subtitle={
+        isAuthorOnly
+          ? "Vos articles personnels, brouillons et publications ACCEENT"
+          : "Gestion, rédaction et publication des articles ACCEENT"
+      }
       user={currentUser}
     >
-      <ArticleList articles={formattedArticles} />
+      <ArticleList
+        articles={formattedArticles}
+        currentUserId={session?.userId}
+        currentUserRole={session?.role}
+        initialOpenCreate={initialOpenCreate}
+      />
     </AdminShell>
   );
 }

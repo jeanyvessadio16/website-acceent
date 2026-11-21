@@ -16,3 +16,72 @@ export const Role = {
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
+
+
+export const Sexe = {
+  HOMME: 'HOMME',
+  FEMME: 'FEMME'
+} as const
+
+export type Sexe = (typeof Sexe)[keyof typeof Sexe]
+
+
+export const MilieuResidence = {
+  RURAL: 'RURAL',
+  URBAIN: 'URBAIN'
+} as const
+
+export type MilieuResidence = (typeof MilieuResidence)[keyof typeof MilieuResidence]
+
+
+export const PostCategory = {
+  EDUCATION: 'EDUCATION',
+  ENTREPRENEURIAT: 'ENTREPRENEURIAT',
+  NUMERIQUE: 'NUMERIQUE',
+  VIE_ASSOCIATIVE: 'VIE_ASSOCIATIVE',
+  EVENEMENT: 'EVENEMENT',
+  GENERAL: 'GENERAL'
+} as const
+
+export type PostCategory = (typeof PostCategory)[keyof typeof PostCategory]
+
+
+export const ProgramPole = {
+  EDUCATION: 'EDUCATION',
+  ENTREPRENEURIAT: 'ENTREPRENEURIAT',
+  NUMERIQUE: 'NUMERIQUE'
+} as const
+
+export type ProgramPole = (typeof ProgramPole)[keyof typeof ProgramPole]
+
+
+export const ApplicationStatus = {
+  PENDING: 'PENDING',
+  REVIEWING: 'REVIEWING',
+  INTERVIEW: 'INTERVIEW',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type ApplicationStatus = (typeof ApplicationStatus)[keyof typeof ApplicationStatus]
+
+
+export const ResourceType = {
+  PDF: 'PDF',
+  GUIDE: 'GUIDE',
+  TEMPLATE: 'TEMPLATE',
+  VIDEO: 'VIDEO',
+  LINK: 'LINK'
+} as const
+
+export type ResourceType = (typeof ResourceType)[keyof typeof ResourceType]
+
+
+export const CampaignStatus = {
+  DRAFT: 'DRAFT',
+  SENT: 'SENT',
+  PARTIAL: 'PARTIAL',
+  FAILED: 'FAILED'
+} as const
+
+export type CampaignStatus = (typeof CampaignStatus)[keyof typeof CampaignStatus]

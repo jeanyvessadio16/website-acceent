@@ -7,3 +7,8 @@
 export { loginAction, type LoginActionResult } from "./login";
 export { registerAction, type RegisterActionResult } from "./register";
 export { logoutAction } from "./logout";
+export {
+  requestPasswordResetAction,
+  validateResetTokenAction,
+  resetPasswordAction,
+} from "./password-reset";

@@ -22,7 +22,7 @@ export {
   type RateLimitResult,
   type RateLimitDbExecutor,
 } from "./rate-limit";
-export { getClientIp, getRequestOrigin } from "./request";
+export { getClientIp, getPublicSiteOrigin, getRequestOrigin } from "./request";
 export { generateAuthToken, hashAuthToken } from "./tokens";
 export { recordAuditLog, type RecordAuditParams } from "./audit";
 export { slugify, formatDateFr } from "./strings";

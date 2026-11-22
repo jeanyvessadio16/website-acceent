@@ -1,7 +1,7 @@
 import { type EmailOtpType } from "@supabase/supabase-js";
 import { type NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { logger, recordAuditLog } from "@/lib/core";
+import { getPublicSiteOrigin, logger, recordAuditLog } from "@/lib/core";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 async function syncVerifiedUserProfile(user: { id: string; email?: string | null }) {
@@ -55,7 +55,8 @@ export async function GET(request: NextRequest) {
   const errorCode = searchParams.get("error_code");
   const errorDescription = searchParams.get("error_description") || "";
 
-  const loginUrl = new URL("/auth/login", request.url);
+  const siteOrigin = getPublicSiteOrigin();
+  const loginUrl = new URL("/auth/login", siteOrigin);
 
   if (errorParam || errorCode) {
     const isExpired =
@@ -89,7 +90,7 @@ export async function GET(request: NextRequest) {
 
       if (isRecovery) {
         return NextResponse.redirect(
-          new URL("/auth/reset-password", request.url)
+          new URL("/auth/reset-password", siteOrigin)
         );
       }
 
@@ -127,7 +128,7 @@ export async function GET(request: NextRequest) {
 
       if (isRecovery) {
         return NextResponse.redirect(
-          new URL("/auth/reset-password", request.url)
+          new URL("/auth/reset-password", siteOrigin)
         );
       }
 

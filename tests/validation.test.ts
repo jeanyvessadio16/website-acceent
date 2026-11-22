@@ -267,47 +267,45 @@ describe("Validation Schemas (Zod v4 + Regex)", () => {
     assert.equal(
       adminUpdateUserSchema.safeParse({
         id: "550e8400-e29b-41d4-a716-446655440000",
-        firstname: "Marie",
-        lastname: "Dupont",
-        email: "marie@acceent.org",
-        role: "USER",
-        age: 24,
-        sexe: "FEMME",
-        milieuResidence: "RURAL",
-        telephone: "+221 77 123 45 67",
-        sdh: true,
+        role: "AUTHOR",
       }).success,
       true
     );
 
+    // L'administrateur ne peut modifier que le rôle : toute info personnelle injectée est ignorée
+    const strippedAdminUpdate = adminUpdateUserSchema.safeParse({
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      firstname: "Marie",
+      lastname: "Dupont",
+      email: "marie@acceent.org",
+      role: "USER",
+      age: 24,
+      sexe: "FEMME",
+      milieuResidence: "RURAL",
+      telephone: "+221 77 123 45 67",
+      sdh: true,
+    });
+    assert.equal(strippedAdminUpdate.success, true);
+    if (strippedAdminUpdate.success) {
+      assert.deepEqual(Object.keys(strippedAdminUpdate.data).sort(), ["id", "role"]);
+      assert.equal("email" in strippedAdminUpdate.data, false);
+      assert.equal("firstname" in strippedAdminUpdate.data, false);
+      assert.equal("telephone" in strippedAdminUpdate.data, false);
+      assert.equal("age" in strippedAdminUpdate.data, false);
+    }
+
     assert.equal(
       adminUpdateUserSchema.safeParse({
         id: "550e8400-e29b-41d4-a716-446655440000",
-        firstname: "Marie",
-        lastname: "Dupont",
-        email: "marie@acceent.org",
-        role: "USER",
-        age: 24,
-        sexe: "FEMME",
-        milieuResidence: "RURAL",
-        telephone: "",
-        sdh: false,
+        role: "SUPERADMIN",
       }).success,
       false
     );
 
     assert.equal(
       adminUpdateUserSchema.safeParse({
-        id: "550e8400-e29b-41d4-a716-446655440000",
-        firstname: "Marie",
-        lastname: "Dupont",
-        email: "marie@acceent.org",
+        id: "not-a-uuid",
         role: "USER",
-        age: 24,
-        sexe: "FEMME",
-        milieuResidence: null,
-        telephone: "+221 77 123 45 67",
-        sdh: false,
       }).success,
       false
     );

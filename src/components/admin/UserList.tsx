@@ -7,7 +7,7 @@ import {
   User,
   Mail,
   Calendar,
-  PencilLine,
+  Eye,
   Trash2,
   X,
   Loader2,
@@ -64,15 +64,7 @@ export function UserList({
   const [currentPage, setCurrentPage] = useState(1);
 
   const [editingUser, setEditingUser] = useState<UserItem | null>(null);
-  const [editFirstname, setEditFirstname] = useState("");
-  const [editLastname, setEditLastname] = useState("");
-  const [editEmail, setEditEmail] = useState("");
   const [editRole, setEditRole] = useState<"USER" | "AUTHOR" | "ADMIN">("USER");
-  const [editAgeStr, setEditAgeStr] = useState("");
-  const [editSexe, setEditSexe] = useState<"HOMME" | "FEMME">("HOMME");
-  const [editMilieu, setEditMilieu] = useState<"RURAL" | "URBAIN">("URBAIN");
-  const [editTelephone, setEditTelephone] = useState("");
-  const [editSdh, setEditSdh] = useState(false);
 
   const [isCreateOpen, setIsCreateOpen] = useState(initialOpenCreate);
   const [createFirstname, setCreateFirstname] = useState("");
@@ -102,15 +94,7 @@ export function UserList({
 
   const handleOpenEdit = (user: UserItem) => {
     setEditingUser(user);
-    setEditFirstname(user.firstname);
-    setEditLastname(user.lastname);
-    setEditEmail(user.email);
     setEditRole(user.role as "USER" | "AUTHOR" | "ADMIN");
-    setEditAgeStr(String(user.age));
-    setEditSexe(user.sexe);
-    setEditMilieu(user.milieuResidence);
-    setEditTelephone(user.telephone);
-    setEditSdh(user.sdh);
     setErrorMsg(null);
   };
 
@@ -119,23 +103,9 @@ export function UserList({
     if (!editingUser) return;
     setErrorMsg(null);
 
-    const ageCheck = parseRequiredAge(editAgeStr);
-    if (!ageCheck.ok) {
-      setErrorMsg(ageCheck.error);
-      return;
-    }
-
     const payload = {
       id: editingUser.id,
-      firstname: editFirstname,
-      lastname: editLastname,
-      email: editEmail,
       role: editRole,
-      age: ageCheck.value,
-      sexe: editSexe,
-      milieuResidence: editMilieu,
-      telephone: editTelephone.trim(),
-      sdh: editSdh,
     };
 
     const parsed = adminUpdateUserSchema.safeParse(payload);
@@ -396,10 +366,10 @@ export function UserList({
                     <button
                       type="button"
                       onClick={() => handleOpenEdit(u)}
-                      title="Modifier l'utilisateur"
+                      title="Consulter le profil et gérer le rôle"
                       className="size-8 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
                     >
-                      <PencilLine className="size-3.5" />
+                      <Eye className="size-3.5" />
                     </button>
                     {!isCurrentUser ? (
                       <button
@@ -691,161 +661,152 @@ export function UserList({
         </div>
       )}
 
-      {/* Modal Édition */}
-      {editingUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-          <div className="w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="text-slate-900 dark:text-white font-bold text-base flex items-center gap-2">
-                <PencilLine className="size-4 text-[#836182]" />
-                Modifier le membre
-              </h3>
-              <button
-                type="button"
-                onClick={() => setEditingUser(null)}
-                className="text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg p-1 cursor-pointer"
-              >
-                <X className="size-4" />
-              </button>
+      {/* Modal Consultation Profil & Gestion du Rôle */}
+      {editingUser && (() => {
+        const isEditingSelf = Boolean(
+          currentUserEmail &&
+            editingUser.email.toLowerCase() === currentUserEmail.toLowerCase()
+        );
+
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+            <div className="w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+                <h3 className="text-slate-900 dark:text-white font-bold text-base flex items-center gap-2">
+                  <Eye className="size-4 text-[#836182]" />
+                  Profil du membre
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className="text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg p-1 cursor-pointer"
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-xs flex items-start gap-2">
+                <Lock className="size-4 text-[#836182] shrink-0 mt-0.5" />
+                <span>
+                  Consultation uniquement : les informations personnelles du membre ne sont pas modifiables. Seul le rôle d&apos;accès peut être modifié.
+                </span>
+              </div>
+
+              {errorMsg && (
+                <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-300 text-xs flex items-center gap-2">
+                  <AlertCircle className="size-4 shrink-0" />
+                  <span>{errorMsg}</span>
+                </div>
+              )}
+
+              {/* Informations personnelles en lecture seule */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800">
+                  <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                    Prénom &amp; Nom
+                  </p>
+                  <p className="mt-0.5 text-sm font-semibold text-slate-900 dark:text-white">
+                    {editingUser.firstname} {editingUser.lastname}
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800">
+                  <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 flex items-center justify-between">
+                    <span>Adresse e-mail</span>
+                    <Lock className="size-3 text-slate-400" aria-hidden />
+                  </p>
+                  <p className="mt-0.5 text-sm font-medium text-slate-700 dark:text-slate-200 break-all">
+                    {editingUser.email}
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800">
+                  <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                    Téléphone
+                  </p>
+                  <p className="mt-0.5 text-sm font-medium text-slate-900 dark:text-white">
+                    {editingUser.telephone || "Non renseigné"}
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800">
+                  <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                    Date d&apos;inscription
+                  </p>
+                  <p className="mt-0.5 text-sm font-medium text-slate-900 dark:text-white">
+                    {editingUser.createdAt}
+                  </p>
+                </div>
+
+                <div className="sm:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800">
+                    <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Âge</p>
+                    <p className="mt-0.5 text-sm font-semibold text-slate-900 dark:text-white">
+                      {editingUser.age} ans
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800">
+                    <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Sexe</p>
+                    <p className="mt-0.5 text-sm font-semibold text-slate-900 dark:text-white">
+                      {editingUser.sexe === "HOMME" ? "Homme" : "Femme"}
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800">
+                    <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Milieu</p>
+                    <p className="mt-0.5 text-sm font-semibold text-slate-900 dark:text-white">
+                      {editingUser.milieuResidence === "RURAL" ? "Rural" : "Urbain"}
+                    </p>
+                  </div>
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800">
+                    <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">SDH</p>
+                    <p className="mt-0.5 text-sm font-semibold text-slate-900 dark:text-white">
+                      {editingUser.sdh ? "Oui" : "Non"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <form onSubmit={handleSaveEdit} noValidate className="space-y-4 pt-2 border-t border-slate-200 dark:border-slate-800">
+                <div className="space-y-1.5">
+                  <Label htmlFor="admin-edit-role" className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
+                    Rôle d&apos;accès
+                  </Label>
+                  <select
+                    id="admin-edit-role"
+                    value={editRole}
+                    disabled={isEditingSelf}
+                    onChange={(e) => setEditRole(e.target.value as "USER" | "AUTHOR" | "ADMIN")}
+                    className="w-full h-10 px-3 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    <option value="USER">USER (Membre)</option>
+                    <option value="AUTHOR">AUTHOR (Rédacteur)</option>
+                    <option value="ADMIN">ADMIN (Administrateur)</option>
+                  </select>
+                  {isEditingSelf && (
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                      Vous ne pouvez pas modifier votre propre rôle administrateur.
+                    </p>
+                  )}
+                </div>
+
+                <div className="pt-3 flex justify-end gap-2 border-t border-slate-200 dark:border-slate-800">
+                  <Button type="button" variant="outline" onClick={() => setEditingUser(null)}>
+                    Fermer
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={loading || isEditingSelf || editRole === editingUser.role}
+                    className="bg-[#836182] hover:bg-[#6f4f6e] text-white"
+                  >
+                    {loading ? <Loader2 className="size-4 animate-spin mr-1.5" /> : <Save className="size-4 mr-1.5" />}
+                    {loading ? "Sauvegarde…" : "Enregistrer le rôle"}
+                  </Button>
+                </div>
+              </form>
             </div>
-
-            {errorMsg && (
-              <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 dark:bg-red-500/10 dark:border-red-500/20 dark:text-red-300 text-xs flex items-center gap-2">
-                <AlertCircle className="size-4 shrink-0" />
-                <span>{errorMsg}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleSaveEdit} noValidate className="space-y-4">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Prénom *</Label>
-                  <Input
-                    type="text"
-                    value={editFirstname}
-                    onChange={(e) => setEditFirstname(e.target.value)}
-                    required
-                    className="h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Nom *</Label>
-                  <Input
-                    type="text"
-                    value={editLastname}
-                    onChange={(e) => setEditLastname(e.target.value)}
-                    required
-                    className="h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Adresse e-mail *</Label>
-                  <Input
-                    type="email"
-                    value={editEmail}
-                    onChange={(e) => setEditEmail(e.target.value)}
-                    required
-                    className="h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Téléphone *</Label>
-                  <Input
-                    type="tel"
-                    value={editTelephone}
-                    onChange={(e) => setEditTelephone(e.target.value)}
-                    placeholder="+221 77 123 45 67"
-                    required
-                    className="h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Âge *</Label>
-                  <Input
-                    type="number"
-                    min={10}
-                    max={120}
-                    value={editAgeStr}
-                    onChange={(e) => setEditAgeStr(e.target.value)}
-                    placeholder="24"
-                    required
-                    className="h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Sexe *</Label>
-                  <select
-                    value={editSexe}
-                    onChange={(e) => setEditSexe(e.target.value as "HOMME" | "FEMME")}
-                    required
-                    className="w-full h-10 px-2.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
-                  >
-                    <option value="HOMME">Homme</option>
-                    <option value="FEMME">Femme</option>
-                  </select>
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Milieu *</Label>
-                  <select
-                    value={editMilieu}
-                    onChange={(e) => setEditMilieu(e.target.value as "RURAL" | "URBAIN")}
-                    required
-                    className="w-full h-10 px-2.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
-                  >
-                    <option value="URBAIN">Urbain</option>
-                    <option value="RURAL">Rural</option>
-                  </select>
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">SDH *</Label>
-                  <select
-                    value={editSdh ? "OUI" : "NON"}
-                    onChange={(e) => setEditSdh(e.target.value === "OUI")}
-                    required
-                    className="w-full h-10 px-2.5 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
-                  >
-                    <option value="NON">Non</option>
-                    <option value="OUI">Oui</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <Label className="text-slate-700 dark:text-slate-300 text-xs font-semibold">Rôle d&apos;accès</Label>
-                <select
-                  value={editRole}
-                  onChange={(e) => setEditRole(e.target.value as "USER" | "AUTHOR" | "ADMIN")}
-                  className="w-full h-10 px-3 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs"
-                >
-                  <option value="USER">USER (Membre)</option>
-                  <option value="AUTHOR">AUTHOR (Rédacteur)</option>
-                  <option value="ADMIN">ADMIN (Administrateur)</option>
-                </select>
-              </div>
-
-              <div className="pt-3 flex justify-end gap-2 border-t border-slate-200 dark:border-slate-800">
-                <Button type="button" variant="outline" onClick={() => setEditingUser(null)}>
-                  Annuler
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className="bg-[#836182] hover:bg-[#6f4f6e] text-white"
-                >
-                  {loading ? <Loader2 className="size-4 animate-spin mr-1.5" /> : <Save className="size-4 mr-1.5" />}
-                  {loading ? "Sauvegarde…" : "Enregistrer"}
-                </Button>
-              </div>
-            </form>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }

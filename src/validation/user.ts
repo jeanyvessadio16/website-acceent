@@ -68,15 +68,7 @@ export const adminCreateUserSchema = z.object({
 
 export const adminUpdateUserSchema = z.object({
   id: z.string().uuid("Identifiant utilisateur invalide."),
-  firstname: personNameSchema("Le prénom"),
-  lastname: personNameSchema("Le nom"),
-  email: emailFieldSchema,
   role: RoleSchema,
-  age: requiredAgeFieldSchema,
-  sexe: SexeSchema,
-  milieuResidence: MilieuResidenceSchema,
-  telephone: phoneFieldSchema,
-  sdh: sdhFieldSchema,
 });
 
 export type UpdateProfileInput = z.input<typeof updateProfileSchema>;

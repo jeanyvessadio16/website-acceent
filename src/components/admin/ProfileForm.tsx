@@ -188,7 +188,7 @@ export function ProfileForm({ initialUser }: ProfileFormProps) {
               <Lock className="absolute right-3 top-1/2 -translate-y-1/2 size-3.5 text-slate-400 pointer-events-none" aria-hidden />
             </div>
             <p className="text-[11px] text-slate-500 dark:text-slate-400">
-              L&apos;adresse e-mail ne peut pas être modifiée après l&apos;inscription.
+              L&apos;adresse e-mail ne peut plus être modifiée après la confirmation du compte.
             </p>
           </div>
 

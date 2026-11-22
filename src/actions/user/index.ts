@@ -4,7 +4,6 @@ import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import type { MilieuResidence, Role, Sexe } from "@/generated/prisma/client";
 import {
-  createSupabaseAdminClient,
   createSupabaseServerClient,
   createSupabaseStatelessClient,
 } from "@/lib/supabase/server";
@@ -31,15 +30,7 @@ export type { UpdateProfileInput };
 
 export interface UpdateUserInput {
   id: string;
-  firstname: string;
-  lastname: string;
-  email: string;
   role: "USER" | "AUTHOR" | "ADMIN";
-  age: number;
-  sexe: "HOMME" | "FEMME";
-  milieuResidence: "RURAL" | "URBAIN";
-  telephone: string;
-  sdh: boolean;
 }
 
 export interface CreateUserInput {
@@ -148,84 +139,28 @@ export async function updateUserAction(data: UpdateUserInput) {
   const parsed = adminUpdateUserSchema.safeParse(data);
   if (!parsed.success) return fromZodError(parsed.error);
 
-  const {
-    id,
-    firstname,
-    lastname,
-    email,
-    role,
-    age,
-    sexe,
-    milieuResidence,
-    telephone,
-    sdh,
-  } = parsed.data;
+  const { id, role } = parsed.data;
+
+  if (guard.session.userId === id && role !== "ADMIN") {
+    return fail(
+      "Vous ne pouvez pas retirer votre propre rôle administrateur.",
+      "VALIDATION_ERROR"
+    );
+  }
 
   try {
     const existingTarget = await prisma.user.findUnique({
       where: { id },
-      select: { id: true, email: true },
+      select: { id: true, email: true, role: true },
     });
     if (!existingTarget) {
       return fail("Utilisateur introuvable.", "NOT_FOUND");
     }
 
-    const existing = await prisma.user.findFirst({
-      where: {
-        OR: [{ email }, { telephone }],
-        NOT: { id },
-      },
-      select: { email: true, telephone: true },
-    });
-
-    if (existing) {
-      if (existing.email === email) {
-        return fail("Cet e-mail est déjà utilisé par un autre membre.", "CONFLICT");
-      }
-      return fail(
-        "Ce numéro de téléphone est déjà utilisé par un autre membre.",
-        "CONFLICT"
-      );
-    }
-
-    if (email !== existingTarget.email.toLowerCase()) {
-      const adminClient = createSupabaseAdminClient();
-      if (!adminClient) {
-        return fail(
-          "Pour modifier l'adresse e-mail d'un autre utilisateur dans Supabase Auth, configurez SUPABASE_SERVICE_ROLE_KEY côté serveur.",
-          "VALIDATION_ERROR"
-        );
-      }
-
-      const { error: authErr } = await adminClient.auth.admin.updateUserById(id, {
-        email,
-        email_confirm: true,
-      });
-      if (authErr) {
-        logger.warn("actions.user.updateUser", "Échec mise à jour e-mail Supabase Auth", {
-          userId: id,
-          code: authErr.code,
-          message: authErr.message,
-        });
-        return fail(
-          "Impossible de mettre à jour l'adresse e-mail dans Supabase Auth.",
-          "CONFLICT"
-        );
-      }
-    }
-
     const updated = await prisma.user.update({
       where: { id },
       data: {
-        firstname,
-        lastname,
-        email,
         role: role as Role,
-        age,
-        sexe: sexe as Sexe,
-        milieuResidence: milieuResidence as MilieuResidence,
-        telephone,
-        sdh,
       },
       select: {
         id: true,
@@ -239,18 +174,22 @@ export async function updateUserAction(data: UpdateUserInput) {
       action: "USER_UPDATED",
       entity: "User",
       entityId: updated.id,
-      metadata: { targetEmail: updated.email, assignedRole: updated.role },
+      metadata: {
+        targetEmail: updated.email,
+        previousRole: existingTarget.role,
+        assignedRole: updated.role,
+      },
     });
 
     revalidatePath("/admin/utilisateurs");
     revalidatePath("/admin");
 
-    return ok("Informations de l'utilisateur mises à jour !");
+    return ok("Rôle de l'utilisateur mis à jour avec succès !");
   } catch (error) {
     return handleActionError(
       "actions.user.updateUser",
       error,
-      "Erreur lors de la modification de l'utilisateur."
+      "Erreur lors de la modification du rôle de l'utilisateur."
     );
   }
 }

@@ -32,6 +32,10 @@ describe("Open Graph & Social Sharing Image", () => {
 
   it("configure rootMetadata et createPageMetadata avec l'image sociale officielle sans doublon dans other", () => {
     const expectedUrl = new URL(OG_IMAGE_PATH, SITE_URL).toString();
+    if (!process.env.NEXT_PUBLIC_SITE_URL) {
+      assert.equal(SITE_URL, "https://www.acceent.org");
+      assert.equal(expectedUrl, "https://www.acceent.org/og-acceent.png");
+    }
     assert.equal(OG_IMAGE_PATH, "/og-acceent.png");
     assert.equal(OG_IMAGE.width, 1200);
     assert.equal(OG_IMAGE.height, 630);

@@ -44,7 +44,7 @@ export default async function RootLayout({
         <link rel="alternate" hrefLang="fr" href={SITE_URL} />
         <link rel="alternate" hrefLang="x-default" href={SITE_URL} />
         {/* Déclaration explicite pour les crawlers IA */}
-        <link rel="me" href="https://acceent.org" />
+        <link rel="me" href="https://www.acceent.org" />
         <meta name="referrer" content="strict-origin-when-cross-origin" />
       </head>
       <body className="min-h-full flex flex-col overflow-x-hidden w-full max-w-full relative">

@@ -15,7 +15,7 @@ function getEmailFrom(): string {
 }
 
 function getSiteUrl(): string {
-  return (process.env.NEXT_PUBLIC_SITE_URL || "https://acceent.org").replace(/\/$/, "");
+  return (process.env.NEXT_PUBLIC_SITE_URL || "https://www.acceent.org").replace(/\/$/, "");
 }
 
 function escapeHtml(text: string): string {

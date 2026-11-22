@@ -42,7 +42,7 @@ export async function proxy(request: NextRequest) {
 
   // ── 0. Anti-cannibalisation SEO : Redirection des domaines Vercel ─────────
   if (host.includes(".vercel.app") && !host.includes("localhost")) {
-    const canonicalUrl = new URL(pathname + request.nextUrl.search, "https://acceent.org");
+    const canonicalUrl = new URL(pathname + request.nextUrl.search, "https://www.acceent.org");
     return NextResponse.redirect(canonicalUrl, 301);
   }
 

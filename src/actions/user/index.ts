@@ -14,6 +14,7 @@ import {
   fromZodError,
   handleActionError,
   recordAuditLog,
+  deleteUserCompletely,
   getRequestOrigin,
   logger,
   ok,
@@ -258,6 +259,10 @@ export async function deleteUserAction(userId: string) {
   const guard = await requireAdmin();
   if (!guard.authorized) return guard.response;
 
+  if (!userId?.trim()) {
+    return fail("Identifiant utilisateur invalide.", "VALIDATION_ERROR");
+  }
+
   if (guard.session.userId === userId) {
     return fail(
       "Vous ne pouvez pas supprimer le compte actuellement connecté.",
@@ -266,48 +271,37 @@ export async function deleteUserAction(userId: string) {
   }
 
   try {
-    const adminClient = createSupabaseAdminClient();
-    if (adminClient) {
-      const { error: authErr } = await adminClient.auth.admin.deleteUser(userId);
-      if (
-        authErr &&
-        authErr.code !== "user_not_found" &&
-        !/not found/i.test(authErr.message)
-      ) {
-        logger.warn("actions.user.deleteUser", "Échec suppression compte Supabase Auth", {
-          userId,
-          code: authErr.code,
-          message: authErr.message,
-        });
-        return fail(
-          "Impossible de supprimer ce compte dans Supabase Auth.",
-          "INTERNAL_ERROR"
-        );
-      }
-    } else {
-      logger.warn(
-        "actions.user.deleteUser",
-        "SUPABASE_SERVICE_ROLE_KEY non configurée — suppression Supabase Auth ignorée",
-        { userId }
-      );
-    }
-
-    const deleted = await prisma.user.delete({
+    const target = await prisma.user.findUnique({
       where: { id: userId },
       select: { id: true, email: true, role: true },
     });
+
+    if (!target) {
+      return fail("Utilisateur introuvable.", "NOT_FOUND");
+    }
+
+    const { deletedUser, deletedAuthVia, deletedAuthRows } =
+      await deleteUserCompletely(target);
 
     await recordAuditLog({
       session: guard.session,
       action: "USER_DELETED",
       entity: "User",
-      entityId: deleted.id,
-      metadata: { targetEmail: deleted.email, previousRole: deleted.role },
+      entityId: deletedUser.id,
+      metadata: {
+        targetEmail: deletedUser.email,
+        previousRole: deletedUser.role,
+        deletedAuthVia,
+        deletedAuthRows,
+      },
     });
 
     revalidatePath("/admin/utilisateurs");
     revalidatePath("/admin");
-    return ok("Utilisateur supprimé avec succès.");
+    revalidatePath("/admin/newsletter");
+    return ok(
+      "Utilisateur supprimé définitivement de la base de données et de l'authentification."
+    );
   } catch (error) {
     return handleActionError(
       "actions.user.deleteUser",

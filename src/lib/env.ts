@@ -16,12 +16,12 @@ const serverEnvSchema = z.object({
     .min(1, "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY manquante."),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   NEXT_PUBLIC_SUPABASE_DOCS_BUCKET: z.string().default("documents"),
-  NEXT_PUBLIC_SITE_URL: z.string().url().default("https://acceent.org"),
+  NEXT_PUBLIC_SITE_URL: z.string().url().default("https://www.acceent.org"),
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
 });
 
 const publicEnvSchema = z.object({
-  NEXT_PUBLIC_SITE_URL: z.string().url().default("https://acceent.org"),
+  NEXT_PUBLIC_SITE_URL: z.string().url().default("https://www.acceent.org"),
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().min(1),
   NEXT_PUBLIC_SUPABASE_DOCS_BUCKET: z.string().default("documents"),

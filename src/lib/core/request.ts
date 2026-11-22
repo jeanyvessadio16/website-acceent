@@ -45,5 +45,5 @@ export async function getRequestOrigin(): Promise<string> {
     // Hors contexte requête HTTP
   }
 
-  return (configured || "https://acceent.org").replace(/\/$/, "");
+  return (configured || "https://www.acceent.org").replace(/\/$/, "");
 }

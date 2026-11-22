@@ -3,7 +3,7 @@ import { buildSocialSharingMetadata } from "@/lib/social-metadata";
 
 export const SITE_NAME = "ACCEENT";
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://acceent.org"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.acceent.org"
 ).replace(/\/+$/, "");
 
 export const DEFAULT_DESCRIPTION =

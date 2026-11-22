@@ -26,3 +26,10 @@ export { getClientIp, getRequestOrigin } from "./request";
 export { generateAuthToken, hashAuthToken } from "./tokens";
 export { recordAuditLog, type RecordAuditParams } from "./audit";
 export { slugify, formatDateFr } from "./strings";
+export {
+  deleteUserCompletely,
+  type DeletedUserSummary,
+  type CompleteUserDeletionResult,
+  type CompleteUserDeletionDeps,
+  type UserDeletionTx,
+} from "./user-deletion";

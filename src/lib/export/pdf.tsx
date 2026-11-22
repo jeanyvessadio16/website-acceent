@@ -1,5 +1,14 @@
 import React from "react";
-import { Document, Page, Text, View, StyleSheet, renderToBuffer } from "@react-pdf/renderer";
+import {
+  Document,
+  Image as PdfImage,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  renderToBuffer,
+} from "@react-pdf/renderer";
+import { getAcceentLogoDataUri } from "./logo";
 
 const COLORS = {
   plum: "#836182",
@@ -35,6 +44,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  brandBlock: {
+    flexDirection: "column",
+    gap: 4,
+  },
+  brandLogo: {
+    width: 118,
+    height: 33,
+    objectFit: "contain",
+  },
+  brandLogoCompact: {
+    width: 100,
+    height: 28,
+    objectFit: "contain",
   },
   brandTitle: {
     color: COLORS.white,
@@ -257,12 +280,17 @@ export interface AdminReportPdfPayload {
 }
 
 export async function renderAdminReportPdf(payload: AdminReportPdfPayload): Promise<Uint8Array> {
+  const logoSrc = getAcceentLogoDataUri();
   const doc = (
     <Document title="Rapport de Synthese ACCEENT" author="ACCEENT">
       <Page size="A4" style={styles.page}>
         <View style={styles.headerBanner}>
-          <View>
-            <Text style={styles.brandTitle}>ACCEENT</Text>
+          <View style={styles.brandBlock}>
+            {logoSrc ? (
+              <PdfImage src={logoSrc} style={styles.brandLogo} />
+            ) : (
+              <Text style={styles.brandTitle}>ACCEENT</Text>
+            )}
             <Text style={styles.brandSubtitle}>
               Rapport executif de supervision de la plateforme
             </Text>
@@ -397,6 +425,8 @@ export interface EventAttendancePdfPayload {
     fullName: string;
     email: string;
     phone: string;
+    age: number;
+    sexe: string;
     attended: boolean;
   }>;
 }
@@ -404,13 +434,20 @@ export interface EventAttendancePdfPayload {
 export async function renderEventAttendancePdf(
   event: EventAttendancePdfPayload
 ): Promise<Uint8Array> {
+  const logoSrc = getAcceentLogoDataUri();
   const doc = (
     <Document title={`Emargement - ${event.title}`} author="ACCEENT">
-      <Page size="A4" style={styles.page}>
+      <Page size="A4" orientation="landscape" style={styles.page}>
         <View style={styles.headerBanner}>
-          <View>
-            <Text style={styles.brandTitle}>{"ACCEENT - FEUILLE D'EMARGEMENT"}</Text>
-            <Text style={styles.brandSubtitle}>{event.title}</Text>
+          <View style={styles.brandBlock}>
+            {logoSrc ? (
+              <PdfImage src={logoSrc} style={styles.brandLogo} />
+            ) : (
+              <Text style={styles.brandTitle}>ACCEENT</Text>
+            )}
+            <Text style={styles.brandSubtitle}>
+              {`Feuille d'emargement - ${event.title}`}
+            </Text>
           </View>
           <View style={styles.headerMeta}>
             <Text style={styles.headerMetaText}>Imprime le {event.generatedAt}</Text>
@@ -440,10 +477,12 @@ export async function renderEventAttendancePdf(
           <View style={styles.tableHeader}>
             <Text style={[styles.tableHeaderCell, { width: 72 }]}>Billet</Text>
             <Text style={[styles.tableHeaderCell, { flex: 1.5 }]}>Nom complet</Text>
-            <Text style={[styles.tableHeaderCell, { flex: 1.7 }]}>E-mail</Text>
-            <Text style={[styles.tableHeaderCell, { width: 74 }]}>Telephone</Text>
-            <Text style={[styles.tableHeaderCell, { width: 48 }]}>Statut</Text>
-            <Text style={[styles.tableHeaderCell, { width: 70 }]}>Signature</Text>
+            <Text style={[styles.tableHeaderCell, { flex: 1.8 }]}>E-mail</Text>
+            <Text style={[styles.tableHeaderCell, { width: 86 }]}>Telephone</Text>
+            <Text style={[styles.tableHeaderCell, { width: 40 }]}>Age</Text>
+            <Text style={[styles.tableHeaderCell, { width: 56 }]}>Sexe</Text>
+            <Text style={[styles.tableHeaderCell, { width: 66 }]}>Statut</Text>
+            <Text style={[styles.tableHeaderCell, { width: 90 }]}>Signature</Text>
           </View>
           {event.registrations.length === 0 ? (
             <View style={styles.tableRow}>
@@ -456,12 +495,14 @@ export async function renderEventAttendancePdf(
                   {r.ticketCode}
                 </Text>
                 <Text style={[styles.tableCell, { flex: 1.5 }]}>{r.fullName}</Text>
-                <Text style={[styles.tableCell, { flex: 1.7 }]}>{r.email}</Text>
-                <Text style={[styles.tableCell, { width: 74 }]}>{r.phone || "-"}</Text>
-                <Text style={[styles.tableCell, { width: 48 }]}>
+                <Text style={[styles.tableCell, { flex: 1.8 }]}>{r.email}</Text>
+                <Text style={[styles.tableCell, { width: 86 }]}>{r.phone || "-"}</Text>
+                <Text style={[styles.tableCell, { width: 40 }]}>{`${r.age} ans`}</Text>
+                <Text style={[styles.tableCell, { width: 56 }]}>{r.sexe}</Text>
+                <Text style={[styles.tableCell, { width: 66 }]}>
                   {r.attended ? "Present" : "A confirmer"}
                 </Text>
-                <Text style={[styles.tableCell, { width: 70 }]}> </Text>
+                <Text style={[styles.tableCell, { width: 90 }]}> </Text>
               </View>
             ))
           )}
@@ -494,12 +535,17 @@ export interface MemberTicketPdfPayload {
 export async function renderMemberTicketPdf(
   ticket: MemberTicketPdfPayload
 ): Promise<Uint8Array> {
+  const logoSrc = getAcceentLogoDataUri();
   const doc = (
     <Document title={`Billet ACCEENT - ${ticket.ticketCode}`} author="ACCEENT">
       <Page size="A5" orientation="landscape" style={styles.page}>
         <View style={styles.headerBanner}>
-          <View>
-            <Text style={styles.brandTitle}>ACCEENT</Text>
+          <View style={styles.brandBlock}>
+            {logoSrc ? (
+              <PdfImage src={logoSrc} style={styles.brandLogoCompact} />
+            ) : (
+              <Text style={styles.brandTitle}>ACCEENT</Text>
+            )}
             <Text style={styles.brandSubtitle}>
               {"Billet d'acces officiel - Evenement & Atelier"}
             </Text>

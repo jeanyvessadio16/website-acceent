@@ -52,7 +52,16 @@ export async function GET(request: NextRequest) {
         registrations: {
           orderBy: { createdAt: "asc" },
           include: {
-            user: { select: { firstname: true, lastname: true, email: true } },
+            user: {
+              select: {
+                firstname: true,
+                lastname: true,
+                email: true,
+                telephone: true,
+                age: true,
+                sexe: true,
+              },
+            },
           },
         },
       },
@@ -80,7 +89,9 @@ export async function GET(request: NextRequest) {
         ticketCode: r.ticketCode,
         fullName: `${r.user.firstname} ${r.user.lastname}`.trim(),
         email: r.user.email,
-        phone: r.phone || "",
+        phone: r.phone?.trim() || r.user.telephone || "",
+        age: r.user.age,
+        sexe: r.user.sexe === "HOMME" ? "Homme" : "Femme",
         attended: r.attended,
         registeredAt: formatDateFr(r.createdAt, {
           day: "2-digit",
@@ -125,6 +136,7 @@ export async function GET(request: NextRequest) {
 
   if (type === "users") {
     const users = await prisma.user.findMany({
+      where: { role: "USER" },
       orderBy: { createdAt: "desc" },
       select: {
         firstname: true,
@@ -245,6 +257,7 @@ export async function GET(request: NextRequest) {
         include: { _count: { select: { registrations: true } } },
       }),
       prisma.user.findMany({
+        where: { role: "USER" },
         orderBy: { createdAt: "desc" },
         select: {
           firstname: true,

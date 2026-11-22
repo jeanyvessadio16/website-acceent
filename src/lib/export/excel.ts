@@ -1,4 +1,5 @@
 import ExcelJS from "exceljs";
+import { getAcceentLogoBase64 } from "./logo";
 
 function sanitizeExcelValue(val: string | number | boolean | null | undefined): string | number {
   if (val === null || val === undefined) return "";
@@ -11,19 +12,31 @@ function sanitizeExcelValue(val: string | number | boolean | null | undefined): 
   return str;
 }
 
+function registerWorkbookLogo(workbook: ExcelJS.Workbook): number | null {
+  const base64 = getAcceentLogoBase64();
+  if (!base64) return null;
+  return workbook.addImage({
+    base64,
+    extension: "png",
+  });
+}
+
 function addTitleBanner(
   sheet: ExcelJS.Worksheet,
   title: string,
   subtitle: string,
-  colCount: number
+  colCount: number,
+  logoImageId: number | null
 ) {
-  sheet.addRow([sanitizeExcelValue(title)]);
-  const titleRow = sheet.getRow(1);
-  titleRow.height = 28;
-  titleRow.font = { bold: true, size: 14, color: { argb: "FFFFFFFF" } };
-  titleRow.alignment = { vertical: "middle", horizontal: "left", indent: 1 };
+  sheet.addRow([logoImageId !== null ? "" : "ACCEENT"]);
+  const brandRow = sheet.getRow(1);
+  brandRow.height = 42;
+  if (logoImageId === null) {
+    brandRow.font = { bold: true, size: 16, color: { argb: "FFFFFFFF" } };
+    brandRow.alignment = { vertical: "middle", horizontal: "left", indent: 1 };
+  }
   for (let c = 1; c <= colCount; c++) {
-    titleRow.getCell(c).fill = {
+    brandRow.getCell(c).fill = {
       type: "pattern",
       pattern: "solid",
       fgColor: { argb: "FF836182" },
@@ -32,9 +45,31 @@ function addTitleBanner(
   if (colCount > 1) {
     sheet.mergeCells(1, 1, 1, colCount);
   }
+  if (logoImageId !== null) {
+    sheet.addImage(logoImageId, {
+      tl: { col: 0.15, row: 0.12 },
+      ext: { width: 144, height: 40 },
+    });
+  }
+
+  sheet.addRow([sanitizeExcelValue(title)]);
+  const titleRow = sheet.getRow(2);
+  titleRow.height = 26;
+  titleRow.font = { bold: true, size: 13, color: { argb: "FFFFFFFF" } };
+  titleRow.alignment = { vertical: "middle", horizontal: "left", indent: 1 };
+  for (let c = 1; c <= colCount; c++) {
+    titleRow.getCell(c).fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FF5E435D" },
+    };
+  }
+  if (colCount > 1) {
+    sheet.mergeCells(2, 1, 2, colCount);
+  }
 
   sheet.addRow([sanitizeExcelValue(subtitle)]);
-  const subRow = sheet.getRow(2);
+  const subRow = sheet.getRow(3);
   subRow.height = 20;
   subRow.font = { italic: true, size: 10, color: { argb: "FF475569" } };
   subRow.alignment = { vertical: "middle", horizontal: "left", indent: 1 };
@@ -46,7 +81,7 @@ function addTitleBanner(
     };
   }
   if (colCount > 1) {
-    sheet.mergeCells(2, 1, 2, colCount);
+    sheet.mergeCells(3, 1, 3, colCount);
   }
 }
 
@@ -158,6 +193,7 @@ export async function buildAdminOverviewWorkbook(
   const workbook = new ExcelJS.Workbook();
   workbook.creator = "ACCEENT Plateforme";
   workbook.created = new Date();
+  const logoImageId = registerWorkbookLogo(workbook);
 
   // 1. Synthèse
   const summarySheet = workbook.addWorksheet("Synthèse");
@@ -165,7 +201,8 @@ export async function buildAdminOverviewWorkbook(
     summarySheet,
     "ACCEENT — Rapport de Synthèse Plateforme",
     `Exporté le ${payload.generatedAt} par ${payload.generatedBy}`,
-    3
+    3,
+    logoImageId
   );
   summarySheet.addRow(["Indicateur", "Valeur", "Précision"]);
   const kpiRows: Array<[string, string | number, string]> = [
@@ -179,11 +216,17 @@ export async function buildAdminOverviewWorkbook(
   for (const row of kpiRows) {
     summarySheet.addRow(row.map(sanitizeExcelValue));
   }
-  styleTableSheet(summarySheet, 3, [34, 18, 44]);
+  styleTableSheet(summarySheet, 4, [34, 18, 44]);
 
   // 2. Articles
   const articlesSheet = workbook.addWorksheet("Articles");
-  addTitleBanner(articlesSheet, "ACCEENT — Articles & Actualités", `${payload.articles.length} enregistrement(s)`, 5);
+  addTitleBanner(
+    articlesSheet,
+    "ACCEENT — Articles & Actualités",
+    `${payload.articles.length} enregistrement(s)`,
+    5,
+    logoImageId
+  );
   articlesSheet.addRow(["Titre", "Catégorie", "Auteur", "Statut", "Date de création"]);
   for (const a of payload.articles) {
     articlesSheet.addRow([
@@ -194,11 +237,17 @@ export async function buildAdminOverviewWorkbook(
       sanitizeExcelValue(a.date),
     ]);
   }
-  styleTableSheet(articlesSheet, 3, [46, 20, 24, 14, 18]);
+  styleTableSheet(articlesSheet, 4, [46, 20, 24, 14, 18]);
 
   // 3. Candidatures
   const appsSheet = workbook.addWorksheet("Candidatures");
-  addTitleBanner(appsSheet, "ACCEENT — Candidatures Programmes", `${payload.applications.length} dossier(s)`, 7);
+  addTitleBanner(
+    appsSheet,
+    "ACCEENT — Candidatures Programmes",
+    `${payload.applications.length} dossier(s)`,
+    7,
+    logoImageId
+  );
   appsSheet.addRow(["Candidat(e)", "E-mail", "Programme", "Pôle", "Ville", "Statut", "Date"]);
   for (const ap of payload.applications) {
     appsSheet.addRow([
@@ -211,11 +260,17 @@ export async function buildAdminOverviewWorkbook(
       sanitizeExcelValue(ap.date),
     ]);
   }
-  styleTableSheet(appsSheet, 3, [26, 30, 26, 18, 16, 18, 16]);
+  styleTableSheet(appsSheet, 4, [26, 30, 26, 18, 16, 18, 16]);
 
   // 4. Événements
   const eventsSheet = workbook.addWorksheet("Événements");
-  addTitleBanner(eventsSheet, "ACCEENT — Événements & Ateliers", `${payload.events.length} événement(s)`, 7);
+  addTitleBanner(
+    eventsSheet,
+    "ACCEENT — Événements & Ateliers",
+    `${payload.events.length} événement(s)`,
+    7,
+    logoImageId
+  );
   eventsSheet.addRow(["Titre", "Pôle", "Lieu", "Modalité", "Date", "Inscrits", "Capacité"]);
   for (const ev of payload.events) {
     eventsSheet.addRow([
@@ -228,11 +283,17 @@ export async function buildAdminOverviewWorkbook(
       sanitizeExcelValue(ev.capacity ?? "Illimitée"),
     ]);
   }
-  styleTableSheet(eventsSheet, 3, [38, 18, 28, 14, 20, 12, 14]);
+  styleTableSheet(eventsSheet, 4, [38, 18, 28, 14, 20, 12, 14]);
 
   // 5. Membres
   const usersSheet = workbook.addWorksheet("Membres");
-  addTitleBanner(usersSheet, "ACCEENT — Communauté", `${payload.users.length} utilisateur(s)`, 8);
+  addTitleBanner(
+    usersSheet,
+    "ACCEENT — Communauté",
+    `${payload.users.length} utilisateur(s)`,
+    8,
+    logoImageId
+  );
   usersSheet.addRow([
     "Nom complet",
     "E-mail",
@@ -255,7 +316,7 @@ export async function buildAdminOverviewWorkbook(
       sanitizeExcelValue(u.date),
     ]);
   }
-  styleTableSheet(usersSheet, 3, [26, 30, 10, 12, 18, 18, 10, 18]);
+  styleTableSheet(usersSheet, 4, [26, 30, 10, 12, 18, 18, 10, 18]);
 
   return toUint8Array(workbook);
 }
@@ -266,12 +327,14 @@ export async function buildUsersWorkbook(
 ): Promise<Uint8Array> {
   const workbook = new ExcelJS.Workbook();
   workbook.creator = "ACCEENT Plateforme";
+  const logoImageId = registerWorkbookLogo(workbook);
   const sheet = workbook.addWorksheet("Membres ACCEENT");
   addTitleBanner(
     sheet,
     "ACCEENT — Annuaire des Utilisateurs",
     `Exporté le ${generatedAt} • ${users.length} compte(s)`,
-    8
+    8,
+    logoImageId
   );
   sheet.addRow([
     "Nom complet",
@@ -295,7 +358,7 @@ export async function buildUsersWorkbook(
       sanitizeExcelValue(u.date),
     ]);
   }
-  styleTableSheet(sheet, 3, [26, 30, 10, 12, 18, 18, 10, 18]);
+  styleTableSheet(sheet, 4, [26, 30, 10, 12, 18, 18, 10, 18]);
   return toUint8Array(workbook);
 }
 
@@ -315,12 +378,14 @@ export async function buildApplicationsWorkbook(
 ): Promise<Uint8Array> {
   const workbook = new ExcelJS.Workbook();
   workbook.creator = "ACCEENT Plateforme";
+  const logoImageId = registerWorkbookLogo(workbook);
   const sheet = workbook.addWorksheet("Candidatures");
   addTitleBanner(
     sheet,
     "ACCEENT — Dossiers de Candidatures aux Programmes",
     `Exporté le ${generatedAt} • ${applications.length} dossier(s)`,
-    9
+    9,
+    logoImageId
   );
   sheet.addRow([
     "Candidat(e)",
@@ -346,7 +411,7 @@ export async function buildApplicationsWorkbook(
       sanitizeExcelValue(a.date),
     ]);
   }
-  styleTableSheet(sheet, 3, [24, 28, 16, 16, 18, 24, 30, 18, 16]);
+  styleTableSheet(sheet, 4, [24, 28, 16, 16, 18, 24, 30, 18, 16]);
   return toUint8Array(workbook);
 }
 
@@ -359,24 +424,30 @@ export async function buildEventAttendanceWorkbook(payload: {
     fullName: string;
     email: string;
     phone: string;
+    age: number;
+    sexe: string;
     attended: boolean;
     registeredAt: string;
   }>;
 }): Promise<Uint8Array> {
   const workbook = new ExcelJS.Workbook();
   workbook.creator = "ACCEENT Plateforme";
+  const logoImageId = registerWorkbookLogo(workbook);
   const sheet = workbook.addWorksheet("Émargement");
   addTitleBanner(
     sheet,
     `ACCEENT — Feuille de présence : ${payload.title}`,
     `${payload.dateFormatted} • ${payload.location} • ${payload.registrations.length} inscrit(s)`,
-    7
+    9,
+    logoImageId
   );
   sheet.addRow([
     "Code Billet",
     "Nom complet",
     "E-mail",
     "Téléphone",
+    "Âge",
+    "Sexe",
     "Présent(e)",
     "Inscrit le",
     "Émargement",
@@ -387,11 +458,13 @@ export async function buildEventAttendanceWorkbook(payload: {
       sanitizeExcelValue(r.fullName),
       sanitizeExcelValue(r.email),
       sanitizeExcelValue(r.phone),
+      sanitizeExcelValue(r.age),
+      sanitizeExcelValue(r.sexe),
       sanitizeExcelValue(r.attended),
       sanitizeExcelValue(r.registeredAt),
       "",
     ]);
   }
-  styleTableSheet(sheet, 3, [18, 28, 32, 18, 14, 18, 22]);
+  styleTableSheet(sheet, 4, [16, 26, 28, 18, 10, 12, 14, 16, 20]);
   return toUint8Array(workbook);
 }

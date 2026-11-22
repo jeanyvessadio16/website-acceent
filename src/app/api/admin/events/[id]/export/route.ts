@@ -33,7 +33,14 @@ export async function GET(
         orderBy: { createdAt: "asc" },
         include: {
           user: {
-            select: { firstname: true, lastname: true, email: true },
+            select: {
+              firstname: true,
+              lastname: true,
+              email: true,
+              telephone: true,
+              age: true,
+              sexe: true,
+            },
           },
         },
       },
@@ -54,6 +61,8 @@ export async function GET(
     "Nom",
     "Email",
     "Téléphone",
+    "Âge",
+    "Sexe",
     "Présent",
     "Inscrit le",
   ].map(escapeCsvCell);
@@ -64,7 +73,9 @@ export async function GET(
       reg.user.firstname,
       reg.user.lastname,
       reg.user.email,
-      reg.phone || "",
+      reg.phone?.trim() || reg.user.telephone || "",
+      reg.user.age,
+      reg.user.sexe === "HOMME" ? "Homme" : "Femme",
       reg.attended ? "Oui" : "Non",
       reg.createdAt.toLocaleDateString("fr-FR", {
         day: "2-digit",

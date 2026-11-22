@@ -111,3 +111,8 @@ export type AuditLog = Prisma.AuditLogModel
  * 
  */
 export type RateLimitBucket = Prisma.RateLimitBucketModel
+/**
+ * Model ProgramSetting
+ * 
+ */
+export type ProgramSetting = Prisma.ProgramSettingModel

@@ -67,15 +67,17 @@ export function MemberDashboardClient({
             </p>
           </div>
 
-          <Button
-            asChild
-            className="bg-[#836182] hover:bg-[#6f4f6e] text-white text-xs font-bold px-4 h-10 rounded-xl shrink-0"
-          >
-            <Link href="/dashboard/candidatures?new=true">
-              <Send className="size-3.5 mr-1.5" />
-              Postuler à un programme
-            </Link>
-          </Button>
+          {data.activeProgramsCount > 0 && (
+            <Button
+              asChild
+              className="bg-[#836182] hover:bg-[#6f4f6e] text-white text-xs font-bold px-4 h-10 rounded-xl shrink-0"
+            >
+              <Link href="/dashboard/candidatures?new=true">
+                <Send className="size-3.5 mr-1.5" />
+                Postuler à un programme
+              </Link>
+            </Button>
+          )}
         </CardContent>
       </Card>
 
@@ -255,9 +257,11 @@ export function MemberDashboardClient({
                       <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                         Vous n&apos;avez encore déposé aucune candidature.
                       </p>
-                      <Button asChild size="sm" className="bg-[#836182] text-white">
-                        <Link href="/dashboard/candidatures?new=true">Déposer une candidature</Link>
-                      </Button>
+                      {data.activeProgramsCount > 0 && (
+                        <Button asChild size="sm" className="bg-[#836182] text-white">
+                          <Link href="/dashboard/candidatures?new=true">Déposer une candidature</Link>
+                        </Button>
+                      )}
                     </div>
                   ) : (
                     data.myApplications.map((app) => {
@@ -385,7 +389,10 @@ export function MemberDashboardClient({
                 {
                   href: "/dashboard/programmes",
                   icon: BookOpen,
-                  label: "Explorer les 7 programmes ACCEENT",
+                  label:
+                    data.activeProgramsCount > 0
+                      ? `Explorer les ${data.activeProgramsCount} programme${data.activeProgramsCount > 1 ? "s" : ""} ouvert${data.activeProgramsCount > 1 ? "s" : ""}`
+                      : "Programmes (candidatures fermées)",
                   color: "text-[#836182] dark:text-[#d8b4d7]",
                 },
                 {

@@ -74,6 +74,11 @@ const ADMIN_NAV: SidebarNavItem[] = [
     href: "/admin/ressources",
     icon: BookOpen,
   },
+  {
+    label: "Paramètres",
+    href: "/admin/parametres",
+    icon: Settings,
+  },
 ];
 
 const AUTHOR_MAIN: SidebarNavItem[] = [
@@ -235,12 +240,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
 
           {/* Pied de page Exécutif Sombre */}
           <SidebarFooter className="px-3 py-3 border-t border-white/10 shrink-0">
-            <Link
-              href="/admin/parametres"
-              onClick={closeMobile}
-              className="flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#836182]/60 transition-all group/profile"
-              title="Gérer mon profil et mes paramètres"
-            >
+            <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.04] border border-white/10">
               <div className="size-9 rounded-full bg-gradient-to-br from-[#836182] to-[#e08637] flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-xs">
                 {initials}
               </div>
@@ -257,7 +257,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
                   {displayEmail}
                 </p>
               </div>
-            </Link>
+            </div>
 
             <form action={logoutAction} className="mt-2">
               <button

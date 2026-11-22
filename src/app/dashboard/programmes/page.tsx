@@ -2,12 +2,19 @@ import Link from "next/link";
 import { getSession } from "@/lib/session";
 import prisma from "@/lib/prisma";
 import {
-  ACCEENT_PROGRAMS,
   APPLICATION_STATUSES,
   PROGRAM_POLES,
   type ApplicationStatusKey,
 } from "@/lib/constants/platform";
-import { BookOpen, Briefcase, Monitor, ArrowRight, ExternalLink, Send } from "lucide-react";
+import { getActivePrograms } from "@/repositories/program.repository";
+import {
+  BookOpen,
+  Briefcase,
+  Monitor,
+  ArrowRight,
+  ExternalLink,
+  Send,
+} from "lucide-react";
 
 const poleIcons = {
   EDUCATION: BookOpen,
@@ -18,13 +25,16 @@ const poleIcons = {
 export default async function UserProgrammesPage() {
   const session = await getSession();
 
-  const myApps = session
-    ? await prisma.programApplication.findMany({
-        where: { userId: session.userId },
-        orderBy: { createdAt: "desc" },
-        select: { programSlug: true, status: true },
-      })
-    : [];
+  const [activePrograms, myApps] = await Promise.all([
+    getActivePrograms(),
+    session
+      ? prisma.programApplication.findMany({
+          where: { userId: session.userId },
+          orderBy: { createdAt: "desc" },
+          select: { programSlug: true, status: true },
+        })
+      : Promise.resolve([]),
+  ]);
 
   const statusBySlug = new Map<string, ApplicationStatusKey>();
   for (const app of myApps) {
@@ -35,8 +45,32 @@ export default async function UserProgrammesPage() {
 
   return (
     <div className="space-y-6 max-w-6xl">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {ACCEENT_PROGRAMS.map((prog) => {
+      {activePrograms.length === 0 ? (
+        <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-10 text-center space-y-3 shadow-xs">
+          <div className="size-12 rounded-2xl bg-[#836182]/10 border border-[#836182]/25 flex items-center justify-center text-[#836182] mx-auto">
+            <BookOpen className="size-5" />
+          </div>
+          <div className="max-w-md mx-auto space-y-1">
+            <h2 className="text-slate-900 dark:text-white font-bold text-base">
+              Aucun programme ouvert aux candidatures
+            </h2>
+            <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">
+              Les candidatures aux programmes ACCEENT sont actuellement fermées. Revenez prochainement pour découvrir les prochaines cohortes.
+            </p>
+          </div>
+          <div className="pt-1">
+            <Link
+              href="/dashboard/candidatures"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#836182] hover:bg-[#6f4f6e] text-white text-xs font-bold transition-colors"
+            >
+              <span>Consulter mes candidatures</span>
+              <ArrowRight className="size-3.5" />
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {activePrograms.map((prog) => {
           const Icon = poleIcons[prog.pole];
           const poleMeta = PROGRAM_POLES[prog.pole];
           const existingStatus = statusBySlug.get(prog.slug);
@@ -100,7 +134,8 @@ export default async function UserProgrammesPage() {
             </div>
           );
         })}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

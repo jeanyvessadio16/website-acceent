@@ -64,7 +64,8 @@ export const ModelName = {
   NewsletterSubscriber: 'NewsletterSubscriber',
   NewsletterCampaign: 'NewsletterCampaign',
   AuditLog: 'AuditLog',
-  RateLimitBucket: 'RateLimitBucket'
+  RateLimitBucket: 'RateLimitBucket',
+  ProgramSetting: 'ProgramSetting'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -307,6 +308,16 @@ export const RateLimitBucketScalarFieldEnum = {
 } as const
 
 export type RateLimitBucketScalarFieldEnum = (typeof RateLimitBucketScalarFieldEnum)[keyof typeof RateLimitBucketScalarFieldEnum]
+
+
+export const ProgramSettingScalarFieldEnum = {
+  slug: 'slug',
+  active: 'active',
+  updatedById: 'updatedById',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramSettingScalarFieldEnum = (typeof ProgramSettingScalarFieldEnum)[keyof typeof ProgramSettingScalarFieldEnum]
 
 
 export const SortOrder = {

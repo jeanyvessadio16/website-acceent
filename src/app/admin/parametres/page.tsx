@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ProfileForm } from "@/components/admin/ProfileForm";
+import { ProgramSettingsManager } from "@/components/admin/ProgramSettingsManager";
 import {
   Shield,
   Database,
@@ -12,6 +13,7 @@ import {
 } from "lucide-react";
 import { getSession } from "@/lib/session";
 import prisma from "@/lib/prisma";
+import { getProgramsWithStatus } from "@/repositories/program.repository";
 
 export const metadata: Metadata = {
   title: "Paramètres",
@@ -23,9 +25,10 @@ export default async function ParametresPage() {
     redirect("/auth/login");
   }
 
-  let dbUser = null;
-  if (session?.userId) {
-    dbUser = await prisma.user.findUnique({
+  const isAdmin = session.role === "ADMIN";
+
+  const [dbUser, programsWithStatus] = await Promise.all([
+    prisma.user.findUnique({
       where: { id: session.userId },
       select: {
         firstname: true,
@@ -38,22 +41,21 @@ export default async function ParametresPage() {
         telephone: true,
         sdh: true,
       },
-    });
-  }
+    }),
+    isAdmin ? getProgramsWithStatus() : Promise.resolve(null),
+  ]);
 
   const initialProfile = dbUser || {
-    firstname: session?.firstname || "Utilisateur",
-    lastname: session?.lastname || "",
-    email: session?.email || "",
-    role: session?.role || "USER",
+    firstname: session.firstname || "Utilisateur",
+    lastname: session.lastname || "",
+    email: session.email || "",
+    role: session.role || "USER",
     age: 25,
     sexe: "HOMME" as const,
     milieuResidence: "URBAIN" as const,
     telephone: "",
     sdh: false,
   };
-
-  const isAdmin = session?.role === "ADMIN";
 
   const shortcuts = [
     ...(isAdmin
@@ -96,7 +98,11 @@ export default async function ParametresPage() {
   ];
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="space-y-6 max-w-4xl">
+      {isAdmin && programsWithStatus && (
+        <ProgramSettingsManager initialPrograms={programsWithStatus} />
+      )}
+
       <ProfileForm initialUser={initialProfile} />
 
       <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800">

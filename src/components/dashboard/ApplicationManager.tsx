@@ -17,9 +17,9 @@ import {
   MessageSquare,
 } from "lucide-react";
 import {
-  ACCEENT_PROGRAMS,
   APPLICATION_STATUSES,
   PROGRAM_POLES,
+  type AcceentProgramMeta,
   type ApplicationStatusKey,
   type ProgramPoleKey,
 } from "@/lib/constants/platform";
@@ -52,21 +52,29 @@ export interface MemberApplicationItem {
 
 interface ApplicationManagerProps {
   applications: MemberApplicationItem[];
+  availablePrograms: AcceentProgramMeta[];
   initialOpenCreate?: boolean;
   initialProgramSlug?: string;
 }
 
 export function ApplicationManager({
   applications,
+  availablePrograms,
   initialOpenCreate = false,
   initialProgramSlug,
 }: ApplicationManagerProps) {
-  const [isModalOpen, setIsModalOpen] = useState(initialOpenCreate);
-  const [programSlug, setProgramSlug] = useState(
-    initialProgramSlug && ACCEENT_PROGRAMS.some((p) => p.slug === initialProgramSlug)
-      ? initialProgramSlug
-      : ACCEENT_PROGRAMS[0].slug
+  const hasAvailablePrograms = availablePrograms.length > 0;
+  const [isModalOpen, setIsModalOpen] = useState(
+    hasAvailablePrograms && initialOpenCreate
   );
+  const [programSlug, setProgramSlug] = useState(
+    initialProgramSlug && availablePrograms.some((p) => p.slug === initialProgramSlug)
+      ? initialProgramSlug
+      : (availablePrograms[0]?.slug ?? "")
+  );
+  const effectiveProgramSlug = availablePrograms.some((p) => p.slug === programSlug)
+    ? programSlug
+    : (availablePrograms[0]?.slug ?? "");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("Ziguinchor");
   const [projectTitle, setProjectTitle] = useState("");
@@ -79,7 +87,11 @@ export function ApplicationManager({
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   const handleOpenCreate = () => {
+    if (!hasAvailablePrograms) return;
     setErrorMsg(null);
+    if (!availablePrograms.some((p) => p.slug === programSlug)) {
+      setProgramSlug(availablePrograms[0].slug);
+    }
     setPhone("");
     setCity("Ziguinchor");
     setProjectTitle("");
@@ -92,8 +104,13 @@ export function ApplicationManager({
     e.preventDefault();
     setErrorMsg(null);
 
+    if (!availablePrograms.some((p) => p.slug === effectiveProgramSlug)) {
+      setErrorMsg("Aucun programme n'est actuellement ouvert aux candidatures.");
+      return;
+    }
+
     const payload = {
-      programSlug,
+      programSlug: effectiveProgramSlug,
       phone,
       city,
       projectTitle: projectTitle || undefined,
@@ -158,13 +175,19 @@ export function ApplicationManager({
             Déposez votre candidature aux programmes d&apos;accompagnement d&apos;ACCEENT et suivez son avancement en temps réel.
           </p>
         </div>
-        <Button
-          onClick={handleOpenCreate}
-          className="bg-[#836182] hover:bg-[#6f4f6e] text-white font-semibold rounded-xl px-4 h-10 shrink-0 cursor-pointer flex items-center gap-2"
-        >
-          <Plus className="size-4" />
-          <span>Nouvelle candidature</span>
-        </Button>
+        {hasAvailablePrograms ? (
+          <Button
+            onClick={handleOpenCreate}
+            className="bg-[#836182] hover:bg-[#6f4f6e] text-white font-semibold rounded-xl px-4 h-10 shrink-0 cursor-pointer flex items-center gap-2"
+          >
+            <Plus className="size-4" />
+            <span>Nouvelle candidature</span>
+          </Button>
+        ) : (
+          <span className="inline-flex items-center px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-xs font-semibold shrink-0">
+            Candidatures temporairement fermées
+          </span>
+        )}
       </div>
 
       {applications.length === 0 ? (
@@ -177,15 +200,19 @@ export function ApplicationManager({
               Aucune candidature soumise
             </h3>
             <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">
-              Vous n&apos;avez encore déposé aucun dossier pour nos programmes (ACCEENT Incub, Tut-Tank, AI4Good, ACCEENT-Elles, WRO…).
+              {hasAvailablePrograms
+                ? "Vous n'avez encore déposé aucun dossier pour nos programmes d'accompagnement."
+                : "Aucun programme n'est actuellement ouvert aux candidatures."}
             </p>
           </div>
-          <Button
-            onClick={handleOpenCreate}
-            className="bg-[#836182] hover:bg-[#6f4f6e] text-white text-xs font-bold rounded-xl cursor-pointer"
-          >
-            Déposer ma première candidature
-          </Button>
+          {hasAvailablePrograms && (
+            <Button
+              onClick={handleOpenCreate}
+              className="bg-[#836182] hover:bg-[#6f4f6e] text-white text-xs font-bold rounded-xl cursor-pointer"
+            >
+              Déposer ma première candidature
+            </Button>
+          )}
         </div>
       ) : (
         <div className="space-y-4">
@@ -292,7 +319,7 @@ export function ApplicationManager({
         </div>
       )}
 
-      {isModalOpen && (
+      {isModalOpen && hasAvailablePrograms && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="relative w-full max-w-xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
@@ -327,11 +354,11 @@ export function ApplicationManager({
                 </Label>
                 <select
                   id="app-program"
-                  value={programSlug}
+                  value={effectiveProgramSlug}
                   onChange={(e) => setProgramSlug(e.target.value)}
                   className="w-full h-10 rounded-md bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 text-xs text-slate-900 dark:text-white"
                 >
-                  {ACCEENT_PROGRAMS.map((prog) => (
+                  {availablePrograms.map((prog) => (
                     <option key={prog.slug} value={prog.slug}>
                       {prog.name} ({PROGRAM_POLES[prog.pole].label})
                     </option>

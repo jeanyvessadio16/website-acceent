@@ -20,7 +20,6 @@ import {
   FileSpreadsheet,
   Handshake,
   ShieldAlert,
-  Settings,
   Layers,
 } from "lucide-react";
 import type { AdminDashboardData } from "@/repositories/dashboard.repository";
@@ -749,12 +748,6 @@ export function AdminDashboardClient({ adminName, data }: AdminDashboardClientPr
                   label: "Journal d'audit & Sécurité",
                   sub: "Traçabilité des actions critiques",
                   icon: ShieldAlert,
-                },
-                {
-                  href: "/admin/parametres",
-                  label: "Paramètres système",
-                  sub: "Profil admin & état des services",
-                  icon: Settings,
                 },
                 {
                   href: "/",

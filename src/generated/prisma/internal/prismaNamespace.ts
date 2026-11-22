@@ -410,7 +410,8 @@ export const ModelName = {
   NewsletterSubscriber: 'NewsletterSubscriber',
   NewsletterCampaign: 'NewsletterCampaign',
   AuditLog: 'AuditLog',
-  RateLimitBucket: 'RateLimitBucket'
+  RateLimitBucket: 'RateLimitBucket',
+  ProgramSetting: 'ProgramSetting'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -426,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "post" | "passwordResetToken" | "emailVerificationToken" | "programApplication" | "event" | "eventRegistration" | "resource" | "partner" | "testimonial" | "newsletterSubscriber" | "newsletterCampaign" | "auditLog" | "rateLimitBucket"
+    modelProps: "user" | "post" | "passwordResetToken" | "emailVerificationToken" | "programApplication" | "event" | "eventRegistration" | "resource" | "partner" | "testimonial" | "newsletterSubscriber" | "newsletterCampaign" | "auditLog" | "rateLimitBucket" | "programSetting"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1466,6 +1467,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProgramSetting: {
+      payload: Prisma.$ProgramSettingPayload<ExtArgs>
+      fields: Prisma.ProgramSettingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProgramSettingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramSettingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProgramSettingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramSettingPayload>
+        }
+        findFirst: {
+          args: Prisma.ProgramSettingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramSettingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProgramSettingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramSettingPayload>
+        }
+        findMany: {
+          args: Prisma.ProgramSettingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramSettingPayload>[]
+        }
+        create: {
+          args: Prisma.ProgramSettingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramSettingPayload>
+        }
+        createMany: {
+          args: Prisma.ProgramSettingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProgramSettingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramSettingPayload>[]
+        }
+        delete: {
+          args: Prisma.ProgramSettingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramSettingPayload>
+        }
+        update: {
+          args: Prisma.ProgramSettingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramSettingPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProgramSettingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProgramSettingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProgramSettingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramSettingPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProgramSettingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProgramSettingPayload>
+        }
+        aggregate: {
+          args: Prisma.ProgramSettingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProgramSetting>
+        }
+        groupBy: {
+          args: Prisma.ProgramSettingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramSettingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProgramSettingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProgramSettingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1729,6 +1804,16 @@ export const RateLimitBucketScalarFieldEnum = {
 } as const
 
 export type RateLimitBucketScalarFieldEnum = (typeof RateLimitBucketScalarFieldEnum)[keyof typeof RateLimitBucketScalarFieldEnum]
+
+
+export const ProgramSettingScalarFieldEnum = {
+  slug: 'slug',
+  active: 'active',
+  updatedById: 'updatedById',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProgramSettingScalarFieldEnum = (typeof ProgramSettingScalarFieldEnum)[keyof typeof ProgramSettingScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2131,6 +2216,7 @@ export type GlobalOmitConfig = {
   newsletterCampaign?: Prisma.NewsletterCampaignOmit
   auditLog?: Prisma.AuditLogOmit
   rateLimitBucket?: Prisma.RateLimitBucketOmit
+  programSetting?: Prisma.ProgramSettingOmit
 }
 
 /* Types for Logging */

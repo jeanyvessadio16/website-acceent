@@ -325,3 +325,12 @@ model RateLimitBucket {
   @@map("rate_limit_buckets")
 }
 
+model ProgramSetting {
+  slug        String   @id
+  active      Boolean  @default(true)
+  updatedById String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("program_settings")
+}
+

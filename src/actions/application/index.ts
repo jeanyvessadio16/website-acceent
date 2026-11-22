@@ -16,6 +16,7 @@ import {
   type SubmitApplicationInput,
   type UpdateApplicationStatusInput,
 } from "@/validation/application";
+import { isProgramActive } from "@/repositories/program.repository";
 
 export async function submitApplicationAction(data: SubmitApplicationInput) {
   const session = await getSession();
@@ -45,6 +46,14 @@ export async function submitApplicationAction(data: SubmitApplicationInput) {
   const program = getProgramBySlug(parsed.data.programSlug);
   if (!program) {
     return { success: false, message: "Programme introuvable." };
+  }
+
+  const programActive = await isProgramActive(program.slug);
+  if (!programActive) {
+    return {
+      success: false,
+      message: `Les candidatures pour ${program.name} sont actuellement fermées.`,
+    };
   }
 
   try {

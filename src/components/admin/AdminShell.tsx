@@ -109,65 +109,74 @@ export function AdminShell({ children, title, user, action }: AdminShellProps) {
             <ThemeToggle />
 
             {/* Menu Compte Utilisateur */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-2 h-9 pl-1.5 pr-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
-                  aria-label="Menu utilisateur"
-                >
-                  <span className="size-6 rounded-full bg-gradient-to-br from-[#836182] to-[#a57da4] flex items-center justify-center text-white font-bold text-[10px]">
-                    {initials}
-                  </span>
-                  <span className="hidden lg:inline text-xs font-semibold text-slate-800 dark:text-slate-100 max-w-28 truncate">
-                    {displayName}
-                  </span>
-                  <ChevronDown className="size-3 text-slate-400" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-60">
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <div className="flex items-center justify-between gap-2">
-                      <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">
-                        {displayName}
+            {isAdmin ? (
+              <div className="inline-flex items-center gap-2 h-9 pl-1.5 pr-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 shrink-0">
+                <span className="size-6 rounded-full bg-gradient-to-br from-[#836182] to-[#a57da4] flex items-center justify-center text-white font-bold text-[10px]">
+                  {initials}
+                </span>
+                <span className="hidden lg:inline text-xs font-semibold text-slate-800 dark:text-slate-100 max-w-28 truncate">
+                  {displayName}
+                </span>
+              </div>
+            ) : (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 h-9 pl-1.5 pr-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
+                    aria-label="Menu utilisateur"
+                  >
+                    <span className="size-6 rounded-full bg-gradient-to-br from-[#836182] to-[#a57da4] flex items-center justify-center text-white font-bold text-[10px]">
+                      {initials}
+                    </span>
+                    <span className="hidden lg:inline text-xs font-semibold text-slate-800 dark:text-slate-100 max-w-28 truncate">
+                      {displayName}
+                    </span>
+                    <ChevronDown className="size-3 text-slate-400" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-60">
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">
+                          {displayName}
+                        </p>
+                        <span className="px-1.5 py-0.5 rounded bg-[#836182]/15 text-[#6d4c6c] dark:bg-[#836182]/30 dark:text-[#f4e6ea] text-[10px] font-bold">
+                          {displayRole}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                        {user?.email || ""}
                       </p>
-                      <span className="px-1.5 py-0.5 rounded bg-[#836182]/15 text-[#6d4c6c] dark:bg-[#836182]/30 dark:text-[#f4e6ea] text-[10px] font-bold">
-                        {displayRole}
-                      </span>
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
-                      {user?.email || ""}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {!isAdmin && (
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem asChild className="cursor-pointer">
                     <Link href="/dashboard" className="flex items-center gap-2">
                       <UserCheck className="size-4 text-[#836182]" />
                       <span>Mon espace membre</span>
                     </Link>
                   </DropdownMenuItem>
-                )}
-                <DropdownMenuItem asChild className="cursor-pointer">
-                  <Link href="/admin/parametres" className="flex items-center gap-2">
-                    <Settings className="size-4 text-slate-500" />
-                    <span>Paramètres</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <form action={logoutAction}>
-                  <button
-                    type="submit"
-                    className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 cursor-pointer text-left"
-                  >
-                    <LogOut className="size-4" />
-                    <span>Se déconnecter</span>
-                  </button>
-                </form>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <DropdownMenuItem asChild className="cursor-pointer">
+                    <Link href="/admin/parametres" className="flex items-center gap-2">
+                      <Settings className="size-4 text-slate-500" />
+                      <span>Paramètres</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <form action={logoutAction}>
+                    <button
+                      type="submit"
+                      className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 cursor-pointer text-left"
+                    >
+                      <LogOut className="size-4" />
+                      <span>Se déconnecter</span>
+                    </button>
+                  </form>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </header>
 
           {/* Contenu Principal (scroll indépendant sous le header fixe) */}

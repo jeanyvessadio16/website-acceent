@@ -3,10 +3,11 @@ import { ApplicationManager } from "@/components/dashboard/ApplicationManager";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 import {
-  ACCEENT_PROGRAMS,
   type ApplicationStatusKey,
   type ProgramPoleKey,
 } from "@/lib/constants/platform";
+import { resolveInitialProgramSlug } from "@/lib/core/program-settings";
+import { getActivePrograms } from "@/repositories/program.repository";
 
 export default async function CandidaturesMemberPage({
   searchParams,
@@ -18,16 +19,17 @@ export default async function CandidaturesMemberPage({
     redirect("/auth/login?callbackUrl=/dashboard/candidatures");
   }
 
-  const validProgramSlug =
-    sp.program && ACCEENT_PROGRAMS.some((p) => p.slug === sp.program)
-      ? sp.program
-      : undefined;
-  const initialOpenCreate = Boolean(validProgramSlug || sp.new === "true");
+  const [activePrograms, dbApps] = await Promise.all([
+    getActivePrograms(),
+    prisma.programApplication.findMany({
+      where: { userId: session.userId },
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
 
-  const dbApps = await prisma.programApplication.findMany({
-    where: { userId: session.userId },
-    orderBy: { createdAt: "desc" },
-  });
+  const validProgramSlug = resolveInitialProgramSlug(sp.program, activePrograms);
+  const initialOpenCreate =
+    activePrograms.length > 0 && Boolean(validProgramSlug || sp.new === "true");
 
   const formatted = dbApps.map((app) => ({
     id: app.id,
@@ -58,6 +60,7 @@ export default async function CandidaturesMemberPage({
   return (
     <ApplicationManager
       applications={formatted}
+      availablePrograms={activePrograms}
       initialOpenCreate={initialOpenCreate}
       initialProgramSlug={validProgramSlug}
     />

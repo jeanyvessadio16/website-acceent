@@ -5,6 +5,7 @@ import {
   type ApplicationStatusKey,
   type ProgramPoleKey,
 } from "@/lib/constants/platform";
+import { getActivePrograms } from "@/repositories/program.repository";
 
 export interface PoleBreakdownItem {
   pole: ProgramPoleKey;
@@ -756,6 +757,7 @@ export interface MemberDashboardData {
   acceptedAppsCount: number;
   ticketsCount: number;
   resourcesCount: number;
+  activeProgramsCount: number;
   myApplications: Array<{
     id: string;
     programName: string;
@@ -800,6 +802,7 @@ export async function getMemberDashboardData(userId: string): Promise<MemberDash
     upcomingEvents,
     myApps,
     myRegs,
+    activePrograms,
   ] = await Promise.all([
     prisma.user.findUnique({
       where: { id: userId },
@@ -871,6 +874,7 @@ export async function getMemberDashboardData(userId: string): Promise<MemberDash
         },
       },
     }),
+    getActivePrograms(),
   ]);
 
   return {
@@ -879,6 +883,7 @@ export async function getMemberDashboardData(userId: string): Promise<MemberDash
     acceptedAppsCount,
     ticketsCount,
     resourcesCount,
+    activeProgramsCount: activePrograms.length,
     myApplications: myApps.map((a) => ({
       id: a.id,
       programName: a.programName,

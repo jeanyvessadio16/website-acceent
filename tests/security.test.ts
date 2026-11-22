@@ -8,6 +8,7 @@ import {
 } from "@/lib/constants/platform";
 import { slugify } from "@/lib/core/strings";
 import { generateAuthToken, hashAuthToken } from "@/lib/core/tokens";
+import { buildDocumentResponseHeaders } from "@/lib/core/document-headers";
 import { RESET_TOKEN_REGEX } from "@/validation/patterns";
 
 describe("Security & Sanitization Helpers", () => {
@@ -73,5 +74,39 @@ describe("Security & Sanitization Helpers", () => {
     assert.equal(hashAuthToken(rawA), hashAuthToken(rawA));
     assert.equal(hashAuthToken(rawA).length, 64);
     assert.notEqual(hashAuthToken(rawA), hashAuthToken(rawB));
+  });
+
+  it("applique Content-Disposition attachment + sandbox CSP sur les candidatures et formats non-PDF", () => {
+    const appPdfHeaders = buildDocumentResponseHeaders({
+      isApplication: true,
+      ext: "pdf",
+      mimeType: "application/pdf",
+      filename: "dossier ../test?.pdf",
+    });
+    assert.match(appPdfHeaders["Content-Disposition"], /^attachment;/);
+    assert.equal(appPdfHeaders["Content-Security-Policy"], "default-src 'none'; sandbox");
+    assert.equal(appPdfHeaders["X-Content-Type-Options"], "nosniff");
+
+    const resourcePdfHeaders = buildDocumentResponseHeaders({
+      isApplication: false,
+      ext: "pdf",
+      mimeType: "application/pdf",
+      filename: "guide-tut-tank.pdf",
+    });
+    assert.match(resourcePdfHeaders["Content-Disposition"], /^inline;/);
+    assert.equal(
+      resourcePdfHeaders["Content-Security-Policy"],
+      "default-src 'none'; object-src 'self'; frame-ancestors 'self'"
+    );
+
+    const docxHeaders = buildDocumentResponseHeaders({
+      isApplication: false,
+      ext: "docx",
+      mimeType:
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      filename: "modele.docx",
+    });
+    assert.match(docxHeaders["Content-Disposition"], /^attachment;/);
+    assert.equal(docxHeaders["Content-Security-Policy"], "default-src 'none'; sandbox");
   });
 });

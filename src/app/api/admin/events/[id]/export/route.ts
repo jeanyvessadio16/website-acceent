@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
+import { checkDistributedRateLimit, recordAuditLog } from "@/lib/core";
 import { escapeCsvCell } from "@/lib/constants/platform";
 
 export async function GET(
@@ -10,6 +11,17 @@ export async function GET(
   const session = await getSession();
   if (!session || (session.role !== "ADMIN" && session.role !== "AUTHOR")) {
     return NextResponse.json({ error: "Accès non autorisé" }, { status: 401 });
+  }
+
+  const rate = await checkDistributedRateLimit(`export:${session.userId}`, {
+    limit: 30,
+    windowMs: 15 * 60 * 1000,
+  });
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { error: "Trop d'exports récents. Veuillez patienter avant de réessayer." },
+      { status: 429 }
+    );
   }
 
   const { id } = await context.params;
@@ -68,6 +80,14 @@ export async function GET(
 
   const csvContent = "\uFEFF" + [headers.join(";"), ...rows].join("\r\n");
   const safeSlug = (event.slug || "evenement").replace(/[^a-z0-9-_]/gi, "-");
+
+  await recordAuditLog({
+    session,
+    action: "EXPORT_CSV",
+    entity: "event",
+    entityId: event.id,
+    metadata: { title: event.title, rows: event.registrations.length },
+  });
 
   return new NextResponse(csvContent, {
     status: 200,

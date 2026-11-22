@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import {
+  checkDistributedRateLimit,
+  getClientIp,
+  getPublicSiteOrigin,
+} from "@/lib/core";
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
+  const origin = getPublicSiteOrigin();
   const token = searchParams.get("token")?.trim();
 
   if (!token) {
@@ -16,7 +22,20 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const url = new URL(request.url);
-  const origin = url.origin;
+  const origin = getPublicSiteOrigin();
+
+  const ip = await getClientIp();
+  const rate = await checkDistributedRateLimit(`nl-unsub:${ip}`, {
+    limit: 20,
+    windowMs: 15 * 60 * 1000,
+  });
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { error: "Trop de requêtes récentes. Veuillez réessayer plus tard." },
+      { status: 429 }
+    );
+  }
+
   let token = url.searchParams.get("token")?.trim() || "";
 
   if (!token) {

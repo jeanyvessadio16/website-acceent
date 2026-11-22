@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
-import { formatDateFr, recordAuditLog } from "@/lib/core";
+import { formatDateFr, checkDistributedRateLimit, recordAuditLog } from "@/lib/core";
 import {
   APPLICATION_STATUSES,
   POST_CATEGORIES,
@@ -24,6 +24,17 @@ export async function GET(request: NextRequest) {
   const session = await getSession();
   if (!session || (session.role !== "ADMIN" && session.role !== "AUTHOR")) {
     return NextResponse.json({ error: "Accès non autorisé" }, { status: 401 });
+  }
+
+  const rate = await checkDistributedRateLimit(`export:${session.userId}`, {
+    limit: 30,
+    windowMs: 15 * 60 * 1000,
+  });
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { error: "Trop d'exports récents. Veuillez patienter avant de réessayer." },
+      { status: 429 }
+    );
   }
 
   const { searchParams } = request.nextUrl;

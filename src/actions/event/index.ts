@@ -8,6 +8,7 @@ import { sendEventRegistrationEmail } from "@/services/emailService";
 import {
   requireAuthorOrAdmin,
   canManageOwnedResource,
+  checkDistributedRateLimit,
   slugify,
   fromZodError,
   handleActionError,
@@ -229,6 +230,18 @@ export async function registerForEventAction(eventId: string, phone?: string) {
   const session = await getSession();
   if (!session) {
     return { success: false, message: "Connectez-vous pour vous inscrire à cet événement." };
+  }
+
+  const rate = await checkDistributedRateLimit(`event-reg:${session.userId}`, {
+    limit: 15,
+    windowMs: 15 * 60 * 1000,
+  });
+  if (!rate.allowed) {
+    return {
+      success: false,
+      message:
+        "Trop de tentatives d'inscription récentes. Veuillez patienter quelques minutes.",
+    };
   }
 
   let sanitizedPhone: string | null = null;

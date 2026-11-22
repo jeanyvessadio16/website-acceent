@@ -148,6 +148,19 @@ export async function POST(request: Request) {
     );
   }
 
+  const maxAllowedSize = kind === "image" ? MAX_IMAGE_SIZE : MAX_DOC_SIZE;
+  if (file.size > maxAllowedSize) {
+    return NextResponse.json(
+      {
+        error:
+          kind === "image"
+            ? "L'image dépasse la taille maximale autorisée (10 Mo)."
+            : "Le document dépasse la taille maximale autorisée (15 Mo).",
+      },
+      { status: 400 }
+    );
+  }
+
   const bytes = new Uint8Array(await file.arrayBuffer());
   const rawExt = (file.name.split(".").pop() || "").toLowerCase().replace(/[^a-z0-9]/g, "");
   const uniqueSuffix = `${Date.now()}-${crypto.randomBytes(6).toString("hex")}`;
@@ -158,13 +171,6 @@ export async function POST(request: Request) {
     const supabase = await createSupabaseServerClient();
 
     if (kind === "image") {
-      if (file.size > MAX_IMAGE_SIZE) {
-        return NextResponse.json(
-          { error: "L'image dépasse la taille maximale autorisée (10 Mo)." },
-          { status: 400 }
-        );
-      }
-
       const mimeMeta = IMAGE_TYPES[declaredMime];
       if (!mimeMeta || !mimeMeta.extAliases.includes(rawExt)) {
         return NextResponse.json(
@@ -219,13 +225,6 @@ export async function POST(request: Request) {
     }
 
     // kind === "document"
-    if (file.size > MAX_DOC_SIZE) {
-      return NextResponse.json(
-        { error: "Le document dépasse la taille maximale autorisée (15 Mo)." },
-        { status: 400 }
-      );
-    }
-
     const expectedMime = DOC_EXT_TO_MIME[rawExt];
     if (!expectedMime) {
       return NextResponse.json(

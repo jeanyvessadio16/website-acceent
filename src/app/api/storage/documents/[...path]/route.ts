@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
+import { buildDocumentResponseHeaders } from "@/lib/core/document-headers";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
@@ -51,6 +53,26 @@ export async function GET(
     return NextResponse.json({ error: "Accès refusé." }, { status: 403 });
   }
 
+  const objectPath = rawSegments.join("/");
+
+  if (
+    isResource &&
+    session.role !== "ADMIN" &&
+    session.role !== "AUTHOR"
+  ) {
+    const publishedResource = await prisma.resource.findFirst({
+      where: {
+        published: true,
+        fileUrl: `/api/storage/documents/${objectPath}`,
+      },
+      select: { id: true },
+    });
+
+    if (!publishedResource) {
+      return NextResponse.json({ error: "Document introuvable." }, { status: 404 });
+    }
+  }
+
   const filename = rawSegments[rawSegments.length - 1] ?? "document";
   const ext = filename.includes(".")
     ? filename.split(".").pop()?.toLowerCase() ?? ""
@@ -62,7 +84,6 @@ export async function GET(
   }
 
   const bucket = process.env.NEXT_PUBLIC_SUPABASE_DOCS_BUCKET || "documents";
-  const objectPath = rawSegments.join("/");
 
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.storage.from(bucket).download(objectPath);
@@ -72,16 +93,14 @@ export async function GET(
   }
 
   const bytes = await data.arrayBuffer();
-  const safeFilename = filename.replace(/[^a-zA-Z0-9._-]/g, "_");
-  const dispositionType = ext === "pdf" ? "inline" : "attachment";
 
   return new NextResponse(Buffer.from(bytes), {
     status: 200,
-    headers: {
-      "Content-Type": mimeType,
-      "Content-Disposition": `${dispositionType}; filename="${safeFilename}"`,
-      "X-Content-Type-Options": "nosniff",
-      "Cache-Control": "private, no-store",
-    },
+    headers: buildDocumentResponseHeaders({
+      isApplication,
+      ext,
+      mimeType,
+      filename,
+    }),
   });
 }

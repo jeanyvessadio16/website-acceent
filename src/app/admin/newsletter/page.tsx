@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { AdminShell } from "@/components/admin/AdminShell";
 import { NewsletterManager } from "@/components/admin/NewsletterManager";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
@@ -34,43 +33,33 @@ export default async function AdminNewsletterPage() {
   ]);
 
   return (
-    <AdminShell
-      title="Newsletter & Diffusion"
-      subtitle="Gérez les abonnés et envoyez vos campagnes d'actualités en 1 clic"
-      user={{
-        name: `${session.firstname} ${session.lastname}`,
-        email: session.email,
-        role: session.role,
-      }}
-    >
-      <NewsletterManager
-        subscribers={subscribers.map((s) => ({
-          id: s.id,
-          email: s.email,
-          name: s.name,
-          active: s.active,
-          subscribedAt: s.subscribedAt.toLocaleDateString("fr-FR", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          }),
-        }))}
-        campaigns={campaigns.map((c) => ({
-          id: c.id,
-          subject: c.subject,
-          recipientCount: c.recipientCount,
-          sentCount: c.sentCount,
-          status: c.status,
-          createdAt: c.createdAt.toLocaleDateString("fr-FR", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          }),
-        }))}
-        recentPosts={recentPosts}
-        optedInMembersCount={optedInMembersCount}
-        emailConfigured={isEmailConfigured()}
-      />
-    </AdminShell>
+    <NewsletterManager
+      subscribers={subscribers.map((s) => ({
+        id: s.id,
+        email: s.email,
+        name: s.name,
+        active: s.active,
+        subscribedAt: s.subscribedAt.toLocaleDateString("fr-FR", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        }),
+      }))}
+      campaigns={campaigns.map((c) => ({
+        id: c.id,
+        subject: c.subject,
+        recipientCount: c.recipientCount,
+        sentCount: c.sentCount,
+        status: c.status,
+        createdAt: c.createdAt.toLocaleDateString("fr-FR", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        }),
+      }))}
+      recentPosts={recentPosts}
+      optedInMembersCount={optedInMembersCount}
+      emailConfigured={isEmailConfigured()}
+    />
   );
 }

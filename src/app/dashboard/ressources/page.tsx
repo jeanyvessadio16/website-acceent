@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { UserShell } from "@/components/dashboard/UserShell";
 import { ResourceLibrary } from "@/components/dashboard/ResourceLibrary";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
@@ -33,17 +32,5 @@ export default async function MemberRessourcesPage() {
     }),
   }));
 
-  return (
-    <UserShell
-      title="Ressources Pédagogiques"
-      subtitle="Fiches pratiques, guides Tut-Tank, supports AI4Good et modèles entrepreneuriaux"
-      user={{
-        name: `${session.firstname} ${session.lastname}`,
-        email: session.email,
-        role: session.role,
-      }}
-    >
-      <ResourceLibrary resources={formatted} />
-    </UserShell>
-  );
+  return <ResourceLibrary resources={formatted} />;
 }

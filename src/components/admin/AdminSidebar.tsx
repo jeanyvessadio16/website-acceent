@@ -29,6 +29,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { logoutAction } from "@/actions/auth";
 import { cn } from "@/lib/utils";
@@ -128,6 +129,9 @@ export interface AdminSidebarProps {
 
 export function AdminSidebar({ user }: AdminSidebarProps) {
   const pathname = usePathname();
+  const { setOpenMobile } = useSidebar();
+
+  const closeMobile = () => setOpenMobile(false);
 
   const isActive = (href: string, exact = false) =>
     exact ? pathname === href : pathname === href || pathname.startsWith(href + "/");
@@ -154,6 +158,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
           <SidebarHeader className="px-4 py-4 shrink-0">
             <Link
               href="/admin"
+              onClick={closeMobile}
               className="block p-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#e08637]/50 transition-all group space-y-2"
               title="Console de Direction ACCEENT"
             >
@@ -199,7 +204,11 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
                               : "text-slate-400 hover:text-white hover:bg-white/[0.06] border border-transparent"
                           )}
                         >
-                          <Link href={item.href} className="flex items-center gap-3 w-full">
+                          <Link
+                            href={item.href}
+                            onClick={closeMobile}
+                            className="flex items-center gap-3 w-full"
+                          >
                             <item.icon
                               className={cn(
                                 "size-4 shrink-0 transition-colors",
@@ -228,6 +237,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
           <SidebarFooter className="px-3 py-3 border-t border-white/10 shrink-0">
             <Link
               href="/admin/parametres"
+              onClick={closeMobile}
               className="flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#836182]/60 transition-all group/profile"
               title="Gérer mon profil et mes paramètres"
             >
@@ -270,6 +280,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
       <SidebarHeader className="px-4 py-4 shrink-0">
         <Link
           href="/admin"
+          onClick={closeMobile}
           className="block p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 hover:border-[#836182]/50 transition-all group space-y-2"
           title="Retour à l'accueil de l'espace"
         >
@@ -315,7 +326,11 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
                           : "text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                       )}
                     >
-                      <Link href={item.href} className="flex items-center gap-3 w-full">
+                      <Link
+                        href={item.href}
+                        onClick={closeMobile}
+                        className="flex items-center gap-3 w-full"
+                      >
                         <item.icon
                           className={cn(
                             "size-4 shrink-0 transition-colors",
@@ -360,6 +375,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
                         href={item.href}
                         target={item.external ? "_blank" : undefined}
                         rel={item.external ? "noopener noreferrer" : undefined}
+                        onClick={item.external ? undefined : closeMobile}
                         className="flex items-center gap-3 w-full"
                       >
                         <item.icon
@@ -388,6 +404,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
       <SidebarFooter className="px-3 py-3 border-t border-slate-200 dark:border-slate-800 shrink-0">
         <Link
           href="/admin/parametres"
+          onClick={closeMobile}
           className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 hover:border-[#836182]/50 transition-all group/profile"
           title="Gérer mon profil et mes paramètres"
         >

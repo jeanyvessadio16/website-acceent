@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { UserShell } from "@/components/dashboard/UserShell";
 import { ApplicationManager } from "@/components/dashboard/ApplicationManager";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
@@ -57,20 +56,10 @@ export default async function CandidaturesMemberPage({
   }));
 
   return (
-    <UserShell
-      title="Mes Candidatures"
-      subtitle="Postulez aux programmes ACCEENT et suivez l'avancement de vos dossiers"
-      user={{
-        name: `${session.firstname} ${session.lastname}`,
-        email: session.email,
-        role: session.role,
-      }}
-    >
-      <ApplicationManager
-        applications={formatted}
-        initialOpenCreate={initialOpenCreate}
-        initialProgramSlug={validProgramSlug}
-      />
-    </UserShell>
+    <ApplicationManager
+      applications={formatted}
+      initialOpenCreate={initialOpenCreate}
+      initialProgramSlug={validProgramSlug}
+    />
   );
 }

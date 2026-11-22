@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LayoutGrid, LogOut, User, ChevronDown } from "lucide-react";
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { UserSidebar } from "@/components/dashboard/UserSidebar";
@@ -17,7 +19,7 @@ import { logoutAction } from "@/actions/auth";
 
 interface UserShellProps {
   children: React.ReactNode;
-  title: string;
+  title?: string;
   subtitle?: string;
   user?: {
     name: string;
@@ -27,7 +29,25 @@ interface UserShellProps {
   action?: React.ReactNode;
 }
 
+function resolveUserTitle(pathname: string): string {
+  if (pathname.startsWith("/dashboard/programmes")) return "Programmes & Candidatures";
+  if (pathname.startsWith("/dashboard/candidatures")) return "Mes Candidatures";
+  if (pathname.startsWith("/dashboard/evenements")) return "Événements & Billets";
+  if (pathname.startsWith("/dashboard/ressources")) return "Ressources Pédagogiques";
+  if (pathname.startsWith("/dashboard/profil")) return "Mon Profil";
+  return "Mon Espace Personnel";
+}
+
 export function UserShell({ children, title, user, action }: UserShellProps) {
+  const pathname = usePathname();
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const resolvedTitle = title ?? resolveUserTitle(pathname);
+
+  useEffect(() => {
+    contentRef.current?.scrollTo({ top: 0 });
+  }, [pathname]);
+
   const displayName = user?.name || "Membre ACCEENT";
   const displayRole = user?.role || "USER";
   const initials =
@@ -50,7 +70,7 @@ export function UserShell({ children, title, user, action }: UserShellProps) {
             <SidebarTrigger className="text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl size-9 flex items-center justify-center transition-colors border border-slate-200 dark:border-slate-700 shrink-0 cursor-pointer" />
 
             <h1 className="flex-1 min-w-0 text-slate-900 dark:text-white font-bold text-base sm:text-lg tracking-tight truncate">
-              {title}
+              {resolvedTitle}
             </h1>
 
             {action && <div className="shrink-0">{action}</div>}
@@ -120,7 +140,7 @@ export function UserShell({ children, title, user, action }: UserShellProps) {
           </header>
 
           {/* Zone de contenu principal (scroll indépendant sous le header fixe) */}
-          <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4 sm:p-6 md:p-8">
+          <div ref={contentRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4 sm:p-6 md:p-8">
             {children}
           </div>
         </SidebarInset>

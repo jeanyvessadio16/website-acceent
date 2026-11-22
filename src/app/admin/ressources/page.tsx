@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { AdminShell } from "@/components/admin/AdminShell";
 import { ResourceAdminList } from "@/components/admin/ResourceAdminList";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
@@ -52,21 +51,11 @@ export default async function AdminRessourcesPage({
   }));
 
   return (
-    <AdminShell
-      title="Ressources Pédagogiques"
-      subtitle="Bibliothèque de cours, guides et modèles partagés aux membres (Tut-Tank, AI4Good…)"
-      user={{
-        name: `${session.firstname} ${session.lastname}`,
-        email: session.email,
-        role: session.role,
-      }}
-    >
-      <ResourceAdminList
-        resources={formatted}
-        currentUserId={session.userId}
-        currentUserRole={session.role}
-        initialOpenCreate={initialOpenCreate}
-      />
-    </AdminShell>
+    <ResourceAdminList
+      resources={formatted}
+      currentUserId={session.userId}
+      currentUserRole={session.role}
+      initialOpenCreate={initialOpenCreate}
+    />
   );
 }

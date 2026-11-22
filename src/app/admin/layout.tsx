@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { AdminShell } from "@/components/admin/AdminShell";
 
 export const metadata: Metadata = {
   title: {
@@ -27,5 +28,15 @@ export default async function AdminLayout({
     redirect("/dashboard");
   }
 
-  return children;
+  return (
+    <AdminShell
+      user={{
+        name: `${session.firstname} ${session.lastname}`.trim(),
+        email: session.email,
+        role: session.role,
+      }}
+    >
+      {children}
+    </AdminShell>
+  );
 }

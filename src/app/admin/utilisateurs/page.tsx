@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AdminShell } from "@/components/admin/AdminShell";
 import { UserList } from "@/components/admin/UserList";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
@@ -21,12 +20,6 @@ export default async function UtilisateursPage({
   }
 
   const initialOpenCreate = sp.new === "true" || sp.action === "new";
-
-  const currentUser = {
-    name: `${session.firstname} ${session.lastname}`,
-    email: session.email,
-    role: session.role,
-  };
 
   const dbUsers = await prisma.user.findMany({
     orderBy: { createdAt: "desc" },
@@ -64,16 +57,10 @@ export default async function UtilisateursPage({
   }));
 
   return (
-    <AdminShell
-      title="Utilisateurs"
-      subtitle="Gestion des membres inscrits et profils démographiques dans la base de données"
-      user={currentUser}
-    >
-      <UserList
-        users={formattedUsers}
-        currentUserEmail={session?.email}
-        initialOpenCreate={initialOpenCreate}
-      />
-    </AdminShell>
+    <UserList
+      users={formattedUsers}
+      currentUserEmail={session?.email}
+      initialOpenCreate={initialOpenCreate}
+    />
   );
 }

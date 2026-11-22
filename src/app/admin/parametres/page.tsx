@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AdminShell } from "@/components/admin/AdminShell";
 import { ProfileForm } from "@/components/admin/ProfileForm";
 import {
   Shield,
@@ -41,20 +40,6 @@ export default async function ParametresPage() {
       },
     });
   }
-
-  const currentUser = dbUser
-    ? {
-        name: `${dbUser.firstname} ${dbUser.lastname}`,
-        email: dbUser.email,
-        role: dbUser.role,
-      }
-    : session
-    ? {
-        name: `${session.firstname} ${session.lastname}`,
-        email: session.email,
-        role: session.role,
-      }
-    : null;
 
   const initialProfile = dbUser || {
     firstname: session?.firstname || "Utilisateur",
@@ -111,44 +96,38 @@ export default async function ParametresPage() {
   ];
 
   return (
-    <AdminShell
-      title="Paramètres & Profil"
-      subtitle="Gestion de votre compte personnel et raccourcis système"
-      user={currentUser}
-    >
-      <div className="space-y-6 max-w-3xl">
-        <ProfileForm initialUser={initialProfile} />
+    <div className="space-y-6 max-w-3xl">
+      <ProfileForm initialUser={initialProfile} />
 
-        <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800">
-          <h3 className="text-slate-500 dark:text-slate-400 text-[11px] font-bold uppercase tracking-wider px-1">
-            Espaces &amp; Supervision
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {shortcuts.map((s) => (
-              <Link
-                key={s.label}
-                href={s.href}
-                target={s.external ? "_blank" : undefined}
-                rel={s.external ? "noopener noreferrer" : undefined}
-                className="flex items-center gap-3.5 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-[#836182]/50 transition-colors group shadow-xs"
-              >
-                <div className="size-9 rounded-lg bg-[#836182]/10 border border-[#836182]/25 flex items-center justify-center shrink-0 text-[#836182] dark:text-[#d8b4d7]">
-                  <s.icon className="size-4" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-slate-900 dark:text-white font-semibold text-sm truncate">
-                    {s.label}
-                  </p>
-                  <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5 truncate">
-                    {s.desc}
-                  </p>
-                </div>
-                <ArrowUpRight className="size-4 text-slate-400 group-hover:text-[#836182] shrink-0" />
-              </Link>
-            ))}
-          </div>
+      <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+        <h3 className="text-slate-500 dark:text-slate-400 text-[11px] font-bold uppercase tracking-wider px-1">
+          Espaces &amp; Supervision
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {shortcuts.map((s) => (
+            <Link
+              key={s.label}
+              href={s.href}
+              target={s.external ? "_blank" : undefined}
+              rel={s.external ? "noopener noreferrer" : undefined}
+              className="flex items-center gap-3.5 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-[#836182]/50 transition-colors group shadow-xs"
+            >
+              <div className="size-9 rounded-lg bg-[#836182]/10 border border-[#836182]/25 flex items-center justify-center shrink-0 text-[#836182] dark:text-[#d8b4d7]">
+                <s.icon className="size-4" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-slate-900 dark:text-white font-semibold text-sm truncate">
+                  {s.label}
+                </p>
+                <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5 truncate">
+                  {s.desc}
+                </p>
+              </div>
+              <ArrowUpRight className="size-4 text-slate-400 group-hover:text-[#836182] shrink-0" />
+            </Link>
+          ))}
         </div>
       </div>
-    </AdminShell>
+    </div>
   );
 }

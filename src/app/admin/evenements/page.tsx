@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { AdminShell } from "@/components/admin/AdminShell";
 import { EventAdminList } from "@/components/admin/EventAdminList";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
@@ -78,21 +77,11 @@ export default async function AdminEvenementsPage({
   }));
 
   return (
-    <AdminShell
-      title="Événements & Ateliers"
-      subtitle="Planification des ateliers, suivi des inscriptions et émargement CSV"
-      user={{
-        name: `${session.firstname} ${session.lastname}`,
-        email: session.email,
-        role: session.role,
-      }}
-    >
-      <EventAdminList
-        events={formatted}
-        currentUserId={session.userId}
-        currentUserRole={session.role}
-        initialOpenCreate={initialOpenCreate}
-      />
-    </AdminShell>
+    <EventAdminList
+      events={formatted}
+      currentUserId={session.userId}
+      currentUserRole={session.role}
+      initialOpenCreate={initialOpenCreate}
+    />
   );
 }

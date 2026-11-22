@@ -1,4 +1,3 @@
-import { UserShell } from "@/components/dashboard/UserShell";
 import { ProfileForm } from "@/components/admin/ProfileForm";
 import { MemberNewsletterToggle } from "@/components/dashboard/MemberNewsletterToggle";
 import { getSession } from "@/lib/session";
@@ -26,20 +25,6 @@ export default async function UserProfilPage() {
     });
   }
 
-  const currentUser = dbUser
-    ? {
-        name: `${dbUser.firstname} ${dbUser.lastname}`,
-        email: dbUser.email,
-        role: dbUser.role,
-      }
-    : session
-    ? {
-        name: `${session.firstname} ${session.lastname}`,
-        email: session.email,
-        role: session.role,
-      }
-    : null;
-
   const initialProfile = dbUser || {
     firstname: session?.firstname || "Membre",
     lastname: session?.lastname || "ACCEENT",
@@ -53,15 +38,9 @@ export default async function UserProfilPage() {
   };
 
   return (
-    <UserShell
-      title="Mon Profil"
-      subtitle="Gestion de vos informations personnelles et de votre mot de passe"
-      user={currentUser}
-    >
-      <div className="space-y-6 max-w-3xl">
-        <ProfileForm initialUser={initialProfile} />
-        <MemberNewsletterToggle initialOptIn={dbUser?.newsletterOptIn ?? true} />
-      </div>
-    </UserShell>
+    <div className="space-y-6 max-w-3xl">
+      <ProfileForm initialUser={initialProfile} />
+      <MemberNewsletterToggle initialOptIn={dbUser?.newsletterOptIn ?? true} />
+    </div>
   );
 }

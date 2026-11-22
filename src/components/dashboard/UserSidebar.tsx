@@ -28,6 +28,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { logoutAction } from "@/actions/auth";
 import { cn } from "@/lib/utils";
@@ -76,6 +77,9 @@ export interface UserSidebarProps {
 
 export function UserSidebar({ user }: UserSidebarProps) {
   const pathname = usePathname();
+  const { setOpenMobile } = useSidebar();
+
+  const closeMobile = () => setOpenMobile(false);
 
   const isActive = (href: string, exact = false) =>
     exact ? pathname === href : pathname === href || pathname.startsWith(href + "/");
@@ -98,6 +102,7 @@ export function UserSidebar({ user }: UserSidebarProps) {
       <SidebarHeader className="px-4 py-4 shrink-0">
         <Link
           href="/dashboard"
+          onClick={closeMobile}
           className="block p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 hover:border-[#836182]/50 transition-all group space-y-2"
         >
           <div className="rounded-lg bg-white px-2.5 py-1.5 border border-slate-100">
@@ -143,7 +148,11 @@ export function UserSidebar({ user }: UserSidebarProps) {
                           : "text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
                       )}
                     >
-                      <Link href={item.href} className="flex items-center gap-3 w-full">
+                      <Link
+                        href={item.href}
+                        onClick={closeMobile}
+                        className="flex items-center gap-3 w-full"
+                      >
                         <item.icon
                           className={cn(
                             "size-4 shrink-0 transition-colors",
@@ -176,7 +185,11 @@ export function UserSidebar({ user }: UserSidebarProps) {
                     asChild
                     className="group/item h-10 rounded-xl px-3 gap-3 transition-all duration-150 bg-[#836182]/10 text-[#6d4c6c] dark:bg-[#836182]/25 dark:text-[#f4e6ea] border border-[#836182]/25 hover:bg-[#836182]/20 font-semibold"
                   >
-                    <Link href="/admin" className="flex items-center gap-3 w-full">
+                    <Link
+                      href="/admin"
+                      onClick={closeMobile}
+                      className="flex items-center gap-3 w-full"
+                    >
                       <LayoutGrid className="size-4 shrink-0" />
                       <span className="text-sm">
                         {displayRole === "ADMIN" ? "Espace Admin" : "Espace Rédacteur"}
@@ -211,6 +224,7 @@ export function UserSidebar({ user }: UserSidebarProps) {
       <SidebarFooter className="px-3 py-3 border-t border-slate-200 dark:border-slate-800 shrink-0">
         <Link
           href="/dashboard/profil"
+          onClick={closeMobile}
           className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/80 hover:border-[#836182]/50 transition-all"
         >
           <div className="size-9 rounded-full bg-gradient-to-br from-[#836182] to-[#a57da4] flex items-center justify-center text-white font-bold text-xs shrink-0">

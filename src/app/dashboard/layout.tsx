@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
+import { UserShell } from "@/components/dashboard/UserShell";
 
 export default async function UserDashboardLayout({
   children,
@@ -18,5 +19,15 @@ export default async function UserDashboardLayout({
     redirect("/admin");
   }
 
-  return <>{children}</>;
+  return (
+    <UserShell
+      user={{
+        name: `${session.firstname} ${session.lastname}`.trim(),
+        email: session.email,
+        role: session.role,
+      }}
+    >
+      {children}
+    </UserShell>
+  );
 }

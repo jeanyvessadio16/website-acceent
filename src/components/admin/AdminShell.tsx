@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { Settings, UserCheck, LogOut, ChevronDown } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Settings, UserCheck, LogOut, ChevronDown, Plus } from "lucide-react";
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { ThemeToggle } from "@/components/shared/ThemeToggle";
@@ -17,7 +19,7 @@ import { logoutAction } from "@/actions/auth";
 
 interface AdminShellProps {
   children: React.ReactNode;
-  title: string;
+  title?: string;
   subtitle?: string;
   user?: {
     name: string;
@@ -27,8 +29,46 @@ interface AdminShellProps {
   action?: React.ReactNode;
 }
 
+function resolveAdminTitle(pathname: string, isAdmin: boolean): string {
+  if (pathname === "/admin") {
+    return isAdmin ? "Console de Direction" : "Mon Espace Rédacteur";
+  }
+  if (pathname.startsWith("/admin/candidatures")) return "Candidatures Programmes";
+  if (pathname.startsWith("/admin/utilisateurs")) return "Utilisateurs";
+  if (pathname.startsWith("/admin/articles")) {
+    return isAdmin ? "Articles & Actualités" : "Mes Articles";
+  }
+  if (pathname.startsWith("/admin/evenements")) return "Événements & Ateliers";
+  if (pathname.startsWith("/admin/ressources")) return "Ressources Pédagogiques";
+  if (pathname.startsWith("/admin/newsletter")) return "Newsletter & Diffusion";
+  if (pathname.startsWith("/admin/partenaires")) return "Partenaires & Témoignages";
+  if (pathname.startsWith("/admin/audit")) return "Journal d'audit & Sécurité";
+  if (pathname.startsWith("/admin/parametres")) return "Paramètres & Profil";
+  return isAdmin ? "Console de Direction" : "Espace Rédacteur";
+}
+
 export function AdminShell({ children, title, user, action }: AdminShellProps) {
+  const pathname = usePathname();
+  const contentRef = useRef<HTMLDivElement>(null);
+
   const isAdmin = user?.role === "ADMIN";
+  const resolvedTitle = title ?? resolveAdminTitle(pathname, isAdmin);
+  const resolvedAction =
+    action ??
+    (!isAdmin && pathname === "/admin" ? (
+      <Link
+        href="/admin/articles?new=true"
+        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#836182] hover:bg-[#6f4f6e] text-white text-xs font-bold transition-colors shadow-xs"
+      >
+        <Plus className="size-3.5" />
+        <span className="hidden sm:inline">Nouvel article</span>
+      </Link>
+    ) : null);
+
+  useEffect(() => {
+    contentRef.current?.scrollTo({ top: 0 });
+  }, [pathname]);
+
   const displayName = user?.name || "Administrateur";
   const displayRole = user?.role || "ADMIN";
   const initials =
@@ -61,10 +101,10 @@ export function AdminShell({ children, title, user, action }: AdminShellProps) {
             <SidebarTrigger className="text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl size-9 flex items-center justify-center transition-colors border border-slate-200 dark:border-slate-700 shrink-0 cursor-pointer" />
 
             <h1 className="flex-1 min-w-0 text-slate-900 dark:text-white font-bold text-base sm:text-lg tracking-tight truncate">
-              {title}
+              {resolvedTitle}
             </h1>
 
-            {action && <div className="shrink-0">{action}</div>}
+            {resolvedAction && <div className="shrink-0">{resolvedAction}</div>}
 
             <ThemeToggle />
 
@@ -132,6 +172,7 @@ export function AdminShell({ children, title, user, action }: AdminShellProps) {
 
           {/* Contenu Principal (scroll indépendant sous le header fixe) */}
           <div
+            ref={contentRef}
             className={
               isAdmin
                 ? "flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4 sm:p-6 md:p-8 bg-slate-100/70 dark:bg-[#090d16]"

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { AdminShell } from "@/components/admin/AdminShell";
 import { ApplicationAdminList } from "@/components/admin/ApplicationAdminList";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
@@ -44,17 +43,5 @@ export default async function AdminCandidaturesPage() {
     }),
   }));
 
-  return (
-    <AdminShell
-      title="Candidatures Programmes"
-      subtitle="Examen et validation des dossiers reçus pour l'incubateur et les formations"
-      user={{
-        name: `${session.firstname} ${session.lastname}`,
-        email: session.email,
-        role: session.role,
-      }}
-    >
-      <ApplicationAdminList applications={formatted} />
-    </AdminShell>
-  );
+  return <ApplicationAdminList applications={formatted} />;
 }

@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { UserShell } from "@/components/dashboard/UserShell";
 import { MemberEventsList } from "@/components/dashboard/MemberEventsList";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/session";
@@ -55,17 +54,5 @@ export default async function MemberEvenementsPage() {
     myRegistrationId: ev.registrations[0]?.id || null,
   }));
 
-  return (
-    <UserShell
-      title="Événements & Billets"
-      subtitle="Inscrivez-vous aux ateliers ACCEENT et retrouvez vos billets d'accès"
-      user={{
-        name: `${session.firstname} ${session.lastname}`,
-        email: session.email,
-        role: session.role,
-      }}
-    >
-      <MemberEventsList events={formatted} />
-    </UserShell>
-  );
+  return <MemberEventsList events={formatted} />;
 }
